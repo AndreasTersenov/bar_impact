@@ -103,7 +103,11 @@ python scripts/run_npe_inference.py [options]
 
 # Analysis configuration
 --bin BIN                  Which redshift bin to analyze (default: 2)
---scale SCALE              Which scale index to analyze, 0-indexed (default: 0)
+
+# Scale selection (mutually exclusive options)
+--scale SCALE              Which scale index to analyze, 0-indexed (default: 0). Use for single scale analysis.
+--scales SCALES            Comma-separated list of scale indices to analyze (0-indexed). Use for multi-scale analysis.
+
 --noisy                    Use noisy datavectors
 --noise-level LEVEL        Noise level when using noisy data (default: 0.26)
 

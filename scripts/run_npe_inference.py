@@ -26,8 +26,14 @@ def parse_arguments():
     # Analysis configuration
     parser.add_argument("--bin", type=int, default=2, 
                         help="Which redshift bin to analyze")
-    parser.add_argument("--scale", type=int, default=0, 
-                        help="Which scale index to analyze (0-indexed)")
+    
+    # Create a mutually exclusive group for scale selection
+    scale_group = parser.add_mutually_exclusive_group(required=False)
+    scale_group.add_argument("--scale", type=int, default=0, 
+                        help="Which scale index to analyze (0-indexed). Use for single scale analysis.")
+    scale_group.add_argument("--scales", type=str, 
+                        help="Comma-separated list of scale indices to analyze (0-indexed). Use for multi-scale analysis.")
+    
     parser.add_argument("--noisy", action="store_true", 
                         help="Use noisy datavectors")
     parser.add_argument("--noise-level", type=float, default=0.26, 
@@ -111,9 +117,28 @@ def main():
     l1_full = np.load(l1_path, allow_pickle=True)
     print(f"Loaded data shapes: params {params.shape}, l1_full {l1_full.shape}")
 
-    # Extract scale data
-    l1_scale = l1_full[:, args.scale]
-    print(f"L1 scale{args.scale+1} shape: {l1_scale.shape}")
+    # Extract scale data - either single scale or multiple scales
+    if args.scales:
+        # Parse comma-separated scales
+        scale_indices = [int(s.strip()) for s in args.scales.split(',')]
+        scale_desc = f"scales{''.join([str(s+1) for s in scale_indices])}"
+        print(f"Using multiple scales: {[s+1 for s in scale_indices]}")
+        
+        # Extract and concatenate scales
+        l1_scales = []
+        for scale_idx in scale_indices:
+            l1_scales.append(l1_full[:, scale_idx])
+        
+        # Concatenate along feature dimension (axis=1)
+        l1_scale = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
+                                  for scale_data in l1_scales], axis=1)
+    else:
+        # Single scale case (existing behavior)
+        l1_scale = l1_full[:, args.scale]
+        scale_desc = f"scale{args.scale+1}"
+        print(f"Using single {scale_desc}")
+    
+    print(f"L1 {scale_desc} shape: {l1_scale.shape}")
 
     # Convert to JAX arrays
     params = jnp.array(params)
@@ -124,7 +149,7 @@ def main():
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     # Create a descriptive checkpoint name based on data configuration
-    datavector_desc = f"{args.simulation_type}_bin{args.bin}_scale{args.scale+1}"
+    datavector_desc = f"{args.simulation_type}_bin{args.bin}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
     
@@ -168,8 +193,22 @@ def main():
 
     # Compute mean of fiducial data
     fid_mean = np.mean(fid_full, axis=0)
-    fid_mean_scale = fid_mean[args.scale]
-    print(f"Fiducial mean scale{args.scale+1} shape: {fid_mean_scale.shape}")
+    
+    # Process fiducial data according to scale selection
+    if args.scales:
+        # Extract and concatenate scales for fiducial
+        fid_scales = []
+        for scale_idx in scale_indices:
+            fid_scales.append(fid_mean[scale_idx])
+        
+        # Concatenate scales for fiducial
+        fid_mean_scale = np.concatenate([scale_data.reshape(-1) 
+                                       for scale_data in fid_scales])
+    else:
+        # Single scale case
+        fid_mean_scale = fid_mean[args.scale]
+    
+    print(f"Fiducial mean {scale_desc} shape: {fid_mean_scale.shape}")
 
     # Sample from the posterior
     print("Sampling from posterior...")
@@ -192,7 +231,7 @@ def main():
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
         
-    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, bin{args.bin}, scale{args.scale+1}"
+    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, bin{args.bin}, {scale_desc}"
     
     samples_bin_scale = MCSamples(
         samples=samples,
@@ -213,7 +252,7 @@ def main():
 
     # Save plot with descriptive filename
     os.makedirs(args.output_dir, exist_ok=True)
-    plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_scale{args.scale+1}"
+    plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     plot_filename += ".pdf"
@@ -223,7 +262,7 @@ def main():
 
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
-    samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_scale{args.scale+1}"
+    samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     samples_filename += "_npe.npy"
