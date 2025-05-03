@@ -10,6 +10,7 @@ Baryonic processes can significantly impact cosmological observables, particular
 2. Apply shape noise to simulate observational conditions
 3. Compute wavelet-based L1 norms that help quantify baryon-induced features
 4. Analyze the statistical properties of these features across different scales
+5. Perform Neural Posterior Estimation (NPE) to infer cosmological parameters
 
 ## Requirements
 
@@ -19,18 +20,21 @@ Baryonic processes can significantly impact cosmological observables, particular
 - h5py
 - tqdm
 - pycs (Cosmostat library containing MRS wavelet tools)
+- jaxili (JAX Implicit Likelihood Inference library)
+- jax
+- getdist (for visualization)
 
 ## Installation
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/bar_impact.git
+git clone https://github.com/AndreasTersenov/bar_impact.git
 cd bar_impact
 ```
 
 2. Ensure you have the required dependencies:
 ```bash
-pip install numpy healpy h5py tqdm
+pip install numpy healpy h5py tqdm jax jaxlib getdist
 ```
 
 3. Install pycs following the instructions at the [CosmoStat repository](https://github.com/CosmoStat/cosmostat).
@@ -80,6 +84,73 @@ Process bin 2 maps with custom noise level and save combined results:
 python scripts/l1_norm_processing.py --bin-number 2 --noise-level 0.3 --save-combined
 ```
 
+## NPE Inference Script
+
+After generating L1 norms, use the `run_npe_inference.py` script to perform Neural Posterior Estimation on the CosmoGRID simulations:
+
+### Usage
+
+```bash
+python scripts/run_npe_inference.py [options]
+```
+
+### Key Options
+
+```
+# Data configuration
+--data-dir DIR             Base directory for data (default: /home/tersenov/CosmoGridV1/stage3_forecast)
+--simulation-type TYPE     Type of simulation to use for training: baryonified or nobaryons (default: baryonified)
+
+# Analysis configuration
+--bin BIN                  Which redshift bin to analyze (default: 2)
+--scale SCALE              Which scale index to analyze, 0-indexed (default: 0)
+--noisy                    Use noisy datavectors
+--noise-level LEVEL        Noise level when using noisy data (default: 0.26)
+
+# Fiducial configuration
+--fiducial-type TYPE       Type of fiducial data: baryonified or nobaryons (default: matches --simulation-type)
+
+# Training parameters
+--train                    Train model (if not specified, will try to load existing model)
+--checkpoint-dir DIR       Directory to save/load model checkpoints (default: ./checkpoints)
+--epochs N                 Number of training epochs (default: 1000)
+--batch-size N             Training batch size (default: 40)
+--learning-rate LR         Learning rate (default: 1e-4)
+
+# Sampling parameters
+--num-samples N            Number of posterior samples to generate (default: 3000)
+--random-seed SEED         Random seed for sampling (default: 1)
+
+# Output parameters
+--output-dir DIR           Directory to save output plots (default: /home/tersenov/software/bar_impact/outputs/plots)
+--samples-dir DIR          Directory to save posterior samples (default: /home/tersenov/software/bar_impact/outputs/samples)
+
+# GPU configuration
+--gpu INDEX                GPU index to use (default: 0)
+```
+
+### Examples
+
+Basic training with default settings (baryonified simulations, bin 2, scale 0):
+```bash
+python scripts/run_npe_inference.py --train
+```
+
+Train model with nobaryons simulations and baryonified fiducial to test bias:
+```bash
+python scripts/run_npe_inference.py --simulation-type nobaryons --fiducial-type baryonified --train
+```
+
+Run inference on a different bin and scale with noisy data:
+```bash
+python scripts/run_npe_inference.py --bin 3 --scale 2 --noisy --train
+```
+
+Use a pre-trained model to generate more posterior samples:
+```bash
+python scripts/run_npe_inference.py --bin 2 --scale 0 --num-samples 10000
+```
+
 ## Technical Details
 
 ### Shape Noise Addition
@@ -108,12 +179,22 @@ The L1 norm calculation follows these steps:
    - Calculate L1 norm for each bin
 3. Return the L1 norms for all scales and bins
 
+### Neural Posterior Estimation
+
+The NPE process follows these steps:
+1. Load L1 norm data and cosmological parameters
+2. Train a neural density estimator using JAX and the jaxili library
+3. Build a posterior distribution from the trained model
+4. Sample from the posterior given fiducial data
+5. Generate visualizations using getdist
+
 ## Analysis Notebooks
 
 The repository also includes Jupyter notebooks for analysis:
 
 - `BNT_systematics.ipynb`: Analysis of Blind Nulling Transform (BNT) systematics
 - `systematics.ipynb`: General systematics analysis
+- `NPE_clean.ipynb`: Original notebook for Neural Posterior Estimation
 
 ## Data Structure
 
@@ -140,15 +221,19 @@ Each HDF5 file contains weak lensing convergence maps at key path `kg/stage3_len
 
 ## Output
 
-The script produces `.npy` files containing L1 norm values for each processed map. When using `--save-combined`, it also creates a combined file with all processed L1 norms, with shape `(n_maps, n_scales, n_bins)`.
+The L1 norm processing script produces `.npy` files containing L1 norm values for each processed map. When using `--save-combined`, it also creates a combined file with all processed L1 norms, with shape `(n_maps, n_scales, n_bins)`.
+
+The NPE inference script produces:
+1. Model checkpoints saved in the specified checkpoint directory
+2. Triangle plots of posterior distributions saved as PDF files
+3. Posterior samples saved as NumPy arrays
 
 ## Parallel Processing
 
-The script utilizes Python's multiprocessing capabilities to efficiently process large sets of maps in parallel, with options to:
+The L1 norm processing script utilizes Python's multiprocessing capabilities to efficiently process large sets of maps in parallel, with options to:
 - Control the number of worker processes
 - Use a shared temporary directory to minimize disk operations
 - Monitor progress with a detailed progress bar
-
 
 ## Contact
 
