@@ -16,8 +16,8 @@ import sys
 import io
 from tqdm import tqdm
 from functools import partial
-from pycs.sparsity.mrs.mrs_tools import mrs_uwttrans
-
+# from pycs.sparsity.mrs.mrs_tools import mrs_uwttrans
+from pycs.sparsity.mrs.mrs_starlet import mrs_uwttrans
 
 # Add this context manager to suppress stdout
 @contextlib.contextmanager
@@ -62,7 +62,7 @@ def get_norm_wtl1_sphere(Map, nscales, nbins=None, Mask=None, min_snr=None, max_
     # Perform undecimated wavelet transform on the spherical map
     # Use suppress_stdout to hide the "setting output map dtype" messages
     with suppress_stdout():
-        WT = mrs_uwttrans(Map, verbose=False, path=path)
+        WT = mrs_uwttrans(Map, nscale=nscales, verbose=False, path=path)
 
     # Initialize lists to collect the l1 norm and bins
     l1norm_coll = []
@@ -209,13 +209,10 @@ def main():
     elif args.fiducial:
         base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/grid/"
+        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
     
-    # Set the filename based on the baryonified flag or fiducial defaults
-    # Fiducial typically uses baryonified maps, but can be overridden
-    if args.fiducial and not args.baryonified:
-        filename = "projected_probes_maps_baryonified512.h5"
-    elif args.baryonified:
+    # Set the filename based on the baryonified flag
+    if args.baryonified:
         filename = "projected_probes_maps_baryonified512.h5"
     else:
         filename = "projected_probes_maps_nobaryons512.h5"
@@ -243,7 +240,7 @@ def main():
         ]
     
     # Print configuration information
-    map_type = "baryonified" if args.baryonified or args.fiducial else "nobaryons"
+    map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
     print(f"Map key: kg/stage3_lensing{args.bin_number}")
@@ -291,7 +288,7 @@ def main():
         combined_output = args.combined_output
         if not combined_output:
             dataset_name = "fiducial" if args.fiducial else "grid"
-            map_suffix = "baryonified" if args.baryonified or args.fiducial else "nobaryons"
+            map_suffix = "baryonified" if args.baryonified else "nobaryons"
             if args.no_noise:
                 combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{args.bin_number}.npy")
             else:

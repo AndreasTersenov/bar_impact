@@ -88,7 +88,7 @@ def construct_paths(args):
     
     # Datavector path
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
-    l1_filename = f"all_l1_norms_{args.simulation_type}_bin{args.bin}{noise_suffix}.npy"
+    l1_filename = f"all_l1_norms_grid_{args.simulation_type}_bin{args.bin}{noise_suffix}.npy"
     l1_path = os.path.join(args.data_dir, "grid", l1_filename)
     
     # Fiducial path - use same noise settings as datavector
