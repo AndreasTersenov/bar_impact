@@ -27,6 +27,12 @@ def parse_arguments():
     parser.add_argument("--bin", type=int, default=2, 
                         help="Which redshift bin to analyze")
     
+    # BNT configuration
+    parser.add_argument("--bnt", action="store_true", 
+                        help="Use BNT-transformed data")
+    parser.add_argument("--bnt-bin", type=int, default=3,
+                        help="Which BNT bin to analyze (0-3, default=3 corresponds to bin4)")
+    
     # Create a mutually exclusive group for scale selection
     scale_group = parser.add_mutually_exclusive_group(required=False)
     scale_group.add_argument("--scale", type=int, default=0, 
@@ -88,11 +94,24 @@ def construct_paths(args):
     
     # Datavector path
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
-    l1_filename = f"all_l1_norms_grid_{args.simulation_type}_bin{args.bin}{noise_suffix}.npy"
+    
+    # Handle BNT vs regular l1-norms
+    if args.bnt:
+        # For BNT data, we use the bnt-bin+1 as the bin number in the file name
+        bin_spec = f"bin{args.bnt_bin+1}"
+        l1_prefix = "all_bnt_l1_norms"
+        fiducial_prefix = "all_bnt_l1_norms"
+    else:
+        # For regular data, we use the standard bin
+        bin_spec = f"bin{args.bin}"
+        l1_prefix = "all_l1_norms"
+        fiducial_prefix = "all_l1_norms"
+    
+    l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
     l1_path = os.path.join(args.data_dir, "grid", l1_filename)
     
     # Fiducial path - use same noise settings as datavector
-    fiducial_filename = f"all_l1_norms_fiducial_{args.fiducial_type}_bin{args.bin}{noise_suffix}.npy"
+    fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
     fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
     
     return params_path, l1_path, fiducial_path
@@ -149,7 +168,13 @@ def main():
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     # Create a descriptive checkpoint name based on data configuration
-    datavector_desc = f"{args.simulation_type}_bin{args.bin}_{scale_desc}"
+    # Include BNT information in the checkpoint name if using BNT
+    if args.bnt:
+        bin_spec = f"bnt{args.bnt_bin+1}"
+    else:
+        bin_spec = f"bin{args.bin}"
+        
+    datavector_desc = f"{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
     
@@ -230,8 +255,14 @@ def main():
     fiducial_desc = f"{args.fiducial_type}"
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
+    
+    # Include BNT information in the label if using BNT
+    if args.bnt:
+        bin_desc = f"bnt{args.bnt_bin+1}"
+    else:
+        bin_desc = f"bin{args.bin}"
         
-    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, bin{args.bin}, {scale_desc}"
+    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, {bin_desc}, {scale_desc}"
     
     samples_bin_scale = MCSamples(
         samples=samples,
@@ -244,15 +275,22 @@ def main():
     g.settings.alpha_filled_add = 0.4
 
     g.triangle_plot([samples_bin_scale], filled=True,
-                    line_args=[{'color': 'blue'}],
-                    contour_colors=['blue'],
-                    markers={
-                        label: val for label, val in zip(labels, true_params[0])
-                    })
+                   line_args=[{'color': 'blue'}],
+                   contour_colors=['blue'],
+                   markers={
+                       label: val for label, val in zip(labels, true_params[0])
+                   })
 
     # Save plot with descriptive filename
     os.makedirs(args.output_dir, exist_ok=True)
-    plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_{scale_desc}"
+    
+    # Include BNT information in the filename if using BNT
+    if args.bnt:
+        bin_spec = f"bnt{args.bnt_bin+1}"
+    else:
+        bin_spec = f"bin{args.bin}"
+        
+    plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     plot_filename += ".pdf"
@@ -262,7 +300,7 @@ def main():
 
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
-    samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_bin{args.bin}_{scale_desc}"
+    samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     samples_filename += "_npe.npy"
