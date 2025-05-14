@@ -24,14 +24,21 @@ def parse_arguments():
                         help="Type of simulation to use for training (baryonified or nobaryons)")
     
     # Analysis configuration
-    parser.add_argument("--bin", type=int, default=2, 
+    bin_group = parser.add_mutually_exclusive_group(required=False)
+    bin_group.add_argument("--bin", type=int, default=2, 
                         help="Which redshift bin to analyze")
+    bin_group.add_argument("--bins", type=str, 
+                        help="Comma-separated list of redshift bins to analyze for tomographic inference")
     
     # BNT configuration
     parser.add_argument("--bnt", action="store_true", 
                         help="Use BNT-transformed data")
-    parser.add_argument("--bnt-bin", type=int, default=3,
+    
+    bnt_bin_group = parser.add_mutually_exclusive_group(required=False)
+    bnt_bin_group.add_argument("--bnt-bin", type=int, default=3,
                         help="Which BNT bin to analyze (0-3, default=3 corresponds to bin4)")
+    bnt_bin_group.add_argument("--bnt-bins", type=str,
+                        help="Comma-separated list of BNT bins to analyze for tomographic inference")
     
     # Create a mutually exclusive group for scale selection
     scale_group = parser.add_mutually_exclusive_group(required=False)
@@ -88,42 +95,92 @@ def parse_arguments():
 
 def construct_paths(args):
     """Construct file paths based on provided arguments."""
-    # Params file path
+    # Params file path - this doesn't change with bins
     params_filename = f"cosmo_params{'_baryonified' if args.simulation_type == 'baryonified' else ''}.npy"
     params_path = os.path.join(args.data_dir, "grid", params_filename)
     
-    # Datavector path
-    noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    # Parse bin options
+    if args.bins:
+        bin_indices = [int(b.strip()) for b in args.bins.split(',')]
+        bin_desc = f"bins{''.join([str(b) for b in bin_indices])}"
+        is_multi_bin = True
+    else:
+        bin_indices = [args.bin]
+        bin_desc = f"bin{args.bin}"
+        is_multi_bin = False
     
-    # Handle BNT vs regular l1-norms
+    # Parse BNT bin options
+    if args.bnt and args.bnt_bins:
+        bnt_bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
+        bnt_bin_desc = f"bntbins{''.join([str(b+1) for b in bnt_bin_indices])}"
+        is_multi_bnt_bin = True
+    elif args.bnt:
+        bnt_bin_indices = [args.bnt_bin]
+        bnt_bin_desc = f"bnt{args.bnt_bin+1}"
+        is_multi_bnt_bin = False
+    
+    # Datavector paths for each bin
+    noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    l1_paths = []
+    fiducial_paths = []
+    
     if args.bnt:
-        # For BNT data, we use the bnt-bin+1 as the bin number in the file name
-        bin_spec = f"bin{args.bnt_bin+1}"
         l1_prefix = "all_bnt_l1_norms"
         fiducial_prefix = "all_bnt_l1_norms"
+        
+        # For BNT mode, use the bnt bins
+        for bnt_bin_idx in bnt_bin_indices:
+            bin_spec = f"bin{bnt_bin_idx+1}"
+            
+            # Grid path
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+            l1_path = os.path.join(args.data_dir, "grid", l1_filename)
+            l1_paths.append(l1_path)
+            
+            # Fiducial path
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+            fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
+            fiducial_paths.append(fiducial_path)
+        
+        # Set bin description for paths and file names
+        if is_multi_bnt_bin:
+            bin_spec_for_output = bnt_bin_desc
+        else:
+            bin_spec_for_output = f"bnt{args.bnt_bin+1}"
     else:
-        # For regular data, we use the standard bin
-        bin_spec = f"bin{args.bin}"
         l1_prefix = "all_l1_norms"
         fiducial_prefix = "all_l1_norms"
+        
+        # For non-BNT mode, use the regular bins
+        for bin_idx in bin_indices:
+            bin_spec = f"bin{bin_idx}"
+            
+            # Grid path
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+            l1_path = os.path.join(args.data_dir, "grid", l1_filename)
+            l1_paths.append(l1_path)
+            
+            # Fiducial path
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+            fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
+            fiducial_paths.append(fiducial_path)
+        
+        # Set bin description for paths and file names
+        if is_multi_bin:
+            bin_spec_for_output = bin_desc
+        else:
+            bin_spec_for_output = f"bin{args.bin}"
     
-    l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
-    l1_path = os.path.join(args.data_dir, "grid", l1_filename)
-    
-    # Fiducial path - use same noise settings as datavector
-    fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
-    fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
-    
-    return params_path, l1_path, fiducial_path
+    return params_path, l1_paths, fiducial_paths, bin_spec_for_output
 
 def main():
     args = parse_arguments()
     
     # Construct file paths
-    params_path, l1_path, fiducial_path = construct_paths(args)
+    params_path, l1_paths, fiducial_paths, bin_spec = construct_paths(args)
     print(f"Using parameters file: {params_path}")
-    print(f"Using datavector file: {l1_path}")
-    print(f"Using fiducial file: {fiducial_path}")
+    print(f"Using datavector files: {l1_paths}")
+    print(f"Using fiducial files: {fiducial_paths}")
     
     # GPU configuration
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
@@ -132,9 +189,12 @@ def main():
     # Load cosmological parameters
     params = np.load(params_path, allow_pickle=True)
 
-    # Load bin data
-    l1_full = np.load(l1_path, allow_pickle=True)
-    print(f"Loaded data shapes: params {params.shape}, l1_full {l1_full.shape}")
+    # Load and process data from each bin
+    l1_full_bins = []
+    for l1_path in l1_paths:
+        l1_full = np.load(l1_path, allow_pickle=True)
+        l1_full_bins.append(l1_full)
+        print(f"Loaded data from {l1_path}, shape: {l1_full.shape}")
 
     # Extract scale data - either single scale or multiple scales
     if args.scales:
@@ -143,21 +203,36 @@ def main():
         scale_desc = f"scales{''.join([str(s+1) for s in scale_indices])}"
         print(f"Using multiple scales: {[s+1 for s in scale_indices]}")
         
-        # Extract and concatenate scales
-        l1_scales = []
-        for scale_idx in scale_indices:
-            l1_scales.append(l1_full[:, scale_idx])
+        # Process each bin's data with selected scales
+        bin_data_list = []
+        for l1_full in l1_full_bins:
+            # Extract and concatenate scales for this bin
+            l1_scales = []
+            for scale_idx in scale_indices:
+                l1_scales.append(l1_full[:, scale_idx])
+            
+            # Concatenate along feature dimension (axis=1)
+            bin_data = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
+                                      for scale_data in l1_scales], axis=1)
+            bin_data_list.append(bin_data)
         
-        # Concatenate along feature dimension (axis=1)
-        l1_scale = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
-                                  for scale_data in l1_scales], axis=1)
+        # Now concatenate all bins together
+        l1_scale = np.concatenate(bin_data_list, axis=1)
+        
     else:
-        # Single scale case (existing behavior)
-        l1_scale = l1_full[:, args.scale]
+        # Single scale case
         scale_desc = f"scale{args.scale+1}"
         print(f"Using single {scale_desc}")
+        
+        # Process each bin's data with the selected scale
+        bin_data_list = []
+        for l1_full in l1_full_bins:
+            bin_data_list.append(l1_full[:, args.scale])
+        
+        # Now concatenate all bins together
+        l1_scale = np.concatenate(bin_data_list, axis=1)
     
-    print(f"L1 {scale_desc} shape: {l1_scale.shape}")
+    print(f"Combined datavector shape: {l1_scale.shape}")
 
     # Convert to JAX arrays
     params = jnp.array(params)
@@ -168,12 +243,6 @@ def main():
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     # Create a descriptive checkpoint name based on data configuration
-    # Include BNT information in the checkpoint name if using BNT
-    if args.bnt:
-        bin_spec = f"bnt{args.bnt_bin+1}"
-    else:
-        bin_spec = f"bin{args.bin}"
-        
     datavector_desc = f"{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
@@ -200,7 +269,6 @@ def main():
     else:
         print("Attempting to load existing model...")
         try:
-            # Note: Replace this with actual model loading code if jaxili.NPE requires different loading procedure
             inference.load(checkpoint_path)
             print("Model loaded successfully")
         except Exception as e:
@@ -212,28 +280,35 @@ def main():
     posterior = inference.build_posterior()
     print("Built posterior")
 
-    # Load fiducial data
-    fid_full = np.load(fiducial_path, allow_pickle=True)
-    print(f"Fiducial data shape: {np.array(fid_full).shape}")
-
-    # Compute mean of fiducial data
-    fid_mean = np.mean(fid_full, axis=0)
+    # Load fiducial data for each bin
+    fid_means = []
+    for fiducial_path in fiducial_paths:
+        fid_full = np.load(fiducial_path, allow_pickle=True)
+        fid_mean = np.mean(fid_full, axis=0)
+        fid_means.append(fid_mean)
+        print(f"Loaded fiducial data from {fiducial_path}, shape: {fid_full.shape}")
     
     # Process fiducial data according to scale selection
+    fid_data_list = []
     if args.scales:
-        # Extract and concatenate scales for fiducial
-        fid_scales = []
-        for scale_idx in scale_indices:
-            fid_scales.append(fid_mean[scale_idx])
-        
-        # Concatenate scales for fiducial
-        fid_mean_scale = np.concatenate([scale_data.reshape(-1) 
-                                       for scale_data in fid_scales])
+        # Extract and concatenate scales for each bin's fiducial
+        for fid_mean in fid_means:
+            bin_fid_scales = []
+            for scale_idx in scale_indices:
+                bin_fid_scales.append(fid_mean[scale_idx])
+            
+            # Concatenate scales for this bin's fiducial
+            bin_fid_data = np.concatenate([scale_data.reshape(-1) 
+                                         for scale_data in bin_fid_scales])
+            fid_data_list.append(bin_fid_data)
     else:
-        # Single scale case
-        fid_mean_scale = fid_mean[args.scale]
+        # Single scale case for each bin
+        for fid_mean in fid_means:
+            fid_data_list.append(fid_mean[args.scale])
     
-    print(f"Fiducial mean {scale_desc} shape: {fid_mean_scale.shape}")
+    # Concatenate all bins' fiducial data
+    fid_mean_scale = np.concatenate(fid_data_list)
+    print(f"Combined fiducial data shape: {fid_mean_scale.shape}")
 
     # Sample from the posterior
     print("Sampling from posterior...")
@@ -256,13 +331,7 @@ def main():
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
     
-    # Include BNT information in the label if using BNT
-    if args.bnt:
-        bin_desc = f"bnt{args.bnt_bin+1}"
-    else:
-        bin_desc = f"bin{args.bin}"
-        
-    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, {bin_desc}, {scale_desc}"
+    sample_label = f"{args.simulation_type} DV vs {fiducial_desc} fid, {bin_spec}, {scale_desc}"
     
     samples_bin_scale = MCSamples(
         samples=samples,
@@ -284,12 +353,6 @@ def main():
     # Save plot with descriptive filename
     os.makedirs(args.output_dir, exist_ok=True)
     
-    # Include BNT information in the filename if using BNT
-    if args.bnt:
-        bin_spec = f"bnt{args.bnt_bin+1}"
-    else:
-        bin_spec = f"bin{args.bin}"
-        
     plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
