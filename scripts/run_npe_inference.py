@@ -85,6 +85,9 @@ def parse_arguments():
     parser.add_argument("--gpu", type=str, default="0", 
                         help="GPU index to use")
     
+    parser.add_argument("--new-normalization", action="store_true",
+                        help="Use data with new normalization.")
+    
     args = parser.parse_args()
     
     # Set fiducial type to match simulation type if not specified
@@ -121,6 +124,7 @@ def construct_paths(args):
     
     # Datavector paths for each bin
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    normalization_suffix = "_new_normalization" if args.new_normalization else ""
     l1_paths = []
     fiducial_paths = []
     
@@ -133,12 +137,12 @@ def construct_paths(args):
             bin_spec = f"bin{bnt_bin_idx+1}"
             
             # Grid path
-            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
             l1_path = os.path.join(args.data_dir, "grid", l1_filename)
             l1_paths.append(l1_path)
             
             # Fiducial path
-            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
             fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
             fiducial_paths.append(fiducial_path)
         
@@ -156,12 +160,12 @@ def construct_paths(args):
             bin_spec = f"bin{bin_idx}"
             
             # Grid path
-            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
             l1_path = os.path.join(args.data_dir, "grid", l1_filename)
             l1_paths.append(l1_path)
             
             # Fiducial path
-            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
             fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
             fiducial_paths.append(fiducial_path)
         
@@ -246,6 +250,8 @@ def main():
     datavector_desc = f"{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
+    if args.new_normalization:
+        datavector_desc += "_new_normalization"
     
     checkpoint_name = f"cosmoGRID_weights_{datavector_desc}"
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_name)
@@ -356,6 +362,8 @@ def main():
     plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.new_normalization:
+        plot_filename += "_new_normalization"
     plot_filename += ".pdf"
     
     plt.savefig(os.path.join(args.output_dir, plot_filename), transparent=True)
@@ -366,6 +374,8 @@ def main():
     samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.new_normalization:
+        samples_filename += "_new_normalization"
     samples_filename += "_npe.npy"
     
     np.save(os.path.join(args.samples_dir, samples_filename), samples_bin_scale.samples)
