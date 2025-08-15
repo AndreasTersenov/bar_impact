@@ -30,6 +30,16 @@ def parse_arguments():
     bin_group.add_argument("--bins", type=str, 
                         help="Comma-separated list of redshift bins to analyze for tomographic inference")
     
+    # BNT configuration
+    parser.add_argument("--bnt", action="store_true", 
+                        help="Use BNT-transformed power spectra")
+    
+    bnt_bin_group = parser.add_mutually_exclusive_group(required=False)
+    bnt_bin_group.add_argument("--bnt-bin", type=int, default=3,
+                        help="Which BNT bin to analyze (0-3, default=3 corresponds to bin4)")
+    bnt_bin_group.add_argument("--bnt-bins", type=str,
+                        help="Comma-separated list of BNT bins to analyze for tomographic inference")
+
     # Power Spectrum processing options
     parser.add_argument("--lower-cut", type=int, default=30,
                         help="Lower multipole cut for the power spectrum (l_min).")
@@ -91,26 +101,43 @@ def construct_paths(args):
     params_path = os.path.join(args.data_dir, "grid", params_filename)
     
     # Parse bin options
-    if args.bins:
-        bin_indices = [int(b.strip()) for b in args.bins.split(',')]
-        bin_desc = f"bins{''.join([str(b) for b in bin_indices])}"
+    if args.bnt:
+        if args.bnt_bins:
+            bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
+            bin_desc = f"bntbins{''.join([str(b+1) for b in bin_indices])}"
+        else:
+            bin_indices = [args.bnt_bin]
+            bin_desc = f"bnt{args.bnt_bin+1}"
+        data_prefix = "all_bnt_cls"
+        bin_prefix = "bin"
+        bin_suffix_list = [f"{b+1}" for b in bin_indices]
     else:
-        bin_indices = [args.bin]
-        bin_desc = f"bin{args.bin}"
-    
+        if args.bins:
+            bin_indices = [int(b.strip()) for b in args.bins.split(',')]
+            bin_desc = f"bins{''.join([str(b) for b in bin_indices])}"
+        else:
+            bin_indices = [args.bin]
+            bin_desc = f"bin{args.bin}"
+        data_prefix = "all_cls"
+        bin_prefix = "bin"
+        bin_suffix_list = bin_indices
+
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
     
     data_paths = []
     fiducial_paths = []
     
-    for bin_idx in bin_indices:
+    for i, bin_idx in enumerate(bin_indices):
+        bin_spec = f"{bin_prefix}{bin_suffix_list[i]}"
         # Data path (grid)
-        data_filename = f"all_cls_grid_{args.simulation_type}_bin{bin_idx}{noise_suffix}.npy"
+        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
         data_path = os.path.join(args.data_dir, "new_grid", data_filename)
+        if not os.path.exists(data_path):
+             data_path = os.path.join(args.data_dir, "grid", data_filename)
         data_paths.append(data_path)
         
         # Fiducial path
-        fiducial_filename = f"all_cls_fiducial_{args.fiducial_type}_bin{bin_idx}{noise_suffix}.npy"
+        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
         fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
         fiducial_paths.append(fiducial_path)
         
