@@ -88,8 +88,24 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
         # Convert to numpy array for consistent saving
         peak_counts = np.array(peak_counts)
         
-        # Save results
-        np.save(save_path, peak_counts)
+        # Validate the result before saving
+        if peak_counts.size == 0:
+            if verbose:
+                print(f"Warning: Empty peak counts for {os.path.basename(file_path)}")
+            return None
+        
+        # Save results with error handling
+        try:
+            np.save(save_path, peak_counts)
+            # Verify the file was saved correctly
+            if not os.path.exists(save_path) or os.path.getsize(save_path) == 0:
+                if verbose:
+                    print(f"Warning: Failed to save or empty file created for {os.path.basename(file_path)}")
+                return None
+        except Exception as save_error:
+            if verbose:
+                print(f"Error saving {os.path.basename(file_path)}: {save_error}")
+            return None
         if verbose:
             print(f"Processed: {os.path.basename(file_path)} -> {os.path.basename(save_path)}")
         return save_path
@@ -141,6 +157,8 @@ def main():
                         help="Save combined peak counts to a single file.")
     parser.add_argument("--combined-output", 
                         help="Path for combined output file.")
+    parser.add_argument("--cleanup-empty", action="store_true",
+                        help="Remove empty output files before processing.")
     
     args = parser.parse_args()
     
@@ -193,6 +211,25 @@ def main():
         suffix = f"_peak_counts_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
     print(f"Output suffix: {suffix}")
     
+    # Clean up empty files if requested
+    if args.cleanup_empty:
+        print("Cleaning up empty files...")
+        empty_count = 0
+        for file_path in file_paths:
+            # Construct expected output path
+            if not args.no_noise:
+                expected_output = file_path.replace(".h5", f"_peak_counts_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+            else:
+                expected_output = file_path.replace(".h5", f"_peak_counts_bin{args.bin_number}_new_normalization.npy")
+            
+            if os.path.exists(expected_output) and os.path.getsize(expected_output) == 0:
+                os.remove(expected_output)
+                empty_count += 1
+                if args.verbose:
+                    print(f"Removed empty file: {expected_output}")
+        
+        print(f"Removed {empty_count} empty files")
+    
     # Process files in parallel with progress bar
     with mp.Pool(processes=args.num_workers) as pool:
         process_func = partial(
@@ -234,20 +271,35 @@ def main():
         # Load all successful outputs
         all_peak_counts = []
         skipped_files = 0
+        empty_files = []
+        corrupted_files = []
         
         for file_path in tqdm(successful, desc="Loading results"):
             try:
+                # Check file size first
+                file_size = os.path.getsize(file_path)
+                if file_size == 0:
+                    skipped_files += 1
+                    empty_files.append(file_path)
+                    if args.verbose:
+                        print(f"Skipping empty file: {file_path}")
+                    else:
+                        print(f"Skipping empty file: {file_path}")
+                    continue
+                
                 data = np.load(file_path, allow_pickle=True)
                 if len(data.shape) == 2:  # Validate shape
                     all_peak_counts.append(data)
                 else:
                     skipped_files += 1
+                    corrupted_files.append(file_path)
                     if args.verbose:
-                        print(f"Skipping {os.path.basename(file_path)} due to unexpected shape {data.shape}")
+                        print(f"Skipping {file_path} due to unexpected shape {data.shape}")
             except Exception as e:
                 skipped_files += 1
-                if args.verbose:
-                    print(f"Error loading {os.path.basename(file_path)}: {e}")
+                file_size = os.path.getsize(file_path) if os.path.exists(file_path) else "File not found"
+                corrupted_files.append(file_path)
+                print(f"Error loading {file_path} (size: {file_size} bytes): {e}")
         
         # Convert list to numpy array
         if all_peak_counts:
@@ -260,6 +312,18 @@ def main():
             
             if skipped_files > 0 and args.verbose:
                 print(f"Note: {skipped_files} files were skipped during combination.")
+            
+            # Print summary of problematic files
+            if empty_files:
+                print(f"\nEmpty files ({len(empty_files)}):")
+                for empty_file in empty_files:
+                    print(f"  {empty_file}")
+            
+            if corrupted_files:
+                print(f"\nCorrupted files ({len(corrupted_files)}):")
+                for corrupted_file in corrupted_files:
+                    print(f"  {corrupted_file}")
+                    
         else:
             print("No valid peak counts files found for combined output!")
 
