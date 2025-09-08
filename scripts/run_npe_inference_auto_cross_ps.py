@@ -168,7 +168,7 @@ def construct_cross_paths(args, bin_desc):
     if not os.path.exists(cross_data_path):
         cross_data_path = os.path.join(args.cross_data_dir, "grid", data_filename)
     
-    cross_fiducial_path = os.path.join(args.cross_data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
+    cross_fiducial_path = os.path.join(args.cross_data_dir, "fiducial", fiducial_filename)
     
     return cross_data_path, cross_fiducial_path
 

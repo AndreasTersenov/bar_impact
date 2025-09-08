@@ -318,7 +318,7 @@ def main():
             spectra_type = "cross" if metadata['cross_only'] else "all"
             filename = f"aggregated_bnt_{spectra_type}_cls_{dataset_info}_{map_info}_bins{bnt_bin_str}{noise_suffix}"
         
-        args.output = os.path.join(args.base_dir, f"{filename}.{args.output_format}")
+        args.output = os.path.join(args.base_dir, f"{filename}{args.output_format}")
     
     # Save results
     print(f"\nSaving aggregated BNT data to: {args.output}")
