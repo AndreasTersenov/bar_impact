@@ -47,6 +47,13 @@ def parse_arguments():
     scale_group.add_argument("--scales", type=str, 
                         help="Comma-separated list of scale indices to analyze (0-indexed). Use for multi-scale analysis.")
     
+    # Datavector bin range selection
+    bin_range_group = parser.add_mutually_exclusive_group(required=False)
+    bin_range_group.add_argument("--bin-range", type=str,
+                        help="Global bin range for all redshift bins in format 'start:end' (both inclusive, 0-indexed)")
+    bin_range_group.add_argument("--bin-ranges", type=str,
+                        help="Separate bin ranges for each redshift bin in format 'start1:end1,start2:end2,...' (0-indexed)")
+    
     parser.add_argument("--noisy", action="store_true", 
                         help="Use noisy datavectors")
     parser.add_argument("--noise-level", type=float, default=0.26, 
@@ -95,6 +102,41 @@ def parse_arguments():
         args.fiducial_type = args.simulation_type
     
     return args
+
+def parse_bin_ranges(args, num_redshift_bins):
+    """Parse bin range arguments and return list of (start, end) tuples for each redshift bin."""
+    if args.bin_range:
+        # Global bin range for all redshift bins
+        try:
+            start, end = map(int, args.bin_range.split(':'))
+            bin_ranges = [(start, end)] * num_redshift_bins
+            print(f"Using global bin range [{start}:{end}] for all redshift bins")
+        except ValueError:
+            raise ValueError("Global bin range must be in format 'start:end' (e.g., '10:50')")
+    elif args.bin_ranges:
+        # Separate bin ranges for each redshift bin
+        try:
+            range_strs = args.bin_ranges.split(',')
+            if len(range_strs) != num_redshift_bins:
+                raise ValueError(f"Number of bin ranges ({len(range_strs)}) must match number of redshift bins ({num_redshift_bins})")
+            
+            bin_ranges = []
+            for range_str in range_strs:
+                start, end = map(int, range_str.strip().split(':'))
+                bin_ranges.append((start, end))
+            
+            print(f"Using separate bin ranges: {bin_ranges}")
+        except ValueError as e:
+            if "must match number" in str(e):
+                raise e
+            else:
+                raise ValueError("Bin ranges must be in format 'start1:end1,start2:end2,...' (e.g., '10:50,20:60')")
+    else:
+        # No bin range specified, use all bins
+        bin_ranges = None
+        print("No bin range specified, using all datavector bins")
+    
+    return bin_ranges
 
 def construct_paths(args):
     """Construct file paths based on provided arguments."""
@@ -200,6 +242,12 @@ def main():
         l1_full_bins.append(l1_full)
         print(f"Loaded data from {l1_path}, shape: {l1_full.shape}")
 
+    # Determine number of redshift bins for bin range parsing
+    num_redshift_bins = len(l1_full_bins)
+    
+    # Parse bin ranges
+    bin_ranges = parse_bin_ranges(args, num_redshift_bins)
+
     # Extract scale data - either single scale or multiple scales
     if args.scales:
         # Parse comma-separated scales
@@ -209,11 +257,19 @@ def main():
         
         # Process each bin's data with selected scales
         bin_data_list = []
-        for l1_full in l1_full_bins:
+        for i, l1_full in enumerate(l1_full_bins):
             # Extract and concatenate scales for this bin
             l1_scales = []
             for scale_idx in scale_indices:
-                l1_scales.append(l1_full[:, scale_idx])
+                scale_data = l1_full[:, scale_idx]
+                
+                # Apply bin range if specified
+                if bin_ranges:
+                    start_bin, end_bin = bin_ranges[i]
+                    scale_data = scale_data[:, start_bin:end_bin+1]  # +1 because end is inclusive
+                    print(f"Applied bin range [{start_bin}:{end_bin}] to redshift bin {i+1}, scale {scale_idx+1}")
+                
+                l1_scales.append(scale_data)
             
             # Concatenate along feature dimension (axis=1)
             bin_data = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
@@ -230,8 +286,16 @@ def main():
         
         # Process each bin's data with the selected scale
         bin_data_list = []
-        for l1_full in l1_full_bins:
-            bin_data_list.append(l1_full[:, args.scale])
+        for i, l1_full in enumerate(l1_full_bins):
+            scale_data = l1_full[:, args.scale]
+            
+            # Apply bin range if specified
+            if bin_ranges:
+                start_bin, end_bin = bin_ranges[i]
+                scale_data = scale_data[:, start_bin:end_bin+1]  # +1 because end is inclusive
+                print(f"Applied bin range [{start_bin}:{end_bin}] to redshift bin {i+1}, scale {args.scale+1}")
+            
+            bin_data_list.append(scale_data)
         
         # Now concatenate all bins together
         l1_scale = np.concatenate(bin_data_list, axis=1)
@@ -252,6 +316,15 @@ def main():
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
         datavector_desc += "_new_normalization"
+    if bin_ranges:
+        if args.bin_range:
+            # Global bin range
+            start, end = bin_ranges[0]  # All ranges are the same
+            datavector_desc += f"_binrange{start}-{end}"
+        else:
+            # Individual bin ranges
+            range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
+            datavector_desc += range_desc
     
     checkpoint_name = f"cosmoGRID_weights_{datavector_desc}"
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_name)
@@ -298,10 +371,17 @@ def main():
     fid_data_list = []
     if args.scales:
         # Extract and concatenate scales for each bin's fiducial
-        for fid_mean in fid_means:
+        for i, fid_mean in enumerate(fid_means):
             bin_fid_scales = []
             for scale_idx in scale_indices:
-                bin_fid_scales.append(fid_mean[scale_idx])
+                scale_data = fid_mean[scale_idx]
+                
+                # Apply bin range if specified
+                if bin_ranges:
+                    start_bin, end_bin = bin_ranges[i]
+                    scale_data = scale_data[start_bin:end_bin+1]  # +1 because end is inclusive
+                
+                bin_fid_scales.append(scale_data)
             
             # Concatenate scales for this bin's fiducial
             bin_fid_data = np.concatenate([scale_data.reshape(-1) 
@@ -309,8 +389,15 @@ def main():
             fid_data_list.append(bin_fid_data)
     else:
         # Single scale case for each bin
-        for fid_mean in fid_means:
-            fid_data_list.append(fid_mean[args.scale])
+        for i, fid_mean in enumerate(fid_means):
+            scale_data = fid_mean[args.scale]
+            
+            # Apply bin range if specified
+            if bin_ranges:
+                start_bin, end_bin = bin_ranges[i]
+                scale_data = scale_data[start_bin:end_bin+1]  # +1 because end is inclusive
+            
+            fid_data_list.append(scale_data)
     
     # Concatenate all bins' fiducial data
     fid_mean_scale = np.concatenate(fid_data_list)
@@ -364,6 +451,15 @@ def main():
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
         plot_filename += "_new_normalization"
+    if bin_ranges:
+        if args.bin_range:
+            # Global bin range
+            start, end = bin_ranges[0]  # All ranges are the same
+            plot_filename += f"_binrange{start}-{end}"
+        else:
+            # Individual bin ranges
+            range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
+            plot_filename += range_desc
     plot_filename += ".pdf"
     
     plt.savefig(os.path.join(args.output_dir, plot_filename), transparent=True)
@@ -376,6 +472,15 @@ def main():
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
         samples_filename += "_new_normalization"
+    if bin_ranges:
+        if args.bin_range:
+            # Global bin range
+            start, end = bin_ranges[0]  # All ranges are the same
+            samples_filename += f"_binrange{start}-{end}"
+        else:
+            # Individual bin ranges
+            range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
+            samples_filename += range_desc
     samples_filename += "_npe.npy"
     
     np.save(os.path.join(args.samples_dir, samples_filename), samples_bin_scale.samples)
