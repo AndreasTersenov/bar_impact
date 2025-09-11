@@ -30,6 +30,16 @@ def parse_arguments():
     bin_group.add_argument("--bins", type=str, 
                         help="Comma-separated list of redshift bins to analyze for tomographic inference")
     
+    # BNT configuration
+    parser.add_argument("--bnt", action="store_true", 
+                        help="Use BNT-transformed data")
+    
+    bnt_bin_group = parser.add_mutually_exclusive_group(required=False)
+    bnt_bin_group.add_argument("--bnt-bin", type=int, default=3,
+                        help="Which BNT bin to analyze (0-3, default=3 corresponds to bin4)")
+    bnt_bin_group.add_argument("--bnt-bins", type=str,
+                        help="Comma-separated list of BNT bins to analyze for tomographic inference")
+    
     # Create a mutually exclusive group for scale selection
     scale_group = parser.add_mutually_exclusive_group(required=False)
     scale_group.add_argument("--scale", type=int, default=0, 
@@ -104,34 +114,68 @@ def construct_paths(args):
         bin_desc = f"bin{args.bin}"
         is_multi_bin = False
     
+    # Parse BNT bin options
+    if args.bnt and args.bnt_bins:
+        bnt_bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
+        bnt_bin_desc = f"bntbins{''.join([str(b+1) for b in bnt_bin_indices])}"
+        is_multi_bnt_bin = True
+    elif args.bnt:
+        bnt_bin_indices = [args.bnt_bin]
+        bnt_bin_desc = f"bnt{args.bnt_bin+1}"
+        is_multi_bnt_bin = False
+    
     # Peak counts datavector paths for each bin
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
     normalization_suffix = "_new_normalization" if args.new_normalization else ""
     peak_counts_paths = []
     fiducial_paths = []
     
-    peak_counts_prefix = "all_peak_counts"
-    fiducial_prefix = "all_peak_counts"
-    
-    # For peak counts mode, use the regular bins
-    for bin_idx in bin_indices:
-        bin_spec = f"bin{bin_idx}"
+    if args.bnt:
+        peak_counts_prefix = "all_bnt_peak_counts"
+        fiducial_prefix = "all_bnt_peak_counts"
         
-        # Grid path
-        peak_counts_filename = f"{peak_counts_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
-        peak_counts_path = os.path.join(args.data_dir, "grid", peak_counts_filename)
-        peak_counts_paths.append(peak_counts_path)
+        # For BNT mode, use the bnt bins
+        for bnt_bin_idx in bnt_bin_indices:
+            bin_spec = f"bin{bnt_bin_idx+1}"
+            
+            # Grid path
+            peak_counts_filename = f"{peak_counts_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            peak_counts_path = os.path.join(args.data_dir, "grid", peak_counts_filename)
+            peak_counts_paths.append(peak_counts_path)
+            
+            # Fiducial path
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
+            fiducial_paths.append(fiducial_path)
         
-        # Fiducial path
-        fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
-        fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
-        fiducial_paths.append(fiducial_path)
-    
-    # Set bin description for paths and file names
-    if is_multi_bin:
-        bin_spec_for_output = bin_desc
+        # Set bin description for paths and file names
+        if is_multi_bnt_bin:
+            bin_spec_for_output = bnt_bin_desc
+        else:
+            bin_spec_for_output = f"bnt{args.bnt_bin+1}"
     else:
-        bin_spec_for_output = f"bin{args.bin}"
+        peak_counts_prefix = "all_peak_counts"
+        fiducial_prefix = "all_peak_counts"
+        
+        # For non-BNT mode, use the regular bins
+        for bin_idx in bin_indices:
+            bin_spec = f"bin{bin_idx}"
+            
+            # Grid path
+            peak_counts_filename = f"{peak_counts_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            peak_counts_path = os.path.join(args.data_dir, "grid", peak_counts_filename)
+            peak_counts_paths.append(peak_counts_path)
+            
+            # Fiducial path
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
+            fiducial_paths.append(fiducial_path)
+        
+        # Set bin description for paths and file names
+        if is_multi_bin:
+            bin_spec_for_output = bin_desc
+        else:
+            bin_spec_for_output = f"bin{args.bin}"
     
     return params_path, peak_counts_paths, fiducial_paths, bin_spec_for_output
 
@@ -214,7 +258,10 @@ def main():
     os.makedirs(checkpoint_dir, exist_ok=True)
     
     # Create a descriptive checkpoint name based on data configuration
-    datavector_desc = f"ps_weights_{args.simulation_type}_{bin_spec}_{scale_desc}"
+    if args.bnt:
+        datavector_desc = f"bnt_pc_weights_{args.simulation_type}_{bin_spec}_{scale_desc}"
+    else:
+        datavector_desc = f"pc_weights_{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
@@ -313,7 +360,10 @@ def main():
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
     
-    sample_label = f"{args.simulation_type} PC vs {fiducial_desc} fid, {bin_spec}, {scale_desc}"
+    if args.bnt:
+        sample_label = f"{args.simulation_type} BNT PC vs {fiducial_desc} fid, {bin_spec}, {scale_desc}"
+    else:
+        sample_label = f"{args.simulation_type} PC vs {fiducial_desc} fid, {bin_spec}, {scale_desc}"
     
     samples_bin_scale = MCSamples(
         samples=samples,
@@ -335,7 +385,10 @@ def main():
     # Save plot with descriptive filename
     os.makedirs(args.output_dir, exist_ok=True)
     
-    plot_filename = f"posterior_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
+    if args.bnt:
+        plot_filename = f"posterior_bnt_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
+    else:
+        plot_filename = f"posterior_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
@@ -347,7 +400,10 @@ def main():
 
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
-    samples_filename = f"posterior_samples_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
+    if args.bnt:
+        samples_filename = f"posterior_samples_bnt_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
+    else:
+        samples_filename = f"posterior_samples_pc_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     if args.new_normalization:
