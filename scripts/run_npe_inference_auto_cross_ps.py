@@ -51,6 +51,8 @@ def parse_arguments():
     # Cross power spectra configuration
     parser.add_argument("--cross-data-dir", type=str,
                         help="Directory containing aggregated cross power spectra files. If not specified, uses data-dir.")
+    parser.add_argument("--cross-pairs", type=str, default=None,
+                        help="Comma-separated list of cross power spectrum pairs to include, e.g., '1,3;1,4;2,4' for (1,3), (1,4), and (2,4). If not specified, all cross pairs are used.")
     parser.add_argument("--auto-only", action="store_true",
                         help="Use only auto power spectra (for comparison)")
     parser.add_argument("--cross-only", action="store_true",
@@ -108,6 +110,51 @@ def parse_arguments():
         parser.error("Cannot specify both --auto-only and --cross-only")
     
     return args
+
+def parse_cross_pairs(cross_pairs_str):
+    """Parse cross pairs string into list of tuples."""
+    if cross_pairs_str is None:
+        return None
+    
+    pairs = []
+    for pair_str in cross_pairs_str.split(';'):
+        i, j = pair_str.split(',')
+        pairs.append((int(i.strip()), int(j.strip())))
+    return pairs
+
+def get_cross_indices_for_pairs(bin_indices, cross_pairs):
+    """
+    Calculate which indices in the cross power spectra array correspond to the requested pairs.
+    
+    For bins [1,2,3,4], the cross power spectra are ordered as:
+    (1,2), (1,3), (1,4), (2,3), (2,4), (3,4)
+    
+    Args:
+        bin_indices: List of bin indices used in the analysis
+        cross_pairs: List of tuples specifying which cross pairs to include
+        
+    Returns:
+        List of indices into the cross power spectra array
+    """
+    if cross_pairs is None:
+        return None
+    
+    # Generate all possible cross pairs for the given bins
+    all_cross_pairs = []
+    for i in range(len(bin_indices)):
+        for j in range(i + 1, len(bin_indices)):
+            all_cross_pairs.append((bin_indices[i], bin_indices[j]))
+    
+    # Find indices of requested pairs
+    selected_indices = []
+    for pair in cross_pairs:
+        try:
+            idx = all_cross_pairs.index(pair)
+            selected_indices.append(idx)
+        except ValueError:
+            print(f"Warning: Cross pair {pair} not found in available pairs {all_cross_pairs}")
+    
+    return selected_indices
 
 def construct_auto_paths(args):
     """Construct file paths for auto power spectra based on provided arguments."""
@@ -211,22 +258,48 @@ def load_and_process_auto_spectra(auto_data_paths, args):
     
     return auto_data_vector
 
-def load_and_process_cross_spectra(cross_data_path, args):
+def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None):
     """Load and process aggregated cross power spectra."""
     cross_cls_full = np.load(cross_data_path, allow_pickle=True)
     if args.verbose:
         print(f"Loaded cross data from {os.path.basename(cross_data_path)}, shape: {cross_cls_full.shape}")
     
-    # Apply cuts and rebinning to cross power spectra
-    # Apply cuts
+    # Apply cuts first to get the correct multipole range
     cross_cls_cut = cross_cls_full[:, args.lower_cut:args.upper_cut]
+    
+    # If specific cross indices are requested, select only those
+    if cross_indices is not None:
+        # Calculate the number of multipoles per cross spectrum after cuts
+        n_multipoles_cut = args.upper_cut - args.lower_cut
+        
+        # Calculate total number of cross pairs in the data
+        total_cross_pairs = cross_cls_cut.shape[1] // n_multipoles_cut
+        
+        if args.verbose:
+            print(f"Selecting cross indices: {cross_indices} out of {total_cross_pairs} total cross pairs")
+            print(f"Each cross spectrum has {n_multipoles_cut} multipoles")
+        
+        # Select the relevant cross spectra
+        selected_cross_cls = []
+        for idx in cross_indices:
+            start_col = idx * n_multipoles_cut
+            end_col = start_col + n_multipoles_cut
+            selected_cross_cls.append(cross_cls_cut[:, start_col:end_col])
+        
+        # Concatenate selected cross spectra
+        cross_cls_selected = np.concatenate(selected_cross_cls, axis=1)
+        
+        if args.verbose:
+            print(f"Selected cross data shape: {cross_cls_selected.shape}")
+    else:
+        cross_cls_selected = cross_cls_cut
     
     # Apply rebinning if specified
     if args.rebin > 1:
-        cross_cls_rebinned_list = [rebin_cls(cl, args.rebin) for cl in cross_cls_cut]
+        cross_cls_rebinned_list = [rebin_cls(cl, args.rebin) for cl in cross_cls_selected]
         cross_data_vector = np.array(cross_cls_rebinned_list)
     else:
-        cross_data_vector = cross_cls_cut
+        cross_data_vector = cross_cls_selected
     
     return cross_data_vector
 
@@ -259,30 +332,72 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
     
     return auto_fid_mean_processed
 
-def load_and_process_cross_fiducial(cross_fiducial_path, args):
+def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=None):
     """Load and process cross fiducial data."""
     cross_fid_full = np.load(cross_fiducial_path, allow_pickle=True)
     cross_fid_mean = np.mean(cross_fid_full, axis=0)
     if args.verbose:
         print(f"Loaded cross fiducial data from {os.path.basename(cross_fiducial_path)}, shape: {cross_fid_full.shape}")
     
-    # Process cross fiducial data according to cuts and rebinning
-    # Apply cuts
+    # Apply cuts first to get the correct multipole range
     cross_fid_cut = cross_fid_mean[args.lower_cut:args.upper_cut]
+    
+    # If specific cross indices are requested, select only those
+    if cross_indices is not None:
+        # Calculate the number of multipoles per cross spectrum after cuts
+        n_multipoles_cut = args.upper_cut - args.lower_cut
+        
+        # Calculate total number of cross pairs in the data
+        total_cross_pairs = len(cross_fid_cut) // n_multipoles_cut
+        
+        if args.verbose:
+            print(f"Selecting fiducial cross indices: {cross_indices} out of {total_cross_pairs} total cross pairs")
+        
+        # Select the relevant cross spectra
+        selected_cross_fid = []
+        for idx in cross_indices:
+            start_idx = idx * n_multipoles_cut
+            end_idx = start_idx + n_multipoles_cut
+            selected_cross_fid.append(cross_fid_cut[start_idx:end_idx])
+        
+        # Concatenate selected cross spectra
+        cross_fid_selected = np.concatenate(selected_cross_fid)
+        
+        if args.verbose:
+            print(f"Selected cross fiducial shape: {cross_fid_selected.shape}")
+    else:
+        cross_fid_selected = cross_fid_cut
     
     # Apply rebinning
     if args.rebin > 1:
-        cross_fid_processed = rebin_cls(cross_fid_cut, args.rebin)
+        cross_fid_processed = rebin_cls(cross_fid_selected, args.rebin)
     else:
-        cross_fid_processed = cross_fid_cut
+        cross_fid_processed = cross_fid_selected
     
     return cross_fid_processed
 
 def main():
     args = parse_arguments()
     
+    # Parse cross pairs if specified
+    cross_pairs = parse_cross_pairs(args.cross_pairs)
+    if cross_pairs and args.verbose:
+        print(f"Selected cross pairs: {cross_pairs}")
+    
     # Construct file paths for auto power spectra
     params_path, auto_data_paths, auto_fiducial_paths, bin_desc = construct_auto_paths(args)
+    
+    # Determine which bin indices are being used for cross pair calculation
+    if args.bnt:
+        bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
+        bin_indices = [b+1 for b in bin_indices]  # Convert 0-indexed to 1-indexed for cross pairs
+    else:
+        bin_indices = [int(b.strip()) for b in args.bins.split(',')]
+    
+    # Calculate cross indices if specific pairs are requested
+    cross_indices = get_cross_indices_for_pairs(bin_indices, cross_pairs)
+    if cross_indices and args.verbose:
+        print(f"Cross indices to select: {cross_indices}")
     
     # Construct file paths for cross power spectra
     cross_data_path, cross_fiducial_path = construct_cross_paths(args, bin_desc)
@@ -292,6 +407,8 @@ def main():
     print(f"Using cross datavector file: {cross_data_path}")
     print(f"Using auto fiducial files: {auto_fiducial_paths}")
     print(f"Using cross fiducial file: {cross_fiducial_path}")
+    if cross_pairs:
+        print(f"Using only cross pairs: {cross_pairs}")
     
     # GPU configuration
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
@@ -316,9 +433,9 @@ def main():
         print(f"Auto fiducial shape: {auto_fid_vector.shape}")
     
     if not args.auto_only:
-        # Load cross power spectra
-        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args)
-        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args)
+        # Load cross power spectra with optional selection
+        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args, cross_indices)
+        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices)
         
         data_vector_parts.append(cross_data_vector)
         fid_vector_parts.append(cross_fid_vector)
@@ -354,6 +471,14 @@ def main():
         spectra_type = "cross"
     else:
         spectra_type = "auto_cross"
+    
+    # Add cross pairs information to spectra type if specific pairs are selected
+    if cross_pairs and not args.auto_only:
+        cross_pairs_str = "_".join([f"{i}-{j}" for i, j in cross_pairs])
+        if args.cross_only:
+            spectra_type = f"cross_{cross_pairs_str}"
+        else:
+            spectra_type = f"auto_cross_{cross_pairs_str}"
     
     # Add BNT prefix to checkpoint name if using BNT data
     if args.bnt:
@@ -422,9 +547,19 @@ def main():
     if args.auto_only:
         analysis_type = "BNT Auto Cls" if args.bnt else "Auto Cls"
     elif args.cross_only:
-        analysis_type = "BNT Cross Cls" if args.bnt else "Cross Cls"
+        base_type = "BNT Cross Cls" if args.bnt else "Cross Cls"
+        if cross_pairs:
+            cross_pairs_str = ",".join([f"({i},{j})" for i, j in cross_pairs])
+            analysis_type = f"{base_type} {cross_pairs_str}"
+        else:
+            analysis_type = base_type
     else:
-        analysis_type = "BNT Auto+Cross Cls" if args.bnt else "Auto+Cross Cls"
+        base_type = "BNT Auto+Cross Cls" if args.bnt else "Auto+Cross Cls"
+        if cross_pairs:
+            cross_pairs_str = ",".join([f"({i},{j})" for i, j in cross_pairs])
+            analysis_type = f"{base_type} {cross_pairs_str}"
+        else:
+            analysis_type = base_type
     
     sample_label = f"{args.simulation_type} {analysis_type} vs {fiducial_desc} fid, {bin_desc}, {ps_desc}"
     
