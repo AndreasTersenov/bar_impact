@@ -43,8 +43,13 @@ def parse_arguments():
     # Power Spectrum processing options
     parser.add_argument("--lower-cut", type=int, default=30,
                         help="Lower multipole cut for the power spectrum (l_min).")
-    parser.add_argument("--upper-cut", type=int, default=1024,
+    
+    upper_cut_group = parser.add_mutually_exclusive_group(required=False)
+    upper_cut_group.add_argument("--upper-cut", type=int, default=1024,
                         help="Upper multipole cut for the power spectrum (l_max).")
+    upper_cut_group.add_argument("--upper-cuts", type=str,
+                        help="Comma-separated list of upper multipole cuts for each bin (l_max).")
+    
     parser.add_argument("--rebin", type=int, default=1,
                         help="Rebinning factor for the power spectrum. Default is 1 (no rebinning).")
 
@@ -153,8 +158,37 @@ def rebin_cls(cls, factor=2):
         cls_rebinned[i] = np.mean(cls[i*factor:(i+1)*factor])
     return cls_rebinned
 
+def parse_upper_cuts(args):
+    """Parse upper cuts and validate against number of bins."""
+    # Determine number of bins
+    if args.bnt:
+        if args.bnt_bins:
+            num_bins = len([int(b.strip()) for b in args.bnt_bins.split(',')])
+        else:
+            num_bins = 1
+    else:
+        if args.bins:
+            num_bins = len([int(b.strip()) for b in args.bins.split(',')])
+        else:
+            num_bins = 1
+    
+    # Parse upper cuts
+    if args.upper_cuts:
+        upper_cuts = [int(cut.strip()) for cut in args.upper_cuts.split(',')]
+        if len(upper_cuts) != num_bins:
+            raise ValueError(f"Number of upper cuts ({len(upper_cuts)}) must match number of bins ({num_bins})")
+    else:
+        # Use single upper cut for all bins
+        upper_cuts = [args.upper_cut] * num_bins
+    
+    return upper_cuts
+
 def main():
     args = parse_arguments()
+    
+    # Parse upper cuts
+    upper_cuts = parse_upper_cuts(args)
+    print(f"Using upper cuts: {upper_cuts}")
     
     # Construct file paths
     params_path, data_paths, fiducial_paths, bin_spec = construct_paths(args)
@@ -177,15 +211,24 @@ def main():
         print(f"Loaded data from {data_path}, shape: {cls_full.shape}")
 
     # Process power spectra: apply cuts and rebinning
-    ps_desc = f"l{args.lower_cut}-{args.upper_cut}"
+    if len(set(upper_cuts)) == 1:
+        # All upper cuts are the same
+        ps_desc = f"l{args.lower_cut}-{upper_cuts[0]}"
+    else:
+        # Different upper cuts for different bins
+        ps_desc = f"l{args.lower_cut}-{'-'.join(map(str, upper_cuts))}"
+    
     if args.rebin > 1:
         ps_desc += f"_r{args.rebin}"
     print(f"Processing power spectra with: {ps_desc}")
 
     processed_data_list = []
-    for cls_full in cls_full_bins:
+    for i, cls_full in enumerate(cls_full_bins):
+        upper_cut = upper_cuts[i]
+        print(f"Processing bin {i+1} with upper cut {upper_cut}")
+        
         # Apply cuts
-        cls_cut = cls_full[:, args.lower_cut:args.upper_cut]
+        cls_cut = cls_full[:, args.lower_cut:upper_cut]
         
         # Apply rebinning if specified
         if args.rebin > 1:
@@ -257,9 +300,10 @@ def main():
     
     # Process fiducial data according to cuts and rebinning
     fid_data_list = []
-    for fid_mean in fid_means:
+    for i, fid_mean in enumerate(fid_means):
+        upper_cut = upper_cuts[i]
         # Apply cuts
-        fid_cut = fid_mean[args.lower_cut:args.upper_cut]
+        fid_cut = fid_mean[args.lower_cut:upper_cut]
         
         # Apply rebinning
         if args.rebin > 1:
