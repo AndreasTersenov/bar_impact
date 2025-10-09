@@ -46,9 +46,9 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
     
     # Define output filename based on bin number and noise level
     if add_noise:
-        suffix = f"_cls_bin{bin_number}_noisy_s{noise_level:.2f}.npy"
+        suffix = f"_cls_bin{bin_number}_noisy_s{noise_level:.2f}_new.npy"
     else:
-        suffix = f"_cls_bin{bin_number}.npy"
+        suffix = f"_cls_bin{bin_number}_new.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -83,6 +83,12 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
         if verbose:
             print(f"Error processing {os.path.basename(file_path)}: {e}")
         return None
+
+
+def seed_worker():
+    """Initializer for multiprocessing pool to ensure unique random seeds."""
+    # Use a source of entropy from the OS to seed the worker
+    np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
 
 
 def main():
@@ -163,13 +169,13 @@ def main():
     
     # Determine suffix for output files
     if args.no_noise:
-        suffix = f"_cls_bin{args.bin_number}.npy"
+        suffix = f"_cls_bin{args.bin_number}_new.npy"
     else:
-        suffix = f"_cls_bin{args.bin_number}_noisy_s{args.noise_level:.2f}.npy"
+        suffix = f"_cls_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new.npy"
     print(f"Output suffix: {suffix}")
     
     # Process files in parallel with progress bar
-    with mp.Pool(processes=args.num_workers) as pool:
+    with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
         process_func = partial(
             process_file,
             bin_number=args.bin_number,
@@ -196,9 +202,9 @@ def main():
             dataset_name = "fiducial" if args.fiducial else "grid"
             map_suffix = "baryonified" if args.baryonified else "nobaryons"
             if args.no_noise:
-                combined_output = os.path.join(base_dir, f"all_cls_{dataset_name}_{map_suffix}_bin{args.bin_number}.npy")
+                combined_output = os.path.join(base_dir, f"all_cls_{dataset_name}_{map_suffix}_bin{args.bin_number}_new.npy")
             else:
-                combined_output = os.path.join(base_dir, f"all_cls_{dataset_name}_{map_suffix}_bin{args.bin_number}_noisy_s{args.noise_level:.2f}.npy")
+                combined_output = os.path.join(base_dir, f"all_cls_{dataset_name}_{map_suffix}_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new.npy")
         
         print(f"Loading and combining {len(successful)} result files...")
         

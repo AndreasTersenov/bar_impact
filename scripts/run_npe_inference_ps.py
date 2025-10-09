@@ -58,6 +58,9 @@ def parse_arguments():
     parser.add_argument("--noise-level", type=float, default=0.26, 
                         help="Noise level for both datavectors and fiducial (when --noisy is set)")
     
+    parser.add_argument("--masked", action="store_true", 
+                        help="Use masked power spectra (14300 sq deg disk mask)")
+    
     # Fiducial configuration  
     parser.add_argument("--fiducial-type", type=str, choices=["baryonified", "nobaryons"],
                         default=None,  # Will default to match simulation-type if not specified
@@ -128,6 +131,7 @@ def construct_paths(args):
         bin_suffix_list = bin_indices
 
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    mask_suffix = "_masked_14300sqdeg" if args.masked else ""
     
     data_paths = []
     fiducial_paths = []
@@ -135,14 +139,14 @@ def construct_paths(args):
     for i, bin_idx in enumerate(bin_indices):
         bin_spec = f"{bin_prefix}{bin_suffix_list[i]}"
         # Data path (grid)
-        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{mask_suffix}{noise_suffix}.npy"
         data_path = os.path.join(args.data_dir, "new_grid", data_filename)
         if not os.path.exists(data_path):
              data_path = os.path.join(args.data_dir, "grid", data_filename)
         data_paths.append(data_path)
         
         # Fiducial path
-        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{mask_suffix}{noise_suffix}.npy"
         fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
         fiducial_paths.append(fiducial_path)
         
@@ -254,6 +258,8 @@ def main():
     
     # Create a descriptive checkpoint name based on data configuration
     datavector_desc = f"{args.simulation_type}_{bin_spec}_{ps_desc}"
+    if args.masked:
+        datavector_desc += "_masked_14300sqdeg"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
     
@@ -335,6 +341,8 @@ def main():
     
     # Create descriptive sample label
     fiducial_desc = f"{args.fiducial_type}"
+    if args.masked:
+        fiducial_desc += "_masked"
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
     
@@ -361,6 +369,8 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
     
     plot_filename = f"posterior_ps_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{ps_desc}"
+    if args.masked:
+        plot_filename += "_masked_14300sqdeg"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     plot_filename += ".pdf"
@@ -371,6 +381,8 @@ def main():
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
     samples_filename = f"posterior_samples_ps_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{ps_desc}"
+    if args.masked:
+        samples_filename += "_masked_14300sqdeg"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     samples_filename += "_npe.npy"

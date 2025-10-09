@@ -72,16 +72,18 @@ def process_file(file_path, bnt_bin_range=[0, 1, 2, 3], noise_level=0.26, add_no
     
     # Define output filename
     bnt_bin_str = "".join([str(b+1) for b in bnt_bin_range])  # Convert 0-based to 1-based for filename
+    # include lmax in per-file suffix when different from default
+    lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
     if add_noise:
         if cross_only:
-            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}.npz"
+            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
         else:
-            suffix = f"_bnt_all_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}.npz"
+            suffix = f"_bnt_all_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
     else:
         if cross_only:
-            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}.npz"
+            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}{lmax_suffix}.npz"
         else:
-            suffix = f"_bnt_all_cls_bins{bnt_bin_str}.npz"
+            suffix = f"_bnt_all_cls_bins{bnt_bin_str}{lmax_suffix}.npz"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -144,6 +146,131 @@ def process_file(file_path, bnt_bin_range=[0, 1, 2, 3], noise_level=0.26, add_no
         return None
 
 
+def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2, 3], 
+                            dataset_type="grid", map_type="nobaryons", 
+                            noise_level=0.26, add_noise=True, lmax=1024, verbose=False):
+    """
+    Aggregate processed .npz files into the format expected by run_npe_inference_auto_cross_ps.py.
+    
+    Creates:
+    - Separate .npy files for each BNT bin's auto power spectrum
+    - One combined .npy file for all cross power spectra
+    
+    Parameters:
+    - processed_files: list of paths to processed .npz files
+    - output_dir: directory to save aggregated files
+    - bnt_bin_range: list of BNT bin numbers (0-indexed)
+    - dataset_type: "grid" or "fiducial"
+    - map_type: "nobaryons" or "baryonified"
+    - noise_level: noise level for filename
+    - add_noise: whether noise was added
+    - verbose: print detailed information
+    """
+    if not processed_files:
+        print("No files to aggregate!")
+        return
+    
+    # Filter out None values and check file existence
+    valid_files = [f for f in processed_files if f is not None and os.path.exists(f)]
+    
+    if not valid_files:
+        print("No valid processed files found for aggregation!")
+        return
+    
+    print(f"\nAggregating {len(valid_files)} BNT files for inference...")
+    
+    # Load all files and organize by spectrum type
+    auto_spectra = {(b+1): [] for b in bnt_bin_range}  # Use 1-based indexing
+    cross_spectra_parts = []
+    
+    # Determine the order of cross pairs for consistent concatenation
+    bnt_bins_1based = [b+1 for b in bnt_bin_range]
+    cross_pairs_ordered = list(combinations(sorted(bnt_bins_1based), 2))
+    cross_spectra = {pair: [] for pair in cross_pairs_ordered}
+    
+    for file_path in tqdm(valid_files, desc="Loading files"):
+        try:
+            data = np.load(file_path, allow_pickle=True)
+            
+            # Extract auto spectra
+            for bnt_bin in bnt_bin_range:
+                bin_1based = bnt_bin + 1
+                key = f"cls_{bin_1based}_{bin_1based}"
+                if key in data.files:
+                    auto_spectra[bin_1based].append(data[key])
+            
+            # Extract cross spectra in order
+            for pair in cross_pairs_ordered:
+                i, j = pair
+                key = f"cls_{i}_{j}"
+                if key in data.files:
+                    cross_spectra[pair].append(data[key])
+                    
+        except Exception as e:
+            if verbose:
+                print(f"Error loading {os.path.basename(file_path)}: {e}")
+            continue
+    
+    # Convert lists to arrays
+    for bin_1based in auto_spectra:
+        if auto_spectra[bin_1based]:
+            auto_spectra[bin_1based] = np.array(auto_spectra[bin_1based])
+    
+    for pair in cross_spectra:
+        if cross_spectra[pair]:
+            cross_spectra[pair] = np.array(cross_spectra[pair])
+    
+    # Prepare filename suffixes
+    noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
+    lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
+    
+    # Save individual auto power spectra
+    print("\nSaving auto power spectra...")
+    for bnt_bin in bnt_bin_range:
+        bin_1based = bnt_bin + 1
+        if auto_spectra[bin_1based].size > 0:
+            # Filename: all_bnt_cls_<dataset>_<maptype>_bin<N>.npy
+            auto_filename = f"all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{noise_suffix}{lmax_suffix}.npy"
+            auto_path = os.path.join(output_dir, auto_filename)
+            np.save(auto_path, auto_spectra[bin_1based])
+            
+            if verbose:
+                print(f"  Saved {auto_filename}, shape: {auto_spectra[bin_1based].shape}")
+    
+    # Save combined cross power spectra
+    print("\nSaving combined cross power spectra...")
+    cross_data_parts = []
+    for pair in cross_pairs_ordered:
+        if cross_spectra[pair].size > 0:
+            cross_data_parts.append(cross_spectra[pair])
+    
+    if cross_data_parts:
+        # Concatenate all cross spectra along the multipole dimension (axis=1)
+        # Result shape: (n_files, total_cross_spectrum_length)
+        cross_data_combined = np.concatenate(cross_data_parts, axis=1)
+        # Filename: all_bnt_cross_cls_<dataset>_<maptype>_bins<1234>.npy
+        bnt_bin_str = "".join([str(b+1) for b in bnt_bin_range])
+        cross_filename = f"all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{noise_suffix}{lmax_suffix}.npy"
+        cross_path = os.path.join(output_dir, cross_filename)
+        np.save(cross_path, cross_data_combined)
+
+        if verbose:
+            print(f"  Saved {cross_filename}, shape: {cross_data_combined.shape}")
+    
+    print(f"\n✓ Aggregation complete! Files saved to: {output_dir}")
+    print(f"  Auto spectra: {len([b for b in bnt_bin_range if auto_spectra[b+1].size > 0])} bins")
+    print(f"  Cross spectra: {len(cross_data_parts)} pairs combined")
+    
+    # Print expected filenames for inference
+    print(f"\nFiles ready for run_npe_inference_auto_cross_ps.py:")
+    for bnt_bin in bnt_bin_range:
+        bin_1based = bnt_bin + 1
+        if auto_spectra[bin_1based].size > 0:
+            print(f"  - all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{noise_suffix}{lmax_suffix}.npy")
+    if cross_data_parts:
+        print(f"  - all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{noise_suffix}{lmax_suffix}.npy")
+
+
 def main():
     """Main function to handle command-line arguments and run processing."""
     parser = argparse.ArgumentParser(description="Process HEALPix maps with BNT transform to compute cross power spectra between BNT bins.")
@@ -181,6 +308,12 @@ def main():
                         help="Create a summary file listing all processed files.")
     parser.add_argument("--combined-output", 
                         help="Path for combined summary file.")
+    
+    # Aggregation for inference
+    parser.add_argument("--aggregate-for-inference", action="store_true",
+                        help="Aggregate processed files into format for run_npe_inference_auto_cross_ps.py")
+    parser.add_argument("--inference-output-dir", type=str,
+                        help="Output directory for aggregated inference files. If not specified, uses base_dir/new_grid or base_dir.")
     
     args = parser.parse_args()
     
@@ -360,6 +493,37 @@ for file in files:
 ''')
         
         print(f"Example loading script saved to: {os.path.basename(example_file)}")
+    
+    # Aggregate files for inference if requested
+    if args.aggregate_for_inference:
+        # Determine output directory
+        if args.inference_output_dir:
+            inference_output_dir = args.inference_output_dir
+        else:
+            if args.fiducial:
+                inference_output_dir = os.path.join(base_dir, "cosmo_fiducial")
+            else:
+                inference_output_dir = os.path.join(os.path.dirname(base_dir.rstrip('/')), "new_grid")
+        
+        # Create output directory if it doesn't exist
+        os.makedirs(inference_output_dir, exist_ok=True)
+        
+        # Determine dataset type
+        dataset_type = "fiducial" if args.fiducial else "grid"
+        map_type = "baryonified" if args.baryonified else "nobaryons"
+        
+        # Call aggregation function
+        aggregate_for_inference(
+            processed_files=successful,
+            output_dir=inference_output_dir,
+            bnt_bin_range=args.bnt_bin_range,
+            dataset_type=dataset_type,
+            map_type=map_type,
+            noise_level=args.noise_level,
+            add_noise=not args.no_noise,
+            lmax=args.lmax,
+            verbose=args.verbose
+        )
 
 
 if __name__ == "__main__":

@@ -56,22 +56,201 @@ def get_cross_power_spectra(maps_dict, lmax=1024):
     return cls_dict
 
 
+def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4], 
+                           dataset_type="grid", map_type="nobaryons", 
+                           noise_level=0.26, add_noise=True, lmax=1024, verbose=False):
+    """
+    Aggregate processed .npz files into inference-ready format.
+    
+    Creates separate .npy files for:
+    - Each auto power spectrum (all_cls_<dataset>_<map>_bin<N>.npy)
+    - Combined cross power spectra (all_cross_cls_<dataset>_<map>_bins<1234>.npy)
+    
+    Parameters:
+    - processed_files: list of paths to processed .npz files
+    - output_dir: directory to save aggregated files
+    - bin_range: list of bin numbers
+    - dataset_type: "grid" or "fiducial"
+    - map_type: "nobaryons" or "baryonified"
+    - noise_level: noise level used in processing
+    - add_noise: whether noise was added
+    - verbose: print detailed information
+    """
+    from itertools import combinations
+    
+    print(f"\n{'='*60}")
+    print(f"Aggregating {len(processed_files)} files for inference...")
+    print(f"{'='*60}")
+    
+    # Initialize storage for each spectrum type
+    auto_spectra = {bin_num: [] for bin_num in bin_range}
+    cross_spectra = {(i, j): [] for i, j in combinations(bin_range, 2)}
+    
+    # Track issues for detailed reporting
+    failed_files = []
+    incomplete_files = {}  # file_path -> list of missing keys
+    
+    # Load all files and extract spectra
+    for file_path in tqdm(processed_files, desc="Loading files"):
+        try:
+            data = np.load(file_path, allow_pickle=True)
+            
+            missing_keys = []
+            file_is_complete = True
+            
+            # Extract auto spectra
+            for bin_num in bin_range:
+                key = f"cls_{bin_num}_{bin_num}"
+                if key in data.files:
+                    auto_spectra[bin_num].append(data[key])
+                else:
+                    missing_keys.append(key)
+                    file_is_complete = False
+            
+            # Extract cross spectra
+            for i, j in combinations(bin_range, 2):
+                key = f"cls_{i}_{j}"
+                if key in data.files:
+                    cross_spectra[(i, j)].append(data[key])
+                else:
+                    missing_keys.append(key)
+                    file_is_complete = False
+            
+            # Track incomplete files
+            if not file_is_complete:
+                incomplete_files[file_path] = missing_keys
+            
+        except Exception as e:
+            failed_files.append((file_path, str(e)))
+    
+    # Detailed error reporting
+    if failed_files or incomplete_files:
+        print(f"\n{'='*60}")
+        print("⚠️  ISSUES DETECTED")
+        print(f"{'='*60}")
+        
+        if failed_files:
+            print(f"\n❌ Failed to load {len(failed_files)} files:")
+            for file_path, error in failed_files:
+                print(f"  • {file_path}")
+                print(f"    Error: {error}")
+        
+        if incomplete_files:
+            print(f"\n⚠️  {len(incomplete_files)} files with missing keys:")
+            for file_path, missing in incomplete_files.items():
+                print(f"  • {file_path}")
+                print(f"    Missing: {', '.join(missing)}")
+        
+        print(f"\n{'='*60}")
+        
+        # Save detailed log
+        log_file = os.path.join(output_dir, "aggregation_issues.log")
+        with open(log_file, 'w') as f:
+            f.write("Aggregation Issues Report\n")
+            f.write("="*60 + "\n\n")
+            
+            if failed_files:
+                f.write(f"Failed to load {len(failed_files)} files:\n")
+                for file_path, error in failed_files:
+                    f.write(f"  {file_path}\n")
+                    f.write(f"    Error: {error}\n\n")
+            
+            if incomplete_files:
+                f.write(f"\n{len(incomplete_files)} files with missing keys:\n")
+                for file_path, missing in incomplete_files.items():
+                    f.write(f"  {file_path}\n")
+                    f.write(f"    Missing: {', '.join(missing)}\n\n")
+        
+        print(f"Detailed log saved to: {log_file}")
+    
+    # Determine noise and lmax suffixes
+    noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
+    lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
+    
+    # Create output directory if needed
+    os.makedirs(output_dir, exist_ok=True)
+    
+    created_files = []
+    
+    # Save individual auto power spectra
+    print("\nSaving auto power spectra...")
+    for bin_num in bin_range:
+        if auto_spectra[bin_num]:
+            # Stack into array: shape (n_files, n_multipoles)
+            auto_array = np.array(auto_spectra[bin_num])
+            
+            # Create filename: all_cls_<dataset>_<map>_bin<N>.npy (include noise/lmax suffixes)
+            filename = f"all_cls_{dataset_type}_{map_type}_bin{bin_num}{noise_suffix}{lmax_suffix}.npy"
+            output_path = os.path.join(output_dir, filename)
+            
+            np.save(output_path, auto_array)
+            created_files.append(output_path)
+            
+            print(f"  ✓ Bin {bin_num}: {filename} - shape {auto_array.shape}")
+        else:
+            print(f"  ✗ Bin {bin_num}: No data found")
+    
+    # Save combined cross power spectra
+    print("\nSaving cross power spectra...")
+    cross_data_parts = []
+    cross_pairs_found = []
+    
+    for i, j in combinations(sorted(bin_range), 2):
+        if cross_spectra[(i, j)]:
+            cross_array = np.array(cross_spectra[(i, j)])
+            cross_data_parts.append(cross_array)
+            cross_pairs_found.append((i, j))
+            print(f"  ✓ Cross ({i},{j}): shape {cross_array.shape}")
+        else:
+            print(f"  ✗ Cross ({i},{j}): No data found")
+    
+    if cross_data_parts:
+        # Concatenate all cross spectra along spectrum dimension (axis=1)
+        # Shape: (n_files, total_cross_spectrum_length)
+        cross_combined = np.concatenate(cross_data_parts, axis=1)
+        
+        # Create filename: all_cross_cls_<dataset>_<map>_bins<1234>.npy (include noise/lmax suffixes)
+        bin_str = "".join(map(str, bin_range))
+        filename = f"all_cross_cls_{dataset_type}_{map_type}_bins{bin_str}{noise_suffix}{lmax_suffix}.npy"
+        output_path = os.path.join(output_dir, filename)
+        
+        np.save(output_path, cross_combined)
+        created_files.append(output_path)
+        
+        print(f"\n  ✓ Combined cross spectra: {filename}")
+        print(f"    Shape: {cross_combined.shape}")
+        print(f"    Pairs included: {cross_pairs_found}")
+    else:
+        print("\n  ✗ No cross spectra data found")
+    
+    # Print summary
+    print(f"\n{'='*60}")
+    print(f"Aggregation complete!")
+    print(f"  Files created: {len(created_files)}")
+    print(f"  Output directory: {output_dir}")
+    print(f"{'='*60}\n")
+    
+    return created_files
+
+
 def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26, add_noise=True, 
                  lmax=1024, cross_only=False, verbose=False):
     """Process a single file: extract kappa maps, compute cross power spectra, save results."""
     
     # Define output filename
     bin_str = "".join(map(str, bin_range))
+    # include lmax in per-file suffix when different from default
+    lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
     if add_noise:
         if cross_only:
-            suffix = f"_cross_cls_bins{bin_str}_noisy_s{noise_level:.2f}.npz"
+            suffix = f"_cross_cls_bins{bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}_noisy_s{noise_level:.2f}.npz"
+            suffix = f"_all_cls_bins{bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
     else:
         if cross_only:
-            suffix = f"_cross_cls_bins{bin_str}.npz"
+            suffix = f"_cross_cls_bins{bin_str}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}.npz"
+            suffix = f"_all_cls_bins{bin_str}{lmax_suffix}.npz"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -180,6 +359,12 @@ def main():
                         help="Create a summary file listing all processed files.")
     parser.add_argument("--combined-output", 
                         help="Path for combined summary file.")
+    
+    # Aggregation for inference
+    parser.add_argument("--aggregate-for-inference", action="store_true",
+                        help="Aggregate processed files into inference-ready format (separate auto and combined cross .npy files).")
+    parser.add_argument("--inference-output-dir", type=str,
+                        help="Output directory for inference-ready files. Defaults to base_dir/new_grid or base_dir for fiducial.")
     
     args = parser.parse_args()
     
@@ -354,6 +539,41 @@ for file in files:
 ''')
         
         print(f"Example loading script saved to: {os.path.basename(example_file)}")
+    
+    # Aggregate for inference if requested
+    if args.aggregate_for_inference and successful:
+        print(f"\n{'='*60}")
+        print("Starting aggregation for inference pipeline...")
+        print(f"{'='*60}")
+        
+        # Determine output directory
+        if args.inference_output_dir:
+            inference_output_dir = args.inference_output_dir
+        elif args.fiducial:
+            inference_output_dir = base_dir  # For fiducial, save in cosmo_fiducial directory
+        else:
+            inference_output_dir = base_dir  # For grid, save in new_grid directory
+        
+        # Call aggregation function
+        created_files = aggregate_for_inference(
+            processed_files=successful,
+            output_dir=inference_output_dir,
+            bin_range=args.bin_range,
+            dataset_type=dataset_type,
+            map_type=map_type,
+            noise_level=args.noise_level,
+            add_noise=not args.no_noise,
+            lmax=args.lmax,
+            verbose=args.verbose
+        )
+        
+        if created_files:
+            print("\n✓ Inference-ready files created:")
+            for f in created_files:
+                print(f"  - {os.path.basename(f)}")
+            print(f"\nThese files are ready to use with run_npe_inference_auto_cross_ps.py")
+        else:
+            print("\n✗ No inference files were created (check for errors above)")
 
 
 if __name__ == "__main__":
