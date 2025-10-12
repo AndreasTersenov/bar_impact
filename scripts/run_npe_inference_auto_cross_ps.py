@@ -258,48 +258,79 @@ def load_and_process_auto_spectra(auto_data_paths, args):
     
     return auto_data_vector
 
-def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None):
-    """Load and process aggregated cross power spectra."""
+def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_bins=None):
+    """Load and process aggregated cross power spectra.
+    
+    Args:
+        cross_data_path: Path to the cross power spectra file
+        args: Argument namespace
+        cross_indices: Optional list of cross-pair indices to select
+        n_bins: Number of bins (needed to infer multipole range per cross-pair)
+    """
     cross_cls_full = np.load(cross_data_path, allow_pickle=True)
     if args.verbose:
         print(f"Loaded cross data from {os.path.basename(cross_data_path)}, shape: {cross_cls_full.shape}")
     
-    # Apply cuts first to get the correct multipole range
-    cross_cls_cut = cross_cls_full[:, args.lower_cut:args.upper_cut]
+    # Calculate expected number of cross pairs and infer original multipole range
+    if n_bins is not None:
+        expected_cross_pairs = n_bins * (n_bins - 1) // 2
+        n_ell_original = cross_cls_full.shape[1] // expected_cross_pairs
+        
+        if args.verbose:
+            print(f"Expected {expected_cross_pairs} cross pairs with {n_ell_original} multipoles each")
+            print(f"Total columns: {cross_cls_full.shape[1]} = {expected_cross_pairs} × {n_ell_original}")
+    else:
+        # Fallback: assume standard multipole range if n_bins not provided
+        # This is a guess and may not be correct!
+        print("Warning: n_bins not provided, assuming standard multipole range")
+        n_ell_original = 1024  # Common default
+        expected_cross_pairs = cross_cls_full.shape[1] // n_ell_original
+    
+    # Apply cuts to each cross-pair individually
+    n_multipoles_cut = args.upper_cut - args.lower_cut
+    cross_cls_cut_list = []
+    
+    for i in range(expected_cross_pairs):
+        # Extract this cross-pair's full multipole range
+        start_col = i * n_ell_original
+        end_col = (i + 1) * n_ell_original
+        cross_pair_full = cross_cls_full[:, start_col:end_col]
+        
+        # Apply multipole cuts to this cross-pair
+        cross_pair_cut = cross_pair_full[:, args.lower_cut:args.upper_cut]
+        cross_cls_cut_list.append(cross_pair_cut)
+    
+    if args.verbose:
+        print(f"Applied cuts to {len(cross_cls_cut_list)} cross pairs")
+        print(f"Each cross pair now has {n_multipoles_cut} multipoles (l={args.lower_cut} to l={args.upper_cut})")
+    
+    # Apply rebinning to each cross-pair separately (before selection/concatenation)
+    if args.rebin > 1:
+        cross_cls_rebinned_list = []
+        for cross_pair_cut in cross_cls_cut_list:
+            # Rebin each simulation's cross-pair spectrum
+            rebinned_sims = [rebin_cls(cl, args.rebin) for cl in cross_pair_cut]
+            cross_cls_rebinned_list.append(np.array(rebinned_sims))
+        cross_cls_cut_list = cross_cls_rebinned_list
+        
+        if args.verbose:
+            print(f"Applied rebinning with factor {args.rebin} to each cross pair")
+            print(f"Each cross pair now has {cross_cls_cut_list[0].shape[1]} multipoles after rebinning")
     
     # If specific cross indices are requested, select only those
     if cross_indices is not None:
-        # Calculate the number of multipoles per cross spectrum after cuts
-        n_multipoles_cut = args.upper_cut - args.lower_cut
-        
-        # Calculate total number of cross pairs in the data
-        total_cross_pairs = cross_cls_cut.shape[1] // n_multipoles_cut
-        
         if args.verbose:
-            print(f"Selecting cross indices: {cross_indices} out of {total_cross_pairs} total cross pairs")
-            print(f"Each cross spectrum has {n_multipoles_cut} multipoles")
+            print(f"Selecting cross indices: {cross_indices} out of {expected_cross_pairs} total cross pairs")
         
-        # Select the relevant cross spectra
-        selected_cross_cls = []
-        for idx in cross_indices:
-            start_col = idx * n_multipoles_cut
-            end_col = start_col + n_multipoles_cut
-            selected_cross_cls.append(cross_cls_cut[:, start_col:end_col])
-        
-        # Concatenate selected cross spectra
-        cross_cls_selected = np.concatenate(selected_cross_cls, axis=1)
-        
-        if args.verbose:
-            print(f"Selected cross data shape: {cross_cls_selected.shape}")
-    else:
-        cross_cls_selected = cross_cls_cut
+        # Select only the requested cross pairs
+        selected_cross_cls = [cross_cls_cut_list[idx] for idx in cross_indices]
+        cross_cls_cut_list = selected_cross_cls
     
-    # Apply rebinning if specified
-    if args.rebin > 1:
-        cross_cls_rebinned_list = [rebin_cls(cl, args.rebin) for cl in cross_cls_selected]
-        cross_data_vector = np.array(cross_cls_rebinned_list)
-    else:
-        cross_data_vector = cross_cls_selected
+    # Concatenate all (selected) cross pairs
+    cross_data_vector = np.concatenate(cross_cls_cut_list, axis=1)
+    
+    if args.verbose:
+        print(f"Final cross data shape: {cross_data_vector.shape}")
     
     return cross_data_vector
 
@@ -332,47 +363,77 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
     
     return auto_fid_mean_processed
 
-def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=None):
-    """Load and process cross fiducial data."""
+def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=None, n_bins=None):
+    """Load and process cross fiducial data.
+    
+    Args:
+        cross_fiducial_path: Path to the cross fiducial file
+        args: Argument namespace
+        cross_indices: Optional list of cross-pair indices to select
+        n_bins: Number of bins (needed to infer multipole range per cross-pair)
+    """
     cross_fid_full = np.load(cross_fiducial_path, allow_pickle=True)
     cross_fid_mean = np.mean(cross_fid_full, axis=0)
     if args.verbose:
         print(f"Loaded cross fiducial data from {os.path.basename(cross_fiducial_path)}, shape: {cross_fid_full.shape}")
     
-    # Apply cuts first to get the correct multipole range
-    cross_fid_cut = cross_fid_mean[args.lower_cut:args.upper_cut]
+    # Calculate expected number of cross pairs and infer original multipole range
+    if n_bins is not None:
+        expected_cross_pairs = n_bins * (n_bins - 1) // 2
+        n_ell_original = len(cross_fid_mean) // expected_cross_pairs
+        
+        if args.verbose:
+            print(f"Expected {expected_cross_pairs} cross pairs with {n_ell_original} multipoles each")
+    else:
+        # Fallback: assume standard multipole range
+        print("Warning: n_bins not provided for fiducial, assuming standard multipole range")
+        n_ell_original = 1024
+        expected_cross_pairs = len(cross_fid_mean) // n_ell_original
+    
+    # Apply cuts to each cross-pair individually
+    n_multipoles_cut = args.upper_cut - args.lower_cut
+    cross_fid_cut_list = []
+    
+    for i in range(expected_cross_pairs):
+        # Extract this cross-pair's full multipole range
+        start_idx = i * n_ell_original
+        end_idx = (i + 1) * n_ell_original
+        cross_pair_full = cross_fid_mean[start_idx:end_idx]
+        
+        # Apply multipole cuts to this cross-pair
+        cross_pair_cut = cross_pair_full[args.lower_cut:args.upper_cut]
+        cross_fid_cut_list.append(cross_pair_cut)
+    
+    if args.verbose:
+        print(f"Applied cuts to {len(cross_fid_cut_list)} cross pairs in fiducial")
+    
+    # Apply rebinning to each cross-pair separately (before selection/concatenation)
+    if args.rebin > 1:
+        cross_fid_rebinned_list = []
+        for cross_pair_cut in cross_fid_cut_list:
+            # Rebin this cross-pair's fiducial spectrum
+            rebinned = rebin_cls(cross_pair_cut, args.rebin)
+            cross_fid_rebinned_list.append(rebinned)
+        cross_fid_cut_list = cross_fid_rebinned_list
+        
+        if args.verbose:
+            print(f"Applied rebinning with factor {args.rebin} to each cross pair in fiducial")
+            print(f"Each cross pair now has {len(cross_fid_cut_list[0])} multipoles after rebinning")
     
     # If specific cross indices are requested, select only those
     if cross_indices is not None:
-        # Calculate the number of multipoles per cross spectrum after cuts
-        n_multipoles_cut = args.upper_cut - args.lower_cut
-        
-        # Calculate total number of cross pairs in the data
-        total_cross_pairs = len(cross_fid_cut) // n_multipoles_cut
-        
         if args.verbose:
-            print(f"Selecting fiducial cross indices: {cross_indices} out of {total_cross_pairs} total cross pairs")
+            print(f"Selecting fiducial cross indices: {cross_indices} out of {expected_cross_pairs} total cross pairs")
         
-        # Select the relevant cross spectra
-        selected_cross_fid = []
-        for idx in cross_indices:
-            start_idx = idx * n_multipoles_cut
-            end_idx = start_idx + n_multipoles_cut
-            selected_cross_fid.append(cross_fid_cut[start_idx:end_idx])
-        
-        # Concatenate selected cross spectra
-        cross_fid_selected = np.concatenate(selected_cross_fid)
-        
-        if args.verbose:
-            print(f"Selected cross fiducial shape: {cross_fid_selected.shape}")
-    else:
-        cross_fid_selected = cross_fid_cut
+        # Select only the requested cross pairs
+        selected_cross_fid = [cross_fid_cut_list[idx] for idx in cross_indices]
+        cross_fid_cut_list = selected_cross_fid
     
-    # Apply rebinning
-    if args.rebin > 1:
-        cross_fid_processed = rebin_cls(cross_fid_selected, args.rebin)
-    else:
-        cross_fid_processed = cross_fid_selected
+    # Concatenate all (selected) cross pairs
+    cross_fid_processed = np.concatenate(cross_fid_cut_list)
+    
+    if args.verbose:
+        print(f"Final cross fiducial shape: {cross_fid_processed.shape}")
     
     return cross_fid_processed
 
@@ -389,10 +450,14 @@ def main():
     
     # Determine which bin indices are being used for cross pair calculation
     if args.bnt:
-        bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
-        bin_indices = [b+1 for b in bin_indices]  # Convert 0-indexed to 1-indexed for cross pairs
+        bnt_bin_indices = [int(b.strip()) for b in args.bnt_bins.split(',')]
+        # For cross pair naming, BNT bins are labeled as 1,2,3,4 (corresponding to BNT bins 0,1,2,3)
+        bin_indices = [b+1 for b in bnt_bin_indices]
     else:
         bin_indices = [int(b.strip()) for b in args.bins.split(',')]
+    
+    # Number of bins (needed to correctly parse aggregated cross spectra files)
+    n_bins = len(bin_indices)
     
     # Calculate cross indices if specific pairs are requested
     cross_indices = get_cross_indices_for_pairs(bin_indices, cross_pairs)
@@ -403,6 +468,7 @@ def main():
     cross_data_path, cross_fiducial_path = construct_cross_paths(args, bin_desc)
     
     print(f"Using parameters file: {params_path}")
+    print(f"Using {n_bins} bins: {bin_indices}")
     print(f"Using auto datavector files: {auto_data_paths}")
     print(f"Using cross datavector file: {cross_data_path}")
     print(f"Using auto fiducial files: {auto_fiducial_paths}")
@@ -434,8 +500,8 @@ def main():
     
     if not args.auto_only:
         # Load cross power spectra with optional selection
-        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args, cross_indices)
-        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices)
+        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args, cross_indices, n_bins)
+        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices, n_bins)
         
         data_vector_parts.append(cross_data_vector)
         fid_vector_parts.append(cross_fid_vector)
@@ -455,7 +521,49 @@ def main():
     if args.rebin > 1:
         ps_desc += f"_r{args.rebin}"
     print(f"Processing power spectra with: {ps_desc}")
-
+    
+    # Save the full datavector set for verification
+    os.makedirs(args.samples_dir, exist_ok=True)
+    datavector_filename = f"datavectors_npe_input_{args.simulation_type}_{bin_desc}_{ps_desc}"
+    if args.noisy:
+        datavector_filename += f"_noisy_s{args.noise_level:.2f}"
+    datavector_filename += ".npy"
+    datavector_path = os.path.join(args.samples_dir, datavector_filename)
+    np.save(datavector_path, combined_data_vector)
+    print(f"Saved full NPE input datavectors to: {datavector_path}")
+    print(f"  Shape: {combined_data_vector.shape} (n_simulations × n_features)")
+    
+    # Create descriptive filename
+    if args.auto_only:
+        spectra_desc = "auto"
+    elif args.cross_only:
+        spectra_desc = "cross"
+    else:
+        spectra_desc = "auto_cross"
+    
+    if cross_pairs and not args.auto_only:
+        cross_pairs_str = "_".join([f"{i}-{j}" for i, j in cross_pairs])
+        if args.cross_only:
+            spectra_desc = f"cross_{cross_pairs_str}"
+        else:
+            spectra_desc = f"auto_cross_{cross_pairs_str}"
+    
+    bnt_prefix = "bnt_" if args.bnt else ""
+    noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    
+    # Save first example from training data
+    example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{noise_suffix}.npy"
+    np.save(os.path.join(args.samples_dir, example_train_filename), combined_data_vector[0])
+    print(f"Saved example training datavector to {example_train_filename}")
+    print(f"  Shape: {combined_data_vector[0].shape}, first 10 values: {combined_data_vector[0][:10]}")
+    
+    # Save fiducial observation
+    example_fid_filename = f"example_fiducial_datavector_{bnt_prefix}{spectra_desc}_{args.fiducial_type}_{bin_desc}_{ps_desc}{noise_suffix}.npy"
+    np.save(os.path.join(args.samples_dir, example_fid_filename), combined_fid_vector)
+    print(f"Saved fiducial datavector to {example_fid_filename}")
+    print(f"  Shape: {combined_fid_vector.shape}, first 10 values: {combined_fid_vector[:10]}")
+    
+    
     # Convert to JAX arrays
     params = jnp.array(params)
     combined_data_vector = jnp.array(combined_data_vector)
