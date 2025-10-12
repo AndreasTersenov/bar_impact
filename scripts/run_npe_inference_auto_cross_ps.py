@@ -36,6 +36,8 @@ def parse_arguments():
                         help="Comma-separated list of BNT bins to analyze (default: 0,1,2,3)")
 
     # Power Spectrum processing options
+    parser.add_argument("--lmax", type=int, default=1024,
+                        help="Maximum multipole (lmax) used when computing power spectra. Must match the processing script's --lmax. Default is 1024.")
     parser.add_argument("--lower-cut", type=int, default=30,
                         help="Lower multipole cut for the power spectrum (l_min).")
     parser.add_argument("--upper-cut", type=int, default=1024,
@@ -109,6 +111,10 @@ def parse_arguments():
     if args.auto_only and args.cross_only:
         parser.error("Cannot specify both --auto-only and --cross-only")
     
+    # Validate upper_cut doesn't exceed lmax
+    if args.upper_cut > args.lmax:
+        parser.error(f"--upper-cut ({args.upper_cut}) cannot exceed --lmax ({args.lmax})")
+    
     return args
 
 def parse_cross_pairs(cross_pairs_str):
@@ -177,6 +183,7 @@ def construct_auto_paths(args):
         bin_suffix_list = bin_indices
 
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     
     auto_data_paths = []
     auto_fiducial_paths = []
@@ -184,14 +191,14 @@ def construct_auto_paths(args):
     for i, bin_idx in enumerate(bin_indices):
         bin_spec = f"{bin_prefix}{bin_suffix_list[i]}"
         # Auto data path (grid)
-        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}.npy"
+        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{lmax_suffix}.npy"
         data_path = os.path.join(args.data_dir, "new_grid", data_filename)
         if not os.path.exists(data_path):
              data_path = os.path.join(args.data_dir, "grid", data_filename)
         auto_data_paths.append(data_path)
         
         # Auto fiducial path
-        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}.npy"
+        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{lmax_suffix}.npy"
         fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
         auto_fiducial_paths.append(fiducial_path)
         
@@ -200,15 +207,16 @@ def construct_auto_paths(args):
 def construct_cross_paths(args, bin_desc):
     """Construct file paths for aggregated cross power spectra."""
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     
     if args.bnt:
         # For BNT, use the correct BNT cross power spectrum naming
-        data_filename = f"all_bnt_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}.npy"
-        fiducial_filename = f"all_bnt_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}.npy"
+        data_filename = f"all_bnt_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"all_bnt_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
     else:
         # For regular bins
-        data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}.npy"
-        fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}.npy"
+        data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
     
     # Look for cross power spectra files in the cross data directory
     cross_data_path = os.path.join(args.cross_data_dir, "new_grid", data_filename)
@@ -469,12 +477,46 @@ def main():
     
     print(f"Using parameters file: {params_path}")
     print(f"Using {n_bins} bins: {bin_indices}")
+    print(f"Using lmax: {args.lmax}")
     print(f"Using auto datavector files: {auto_data_paths}")
     print(f"Using cross datavector file: {cross_data_path}")
     print(f"Using auto fiducial files: {auto_fiducial_paths}")
     print(f"Using cross fiducial file: {cross_fiducial_path}")
     if cross_pairs:
         print(f"Using only cross pairs: {cross_pairs}")
+    
+    # Validate that required files exist
+    missing_files = []
+    if not os.path.exists(params_path):
+        missing_files.append(params_path)
+    
+    if not args.cross_only:
+        for path in auto_data_paths:
+            if not os.path.exists(path):
+                missing_files.append(path)
+        for path in auto_fiducial_paths:
+            if not os.path.exists(path):
+                missing_files.append(path)
+    
+    if not args.auto_only:
+        if not os.path.exists(cross_data_path):
+            missing_files.append(cross_data_path)
+        if not os.path.exists(cross_fiducial_path):
+            missing_files.append(cross_fiducial_path)
+    
+    if missing_files:
+        print("\n" + "="*60)
+        print("ERROR: Required files not found!")
+        print("="*60)
+        for f in missing_files:
+            print(f"  ✗ {f}")
+        print("\nPossible causes:")
+        print(f"  1. The data files were processed with a different --lmax (current: {args.lmax})")
+        print(f"  2. The data files were processed with different noise settings (current: noisy={args.noisy}, level={args.noise_level})")
+        print(f"  3. The data files don't exist yet - run cross_power_spectrum_processing.py first")
+        print("\nTip: Check the actual filenames in the data directories to match --lmax, --noisy, and --noise-level")
+        print("="*60 + "\n")
+        return
     
     # GPU configuration
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
