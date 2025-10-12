@@ -14,6 +14,12 @@ from functools import partial
 from itertools import combinations
 
 
+def seed_worker():
+    """Initializer for multiprocessing pool to ensure unique random seeds."""
+    # Use a source of entropy from the OS to seed the worker
+    np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
+
+
 # BNT transformation matrix
 BNT_MATRIX = np.array([[ 1.        ,  0.        ,  0.        ,  0.        ],
                        [-1.        ,  1.        ,  0.        ,  0.        ],
@@ -177,7 +183,9 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
         print("No valid processed files found for aggregation!")
         return
     
-    print(f"\nAggregating {len(valid_files)} BNT files for inference...")
+    print(f"\n{'='*60}")
+    print(f"Aggregating {len(valid_files)} BNT files for inference...")
+    print(f"{'='*60}")
     
     # Load all files and organize by spectrum type
     auto_spectra = {(b+1): [] for b in bnt_bin_range}  # Use 1-based indexing
@@ -188,9 +196,16 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
     cross_pairs_ordered = list(combinations(sorted(bnt_bins_1based), 2))
     cross_spectra = {pair: [] for pair in cross_pairs_ordered}
     
+    # Track issues for detailed reporting
+    failed_files = []
+    incomplete_files = {}  # file_path -> list of missing keys
+    
     for file_path in tqdm(valid_files, desc="Loading files"):
         try:
             data = np.load(file_path, allow_pickle=True)
+            
+            missing_keys = []
+            file_is_complete = True
             
             # Extract auto spectra
             for bnt_bin in bnt_bin_range:
@@ -198,6 +213,9 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
                 key = f"cls_{bin_1based}_{bin_1based}"
                 if key in data.files:
                     auto_spectra[bin_1based].append(data[key])
+                else:
+                    missing_keys.append(key)
+                    file_is_complete = False
             
             # Extract cross spectra in order
             for pair in cross_pairs_ordered:
@@ -205,11 +223,56 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
                 key = f"cls_{i}_{j}"
                 if key in data.files:
                     cross_spectra[pair].append(data[key])
+                else:
+                    missing_keys.append(key)
+                    file_is_complete = False
+            
+            # Track incomplete files
+            if not file_is_complete:
+                incomplete_files[file_path] = missing_keys
                     
         except Exception as e:
-            if verbose:
-                print(f"Error loading {os.path.basename(file_path)}: {e}")
-            continue
+            failed_files.append((file_path, str(e)))
+    
+    # Detailed error reporting
+    if failed_files or incomplete_files:
+        print(f"\n{'='*60}")
+        print("⚠️  ISSUES DETECTED")
+        print(f"{'='*60}")
+        
+        if failed_files:
+            print(f"\n❌ Failed to load {len(failed_files)} files:")
+            for file_path, error in failed_files:
+                print(f"  • {file_path}")
+                print(f"    Error: {error}")
+        
+        if incomplete_files:
+            print(f"\n⚠️  {len(incomplete_files)} files with missing keys:")
+            for file_path, missing in incomplete_files.items():
+                print(f"  • {file_path}")
+                print(f"    Missing: {', '.join(missing)}")
+        
+        print(f"\n{'='*60}")
+        
+        # Save detailed log
+        log_file = os.path.join(output_dir, "bnt_aggregation_issues.log")
+        with open(log_file, 'w') as f:
+            f.write("BNT Aggregation Issues Report\n")
+            f.write("="*60 + "\n\n")
+            
+            if failed_files:
+                f.write(f"Failed to load {len(failed_files)} files:\n")
+                for file_path, error in failed_files:
+                    f.write(f"  {file_path}\n")
+                    f.write(f"    Error: {error}\n\n")
+            
+            if incomplete_files:
+                f.write(f"\n{len(incomplete_files)} files with missing keys:\n")
+                for file_path, missing in incomplete_files.items():
+                    f.write(f"  {file_path}\n")
+                    f.write(f"    Missing: {', '.join(missing)}\n\n")
+        
+        print(f"Detailed log saved to: {log_file}")
     
     # Convert lists to arrays
     for bin_1based in auto_spectra:
@@ -224,6 +287,11 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
     noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
     
+    # Create output directory if needed
+    os.makedirs(output_dir, exist_ok=True)
+    
+    created_files = []
+    
     # Save individual auto power spectra
     print("\nSaving auto power spectra...")
     for bnt_bin in bnt_bin_range:
@@ -233,16 +301,24 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
             auto_filename = f"all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{noise_suffix}{lmax_suffix}.npy"
             auto_path = os.path.join(output_dir, auto_filename)
             np.save(auto_path, auto_spectra[bin_1based])
+            created_files.append(auto_path)
             
-            if verbose:
-                print(f"  Saved {auto_filename}, shape: {auto_spectra[bin_1based].shape}")
+            print(f"  ✓ BNT Bin {bin_1based}: {auto_filename} - shape {auto_spectra[bin_1based].shape}")
+        else:
+            print(f"  ✗ BNT Bin {bin_1based}: No data found")
     
     # Save combined cross power spectra
-    print("\nSaving combined cross power spectra...")
+    print("\nSaving cross power spectra...")
     cross_data_parts = []
+    cross_pairs_found = []
+    
     for pair in cross_pairs_ordered:
         if cross_spectra[pair].size > 0:
             cross_data_parts.append(cross_spectra[pair])
+            cross_pairs_found.append(pair)
+            print(f"  ✓ Cross ({pair[0]},{pair[1]}): shape {cross_spectra[pair].shape}")
+        else:
+            print(f"  ✗ Cross ({pair[0]},{pair[1]}): No data found")
     
     if cross_data_parts:
         # Concatenate all cross spectra along the multipole dimension (axis=1)
@@ -253,22 +329,22 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
         cross_filename = f"all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{noise_suffix}{lmax_suffix}.npy"
         cross_path = os.path.join(output_dir, cross_filename)
         np.save(cross_path, cross_data_combined)
-
-        if verbose:
-            print(f"  Saved {cross_filename}, shape: {cross_data_combined.shape}")
+        created_files.append(cross_path)
+        
+        print(f"\n  ✓ Combined cross spectra: {cross_filename}")
+        print(f"    Shape: {cross_data_combined.shape}")
+        print(f"    Pairs included: {cross_pairs_found}")
+    else:
+        print("\n  ✗ No cross spectra data found")
     
-    print(f"\n✓ Aggregation complete! Files saved to: {output_dir}")
-    print(f"  Auto spectra: {len([b for b in bnt_bin_range if auto_spectra[b+1].size > 0])} bins")
-    print(f"  Cross spectra: {len(cross_data_parts)} pairs combined")
+    # Print summary
+    print(f"\n{'='*60}")
+    print(f"Aggregation complete!")
+    print(f"  Files created: {len(created_files)}")
+    print(f"  Output directory: {output_dir}")
+    print(f"{'='*60}\n")
     
-    # Print expected filenames for inference
-    print(f"\nFiles ready for run_npe_inference_auto_cross_ps.py:")
-    for bnt_bin in bnt_bin_range:
-        bin_1based = bnt_bin + 1
-        if auto_spectra[bin_1based].size > 0:
-            print(f"  - all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{noise_suffix}{lmax_suffix}.npy")
-    if cross_data_parts:
-        print(f"  - all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{noise_suffix}{lmax_suffix}.npy")
+    return created_files
 
 
 def main():
@@ -391,7 +467,7 @@ def main():
     print(f"Output suffix: {suffix}")
     
     # Process files in parallel with progress bar
-    with mp.Pool(processes=args.num_workers) as pool:
+    with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
         process_func = partial(
             process_file,
             bnt_bin_range=args.bnt_bin_range,
@@ -495,25 +571,26 @@ for file in files:
         print(f"Example loading script saved to: {os.path.basename(example_file)}")
     
     # Aggregate files for inference if requested
-    if args.aggregate_for_inference:
+    if args.aggregate_for_inference and successful:
+        print(f"\n{'='*60}")
+        print("Starting aggregation for inference pipeline...")
+        print(f"{'='*60}")
+        
         # Determine output directory
         if args.inference_output_dir:
             inference_output_dir = args.inference_output_dir
         else:
             if args.fiducial:
-                inference_output_dir = os.path.join(base_dir, "cosmo_fiducial")
+                inference_output_dir = base_dir  # For fiducial, save in cosmo_fiducial directory
             else:
-                inference_output_dir = os.path.join(os.path.dirname(base_dir.rstrip('/')), "new_grid")
-        
-        # Create output directory if it doesn't exist
-        os.makedirs(inference_output_dir, exist_ok=True)
+                inference_output_dir = base_dir  # For grid, save in new_grid directory
         
         # Determine dataset type
         dataset_type = "fiducial" if args.fiducial else "grid"
         map_type = "baryonified" if args.baryonified else "nobaryons"
         
         # Call aggregation function
-        aggregate_for_inference(
+        created_files = aggregate_for_inference(
             processed_files=successful,
             output_dir=inference_output_dir,
             bnt_bin_range=args.bnt_bin_range,
@@ -524,6 +601,14 @@ for file in files:
             lmax=args.lmax,
             verbose=args.verbose
         )
+        
+        if created_files:
+            print("\n✓ Inference-ready files created:")
+            for f in created_files:
+                print(f"  - {os.path.basename(f)}")
+            print(f"\nThese files are ready to use with run_npe_inference_auto_cross_ps.py")
+        else:
+            print("\n✗ No inference files were created (check for errors above)")
 
 
 if __name__ == "__main__":
