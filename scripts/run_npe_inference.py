@@ -58,6 +58,10 @@ def parse_arguments():
                         help="Use noisy datavectors")
     parser.add_argument("--noise-level", type=float, default=0.26, 
                         help="Noise level for both datavectors and fiducial (when --noisy is set)")
+    parser.add_argument("--masked", action="store_true",
+                        help="Use masked datavectors (Euclid-like sky mask)")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the sky mask in square degrees (default: 14000).")
     
     # Fiducial configuration  
     parser.add_argument("--fiducial-type", type=str, choices=["baryonified", "nobaryons"],
@@ -100,6 +104,20 @@ def parse_arguments():
     # Set fiducial type to match simulation type if not specified
     if args.fiducial_type is None:
         args.fiducial_type = args.simulation_type
+    
+    # Set mask suffixes
+    if args.masked:
+        area_tag = int(round(args.mask_area_sqdeg))
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+        mask_label = f"masked_{area_tag}sqdeg"
+    else:
+        area_tag = None
+        mask_suffix = ""
+        mask_label = ""
+    
+    args.mask_area_tag = area_tag
+    args.mask_suffix = mask_suffix
+    args.mask_label = mask_label
     
     return args
 
@@ -179,12 +197,12 @@ def construct_paths(args):
             bin_spec = f"bin{bnt_bin_idx+1}"
             
             # Grid path
-            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{args.mask_suffix}{normalization_suffix}.npy"
             l1_path = os.path.join(args.data_dir, "grid", l1_filename)
             l1_paths.append(l1_path)
             
             # Fiducial path
-            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{args.mask_suffix}{normalization_suffix}.npy"
             fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
             fiducial_paths.append(fiducial_path)
         
@@ -202,12 +220,12 @@ def construct_paths(args):
             bin_spec = f"bin{bin_idx}"
             
             # Grid path
-            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{args.mask_suffix}{normalization_suffix}.npy"
             l1_path = os.path.join(args.data_dir, "grid", l1_filename)
             l1_paths.append(l1_path)
             
             # Fiducial path
-            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{normalization_suffix}.npy"
+            fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{args.mask_suffix}{normalization_suffix}.npy"
             fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
             fiducial_paths.append(fiducial_path)
         
@@ -314,6 +332,8 @@ def main():
     datavector_desc = f"{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
+    if args.masked:
+        datavector_desc += f"_{args.mask_label}"
     if args.new_normalization:
         datavector_desc += "_new_normalization"
     if bin_ranges:
@@ -449,6 +469,8 @@ def main():
     plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.masked:
+        plot_filename += f"_{args.mask_label}"
     if args.new_normalization:
         plot_filename += "_new_normalization"
     if bin_ranges:
@@ -470,6 +492,8 @@ def main():
     samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.masked:
+        samples_filename += f"_{args.mask_label}"
     if args.new_normalization:
         samples_filename += "_new_normalization"
     if bin_ranges:
