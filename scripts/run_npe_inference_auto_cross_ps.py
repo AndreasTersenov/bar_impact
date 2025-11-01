@@ -12,6 +12,12 @@ import numpy as np
 import jax.random as random
 from jaxili.inference import NPE
 from getdist import plots, MCSamples
+import sys
+# Add tarp package to path if needed
+tarp_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'tarp', 'src')
+if tarp_path not in sys.path:
+    sys.path.insert(0, tarp_path)
+from tarp import get_tarp_coverage
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run NPE inference on CosmoGRID auto + cross power spectra")
@@ -49,6 +55,10 @@ def parse_arguments():
                         help="Use noisy datavectors")
     parser.add_argument("--noise-level", type=float, default=0.26, 
                         help="Noise level for both datavectors and fiducial (when --noisy is set)")
+    parser.add_argument("--masked", action="store_true",
+                        help="Use masked power spectra (Euclid-like sky mask)")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the sky mask in square degrees (default: 14000).")
     
     # Cross power spectra configuration
     parser.add_argument("--cross-data-dir", type=str,
@@ -83,6 +93,20 @@ def parse_arguments():
     parser.add_argument("--random-seed", type=int, default=1, 
                         help="Random seed for sampling")
     
+    # Coverage testing parameters
+    parser.add_argument("--run-coverage-test", action="store_true",
+                        help="Run TARP coverage test to assess posterior quality")
+    parser.add_argument("--coverage-num-sims", type=int, default=100,
+                        help="Number of simulations to use for coverage testing (default: 100)")
+    parser.add_argument("--coverage-num-samples", type=int, default=1000,
+                        help="Number of posterior samples per simulation for coverage testing (default: 1000)")
+    parser.add_argument("--coverage-bootstrap", action="store_true",
+                        help="Use bootstrap to estimate coverage uncertainties")
+    parser.add_argument("--coverage-num-bootstrap", type=int, default=100,
+                        help="Number of bootstrap iterations for coverage uncertainties (default: 100)")
+    parser.add_argument("--coverage-seed", type=int, default=42,
+                        help="Random seed for coverage testing")
+    
     # Output parameters
     parser.add_argument("--output-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/plots",
                         help="Directory to save output plots")
@@ -114,6 +138,19 @@ def parse_arguments():
     # Validate upper_cut doesn't exceed lmax
     if args.upper_cut > args.lmax:
         parser.error(f"--upper-cut ({args.upper_cut}) cannot exceed --lmax ({args.lmax})")
+
+    if args.masked:
+        area_tag = int(round(args.mask_area_sqdeg))
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+        mask_label = f"masked_{area_tag}sqdeg"
+    else:
+        area_tag = None
+        mask_suffix = ""
+        mask_label = ""
+
+    args.mask_area_tag = area_tag
+    args.mask_suffix = mask_suffix
+    args.mask_label = mask_label
     
     return args
 
@@ -183,6 +220,7 @@ def construct_auto_paths(args):
         bin_suffix_list = bin_indices
 
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    mask_suffix = getattr(args, "mask_suffix", "")
     lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     
     auto_data_paths = []
@@ -191,14 +229,14 @@ def construct_auto_paths(args):
     for i, bin_idx in enumerate(bin_indices):
         bin_spec = f"{bin_prefix}{bin_suffix_list[i]}"
         # Auto data path (grid)
-        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{noise_suffix}{lmax_suffix}.npy"
+        data_filename = f"{data_prefix}_grid_{args.simulation_type}_{bin_spec}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         data_path = os.path.join(args.data_dir, "new_grid", data_filename)
         if not os.path.exists(data_path):
              data_path = os.path.join(args.data_dir, "grid", data_filename)
         auto_data_paths.append(data_path)
         
         # Auto fiducial path
-        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"{data_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
         auto_fiducial_paths.append(fiducial_path)
         
@@ -207,16 +245,17 @@ def construct_auto_paths(args):
 def construct_cross_paths(args, bin_desc):
     """Construct file paths for aggregated cross power spectra."""
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    mask_suffix = getattr(args, "mask_suffix", "")
     lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     
     if args.bnt:
         # For BNT, use the correct BNT cross power spectrum naming
-        data_filename = f"all_bnt_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
-        fiducial_filename = f"all_bnt_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
+        data_filename = f"all_bnt_cross_cls_grid_{args.simulation_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"all_bnt_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
     else:
         # For regular bins
-        data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
-        fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{noise_suffix}{lmax_suffix}.npy"
+        data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
     
     # Look for cross power spectra files in the cross data directory
     cross_data_path = os.path.join(args.cross_data_dir, "new_grid", data_filename)
@@ -237,20 +276,66 @@ def rebin_cls(cls, factor=2):
         cls_rebinned[i] = np.mean(cls[i*factor:(i+1)*factor])
     return cls_rebinned
 
+def get_fsky_from_npz(file_path, verbose=False):
+    """
+    Extract f_sky from a processed .npz file (if masked).
+    Returns None if no mask metadata is present.
+    """
+    try:
+        data = np.load(file_path, allow_pickle=True)
+        if 'mask_f_sky' in data.files:
+            f_sky = float(data['mask_f_sky'])
+            if verbose:
+                print(f"  Found f_sky = {f_sky:.4f} in {os.path.basename(file_path)}")
+            return f_sky
+        else:
+            if verbose:
+                print(f"  No mask metadata in {os.path.basename(file_path)}")
+            return None
+    except Exception as e:
+        if verbose:
+            print(f"  Warning: Could not read mask metadata from {os.path.basename(file_path)}: {e}")
+        return None
+
 def load_and_process_auto_spectra(auto_data_paths, args):
     """Load and process auto power spectra."""
     auto_data_list = []
+    f_sky = None
+    
     for data_path in auto_data_paths:
         cls_full = np.load(data_path, allow_pickle=True)
         auto_data_list.append(cls_full)
         if args.verbose:
             print(f"Loaded auto data from {os.path.basename(data_path)}, shape: {cls_full.shape}")
+        
+        # Extract f_sky from first file if masked
+        if args.masked and f_sky is None:
+            # Try to get f_sky from a corresponding .npz file
+            # The .npy aggregated files don't have metadata, so we need to look elsewhere
+            # For now, compute f_sky from mask parameters
+            pass
     
-    # Process auto power spectra: apply cuts and rebinning
+    # If masked, compute f_sky from mask parameters
+    if args.masked and f_sky is None:
+        # Import locally to avoid circular dependency
+        import healpy as hp
+        # Compute f_sky based on mask area
+        total_area_sqdeg = 41252.96125  # 4*pi*(180/pi)^2
+        f_sky = args.mask_area_sqdeg / total_area_sqdeg
+        if args.verbose:
+            print(f"Computed f_sky = {f_sky:.4f} from mask area {args.mask_area_sqdeg:.0f} sq deg")
+    
+    # Process auto power spectra: apply cuts, f_sky correction, and rebinning
     processed_auto_list = []
     for cls_full in auto_data_list:
         # Apply cuts
         cls_cut = cls_full[:, args.lower_cut:args.upper_cut]
+        
+        # Apply f_sky correction if masked
+        if args.masked and f_sky is not None:
+            cls_cut = cls_cut / f_sky
+            if args.verbose:
+                print(f"Applied f_sky correction: divided by {f_sky:.4f}")
         
         # Apply rebinning if specified
         if args.rebin > 1:
@@ -279,6 +364,14 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
     if args.verbose:
         print(f"Loaded cross data from {os.path.basename(cross_data_path)}, shape: {cross_cls_full.shape}")
     
+    # Compute f_sky if masked
+    f_sky = None
+    if args.masked:
+        total_area_sqdeg = 41252.96125  # 4*pi*(180/pi)^2
+        f_sky = args.mask_area_sqdeg / total_area_sqdeg
+        if args.verbose:
+            print(f"Computed f_sky = {f_sky:.4f} from mask area {args.mask_area_sqdeg:.0f} sq deg")
+    
     # Calculate expected number of cross pairs and infer original multipole range
     if n_bins is not None:
         expected_cross_pairs = n_bins * (n_bins - 1) // 2
@@ -306,11 +399,18 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         
         # Apply multipole cuts to this cross-pair
         cross_pair_cut = cross_pair_full[:, args.lower_cut:args.upper_cut]
+        
+        # Apply f_sky correction if masked
+        if args.masked and f_sky is not None:
+            cross_pair_cut = cross_pair_cut / f_sky
+        
         cross_cls_cut_list.append(cross_pair_cut)
     
     if args.verbose:
         print(f"Applied cuts to {len(cross_cls_cut_list)} cross pairs")
         print(f"Each cross pair now has {n_multipoles_cut} multipoles (l={args.lower_cut} to l={args.upper_cut})")
+        if args.masked and f_sky is not None:
+            print(f"Applied f_sky correction: divided by {f_sky:.4f}")
     
     # Apply rebinning to each cross-pair separately (before selection/concatenation)
     if args.rebin > 1:
@@ -352,11 +452,23 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
         if args.verbose:
             print(f"Loaded auto fiducial data from {os.path.basename(fiducial_path)}, shape: {fid_full.shape}")
     
-    # Process auto fiducial data according to cuts and rebinning
+    # Compute f_sky if masked
+    f_sky = None
+    if args.masked:
+        total_area_sqdeg = 41252.96125  # 4*pi*(180/pi)^2
+        f_sky = args.mask_area_sqdeg / total_area_sqdeg
+        if args.verbose:
+            print(f"Computed f_sky = {f_sky:.4f} from mask area {args.mask_area_sqdeg:.0f} sq deg")
+    
+    # Process auto fiducial data according to cuts, f_sky correction, and rebinning
     auto_fid_data_list = []
     for fid_mean in auto_fid_means:
         # Apply cuts
         fid_cut = fid_mean[args.lower_cut:args.upper_cut]
+        
+        # Apply f_sky correction if masked
+        if args.masked and f_sky is not None:
+            fid_cut = fid_cut / f_sky
         
         # Apply rebinning
         if args.rebin > 1:
@@ -365,6 +477,9 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
             fid_processed = fid_cut
         
         auto_fid_data_list.append(fid_processed)
+    
+    if args.verbose and args.masked and f_sky is not None:
+        print(f"Applied f_sky correction to auto fiducial: divided by {f_sky:.4f}")
     
     # Concatenate all auto bins' fiducial data
     auto_fid_mean_processed = np.concatenate(auto_fid_data_list)
@@ -384,6 +499,14 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
     cross_fid_mean = np.mean(cross_fid_full, axis=0)
     if args.verbose:
         print(f"Loaded cross fiducial data from {os.path.basename(cross_fiducial_path)}, shape: {cross_fid_full.shape}")
+    
+    # Compute f_sky if masked
+    f_sky = None
+    if args.masked:
+        total_area_sqdeg = 41252.96125  # 4*pi*(180/pi)^2
+        f_sky = args.mask_area_sqdeg / total_area_sqdeg
+        if args.verbose:
+            print(f"Computed f_sky = {f_sky:.4f} from mask area {args.mask_area_sqdeg:.0f} sq deg")
     
     # Calculate expected number of cross pairs and infer original multipole range
     if n_bins is not None:
@@ -410,10 +533,17 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         
         # Apply multipole cuts to this cross-pair
         cross_pair_cut = cross_pair_full[args.lower_cut:args.upper_cut]
+        
+        # Apply f_sky correction if masked
+        if args.masked and f_sky is not None:
+            cross_pair_cut = cross_pair_cut / f_sky
+        
         cross_fid_cut_list.append(cross_pair_cut)
     
     if args.verbose:
         print(f"Applied cuts to {len(cross_fid_cut_list)} cross pairs in fiducial")
+        if args.masked and f_sky is not None:
+            print(f"Applied f_sky correction to cross fiducial: divided by {f_sky:.4f}")
     
     # Apply rebinning to each cross-pair separately (before selection/concatenation)
     if args.rebin > 1:
@@ -445,8 +575,151 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
     
     return cross_fid_processed
 
+def run_tarp_coverage_test(posterior, combined_data_vector, params, args):
+    """
+    Run TARP coverage test on the posterior estimator.
+    
+    This function samples from the posterior for multiple simulations from the
+    training set, then uses TARP to assess whether the posterior coverage is well-calibrated.
+    
+    Args:
+        posterior: Trained posterior object from NPE
+        combined_data_vector: Full training data vector (n_sims, n_features)
+        params: True parameter values for all simulations (n_sims, n_params)
+        args: Command-line arguments
+        
+    Returns:
+        ecp: Expected coverage probability
+        alpha: Credibility levels
+    """
+    print("\n" + "="*60)
+    print("Running TARP Coverage Test")
+    print("="*60)
+    
+    # Select subset of simulations for coverage testing
+    n_total_sims = combined_data_vector.shape[0]
+    n_test_sims = min(args.coverage_num_sims, n_total_sims)
+    
+    # Randomly select test simulations
+    np.random.seed(args.coverage_seed)
+    test_indices = np.random.choice(n_total_sims, size=n_test_sims, replace=False)
+    
+    print(f"Using {n_test_sims} simulations from training set for coverage testing")
+    print(f"Generating {args.coverage_num_samples} posterior samples per simulation")
+    
+    # Extract test data and parameters
+    test_data = combined_data_vector[test_indices]
+    test_params = params[test_indices]
+    
+    # Convert to numpy for TARP
+    test_data_np = np.array(test_data)
+    test_params_np = np.array(test_params)
+    
+    # Generate posterior samples for each test simulation
+    all_samples = []
+    master_key = random.PRNGKey(args.coverage_seed)
+    
+    print("Generating posterior samples for each test simulation...")
+    for i, x_obs in enumerate(test_data_np):
+        if (i + 1) % 10 == 0:
+            print(f"  Processing simulation {i+1}/{n_test_sims}")
+        
+        # Generate samples from posterior
+        sample_key, master_key = jax.random.split(master_key)
+        samples_i = posterior.sample(
+            x=jnp.array(x_obs), 
+            num_samples=args.coverage_num_samples, 
+            key=sample_key
+        )
+        all_samples.append(np.array(samples_i))
+    
+    # Stack samples into shape (n_samples, n_sims, n_dims)
+    all_samples = np.stack(all_samples, axis=1)
+    
+    print(f"Posterior samples shape: {all_samples.shape}")
+    print(f"True parameters shape: {test_params_np.shape}")
+    
+    # Compute TARP coverage
+    print("\nComputing TARP coverage...")
+    ecp, alpha = get_tarp_coverage(
+        samples=all_samples,
+        theta=test_params_np,
+        references="random",
+        metric="euclidean",
+        num_alpha_bins=None,
+        norm=True,
+        bootstrap=args.coverage_bootstrap,
+        num_bootstrap=args.coverage_num_bootstrap if args.coverage_bootstrap else 100,
+        seed=args.coverage_seed
+    )
+    
+    print("TARP coverage computation complete!")
+    print("="*60 + "\n")
+    
+    return ecp, alpha
+
+def plot_tarp_coverage(ecp, alpha, args, output_dir, filename_base):
+    """
+    Plot TARP coverage diagnostics.
+    
+    Args:
+        ecp: Expected coverage probability from TARP
+        alpha: Credibility levels from TARP
+        args: Command-line arguments
+        output_dir: Directory to save plots
+        filename_base: Base filename for saved plot
+    """
+    plt.figure(figsize=(6, 6))
+    
+    if args.coverage_bootstrap:
+        # ecp has shape (n_bootstrap, n_bins+1)
+        # Compute mean and std across bootstrap samples
+        ecp_mean = np.mean(ecp, axis=0)
+        ecp_std = np.std(ecp, axis=0)
+        
+        # Plot mean coverage with error band
+        plt.plot(alpha, ecp_mean, 'b-', linewidth=2, label='TARP Coverage')
+        plt.fill_between(alpha, ecp_mean - ecp_std, ecp_mean + ecp_std, 
+                        alpha=0.3, color='blue', label='Bootstrap uncertainty')
+    else:
+        # ecp is 1D array
+        plt.plot(alpha, ecp, 'b-', linewidth=2, label='TARP Coverage')
+    
+    # Plot ideal calibration line
+    plt.plot([0, 1], [0, 1], 'k--', linewidth=1.5, label='Ideal calibration')
+    
+    # Formatting
+    plt.xlabel('Credibility Level', fontsize=12)
+    plt.ylabel('Expected Coverage Probability', fontsize=12)
+    plt.title('TARP Coverage Diagnostic', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    plt.tight_layout()
+    
+    # Save plot
+    coverage_plot_path = os.path.join(output_dir, f"{filename_base}_tarp_coverage.pdf")
+    plt.savefig(coverage_plot_path, transparent=True, dpi=300)
+    print(f"Saved TARP coverage plot to {coverage_plot_path}")
+    
+    plt.close()
+    
+    # Save coverage data
+    coverage_data_path = os.path.join(output_dir, f"{filename_base}_tarp_coverage_data.npz")
+    if args.coverage_bootstrap:
+        np.savez(coverage_data_path, ecp=ecp, alpha=alpha, 
+                ecp_mean=ecp_mean, ecp_std=ecp_std,
+                bootstrap=True)
+    else:
+        np.savez(coverage_data_path, ecp=ecp, alpha=alpha, bootstrap=False)
+    print(f"Saved TARP coverage data to {coverage_data_path}")
+
 def main():
     args = parse_arguments()
+
+    if args.masked:
+        print(f"Using masked spectra with area ≈ {args.mask_area_sqdeg:.0f} sq deg (suffix: {args.mask_suffix})")
     
     # Parse cross pairs if specified
     cross_pairs = parse_cross_pairs(args.cross_pairs)
@@ -513,7 +786,11 @@ def main():
         print("\nPossible causes:")
         print(f"  1. The data files were processed with a different --lmax (current: {args.lmax})")
         print(f"  2. The data files were processed with different noise settings (current: noisy={args.noisy}, level={args.noise_level})")
-        print(f"  3. The data files don't exist yet - run cross_power_spectrum_processing.py first")
+        if args.masked:
+            print(f"  3. The data files were processed without masking or with a different mask area (current suffix: {args.mask_suffix or 'none'})")
+            print(f"  4. The data files don't exist yet - run cross_power_spectrum_processing.py with --apply-mask first")
+        else:
+            print(f"  3. The data files don't exist yet - run cross_power_spectrum_processing.py first")
         print("\nTip: Check the actual filenames in the data directories to match --lmax, --noisy, and --noise-level")
         print("="*60 + "\n")
         return
@@ -567,6 +844,8 @@ def main():
     # Save the full datavector set for verification
     os.makedirs(args.samples_dir, exist_ok=True)
     datavector_filename = f"datavectors_npe_input_{args.simulation_type}_{bin_desc}_{ps_desc}"
+    if args.masked:
+        datavector_filename += args.mask_suffix
     if args.noisy:
         datavector_filename += f"_noisy_s{args.noise_level:.2f}"
     datavector_filename += ".npy"
@@ -592,15 +871,16 @@ def main():
     
     bnt_prefix = "bnt_" if args.bnt else ""
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
+    mask_suffix = args.mask_suffix if args.masked else ""
     
     # Save first example from training data
-    example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{noise_suffix}.npy"
+    example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{mask_suffix}{noise_suffix}.npy"
     np.save(os.path.join(args.samples_dir, example_train_filename), combined_data_vector[0])
     print(f"Saved example training datavector to {example_train_filename}")
     print(f"  Shape: {combined_data_vector[0].shape}, first 10 values: {combined_data_vector[0][:10]}")
     
     # Save fiducial observation
-    example_fid_filename = f"example_fiducial_datavector_{bnt_prefix}{spectra_desc}_{args.fiducial_type}_{bin_desc}_{ps_desc}{noise_suffix}.npy"
+    example_fid_filename = f"example_fiducial_datavector_{bnt_prefix}{spectra_desc}_{args.fiducial_type}_{bin_desc}_{ps_desc}{mask_suffix}{noise_suffix}.npy"
     np.save(os.path.join(args.samples_dir, example_fid_filename), combined_fid_vector)
     print(f"Saved fiducial datavector to {example_fid_filename}")
     print(f"  Shape: {combined_fid_vector.shape}, first 10 values: {combined_fid_vector[:10]}")
@@ -633,14 +913,20 @@ def main():
     # Add BNT prefix to checkpoint name if using BNT data
     if args.bnt:
         datavector_desc = f"{args.simulation_type}_bnt_{bin_desc}_{ps_desc}_{spectra_type}"
-        checkpoint_name = f"cosmoGRID_bnt_ps_weights_{datavector_desc}"
     else:
         datavector_desc = f"{args.simulation_type}_{bin_desc}_{ps_desc}_{spectra_type}"
-        checkpoint_name = f"cosmoGRID_ps_weights_{datavector_desc}"
-    
+
+    if args.masked:
+        datavector_desc += f"_{args.mask_label}"
+
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
-    
+
+    if args.bnt:
+        checkpoint_name = f"cosmoGRID_bnt_ps_weights_{datavector_desc}"
+    else:
+        checkpoint_name = f"cosmoGRID_ps_weights_{datavector_desc}"
+
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_name)
     print(f"Checkpoint path: {checkpoint_path}")
 
@@ -673,6 +959,35 @@ def main():
     posterior = inference.build_posterior()
     print("Built posterior")
 
+    # Run TARP coverage test if requested
+    if args.run_coverage_test:
+        ecp, alpha = run_tarp_coverage_test(posterior, combined_data_vector, params, args)
+        
+        # Create filename base for coverage plots
+        bnt_prefix = "bnt_" if args.bnt else ""
+        if args.auto_only:
+            spectra_type = "auto"
+        elif args.cross_only:
+            spectra_type = "cross"
+        else:
+            spectra_type = "auto_cross"
+        
+        if cross_pairs and not args.auto_only:
+            cross_pairs_str = "_".join([f"{i}-{j}" for i, j in cross_pairs])
+            if args.cross_only:
+                spectra_type = f"cross_{cross_pairs_str}"
+            else:
+                spectra_type = f"auto_cross_{cross_pairs_str}"
+        
+        coverage_filename_base = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+        if args.masked:
+            coverage_filename_base += f"_{args.mask_label}"
+        if args.noisy:
+            coverage_filename_base += f"_noisy_s{args.noise_level:.2f}"
+        
+        # Plot and save coverage diagnostics
+        plot_tarp_coverage(ecp, alpha, args, args.output_dir, coverage_filename_base)
+
     # Sample from the posterior
     print("Sampling from posterior...")
     num_samples = args.num_samples
@@ -691,6 +1006,8 @@ def main():
     
     # Create descriptive sample label
     fiducial_desc = f"{args.fiducial_type}"
+    if args.masked:
+        fiducial_desc += f"_masked_{args.mask_area_tag}sqdeg"
     if args.noisy:
         fiducial_desc += f"_n{args.noise_level:.2f}"
     
@@ -712,6 +1029,8 @@ def main():
             analysis_type = base_type
     
     sample_label = f"{args.simulation_type} {analysis_type} vs {fiducial_desc} fid, {bin_desc}, {ps_desc}"
+    if args.masked:
+        sample_label += f", masked {args.mask_area_tag} sq deg"
     
     samples_bin_scale = MCSamples(
         samples=samples,
@@ -735,6 +1054,8 @@ def main():
     
     bnt_prefix = "bnt_" if args.bnt else ""
     plot_filename = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+    if args.masked:
+        plot_filename += f"_{args.mask_label}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
     plot_filename += ".pdf"
@@ -745,6 +1066,8 @@ def main():
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
     samples_filename = f"posterior_samples_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+    if args.masked:
+        samples_filename += f"_{args.mask_label}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
     samples_filename += "_npe.npy"
