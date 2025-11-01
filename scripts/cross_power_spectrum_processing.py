@@ -14,6 +14,9 @@ from functools import partial
 from itertools import combinations
 
 
+MASK_CACHE = {}
+
+
 def seed_worker():
     """Initializer for multiprocessing pool to ensure unique random seeds."""
     # Use a source of entropy from the OS to seed the worker
@@ -29,6 +32,59 @@ def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     sigma_pix = sigma_e / np.sqrt(galaxy_density * pixel_area_arcmin2)
     noise = np.random.normal(loc=0, scale=sigma_pix, size=npix)
     return kg + noise
+
+
+def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """
+    Create a contiguous Euclid-like disk mask of a specific sky area.
+
+    Parameters
+    ----------
+    nside : int
+        HEALPix resolution of the input maps.
+    target_area_sqdeg : float
+        Desired unmasked area in square degrees.
+    center_coords : tuple(float, float)
+        (lon, lat) in degrees for the disk centre; defaults to North Pole.
+
+    Returns
+    -------
+    mask : np.ndarray
+        Binary mask array (1 inside mask, 0 outside) with dtype float32.
+    f_sky : float
+        Fraction of sky retained by the mask.
+    angular_radius_deg : float
+        Angular radius of the resulting spherical cap in degrees.
+    """
+    total_area_sqdeg = 41252.96125  # 4 * pi * (180/pi)^2
+    angular_radius_rad = np.arccos(1 - (target_area_sqdeg / total_area_sqdeg) * 2)
+    angular_radius_deg = np.rad2deg(angular_radius_rad)
+
+    theta_center = np.deg2rad(90.0 - center_coords[1])
+    phi_center = np.deg2rad(center_coords[0])
+    center_vec = hp.ang2vec(theta_center, phi_center)
+
+    disc_pixels = hp.query_disc(nside, center_vec, angular_radius_rad)
+
+    npix = hp.nside2npix(nside)
+    mask = np.zeros(npix, dtype=np.float32)
+    mask[disc_pixels] = 1.0
+
+    f_sky = mask.mean()
+    return mask, f_sky, angular_radius_deg
+
+center
+def get_cached_mask(nside=512, target_area_sqdeg=14000.0, _coords=(0.0, 90.0)):
+    """Return a cached Euclid-like mask to avoid recomputation in each worker."""
+    key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
+    if key not in MASK_CACHE:
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=nside,
+            target_area_sqdeg=target_area_sqdeg,
+            center_coords=center_coords,
+        )
+        MASK_CACHE[key] = (mask, f_sky, angular_radius_deg)
+    return MASK_CACHE[key]
 
 
 def get_cross_power_spectra(maps_dict, lmax=1024):
@@ -64,7 +120,8 @@ def get_cross_power_spectra(maps_dict, lmax=1024):
 
 def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4], 
                            dataset_type="grid", map_type="nobaryons", 
-                           noise_level=0.26, add_noise=True, lmax=1024, verbose=False):
+                           noise_level=0.26, add_noise=True, lmax=1024,
+                           verbose=False, apply_mask=False, mask_area_sqdeg=None):
     """
     Aggregate processed .npz files into inference-ready format.
     
@@ -80,6 +137,8 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
     - map_type: "nobaryons" or "baryonified"
     - noise_level: noise level used in processing
     - add_noise: whether noise was added
+    - apply_mask: whether a sky mask was applied
+    - mask_area_sqdeg: area of the sky mask in square degrees
     - verbose: print detailed information
     """
     from itertools import combinations
@@ -170,6 +229,10 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
         print(f"Detailed log saved to: {log_file}")
     
     # Determine noise and lmax suffixes
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg)) if mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
     noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
     
@@ -186,7 +249,7 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
             auto_array = np.array(auto_spectra[bin_num])
             
             # Create filename: all_cls_<dataset>_<map>_bin<N>.npy (include noise/lmax suffixes)
-            filename = f"all_cls_{dataset_type}_{map_type}_bin{bin_num}{noise_suffix}{lmax_suffix}.npy"
+            filename = f"all_cls_{dataset_type}_{map_type}_bin{bin_num}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
             output_path = os.path.join(output_dir, filename)
             
             np.save(output_path, auto_array)
@@ -217,7 +280,7 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
         
         # Create filename: all_cross_cls_<dataset>_<map>_bins<1234>.npy (include noise/lmax suffixes)
         bin_str = "".join(map(str, bin_range))
-        filename = f"all_cross_cls_{dataset_type}_{map_type}_bins{bin_str}{noise_suffix}{lmax_suffix}.npy"
+        filename = f"all_cross_cls_{dataset_type}_{map_type}_bins{bin_str}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         output_path = os.path.join(output_dir, filename)
         
         np.save(output_path, cross_combined)
@@ -240,23 +303,28 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
 
 
 def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26, add_noise=True, 
-                 lmax=1024, cross_only=False, verbose=False):
-    """Process a single file: extract kappa maps, compute cross power spectra, save results."""
+                 lmax=1024, cross_only=False, verbose=False, apply_mask=False,
+                 mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
+    """Process a single file: extract kappa maps, apply optional mask, compute spectra."""
     
     # Define output filename
     bin_str = "".join(map(str, bin_range))
     # include lmax in per-file suffix when different from default
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg)) if mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
     if add_noise:
         if cross_only:
-            suffix = f"_cross_cls_bins{bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
+            suffix = f"_cross_cls_bins{bin_str}{mask_suffix}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
+            suffix = f"_all_cls_bins{bin_str}{mask_suffix}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
     else:
         if cross_only:
-            suffix = f"_cross_cls_bins{bin_str}{lmax_suffix}.npz"
+            suffix = f"_cross_cls_bins{bin_str}{mask_suffix}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}{lmax_suffix}.npz"
+            suffix = f"_all_cls_bins{bin_str}{mask_suffix}{lmax_suffix}.npz"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -271,6 +339,7 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26, add_noise=
         maps_dict = {}
         missing_bins = []
         
+        mask_tuple = None
         with h5py.File(file_path, "r") as f:
             for bin_num in bin_range:
                 map_key = f"kg/stage3_lensing{bin_num}"
@@ -280,6 +349,17 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26, add_noise=
                     # Add shape noise if requested
                     if add_noise:
                         kg = add_shape_noise(kg, sigma_e=noise_level)
+
+                    if apply_mask:
+                        if mask_tuple is None:
+                            nside = hp.get_nside(kg)
+                            mask_tuple = get_cached_mask(
+                                nside=nside,
+                                target_area_sqdeg=mask_area_sqdeg,
+                                center_coords=mask_center,
+                            )
+                        mask = mask_tuple[0]
+                        kg = kg * mask
                     
                     maps_dict[bin_num] = kg
                 else:
@@ -310,6 +390,12 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26, add_noise=
         # Add metadata
         save_dict['bin_range'] = np.array(list(maps_dict.keys()))
         save_dict['lmax'] = lmax
+        if apply_mask and mask_tuple is not None:
+            mask, f_sky, mask_radius = mask_tuple
+            save_dict['mask_area_sqdeg'] = float(mask_area_sqdeg)
+            save_dict['mask_f_sky'] = float(f_sky)
+            save_dict['mask_center_lon_lat_deg'] = np.array(mask_center, dtype=np.float64)
+            save_dict['mask_angular_radius_deg'] = float(mask_radius)
         if missing_bins:
             save_dict['missing_bins'] = np.array(missing_bins)
         
@@ -349,6 +435,15 @@ def main():
                         help="Shape noise level (sigma_e)")
     parser.add_argument("--no-noise", action="store_true",
                         help="Don't add shape noise to maps.")
+
+    # Mask options
+    parser.add_argument("--apply-mask", action="store_true",
+                        help="Apply Euclid-like sky mask before computing spectra.")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the Euclid-like mask in square degrees (default: 14000).")
+    parser.add_argument("--mask-center", type=float, nargs=2, metavar=("LON", "LAT"),
+                        default=(0.0, 90.0),
+                        help="Mask centre in Galactic-like (lon, lat) degrees (default: 0 90).")
     
     # Algorithm parameters
     parser.add_argument("--lmax", type=int, default=1024, 
@@ -373,6 +468,9 @@ def main():
                         help="Output directory for inference-ready files. Defaults to base_dir/new_grid or base_dir for fiducial.")
     
     args = parser.parse_args()
+
+    mask_center = tuple(args.mask_center)
+    args.mask_center = mask_center
     
     # Validate bin range
     if len(args.bin_range) < 2 and args.cross_only:
@@ -416,6 +514,20 @@ def main():
     dataset_type = "fiducial" if args.fiducial else "grid"
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
     print(f"Computing cross power spectra for bins: {args.bin_range}")
+
+    mask_info = None
+    if args.apply_mask:
+        mask_info = get_cached_mask(
+            nside=512,
+            target_area_sqdeg=args.mask_area_sqdeg,
+            center_coords=mask_center,
+        )
+        _, mask_f_sky, mask_radius = mask_info
+        print(
+            "Applying Euclid-like mask: "
+            f"{args.mask_area_sqdeg:.0f} sq deg (f_sky≈{mask_f_sky:.3f}, radius≈{mask_radius:.2f}°) "
+            f"centered at lon={mask_center[0]:.1f}°, lat={mask_center[1]:.1f}°"
+        )
     
     if args.cross_only:
         cross_pairs = list(combinations(args.bin_range, 2))
@@ -428,16 +540,21 @@ def main():
     
     # Determine suffix for output files
     bin_str = "".join(map(str, args.bin_range))
+    mask_suffix = ""
+    if args.apply_mask:
+        area_tag = int(round(args.mask_area_sqdeg)) if args.mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+    lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     if args.no_noise:
         if args.cross_only:
-            suffix = f"_cross_cls_bins{bin_str}.npz"
+            suffix = f"_cross_cls_bins{bin_str}{mask_suffix}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}.npz"
+            suffix = f"_all_cls_bins{bin_str}{mask_suffix}{lmax_suffix}.npz"
     else:
         if args.cross_only:
-            suffix = f"_cross_cls_bins{bin_str}_noisy_s{args.noise_level:.2f}.npz"
+            suffix = f"_cross_cls_bins{bin_str}{mask_suffix}_noisy_s{args.noise_level:.2f}{lmax_suffix}.npz"
         else:
-            suffix = f"_all_cls_bins{bin_str}_noisy_s{args.noise_level:.2f}.npz"
+            suffix = f"_all_cls_bins{bin_str}{mask_suffix}_noisy_s{args.noise_level:.2f}{lmax_suffix}.npz"
     
     print(f"Output suffix: {suffix}")
     
@@ -450,7 +567,10 @@ def main():
             add_noise=not args.no_noise,
             lmax=args.lmax,
             cross_only=args.cross_only,
-            verbose=args.verbose
+            verbose=args.verbose,
+            apply_mask=args.apply_mask,
+            mask_area_sqdeg=args.mask_area_sqdeg,
+            mask_center=mask_center,
         )
         results = list(tqdm(
             pool.imap(process_func, file_paths),
@@ -474,9 +594,15 @@ def main():
             spectra_type = "cross" if args.cross_only else "all"
             
             if args.no_noise:
-                combined_output = os.path.join(base_dir, f"{spectra_type}_cls_summary_{dataset_name}_{map_suffix}_bins{bin_str}.txt")
+                combined_output = os.path.join(
+                    base_dir,
+                    f"{spectra_type}_cls_summary_{dataset_name}_{map_suffix}_bins{bin_str}{mask_suffix}{lmax_suffix}.txt"
+                )
             else:
-                combined_output = os.path.join(base_dir, f"{spectra_type}_cls_summary_{dataset_name}_{map_suffix}_bins{bin_str}_noisy_s{args.noise_level:.2f}.txt")
+                combined_output = os.path.join(
+                    base_dir,
+                    f"{spectra_type}_cls_summary_{dataset_name}_{map_suffix}_bins{bin_str}{mask_suffix}_noisy_s{args.noise_level:.2f}{lmax_suffix}.txt"
+                )
         
         print(f"Creating summary file: {os.path.basename(combined_output)}")
         
@@ -487,6 +613,13 @@ def main():
             f.write(f"# Cross-only: {args.cross_only}\n")
             f.write(f"# Noise level: {args.noise_level if not args.no_noise else 'None'}\n")
             f.write(f"# Lmax: {args.lmax}\n")
+            f.write(f"# Mask applied: {args.apply_mask}\n")
+            if args.apply_mask and mask_info is not None:
+                _, mask_f_sky, mask_radius = mask_info
+                f.write(f"# Mask area (sq deg): {args.mask_area_sqdeg}\n")
+                f.write(f"# Mask f_sky: {mask_f_sky}\n")
+                f.write(f"# Mask angular radius (deg): {mask_radius}\n")
+                f.write(f"# Mask centre (lon, lat): {mask_center}\n")
             f.write(f"# Total files processed: {processed}/{len(file_paths)}\n")
             f.write("# Processed files:\n")
             
@@ -504,7 +637,7 @@ import numpy as np
 import glob
 
 # Load a single file
-filename = "your_file_cross_cls_bins1234_noisy_s0.26.npz"
+filename = "your_file_cross_cls_bins1234_masked_14000sqdeg_noisy_s0.26_lmax1024.npz"  # remove the masked/lmax parts if not applicable
 data = np.load(filename)
 
 # Print available power spectra
@@ -570,7 +703,9 @@ for file in files:
             noise_level=args.noise_level,
             add_noise=not args.no_noise,
             lmax=args.lmax,
-            verbose=args.verbose
+            verbose=args.verbose,
+            apply_mask=args.apply_mask,
+            mask_area_sqdeg=args.mask_area_sqdeg,
         )
         
         if created_files:
