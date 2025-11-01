@@ -19,6 +19,9 @@ from functools import partial
 from pycs.sparsity.mrs.mrs_starlet import CMRStarlet
 from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere
 
+# Global mask cache
+MASK_CACHE = {}
+
 # Add this context manager to suppress stdout
 @contextlib.contextmanager
 def suppress_stdout():
@@ -57,15 +60,74 @@ def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     return kg + noise  # Add noise to kappa map
 
 
-def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
-                min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False):
-    """Process a single file: extract kappa map, compute L1 norms, save results."""
+def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """
+    Create a contiguous Euclid-like disk mask of a specific sky area.
     
-    # Define output filename based on bin number and noise level
+    Parameters
+    ----------
+    nside : int
+        HEALPix resolution of the input maps.
+    target_area_sqdeg : float
+        Desired unmasked area in square degrees.
+    center_coords : tuple(float, float)
+        (lon, lat) in degrees for the disk centre; defaults to North Pole.
+    
+    Returns
+    -------
+    mask : np.ndarray
+        Binary mask array (1 inside mask, 0 outside) with dtype float32.
+    f_sky : float
+        Fraction of sky retained by the mask.
+    angular_radius_deg : float
+        Angular radius of the resulting spherical cap in degrees.
+    """
+    total_area_sqdeg = 41252.96125  # 4 * pi * (180/pi)^2
+    angular_radius_rad = np.arccos(1 - (target_area_sqdeg / total_area_sqdeg) * 2)
+    angular_radius_deg = np.rad2deg(angular_radius_rad)
+    
+    theta_center = np.deg2rad(90.0 - center_coords[1])
+    phi_center = np.deg2rad(center_coords[0])
+    center_vec = hp.ang2vec(theta_center, phi_center)
+    
+    disc_pixels = hp.query_disc(nside, center_vec, angular_radius_rad)
+    
+    npix = hp.nside2npix(nside)
+    mask = np.zeros(npix, dtype=np.float32)
+    mask[disc_pixels] = 1.0
+    
+    f_sky = mask.mean()
+    return mask, f_sky, angular_radius_deg
+
+
+def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """Return a cached Euclid-like mask to avoid recomputation in each worker."""
+    key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
+    if key not in MASK_CACHE:
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=nside,
+            target_area_sqdeg=target_area_sqdeg,
+            center_coords=center_coords,
+        )
+        MASK_CACHE[key] = (mask, f_sky, angular_radius_deg)
+    return MASK_CACHE[key]
+
+
+def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
+                min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False,
+                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
+    """Process a single file: extract kappa map, apply optional mask, compute L1 norms, save results."""
+    
+    # Define output filename based on bin number, noise level, and mask
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg))
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+    
     if add_noise:
-        suffix = f"_l1_norms_bin{bin_number}_noisy_s{noise_level:.2f}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_l1_norms_bin{bin_number}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -86,6 +148,16 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
         # Add shape noise if requested
         if add_noise:
             kg = add_shape_noise(kg, sigma_e=noise_level)
+        
+        # Apply mask if requested
+        if apply_mask:
+            nside = hp.get_nside(kg)
+            mask, f_sky, _ = get_cached_mask(
+                nside=nside,
+                target_area_sqdeg=mask_area_sqdeg,
+                center_coords=mask_center,
+            )
+            kg = kg * mask
         
         _, l1norms = get_wtl1_sphere(
             kg, nscales=5, nbins=40, min_snr=min_snr, max_snr=max_snr, noise_std=noise_std
@@ -122,6 +194,15 @@ def main():
                         help="Shape noise level (sigma_e)")
     parser.add_argument("--no-noise", action="store_true",
                         help="Don't add shape noise to maps.")
+    
+    # Mask options
+    parser.add_argument("--apply-mask", action="store_true",
+                        help="Apply Euclid-like sky mask before computing L1 norms.")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the Euclid-like mask in square degrees (default: 14000).")
+    parser.add_argument("--mask-center", type=float, nargs=2, metavar=("LON", "LAT"),
+                        default=(0.0, 90.0),
+                        help="Mask centre in Galactic-like (lon, lat) degrees (default: 0 90).")
     
     # Algorithm parameters
     parser.add_argument("--min-snr", type=float, default=-13, 
@@ -181,17 +262,38 @@ def main():
             if os.path.exists(os.path.join(base_dir, cosmo, perm, filename))
         ]
     
+    # Normalize mask center to tuple
+    mask_center = tuple(args.mask_center)
+    
     # Print configuration information
     map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
     print(f"Map key: kg/stage3_lensing{args.bin_number}")
     
+    if args.apply_mask:
+        mask_info = get_cached_mask(
+            nside=512,
+            target_area_sqdeg=args.mask_area_sqdeg,
+            center_coords=mask_center,
+        )
+        _, mask_f_sky, mask_radius = mask_info
+        print(
+            f"Applying Euclid-like mask: "
+            f"{args.mask_area_sqdeg:.0f} sq deg (f_sky≈{mask_f_sky:.3f}, radius≈{mask_radius:.2f}°) "
+            f"centered at lon={mask_center[0]:.1f}°, lat={mask_center[1]:.1f}°"
+        )
+    
     # Determine suffix for output files
+    mask_suffix = ""
+    if args.apply_mask:
+        area_tag = int(round(args.mask_area_sqdeg))
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+    
     if args.no_noise:
-        suffix = f"_l1_norms_bin{args.bin_number}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{args.bin_number}{mask_suffix}_new_normalization.npy"
     else:
-        suffix = f"_l1_norms_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{args.bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
     print(f"Output suffix: {suffix}")
     
     # Process files in parallel with progress bar
@@ -204,7 +306,10 @@ def main():
             min_snr=args.min_snr,
             max_snr=args.max_snr,
             noise_std=args.noise_std,
-            verbose=args.verbose
+            verbose=args.verbose,
+            apply_mask=args.apply_mask,
+            mask_area_sqdeg=args.mask_area_sqdeg,
+            mask_center=mask_center,
         )
         results = list(tqdm(
             pool.imap(process_func, file_paths),
@@ -225,9 +330,9 @@ def main():
             dataset_name = "fiducial" if args.fiducial else "grid"
             map_suffix = "baryonified" if args.baryonified else "nobaryons"
             if args.no_noise:
-                combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{args.bin_number}_new_normalization.npy")
+                combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{args.bin_number}{mask_suffix}_new_normalization.npy")
             else:
-                combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{args.bin_number}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+                combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{args.bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
         
         print(f"Loading and combining {len(successful)} result files...")
         
