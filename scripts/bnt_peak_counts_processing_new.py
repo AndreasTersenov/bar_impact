@@ -37,6 +37,12 @@ def suppress_stdout():
         sys.stdout = saved_stdout
 
 
+def seed_worker():
+    """Initializer for multiprocessing pool to ensure unique random seeds."""
+    # Use a source of entropy from the OS to seed the worker
+    np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
+
+
 def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     """
     Adds shape noise to a full-sky Healpix convergence (kappa) map.
@@ -244,7 +250,7 @@ def main():
         print(f"Removed {empty_count} empty files")
     
     # Process files in parallel with progress bar
-    with mp.Pool(processes=args.num_workers) as pool:
+    with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
         process_func = partial(
             process_file,
             bnt_bin=args.bnt_bin,
