@@ -40,6 +40,8 @@ def parse_arguments():
                         help="Use BNT-transformed power spectra")
     parser.add_argument("--bnt-bins", type=str, default="0,1,2,3",
                         help="Comma-separated list of BNT bins to analyze (default: 0,1,2,3)")
+    parser.add_argument("--bnt-cross-abs", action="store_true",
+                        help="Take absolute values of BNT cross spectra before rebinning (handles negative values)")
 
     # Power Spectrum processing options
     parser.add_argument("--lmax", type=int, default=1024,
@@ -404,6 +406,10 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         if args.masked and f_sky is not None:
             cross_pair_cut = cross_pair_cut / f_sky
         
+        # Take absolute value if requested (for BNT cross spectra with negative values)
+        if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
+            cross_pair_cut = np.abs(cross_pair_cut)
+        
         cross_cls_cut_list.append(cross_pair_cut)
     
     if args.verbose:
@@ -411,6 +417,8 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         print(f"Each cross pair now has {n_multipoles_cut} multipoles (l={args.lower_cut} to l={args.upper_cut})")
         if args.masked and f_sky is not None:
             print(f"Applied f_sky correction: divided by {f_sky:.4f}")
+        if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
+            print(f"Applied absolute value to BNT cross spectra (before rebinning)")
     
     # Apply rebinning to each cross-pair separately (before selection/concatenation)
     if args.rebin > 1:
@@ -538,12 +546,18 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         if args.masked and f_sky is not None:
             cross_pair_cut = cross_pair_cut / f_sky
         
+        # Take absolute value if requested (for BNT cross spectra with negative values)
+        if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
+            cross_pair_cut = np.abs(cross_pair_cut)
+        
         cross_fid_cut_list.append(cross_pair_cut)
     
     if args.verbose:
         print(f"Applied cuts to {len(cross_fid_cut_list)} cross pairs in fiducial")
         if args.masked and f_sky is not None:
             print(f"Applied f_sky correction to cross fiducial: divided by {f_sky:.4f}")
+        if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
+            print(f"Applied absolute value to BNT cross fiducial spectra (before rebinning)")
     
     # Apply rebinning to each cross-pair separately (before selection/concatenation)
     if args.rebin > 1:
@@ -870,17 +884,18 @@ def main():
             spectra_desc = f"auto_cross_{cross_pairs_str}"
     
     bnt_prefix = "bnt_" if args.bnt else ""
+    bnt_abs_suffix = "_abs" if (args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs) else ""
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
     mask_suffix = args.mask_suffix if args.masked else ""
     
     # Save first example from training data
-    example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{mask_suffix}{noise_suffix}.npy"
+    example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}{mask_suffix}{noise_suffix}.npy"
     np.save(os.path.join(args.samples_dir, example_train_filename), combined_data_vector[0])
     print(f"Saved example training datavector to {example_train_filename}")
     print(f"  Shape: {combined_data_vector[0].shape}, first 10 values: {combined_data_vector[0][:10]}")
     
     # Save fiducial observation
-    example_fid_filename = f"example_fiducial_datavector_{bnt_prefix}{spectra_desc}_{args.fiducial_type}_{bin_desc}_{ps_desc}{mask_suffix}{noise_suffix}.npy"
+    example_fid_filename = f"example_fiducial_datavector_{bnt_prefix}{spectra_desc}_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}{mask_suffix}{noise_suffix}.npy"
     np.save(os.path.join(args.samples_dir, example_fid_filename), combined_fid_vector)
     print(f"Saved fiducial datavector to {example_fid_filename}")
     print(f"  Shape: {combined_fid_vector.shape}, first 10 values: {combined_fid_vector[:10]}")
@@ -912,7 +927,8 @@ def main():
     
     # Add BNT prefix to checkpoint name if using BNT data
     if args.bnt:
-        datavector_desc = f"{args.simulation_type}_bnt_{bin_desc}_{ps_desc}_{spectra_type}"
+        bnt_abs_tag = "_abs" if (hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs) else ""
+        datavector_desc = f"{args.simulation_type}_bnt_{bin_desc}_{ps_desc}_{spectra_type}{bnt_abs_tag}"
     else:
         datavector_desc = f"{args.simulation_type}_{bin_desc}_{ps_desc}_{spectra_type}"
 
@@ -979,7 +995,7 @@ def main():
             else:
                 spectra_type = f"auto_cross_{cross_pairs_str}"
         
-        coverage_filename_base = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+        coverage_filename_base = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}"
         if args.masked:
             coverage_filename_base += f"_{args.mask_label}"
         if args.noisy:
@@ -1053,7 +1069,8 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
     
     bnt_prefix = "bnt_" if args.bnt else ""
-    plot_filename = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+    bnt_abs_suffix = "_abs" if (args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs) else ""
+    plot_filename = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}"
     if args.masked:
         plot_filename += f"_{args.mask_label}"
     if args.noisy:
@@ -1065,7 +1082,7 @@ def main():
 
     # Save posterior samples with descriptive filename
     os.makedirs(args.samples_dir, exist_ok=True)
-    samples_filename = f"posterior_samples_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}"
+    samples_filename = f"posterior_samples_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}"
     if args.masked:
         samples_filename += f"_{args.mask_label}"
     if args.noisy:
