@@ -199,8 +199,13 @@ def main():
                         help="Override default base directory for data.")
     parser.add_argument("--baryonified", action="store_true",
                         help="Use baryonified maps instead of nobaryons maps.")
-    parser.add_argument("--bin-number", type=int, default=1, 
-                        help="Bin number (used for map_key 'kg/stage3_lensing{bin_number}' and suffix)")
+    
+    # Bin selection
+    bin_group = parser.add_mutually_exclusive_group()
+    bin_group.add_argument("--bin-number", type=int, default=1, 
+                        help="Single bin number to process (used for map_key 'kg/stage3_lensing{bin_number}' and suffix)")
+    bin_group.add_argument("--bins", type=str,
+                        help="Comma-separated list of bin numbers to process (e.g., '1,2,3,4')")
     
     # Noise options
     parser.add_argument("--noise-level", type=float, default=0.26, 
@@ -282,11 +287,22 @@ def main():
     # Normalize mask center to tuple
     mask_center = tuple(args.mask_center)
     
+    # Parse bin numbers
+    if args.bins:
+        bin_numbers = [int(b.strip()) for b in args.bins.split(',')]
+        print(f"Processing multiple bins: {bin_numbers}")
+    else:
+        bin_numbers = [args.bin_number]
+        print(f"Processing single bin: {args.bin_number}")
+    
     # Print configuration information
     map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
-    print(f"Map key: kg/stage3_lensing{args.bin_number}")
+    if len(bin_numbers) == 1:
+        print(f"Map key: kg/stage3_lensing{bin_numbers[0]}")
+    else:
+        print(f"Map keys: {', '.join([f'kg/stage3_lensing{b}' for b in bin_numbers])}")
     
     if args.apply_mask:
         mask_info = get_cached_mask(
@@ -301,136 +317,170 @@ def main():
             f"centered at lon={mask_center[0]:.1f}°, lat={mask_center[1]:.1f}°"
         )
     
-    # Determine suffix for output files
-    mask_suffix = ""
-    if args.apply_mask:
-        area_tag = int(round(args.mask_area_sqdeg))
-        mask_suffix = f"_masked_{area_tag}sqdeg"
-    
-    if args.no_noise:
-        suffix = f"_peak_counts_bin{args.bin_number}{mask_suffix}_new_normalization.npy"
-    else:
-        suffix = f"_peak_counts_bin{args.bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
-    print(f"Output suffix: {suffix}")
-    
     # Clean up empty files if requested
     if args.cleanup_empty:
-        print("Cleaning up empty files...")
-        empty_count = 0
-        for file_path in file_paths:
-            # Construct expected output path
-            if not args.no_noise:
-                expected_output = file_path.replace(".h5", f"_peak_counts_bin{args.bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
-            else:
-                expected_output = file_path.replace(".h5", f"_peak_counts_bin{args.bin_number}{mask_suffix}_new_normalization.npy")
+        for bin_number in bin_numbers:
+            mask_suffix = ""
+            if args.apply_mask:
+                area_tag = int(round(args.mask_area_sqdeg))
+                mask_suffix = f"_masked_{area_tag}sqdeg"
             
-            if os.path.exists(expected_output) and os.path.getsize(expected_output) == 0:
-                os.remove(expected_output)
-                empty_count += 1
-                if args.verbose:
-                    print(f"Removed empty file: {expected_output}")
+            print(f"Cleaning up empty files for bin {bin_number}...")
+            empty_count = 0
+            for file_path in file_paths:
+                # Construct expected output path
+                if not args.no_noise:
+                    expected_output = file_path.replace(".h5", f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+                else:
+                    expected_output = file_path.replace(".h5", f"_peak_counts_bin{bin_number}{mask_suffix}_new_normalization.npy")
+                
+                if os.path.exists(expected_output) and os.path.getsize(expected_output) == 0:
+                    os.remove(expected_output)
+                    empty_count += 1
+                    if args.verbose:
+                        print(f"Removed empty file: {expected_output}")
+            
+            print(f"Removed {empty_count} empty files for bin {bin_number}")
+    
+    # Process each bin
+    all_bin_results = {}
+    for bin_number in bin_numbers:
+        print(f"\n{'='*60}")
+        print(f"Processing bin {bin_number}")
+        print(f"{'='*60}")
         
-        print(f"Removed {empty_count} empty files")
+        # Determine suffix for output files
+        mask_suffix = ""
+        if args.apply_mask:
+            area_tag = int(round(args.mask_area_sqdeg))
+            mask_suffix = f"_masked_{area_tag}sqdeg"
+        
+        if args.no_noise:
+            suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_new_normalization.npy"
+        else:
+            suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
+        print(f"Output suffix: {suffix}")
+        
+        # Process files in parallel with progress bar
+        with mp.Pool(processes=args.num_workers) as pool:
+            process_func = partial(
+                process_file,
+                bin_number=bin_number,
+                noise_level=args.noise_level,
+                add_noise=not args.no_noise,
+                noise_std=args.noise_std,
+                nbins=args.nbins,
+                min_val=args.min_val,
+                max_val=args.max_val,
+                verbose=args.verbose,
+                apply_mask=args.apply_mask,
+                mask_area_sqdeg=args.mask_area_sqdeg,
+                mask_center=mask_center,
+            )
+            results = list(tqdm(
+                pool.imap(process_func, file_paths),
+                total=len(file_paths),
+                desc=f"Processing bin {bin_number}"
+            ))
+        
+        # Count successful files
+        successful = [r for r in results if r is not None]
+        processed = len([r for r in successful if os.path.exists(r)])
+        print(f"Bin {bin_number} processing complete: {processed}/{len(file_paths)} files processed")
+        
+        all_bin_results[bin_number] = successful
     
-    # Process files in parallel with progress bar
-    with mp.Pool(processes=args.num_workers) as pool:
-        process_func = partial(
-            process_file,
-            bin_number=args.bin_number,
-            noise_level=args.noise_level,
-            add_noise=not args.no_noise,
-            noise_std=args.noise_std,
-            nbins=args.nbins,
-            min_val=args.min_val,
-            max_val=args.max_val,
-            verbose=args.verbose,
-            apply_mask=args.apply_mask,
-            mask_area_sqdeg=args.mask_area_sqdeg,
-            mask_center=mask_center,
-        )
-        results = list(tqdm(
-            pool.imap(process_func, file_paths),
-            total=len(file_paths),
-            desc="Processing files"
-        ))
-    
-    # Count successful files
-    successful = [r for r in results if r is not None]
-    processed = len([r for r in successful if os.path.exists(r)])
-    print(f"Processing complete: {processed}/{len(file_paths)} files processed")
+    print(f"\n{'='*60}")
+    print(f"All bins processing complete")
+    print(f"{'='*60}")
     
     # Optionally save combined results
-    if args.save_combined and successful:
-        # Generate default output path if not specified
-        combined_output = args.combined_output
-        if not combined_output:
-            dataset_name = "fiducial" if args.fiducial else "grid"
-            map_suffix = "baryonified" if args.baryonified else "nobaryons"
-            if args.no_noise:
-                combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{args.bin_number}{mask_suffix}_new_normalization.npy")
-            else:
-                combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{args.bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
-        
-        print(f"Loading and combining {len(successful)} result files...")
-        
-        # Load all successful outputs
-        all_peak_counts = []
-        skipped_files = 0
-        empty_files = []
-        corrupted_files = []
-        
-        for file_path in tqdm(successful, desc="Loading results"):
-            try:
-                # Check file size first
-                file_size = os.path.getsize(file_path)
-                if file_size == 0:
-                    skipped_files += 1
-                    empty_files.append(file_path)
-                    if args.verbose:
-                        print(f"Skipping empty file: {file_path}")
-                    else:
-                        print(f"Skipping empty file: {file_path}")
-                    continue
+    if args.save_combined:
+        for bin_number in bin_numbers:
+            successful = all_bin_results[bin_number]
+            if not successful:
+                print(f"No successful files for bin {bin_number}, skipping combined output")
+                continue
+            
+            # Generate default output path if not specified
+            combined_output = args.combined_output
+            if not combined_output:
+                dataset_name = "fiducial" if args.fiducial else "grid"
+                map_suffix = "baryonified" if args.baryonified else "nobaryons"
                 
-                data = np.load(file_path, allow_pickle=True)
-                if len(data.shape) == 2:  # Validate shape
-                    all_peak_counts.append(data)
+                mask_suffix = ""
+                if args.apply_mask:
+                    area_tag = int(round(args.mask_area_sqdeg))
+                    mask_suffix = f"_masked_{area_tag}sqdeg"
+                
+                if args.no_noise:
+                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_new_normalization.npy")
                 else:
-                    skipped_files += 1
-                    corrupted_files.append(file_path)
-                    if args.verbose:
-                        print(f"Skipping {file_path} due to unexpected shape {data.shape}")
-            except Exception as e:
-                skipped_files += 1
-                file_size = os.path.getsize(file_path) if os.path.exists(file_path) else "File not found"
-                corrupted_files.append(file_path)
-                print(f"Error loading {file_path} (size: {file_size} bytes): {e}")
-        
-        # Convert list to numpy array
-        if all_peak_counts:
-            all_peak_counts = np.stack(all_peak_counts, axis=0)
-            print(f"Combined shape: {all_peak_counts.shape}")
+                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+            elif len(bin_numbers) > 1:
+                # If custom output is specified for multiple bins, add bin number to filename
+                base, ext = os.path.splitext(combined_output)
+                combined_output = f"{base}_bin{bin_number}{ext}"
             
-            # Save combined array
-            np.save(combined_output, all_peak_counts)
-            print(f"Saved combined peak counts to: {os.path.basename(combined_output)}")
+            print(f"\nBin {bin_number}: Loading and combining {len(successful)} result files...")
             
-            if skipped_files > 0 and args.verbose:
-                print(f"Note: {skipped_files} files were skipped during combination.")
+            # Load all successful outputs
+            all_peak_counts = []
+            skipped_files = 0
+            empty_files = []
+            corrupted_files = []
             
-            # Print summary of problematic files
-            if empty_files:
-                print(f"\nEmpty files ({len(empty_files)}):")
-                for empty_file in empty_files:
-                    print(f"  {empty_file}")
-            
-            if corrupted_files:
-                print(f"\nCorrupted files ({len(corrupted_files)}):")
-                for corrupted_file in corrupted_files:
-                    print(f"  {corrupted_file}")
+            for file_path in tqdm(successful, desc=f"Loading bin {bin_number} results"):
+                try:
+                    # Check file size first
+                    file_size = os.path.getsize(file_path)
+                    if file_size == 0:
+                        skipped_files += 1
+                        empty_files.append(file_path)
+                        if args.verbose:
+                            print(f"Skipping empty file: {file_path}")
+                        else:
+                            print(f"Skipping empty file: {file_path}")
+                        continue
                     
-        else:
-            print("No valid peak counts files found for combined output!")
+                    data = np.load(file_path, allow_pickle=True)
+                    if len(data.shape) == 2:  # Validate shape
+                        all_peak_counts.append(data)
+                    else:
+                        skipped_files += 1
+                        corrupted_files.append(file_path)
+                        if args.verbose:
+                            print(f"Skipping {file_path} due to unexpected shape {data.shape}")
+                except Exception as e:
+                    skipped_files += 1
+                    file_size = os.path.getsize(file_path) if os.path.exists(file_path) else "File not found"
+                    corrupted_files.append(file_path)
+                    print(f"Error loading {file_path} (size: {file_size} bytes): {e}")
+            
+            # Convert list to numpy array
+            if all_peak_counts:
+                all_peak_counts = np.stack(all_peak_counts, axis=0)
+                print(f"Bin {bin_number} combined shape: {all_peak_counts.shape}")
+                
+                # Save combined array
+                np.save(combined_output, all_peak_counts)
+                print(f"Saved combined peak counts to: {os.path.basename(combined_output)}")
+                
+                if skipped_files > 0 and args.verbose:
+                    print(f"Note: {skipped_files} files were skipped during combination.")
+                
+                # Print summary of problematic files
+                if empty_files:
+                    print(f"\nEmpty files ({len(empty_files)}):")
+                    for empty_file in empty_files:
+                        print(f"  {empty_file}")
+                
+                if corrupted_files:
+                    print(f"\nCorrupted files ({len(corrupted_files)}):")
+                    for corrupted_file in corrupted_files:
+                        print(f"  {corrupted_file}")
+            else:
+                print(f"No valid peak counts files found for bin {bin_number} combined output!")
 
 
 if __name__ == "__main__":

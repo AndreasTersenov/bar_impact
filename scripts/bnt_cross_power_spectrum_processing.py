@@ -27,6 +27,9 @@ BNT_MATRIX = np.array([[ 1.        ,  0.        ,  0.        ,  0.        ],
                        [ 0.        ,  0.25127807, -1.251278  ,  1.        ]])
 
 
+MASK_CACHE = {}
+
+
 def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     """
     Adds shape noise to a full-sky Healpix convergence (kappa) map.
@@ -36,6 +39,59 @@ def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     sigma_pix = sigma_e / np.sqrt(galaxy_density * pixel_area_arcmin2)
     noise = np.random.normal(loc=0, scale=sigma_pix, size=npix)
     return kg + noise
+
+
+def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """
+    Create a contiguous Euclid-like disk mask of a specific sky area.
+
+    Parameters
+    ----------
+    nside : int
+        HEALPix resolution of the input maps.
+    target_area_sqdeg : float
+        Desired unmasked area in square degrees.
+    center_coords : tuple(float, float)
+        (lon, lat) in degrees for the disk centre; defaults to North Pole.
+
+    Returns
+    -------
+    mask : np.ndarray
+        Binary mask array (1 inside mask, 0 outside) with dtype float32.
+    f_sky : float
+        Fraction of sky retained by the mask.
+    angular_radius_deg : float
+        Angular radius of the resulting spherical cap in degrees.
+    """
+    total_area_sqdeg = 41252.96125  # 4 * pi * (180/pi)^2
+    angular_radius_rad = np.arccos(1 - (target_area_sqdeg / total_area_sqdeg) * 2)
+    angular_radius_deg = np.rad2deg(angular_radius_rad)
+
+    theta_center = np.deg2rad(90.0 - center_coords[1])
+    phi_center = np.deg2rad(center_coords[0])
+    center_vec = hp.ang2vec(theta_center, phi_center)
+
+    disc_pixels = hp.query_disc(nside, center_vec, angular_radius_rad)
+
+    npix = hp.nside2npix(nside)
+    mask = np.zeros(npix, dtype=np.float32)
+    mask[disc_pixels] = 1.0
+
+    f_sky = mask.mean()
+    return mask, f_sky, angular_radius_deg
+
+
+def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """Return a cached Euclid-like mask to avoid recomputation in each worker."""
+    key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
+    if key not in MASK_CACHE:
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=nside,
+            target_area_sqdeg=target_area_sqdeg,
+            center_coords=center_coords,
+        )
+        MASK_CACHE[key] = (mask, f_sky, angular_radius_deg)
+    return MASK_CACHE[key]
 
 
 def get_cross_power_spectra(maps_dict, lmax=1024):
@@ -70,26 +126,31 @@ def get_cross_power_spectra(maps_dict, lmax=1024):
 
 
 def process_file(file_path, bnt_bin_range=[0, 1, 2, 3], noise_level=0.26, add_noise=True, 
-                 lmax=1024, cross_only=False, verbose=False):
+                 lmax=1024, cross_only=False, verbose=False, apply_mask=False,
+                 mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
     """
-    Process a single file: extract kappa maps for all redshift bins, apply BNT transform, 
-    compute cross power spectra for the specified BNT bins, and save results.
+    Process a single file: extract kappa maps for all redshift bins, apply optional mask,
+    apply BNT transform, compute cross power spectra for the specified BNT bins, and save results.
     """
     
     # Define output filename
     bnt_bin_str = "".join([str(b+1) for b in bnt_bin_range])  # Convert 0-based to 1-based for filename
     # include lmax in per-file suffix when different from default
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg)) if mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
     if add_noise:
         if cross_only:
-            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
+            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}{mask_suffix}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
         else:
-            suffix = f"_bnt_all_cls_bins{bnt_bin_str}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
+            suffix = f"_bnt_all_cls_bins{bnt_bin_str}{mask_suffix}_noisy_s{noise_level:.2f}{lmax_suffix}.npz"
     else:
         if cross_only:
-            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}{lmax_suffix}.npz"
+            suffix = f"_bnt_cross_cls_bins{bnt_bin_str}{mask_suffix}{lmax_suffix}.npz"
         else:
-            suffix = f"_bnt_all_cls_bins{bnt_bin_str}{lmax_suffix}.npz"
+            suffix = f"_bnt_all_cls_bins{bnt_bin_str}{mask_suffix}{lmax_suffix}.npz"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -107,7 +168,17 @@ def process_file(file_path, bnt_bin_range=[0, 1, 2, 3], noise_level=0.26, add_no
                 map_key = f"kg/stage3_lensing{i+1}"
                 kgs.append(np.array(f[map_key]))
         
-        # Add shape noise if requested (before BNT transform)
+        # Apply mask if requested (before noise and BNT transform)
+        if apply_mask:
+            mask, f_sky, angular_radius_deg = get_cached_mask(
+                nside=512,
+                target_area_sqdeg=mask_area_sqdeg,
+                center_coords=mask_center
+            )
+            # Apply mask to all bins
+            kgs = [kg * mask for kg in kgs]
+        
+        # Add shape noise if requested (after mask, before BNT transform)
         if add_noise:
             kgs = [add_shape_noise(kg, sigma_e=noise_level) for kg in kgs]
         
@@ -154,7 +225,8 @@ def process_file(file_path, bnt_bin_range=[0, 1, 2, 3], noise_level=0.26, add_no
 
 def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2, 3], 
                             dataset_type="grid", map_type="nobaryons", 
-                            noise_level=0.26, add_noise=True, lmax=1024, verbose=False):
+                            noise_level=0.26, add_noise=True, lmax=1024, verbose=False,
+                            apply_mask=False, mask_area_sqdeg=None):
     """
     Aggregate processed .npz files into the format expected by run_npe_inference_auto_cross_ps.py.
     
@@ -170,6 +242,8 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
     - map_type: "nobaryons" or "baryonified"
     - noise_level: noise level for filename
     - add_noise: whether noise was added
+    - apply_mask: whether a sky mask was applied
+    - mask_area_sqdeg: area of the sky mask in square degrees
     - verbose: print detailed information
     """
     if not processed_files:
@@ -284,6 +358,10 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
             cross_spectra[pair] = np.array(cross_spectra[pair])
     
     # Prepare filename suffixes
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg)) if mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
     noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
     
@@ -298,7 +376,7 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
         bin_1based = bnt_bin + 1
         if auto_spectra[bin_1based].size > 0:
             # Filename: all_bnt_cls_<dataset>_<maptype>_bin<N>.npy
-            auto_filename = f"all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{noise_suffix}{lmax_suffix}.npy"
+            auto_filename = f"all_bnt_cls_{dataset_type}_{map_type}_bin{bin_1based}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
             auto_path = os.path.join(output_dir, auto_filename)
             np.save(auto_path, auto_spectra[bin_1based])
             created_files.append(auto_path)
@@ -326,7 +404,7 @@ def aggregate_for_inference(processed_files, output_dir, bnt_bin_range=[0, 1, 2,
         cross_data_combined = np.concatenate(cross_data_parts, axis=1)
         # Filename: all_bnt_cross_cls_<dataset>_<maptype>_bins<1234>.npy
         bnt_bin_str = "".join([str(b+1) for b in bnt_bin_range])
-        cross_filename = f"all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{noise_suffix}{lmax_suffix}.npy"
+        cross_filename = f"all_bnt_cross_cls_{dataset_type}_{map_type}_bins{bnt_bin_str}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         cross_path = os.path.join(output_dir, cross_filename)
         np.save(cross_path, cross_data_combined)
         created_files.append(cross_path)
@@ -369,6 +447,15 @@ def main():
     parser.add_argument("--no-noise", action="store_true",
                         help="Don't add shape noise to maps.")
     
+    # Mask options
+    parser.add_argument("--apply-mask", action="store_true",
+                        help="Apply Euclid-like sky mask before BNT transform and computing spectra.")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the Euclid-like mask in square degrees (default: 14000).")
+    parser.add_argument("--mask-center", type=float, nargs=2, metavar=("LON", "LAT"),
+                        default=(0.0, 90.0),
+                        help="Mask centre in Galactic-like (lon, lat) degrees (default: 0 90).")
+    
     # Algorithm parameters
     parser.add_argument("--lmax", type=int, default=1024, 
                         help="Maximum multipole (l) for power spectrum calculation.")
@@ -392,6 +479,10 @@ def main():
                         help="Output directory for aggregated inference files. If not specified, uses base_dir/new_grid or base_dir.")
     
     args = parser.parse_args()
+    
+    # Convert mask_center to tuple
+    mask_center = tuple(args.mask_center)
+    args.mask_center = mask_center
     
     # Validate BNT bin range
     if len(args.bnt_bin_range) < 2 and args.cross_only:
@@ -442,6 +533,24 @@ def main():
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
     print(f"Computing BNT cross power spectra for BNT bins: {args.bnt_bin_range} (0-indexed)")
     
+    # Print mask information
+    mask_info = None
+    if args.apply_mask:
+        # from scripts.cross_power_spectrum_processing import create_euclid_mask
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=512,
+            target_area_sqdeg=args.mask_area_sqdeg,
+            center_coords=args.mask_center
+        )
+        mask_info = (f_sky, angular_radius_deg)
+        print(f"\n{'='*60}")
+        print(f"Euclid-like mask applied:")
+        print(f"  Target area: {args.mask_area_sqdeg:.1f} sq. deg.")
+        print(f"  f_sky: {f_sky:.6f}")
+        print(f"  Angular radius: {angular_radius_deg:.2f} degrees")
+        print(f"  Center: (lon={args.mask_center[0]:.1f}°, lat={args.mask_center[1]:.1f}°)")
+        print(f"{'='*60}\n")
+    
     if args.cross_only:
         cross_pairs = list(combinations(args.bnt_bin_range, 2))
         print(f"BNT cross-correlation pairs (0-indexed): {cross_pairs}")
@@ -475,7 +584,10 @@ def main():
             add_noise=not args.no_noise,
             lmax=args.lmax,
             cross_only=args.cross_only,
-            verbose=args.verbose
+            verbose=args.verbose,
+            apply_mask=args.apply_mask,
+            mask_area_sqdeg=args.mask_area_sqdeg,
+            mask_center=args.mask_center
         )
         results = list(tqdm(
             pool.imap(process_func, file_paths),
@@ -599,7 +711,9 @@ for file in files:
             noise_level=args.noise_level,
             add_noise=not args.no_noise,
             lmax=args.lmax,
-            verbose=args.verbose
+            verbose=args.verbose,
+            apply_mask=args.apply_mask,
+            mask_area_sqdeg=args.mask_area_sqdeg
         )
         
         if created_files:

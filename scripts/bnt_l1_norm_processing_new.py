@@ -25,6 +25,8 @@ BNT_MATRIX = np.array([[ 1.        ,  0.        ,  0.        ,  0.        ],
                        [ 0.4521097 , -1.4521097 ,  1.        ,  0.        ],
                        [ 0.        ,  0.25127807, -1.251278  ,  1.        ]])
 
+MASK_CACHE = {}
+
 # Add this context manager to suppress stdout
 @contextlib.contextmanager
 def suppress_stdout():
@@ -63,18 +65,77 @@ def add_shape_noise(kg, sigma_e=0.26, galaxy_density=6.75, nside=512):
     return kg + noise  # Add noise to kappa map
 
 
+def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """
+    Create a contiguous Euclid-like disk mask of a specific sky area.
+
+    Parameters
+    ----------
+    nside : int
+        HEALPix resolution of the input maps.
+    target_area_sqdeg : float
+        Desired unmasked area in square degrees.
+    center_coords : tuple(float, float)
+        (lon, lat) in degrees for the disk centre; defaults to North Pole.
+
+    Returns
+    -------
+    mask : np.ndarray
+        Binary mask array (1 inside mask, 0 outside) with dtype float32.
+    f_sky : float
+        Fraction of sky retained by the mask.
+    angular_radius_deg : float
+        Angular radius of the resulting spherical cap in degrees.
+    """
+    total_area_sqdeg = 41252.96125  # 4 * pi * (180/pi)^2
+    angular_radius_rad = np.arccos(1 - (target_area_sqdeg / total_area_sqdeg) * 2)
+    angular_radius_deg = np.rad2deg(angular_radius_rad)
+
+    theta_center = np.deg2rad(90.0 - center_coords[1])
+    phi_center = np.deg2rad(center_coords[0])
+    center_vec = hp.ang2vec(theta_center, phi_center)
+
+    disc_pixels = hp.query_disc(nside, center_vec, angular_radius_rad)
+
+    npix = hp.nside2npix(nside)
+    mask = np.zeros(npix, dtype=np.float32)
+    mask[disc_pixels] = 1.0
+
+    f_sky = mask.mean()
+    return mask, f_sky, angular_radius_deg
+
+
+def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0)):
+    """Return a cached Euclid-like mask to avoid recomputation in each worker."""
+    key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
+    if key not in MASK_CACHE:
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=nside,
+            target_area_sqdeg=target_area_sqdeg,
+            center_coords=center_coords,
+        )
+        MASK_CACHE[key] = (mask, f_sky, angular_radius_deg)
+    return MASK_CACHE[key]
+
+
 def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
-                min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False):
+                min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False,
+                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
     """
     Process a single file: extract kappa maps for all bins, apply BNT transform, 
     compute L1 norms for the specified BNT bin, and save results.
     """
     
-    # Define output filename based on BNT bin number and noise level
+    # Define output filename based on BNT bin number, mask, and noise level
+    mask_suffix = ""
+    if apply_mask:
+        area_tag = int(round(mask_area_sqdeg)) if mask_area_sqdeg else "mask"
+        mask_suffix = f"_masked_{area_tag}sqdeg"
+    
     if add_noise:
-        suffix = f"_bnt_l1_norms_bin{bnt_bin+1}_noisy_s{noise_level:.2f}_new_normalization.npy"
+        suffix = f"_bnt_l1_norms_bin{bnt_bin+1}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_bnt_l1_norms_bin{bnt_bin+1}_new_normalization.npy"
+        suffix = f"_bnt_l1_norms_bin{bnt_bin+1}{mask_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -92,7 +153,17 @@ def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
                 map_key = f"kg/stage3_lensing{i+1}"
                 kgs.append(np.array(f[map_key]))
         
-        # Add shape noise if requested (before BNT transform)
+        # Apply mask if requested (before noise and BNT transform)
+        if apply_mask:
+            mask, f_sky, angular_radius_deg = get_cached_mask(
+                nside=512,
+                target_area_sqdeg=mask_area_sqdeg,
+                center_coords=mask_center
+            )
+            # Apply mask to all bins
+            kgs = [kg * mask for kg in kgs]
+        
+        # Add shape noise if requested (after mask, before BNT transform)
         if add_noise:
             kgs = [add_shape_noise(kg, sigma_e=noise_level) for kg in kgs]
         
@@ -129,14 +200,28 @@ def main():
                         help="Override default base directory for data.")
     parser.add_argument("--baryonified", action="store_true",
                         help="Use baryonified maps instead of nobaryons maps.")
-    parser.add_argument("--bnt-bin", type=int, default=3, 
-                        help="BNT bin to analyze (0-3, default=3 which is the 4th bin)")
+    
+    # BNT bin selection (mutually exclusive)
+    bin_group = parser.add_mutually_exclusive_group()
+    bin_group.add_argument("--bnt-bin", type=int, default=None,
+                        help="Single BNT bin to analyze (0-3)")
+    bin_group.add_argument("--bnt-bins", type=str, default=None,
+                        help="Comma-separated list of BNT bins to process (e.g., '0,1,2,3')")
     
     # Noise options
     parser.add_argument("--noise-level", type=float, default=0.26, 
                         help="Shape noise level (sigma_e)")
     parser.add_argument("--no-noise", action="store_true",
                         help="Don't add shape noise to maps.")
+    
+    # Mask options
+    parser.add_argument("--apply-mask", action="store_true",
+                        help="Apply Euclid-like sky mask before BNT transform.")
+    parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
+                        help="Area of the Euclid-like mask in square degrees (default: 14000).")
+    parser.add_argument("--mask-center", type=float, nargs=2, metavar=("LON", "LAT"),
+                        default=(0.0, 90.0),
+                        help="Mask centre in Galactic-like (lon, lat) degrees (default: 0 90).")
     
     # Algorithm parameters
     parser.add_argument("--min-snr", type=float, default=-13, 
@@ -159,6 +244,25 @@ def main():
                         help="Path for combined output file.")
     
     args = parser.parse_args()
+    
+    # Parse BNT bins
+    if args.bnt_bins:
+        bnt_bin_numbers = [int(b.strip()) for b in args.bnt_bins.split(',')]
+    elif args.bnt_bin is not None:
+        bnt_bin_numbers = [args.bnt_bin]
+    else:
+        # Default to bin 3 (4th bin)
+        bnt_bin_numbers = [3]
+    
+    # Validate BNT bin numbers
+    for bnt_bin in bnt_bin_numbers:
+        if bnt_bin < 0 or bnt_bin > 3:
+            print(f"Error: BNT bin {bnt_bin} is out of range [0, 3].")
+            return
+    
+    # Convert mask_center to tuple
+    mask_center = tuple(args.mask_center)
+    args.mask_center = mask_center
     
     # Set the base directory based on fiducial flag or override
     if args.base_dir:
@@ -200,89 +304,143 @@ def main():
     map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
     print(f"Processing {len(file_paths)} {map_type} files from {dataset_type} dataset")
-    print(f"Computing BNT L1 norms for BNT bin {args.bnt_bin+1}")
+    print(f"Computing BNT L1 norms for BNT bins: {[b+1 for b in bnt_bin_numbers]} (displaying as 1-indexed)")
+    
+    # Print mask information
+    if args.apply_mask:
+        mask, f_sky, angular_radius_deg = create_euclid_mask(
+            nside=512,
+            target_area_sqdeg=args.mask_area_sqdeg,
+            center_coords=args.mask_center
+        )
+        print(f"\n{'='*60}")
+        print(f"Euclid-like mask applied:")
+        print(f"  Target area: {args.mask_area_sqdeg:.1f} sq. deg.")
+        print(f"  f_sky: {f_sky:.6f}")
+        print(f"  Angular radius: {angular_radius_deg:.2f} degrees")
+        print(f"  Center: (lon={args.mask_center[0]:.1f}°, lat={args.mask_center[1]:.1f}°)")
+        print(f"{'='*60}\n")
     
     # Determine suffix for output files
-    if args.no_noise:
-        suffix = f"_bnt_l1_norms_bin{args.bnt_bin+1}_new_normalization.npy"
-    else:
-        suffix = f"_bnt_l1_norms_bin{args.bnt_bin+1}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
-    print(f"Output suffix: {suffix}")
+    mask_suffix = ""
+    if args.apply_mask:
+        area_tag = int(round(args.mask_area_sqdeg))
+        mask_suffix = f"_masked_{area_tag}sqdeg"
     
-    # Process files in parallel with progress bar
-    with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
-        process_func = partial(
-            process_file,
-            bnt_bin=args.bnt_bin,
-            noise_level=args.noise_level,
-            add_noise=not args.no_noise,
-            min_snr=args.min_snr,
-            max_snr=args.max_snr,
-            noise_std=args.noise_std,
-            verbose=args.verbose
-        )
-        results = list(tqdm(
-            pool.imap(process_func, file_paths),
-            total=len(file_paths),
-            desc="Processing files"
-        ))
+    # Track results per bin
+    all_bin_results = {bnt_bin: [] for bnt_bin in bnt_bin_numbers}
     
-    # Count successful files
-    successful = [r for r in results if r is not None]
-    processed = len([r for r in successful if os.path.exists(r)])
-    print(f"Processing complete: {processed}/{len(file_paths)} files processed")
+    # Process each BNT bin
+    for bnt_bin in bnt_bin_numbers:
+        print(f"\n{'='*60}")
+        print(f"Processing BNT bin {bnt_bin+1} (0-indexed: {bnt_bin})")
+        print(f"{'='*60}")
+        
+        if args.no_noise:
+            suffix = f"_bnt_l1_norms_bin{bnt_bin+1}{mask_suffix}_new_normalization.npy"
+        else:
+            suffix = f"_bnt_l1_norms_bin{bnt_bin+1}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
+        print(f"Output suffix: {suffix}")
+        
+        # Process files in parallel with progress bar
+        with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
+            process_func = partial(
+                process_file,
+                bnt_bin=bnt_bin,
+                noise_level=args.noise_level,
+                add_noise=not args.no_noise,
+                min_snr=args.min_snr,
+                max_snr=args.max_snr,
+                noise_std=args.noise_std,
+                verbose=args.verbose,
+                apply_mask=args.apply_mask,
+                mask_area_sqdeg=args.mask_area_sqdeg,
+                mask_center=args.mask_center
+            )
+            results = list(tqdm(
+                pool.imap(process_func, file_paths),
+                total=len(file_paths),
+                desc=f"Processing BNT bin {bnt_bin+1}"
+            ))
+        
+        # Count successful files for this bin
+        successful = [r for r in results if r is not None]
+        processed = len([r for r in successful if os.path.exists(r)])
+        all_bin_results[bnt_bin] = successful
+        print(f"BNT bin {bnt_bin+1} complete: {processed}/{len(file_paths)} files processed")
     
-    # Optionally save combined results
-    if args.save_combined and successful:
-        # Generate default output path if not specified
-        combined_output = args.combined_output
-        if not combined_output:
-            dataset_name = "fiducial" if args.fiducial else "grid"
-            map_suffix = "baryonified" if args.baryonified else "nobaryons"
+    # Print overall summary
+    print(f"\n{'='*60}")
+    print("Overall Processing Summary")
+    print(f"{'='*60}")
+    for bnt_bin in bnt_bin_numbers:
+        successful = all_bin_results[bnt_bin]
+        processed = len([r for r in successful if os.path.exists(r)])
+        print(f"  BNT bin {bnt_bin+1}: {processed}/{len(file_paths)} files")
+    print(f"{'='*60}\n")
+    
+    # Optionally save combined results for each bin
+    if args.save_combined:
+        dataset_name = "fiducial" if args.fiducial else "grid"
+        map_suffix = "baryonified" if args.baryonified else "nobaryons"
+        mask_suffix_combined = ""
+        if args.apply_mask:
+            area_tag = int(round(args.mask_area_sqdeg))
+            mask_suffix_combined = f"_masked_{area_tag}sqdeg"
+        
+        # Process each bin's results
+        for bnt_bin in bnt_bin_numbers:
+            successful = all_bin_results[bnt_bin]
+            
+            if not successful:
+                print(f"No successful files for BNT bin {bnt_bin+1}, skipping combined output.")
+                continue
+            
+            # Generate output path for this bin
             if args.no_noise:
                 combined_output = os.path.join(
                     base_dir, 
-                    f"all_bnt_l1_norms_{dataset_name}_{map_suffix}_bin{args.bnt_bin+1}_new_normalization.npy"
+                    f"all_bnt_l1_norms_{dataset_name}_{map_suffix}_bin{bnt_bin+1}{mask_suffix_combined}_new_normalization.npy"
                 )
             else:
                 combined_output = os.path.join(
                     base_dir, 
-                    f"all_bnt_l1_norms_{dataset_name}_{map_suffix}_bin{args.bnt_bin+1}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
+                    f"all_bnt_l1_norms_{dataset_name}_{map_suffix}_bin{bnt_bin+1}{mask_suffix_combined}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
                 )
-        
-        print(f"Loading and combining {len(successful)} result files...")
-        
-        # Load all successful outputs
-        all_l1_norms = []
-        skipped_files = 0
-        
-        for file_path in tqdm(successful, desc="Loading results"):
-            try:
-                data = np.load(file_path, allow_pickle=True)
-                if len(data.shape) == 2:  # Validate shape
-                    all_l1_norms.append(data)
-                else:
+            
+            print(f"\nLoading and combining {len(successful)} result files for BNT bin {bnt_bin+1}...")
+            
+            # Load all successful outputs
+            all_l1_norms = []
+            skipped_files = 0
+            
+            for file_path in tqdm(successful, desc=f"Loading BNT bin {bnt_bin+1}"):
+                try:
+                    data = np.load(file_path, allow_pickle=True)
+                    if len(data.shape) == 2:  # Validate shape
+                        all_l1_norms.append(data)
+                    else:
+                        skipped_files += 1
+                        if args.verbose:
+                            print(f"Skipping {os.path.basename(file_path)} due to unexpected shape {data.shape}")
+                except Exception as e:
                     skipped_files += 1
                     if args.verbose:
-                        print(f"Skipping {os.path.basename(file_path)} due to unexpected shape {data.shape}")
-            except Exception as e:
-                skipped_files += 1
-                if args.verbose:
-                    print(f"Error loading {os.path.basename(file_path)}: {e}")
-        
-        # Convert list to numpy array
-        if all_l1_norms:
-            all_l1_norms = np.stack(all_l1_norms, axis=0)
-            print(f"Combined shape: {all_l1_norms.shape}")
+                        print(f"Error loading {os.path.basename(file_path)}: {e}")
             
-            # Save combined array
-            np.save(combined_output, all_l1_norms)
-            print(f"Saved combined BNT L1 norms to: {os.path.basename(combined_output)}")
-            
-            if skipped_files > 0 and args.verbose:
-                print(f"Note: {skipped_files} files were skipped during combination.")
-        else:
-            print("No valid BNT L1 norm files found for combined output!")
+            # Convert list to numpy array
+            if all_l1_norms:
+                all_l1_norms = np.stack(all_l1_norms, axis=0)
+                print(f"Combined shape for BNT bin {bnt_bin+1}: {all_l1_norms.shape}")
+                
+                # Save combined array
+                np.save(combined_output, all_l1_norms)
+                print(f"Saved combined BNT L1 norms to: {os.path.basename(combined_output)}")
+                
+                if skipped_files > 0 and args.verbose:
+                    print(f"Note: {skipped_files} files were skipped during combination.")
+            else:
+                print(f"No valid BNT L1 norm files found for BNT bin {bnt_bin+1}!")
 
 
 if __name__ == "__main__":

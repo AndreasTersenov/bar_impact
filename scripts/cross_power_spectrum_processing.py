@@ -73,7 +73,7 @@ def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0,
     f_sky = mask.mean()
     return mask, f_sky, angular_radius_deg
 
-center
+
 def get_cached_mask(nside=512, target_area_sqdeg=14000.0, _coords=(0.0, 90.0)):
     """Return a cached Euclid-like mask to avoid recomputation in each worker."""
     key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
