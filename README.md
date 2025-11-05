@@ -1,36 +1,34 @@
 # BAR_IMPACT
 
-**B**aryon **A**nalysis for Cosmological **R**esearch using **I**nference on **M**ap **P**rocessing with **A**nalysis **C**apabilities and **T**ools
-
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A Python package for analyzing the impact of baryonic physics on cosmological weak lensing maps through advanced statistical methods including wavelet analysis, power spectra, peak counting, and simulation-based inference.
 
-## ✨ Features
+## Features
 
-- **📊 Multiple Analysis Methods**
+- **Multiple Analysis Methods**
   - Wavelet-based L1 norm calculations
   - Angular power spectrum analysis  
   - Peak counting statistics
-  - Band-limited Nulling Transform (BNT)
+  - Bernardeau-Nishimichi-Taruya (BNT) transforms for nulling redshift correlations
 
-- **🔬 Statistical Inference**
+- **Statistical Inference**
   - Neural Posterior Estimation (NPE) using JAX
   - Fisher information forecasts
   - TARP coverage testing for posterior validation
 
-- **🗺️ Map Processing**
+- **Map Processing**
   - HEALPix convergence map processing
   - Shape noise simulation
   - Multi-scale wavelet decomposition
 
-- **🧮 High Performance**
+- **Computational Performance**
   - Multiprocessing support
   - Optimized for large simulation datasets
   - Batch processing capabilities
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Installation
 
@@ -87,7 +85,7 @@ python scripts/run_npe_inference.py \\
 
 See [scripts/README.md](scripts/README.md) for all available scripts.
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 bar_impact/
@@ -108,7 +106,7 @@ bar_impact/
 └── examples/                # Usage examples
 ```
 
-## 📚 Documentation
+## Documentation
 
 - **[Full Documentation](docs/README.md)** - Complete documentation index
 - **[Workflows](docs/workflows/)** - Step-by-step analysis guides
@@ -121,22 +119,22 @@ bar_impact/
 - [Cross Power Spectrum Analysis](docs/workflows/CROSS_POWER_SPECTRUM_WORKFLOW.md)
 - [Data Aggregation](docs/workflows/WORKFLOW_CROSS_SPECTRA_AGGREGATION.md)
 
-## 🔬 Science Background
+<!-- ## Science Background
 
 This package analyzes the impact of baryonic physics on weak gravitational lensing observables. Baryonic processes (gas cooling, star formation, AGN feedback) affect the matter distribution and therefore the lensing signal.
 
 **Key Methods:**
 - **Wavelet L1 Norms**: Quantify non-Gaussian features induced by baryons
 - **Band-limited Nulling (BNT)**: Decorrelate signals across redshift bins
-- **Neural Posterior Estimation**: Infer cosmological parameters accounting for baryonic uncertainties
+- **Neural Posterior Estimation**: Infer cosmological parameters accounting for baryonic uncertainties -->
 
-## 🛠️ Development Status
+## Development Status
 
 **Current Version**: 0.1.0 (Alpha)
 
 The package is under active development. The core functionality is implemented in scripts, with ongoing refactoring to create a more modular library structure.
 
-### Roadmap
+<!-- ### Roadmap
 
 - [x] Core processing scripts
 - [x] Package structure and metadata
@@ -145,32 +143,32 @@ The package is under active development. The core functionality is implemented i
 - [ ] Comprehensive test suite
 - [ ] API documentation
 - [ ] Example notebooks
-- [ ] PyPI release
+- [ ] PyPI release -->
 
-## 🤝 Contributing
+<!-- ## Contributing
 
 Contributions are welcome! Please:
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests if applicable
-5. Submit a pull request
+5. Submit a pull request -->
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- [CosmoStat](https://github.com/CosmoStat) for the pycs wavelet library
+- [CosmoStat](https://github.com/CosmoStat) and [wl-stats-torch](https://github.com/AndreasTersenov/wl_stats_torch) for the pycs wavelet library
 - [TARP](https://github.com/Ciela-Institute/tarp) for coverage testing tools
 - [JAX](https://github.com/google/jax) ecosystem for numerical computing
 
-## 📧 Contact
+## Contact
 
 **Andreas Tersenov**
 - GitHub: [@AndreasTersenov](https://github.com/AndreasTersenov)
-
+<!-- 
 ## 📖 Citation
 
 If you use this code in your research, please cite:
@@ -184,6 +182,6 @@ If you use this code in your research, please cite:
 }
 ```
 
----
+--- -->
 
 **Status**: 🚧 Under Active Development | **Last Updated**: November 2025
