@@ -1,0 +1,83 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Data files (large files that shouldn't be in git)
+*.fits
+*.npy
+*.npz
+*.h5
+*.hdf5
+
+# Outputs and results
+outputs/
+plots/
+plots_dir/
+temp_dir/
+checkpoints/
+cosmoGRID_datavectors/
+scripts/checkpoints/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+mr_temp_*.fits
+
+# TARP submodule (external dependency)
+tarp/
+
+# Keep only specific data files if needed
+!data/README.md
+!examples/**/*.npy

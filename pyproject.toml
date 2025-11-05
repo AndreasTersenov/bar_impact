@@ -1,0 +1,107 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bar_impact"
+version = "0.1.0"
+description = "Baryon Impact Analysis for Cosmological Maps"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Andreas Tersenov", email = "andreas.tersenov@example.com"},
+]
+keywords = [
+    "cosmology",
+    "weak lensing",
+    "baryons",
+    "neural posterior estimation",
+    "wavelet analysis",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+dependencies = [
+    "numpy>=1.20",
+    "healpy>=1.15",
+    "h5py>=3.0",
+    "tqdm>=4.60",
+    "matplotlib>=3.3",
+    "scipy>=1.7",
+]
+
+[project.optional-dependencies]
+inference = [
+    "jax>=0.3",
+    "jaxlib>=0.3",
+    "jaxili>=0.1",  # For NPE
+    "getdist>=1.3",  # For visualization
+]
+coverage = [
+    "tarp>=0.1.3",  # For coverage testing
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=3.0",
+    "black>=22.0",
+    "isort>=5.10",
+    "flake8>=4.0",
+    "mypy>=0.950",
+]
+all = [
+    "bar_impact[inference,coverage,dev]",
+]
+
+[project.urls]
+Homepage = "https://github.com/AndreasTersenov/bar_impact"
+Documentation = "https://github.com/AndreasTersenov/bar_impact#readme"
+Repository = "https://github.com/AndreasTersenov/bar_impact"
+Issues = "https://github.com/AndreasTersenov/bar_impact/issues"
+
+[project.scripts]
+bar-impact = "bar_impact.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bar_impact = ["py.typed"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --cov=bar_impact --cov-report=html --cov-report=term-missing"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

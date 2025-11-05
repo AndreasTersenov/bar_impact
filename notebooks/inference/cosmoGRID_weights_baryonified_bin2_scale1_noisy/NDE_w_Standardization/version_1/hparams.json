@@ -1,0 +1,42 @@
+{
+    "model_class": "NDE_w_Standardization",
+    "model_hparams": {
+        "nde": "ConditionalMAF(\n    # attributes\n    n_in = 6\n    n_cond = 40\n    n_layers = 5\n    layers = [50, 50]\n    activation = relu\n    use_reverse = True\n    seed = 42\n)",
+        "embedding_net": "Sequential(\n    # attributes\n    layers = [Standardizer(\n        # attributes\n        mean = Array([1.08694891e-03, 3.98975238e-03, 1.35128601e-02, 4.44942378e-02,\n               1.34664878e-01, 3.74025077e-01, 9.60005283e-01, 2.27606463e+00,\n               4.98253155e+00, 1.00716963e+01, 1.87636299e+01, 3.21357918e+01,\n               5.04506340e+01, 7.23299484e+01, 9.41314697e+01, 1.10134392e+02,\n               1.13912766e+02, 1.00630028e+02, 6.94762039e+01, 2.48020058e+01,\n               2.46825943e+01, 6.87190323e+01, 9.89833298e+01, 1.11605820e+02,\n               1.07809280e+02, 9.24003372e+01, 7.16101303e+01, 5.07719231e+01,\n               3.32091255e+01, 2.02198887e+01, 1.15601768e+01, 6.29234552e+00,\n               3.31836295e+00, 1.73497033e+00, 9.32226181e-01, 5.29370904e-01,\n               3.24813604e-01, 2.15329155e-01, 1.51874170e-01, 1.11729734e-01],      dtype=float32)\n        std = Array([0.00177007, 0.00341702, 0.00656514, 0.01285407, 0.02585497,\n               0.05097786, 0.10302605, 0.19217466, 0.32960945, 0.51291454,\n               0.7026354 , 0.83530957, 0.82940274, 0.6431519 , 0.33317754,\n               0.41503707, 0.70673996, 0.7635896 , 0.5341922 , 0.17061706,\n               0.10086192, 0.15337233, 0.42150894, 0.9134034 , 1.321519  ,\n               1.432689  , 1.2275646 , 0.829579  , 0.4338033 , 0.3556622 ,\n               0.49688628, 0.572577  , 0.55857533, 0.49466246, 0.41072273,\n               0.32886773, 0.25928703, 0.20478407, 0.1620568 , 0.12971644],      dtype=float32)\n    ), Identity()]\n)",
+        "transformation": "<distrax._src.bijectors.scalar_affine.ScalarAffine object at 0x73337c38aed0>"
+    },
+    "loss_fn": "loss_nll_npe",
+    "optimizer_hparams": {
+        "lr": 0.0001,
+        "optimizer_name": "adam",
+        "gradient_clip": 5.0,
+        "warmup": 0.1,
+        "weight_decay": 0.0
+    },
+    "logger_params": {
+        "base_log_dir": "/mnt/home/tersenov/software/bar_impact/notebooks/inference/cosmoGRID_weights_baryonified_bin2_scale1_noisy",
+        "log_dir": null,
+        "logger_type": "TensorBoard"
+    },
+    "enable_progress_bar": true,
+    "debug": false,
+    "check_val_every_epoch": 1,
+    "seed": 42,
+    "nde_class": "NPE",
+    "nde_hparams": {
+        "n_layers": 5,
+        "layers": [
+            50,
+            50
+        ],
+        "activation": "relu",
+        "use_reverse": true,
+        "seed": 42,
+        "n_in": 6,
+        "n_cond": 40
+    },
+    "transformation_hparams": {
+        "shift": "[ 2.9292947e-01  8.2747644e-01 -9.4456208e-01  7.1526909e+01\n  9.6788782e-01  4.5003500e-02]",
+        "scale": "[0.09317154 0.23247783 0.2772607  4.476479   0.04381757 0.00658929]"
+    }
+}
