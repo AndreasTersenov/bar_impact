@@ -67,6 +67,8 @@ scripts/checkpoints/
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+/notebooks/*
+/notebooks/inference/*
 
 # Temporary files
 *.tmp
