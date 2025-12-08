@@ -115,7 +115,8 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
 
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
                 min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False,
-                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
+                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
+                force_overwrite=False):
     """Process a single file: extract kappa map, apply optional mask, compute L1 norms, save results."""
     
     # Define output filename based on bin number, noise level, and mask
@@ -134,8 +135,8 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
     # Map key based on bin number
     map_key = f"kg/stage3_lensing{bin_number}"
     
-    # Skip if file already exists
-    if os.path.exists(save_path):
+    # Skip if file already exists (unless force_overwrite is set)
+    if os.path.exists(save_path) and not force_overwrite:
         if verbose:
             print(f"Skipping {os.path.basename(file_path)}, L1 norm file already exists.")
         return save_path
@@ -228,6 +229,8 @@ def main():
                         help="Save combined L1 norms to a single file.")
     parser.add_argument("--combined-output", 
                         help="Path for combined output file.")
+    parser.add_argument("--force-overwrite", action="store_true",
+                        help="Force reprocessing of files even if output already exists.")
     
     args = parser.parse_args()
     
@@ -333,6 +336,7 @@ def main():
                 apply_mask=args.apply_mask,
                 mask_area_sqdeg=args.mask_area_sqdeg,
                 mask_center=mask_center,
+                force_overwrite=args.force_overwrite,
             )
             results = list(tqdm(
                 pool.imap(process_func, file_paths),
