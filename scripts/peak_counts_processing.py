@@ -22,6 +22,13 @@ from pycs.astro.wl.hos_peaks_l1 import get_wtpeaks_sphere
 # Global mask cache
 MASK_CACHE = {}
 
+
+def seed_worker():
+    """Initializer for multiprocessing pool to ensure unique random seeds."""
+    # Use a source of entropy from the OS to seed the worker
+    np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
+
+
 # Add this context manager to suppress stdout
 @contextlib.contextmanager
 def suppress_stdout():
@@ -109,7 +116,8 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
 
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
                 noise_std=0.0146, nbins=31, min_val=-2, max_val=6, verbose=False,
-                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0)):
+                apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
+                force_overwrite=False):
     """Process a single file: extract kappa map, apply optional mask, compute peak counts, save results."""
     
     # Define output filename based on bin number, noise level, and mask
@@ -128,8 +136,8 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
     # Map key based on bin number
     map_key = f"kg/stage3_lensing{bin_number}"
     
-    # Skip if file already exists
-    if os.path.exists(save_path):
+    # Skip if file already exists (unless force_overwrite is set)
+    if os.path.exists(save_path) and not force_overwrite:
         if verbose:
             print(f"Skipping {os.path.basename(file_path)}, peak counts file already exists.")
         return save_path
@@ -245,6 +253,8 @@ def main():
                         help="Path for combined output file.")
     parser.add_argument("--cleanup-empty", action="store_true",
                         help="Remove empty output files before processing.")
+    parser.add_argument("--force-overwrite", action="store_true",
+                        help="Force reprocessing of files even if output already exists.")
     
     args = parser.parse_args()
     
@@ -362,7 +372,7 @@ def main():
         print(f"Output suffix: {suffix}")
         
         # Process files in parallel with progress bar
-        with mp.Pool(processes=args.num_workers) as pool:
+        with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
             process_func = partial(
                 process_file,
                 bin_number=bin_number,
@@ -376,6 +386,7 @@ def main():
                 apply_mask=args.apply_mask,
                 mask_area_sqdeg=args.mask_area_sqdeg,
                 mask_center=mask_center,
+                force_overwrite=args.force_overwrite,
             )
             results = list(tqdm(
                 pool.imap(process_func, file_paths),
