@@ -167,8 +167,8 @@ def parse_arguments():
         mask_suffix = f"_masked_{area_tag}sqdeg_{apod_tag}_master"
         mask_label = f"Masked ({area_tag} sq deg, {apod_tag}, MASTER)"
     else:
-        mask_suffix = ""
-        mask_label = "Full-sky"
+        mask_suffix = "_master"
+        mask_label = "Full-sky_master"
 
     args.mask_area_tag = area_tag if args.masked else None
     args.mask_suffix = mask_suffix
@@ -337,28 +337,47 @@ def load_and_process_auto_spectra(auto_data_paths, args, upper_cuts=None):
     for i, cls_full in enumerate(auto_data_list):
         upper_cut = upper_cuts[i]
         
-        # Determine if data is binned (from processing script's adaptive binning)
-        # If lmax > 1500, nlb=4; if lmax > 1024, nlb=2; else nlb=1
-        if args.lmax > 1500:
-            # Data is already binned with nlb=4
-            # Effective ells are at bin centers, need to find cutoff index
-            # For lmax=1536 with nlb=4, ells go from ~3.5 to ~1531.5
-            # To cut at 1024, find index where ell <= 1024
-            ell_per_bin = 4.0  # approximate
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
-        elif args.lmax > 1024:
-            ell_per_bin = 2.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+        # Determine ell offset and binning based on data source:
+        # - Full-sky (args.masked=False): Uses healpy, data starts at ell=0
+        # - Masked (args.masked=True): Uses NaMaster, data starts at ell=2
+        # Also account for binning: nlb=1 for lmax<=1024, nlb=2 for lmax<=1500, nlb=4 for lmax>1500
+        
+        if args.masked:
+            # NaMaster data: ells start at 2 (monopole/dipole excluded)
+            ell_offset = 2
         else:
-            # Unbinned data
-            cut_idx = upper_cut - args.lower_cut
+            # Full-sky healpy data: ells start at 0
+            ell_offset = 0
+        
+        if args.lmax > 1500:
+            # Data is binned with nlb=4
+            ell_per_bin = 4.0
+            # For binned NaMaster data, first bin center is at ~(2+5)/2=3.5 for nlb=4
+            # Approximate: bin_index ≈ (ell - ell_offset) / nlb
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
+        elif args.lmax > 1024:
+            # Data is binned with nlb=2
+            ell_per_bin = 2.0
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
+        else:
+            # Unbinned data (nlb=1)
+            # Index = ell - ell_offset
+            lower_idx = args.lower_cut - ell_offset
+            cut_idx = upper_cut - ell_offset
+        
+        # Safety check for valid indices
+        lower_idx = max(0, lower_idx)
+        cut_idx = min(cls_full.shape[1], cut_idx)
         
         # Apply lower and upper cuts
-        lower_idx = 0  # Already starts from lmin in processed data
         cls_cut = cls_full[:, lower_idx:cut_idx]
         
         if args.verbose:
-            print(f"Bin {i}: Applied cuts [{args.lower_cut}, {upper_cut}], shape: {cls_cut.shape}")
+            actual_ell_start = lower_idx + ell_offset if args.lmax <= 1024 else "binned"
+            actual_ell_end = cut_idx + ell_offset - 1 if args.lmax <= 1024 else "binned"
+            print(f"Bin {i}: ell_offset={ell_offset}, indices [{lower_idx}:{cut_idx}] -> ells [{actual_ell_start}, {actual_ell_end}], shape: {cls_cut.shape}")
         
         # Apply rebinning if requested
         if args.rebin > 1:
@@ -417,6 +436,14 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         for j in range(i+1, n_bins):
             cross_pair_to_bins.append((i, j))
     
+    # Determine ell offset based on data source (same logic as auto spectra)
+    if args.masked:
+        # NaMaster data: ells start at 2 (monopole/dipole excluded)
+        ell_offset = 2
+    else:
+        # Full-sky healpy data: ells start at 0
+        ell_offset = 0
+    
     # Apply cuts to each cross-pair individually
     cross_cls_cut_list = []
     
@@ -433,17 +460,25 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         else:
             upper_cut = args.upper_cut
         
-        # Apply cuts (accounting for binning like in auto spectra)
+        # Apply cuts (accounting for ell offset and binning like in auto spectra)
         if args.lmax > 1500:
             ell_per_bin = 4.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         elif args.lmax > 1024:
             ell_per_bin = 2.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         else:
-            cut_idx = upper_cut - args.lower_cut
+            # Unbinned data (nlb=1)
+            lower_idx = args.lower_cut - ell_offset
+            cut_idx = upper_cut - ell_offset
         
-        cross_cls_cut = cross_cls_this_pair[:, :cut_idx]
+        # Safety check for valid indices
+        lower_idx = max(0, lower_idx)
+        cut_idx = min(cross_cls_this_pair.shape[1], cut_idx)
+        
+        cross_cls_cut = cross_cls_this_pair[:, lower_idx:cut_idx]
         cross_cls_cut_list.append(cross_cls_cut)
         
         if args.verbose:
@@ -498,23 +533,36 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args, upper_cuts=None):
         if args.verbose:
             print(f"Loaded fiducial from {os.path.basename(fiducial_path)}, shape: {fid_mean.shape}")
     
+    # Determine ell offset based on data source (same logic as training data)
+    if args.masked:
+        ell_offset = 2  # NaMaster data starts at ell=2
+    else:
+        ell_offset = 0  # Full-sky healpy data starts at ell=0
+    
     # Process auto fiducial data according to cuts and rebinning
     # NO f_sky correction for MASTER data
     auto_fid_data_list = []
     for i, fid_mean in enumerate(auto_fid_means):
         upper_cut = upper_cuts[i]
         
-        # Apply cuts (accounting for binning)
+        # Apply cuts (accounting for ell offset and binning)
         if args.lmax > 1500:
             ell_per_bin = 4.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         elif args.lmax > 1024:
             ell_per_bin = 2.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         else:
-            cut_idx = upper_cut - args.lower_cut
+            # Unbinned data (nlb=1)
+            lower_idx = args.lower_cut - ell_offset
+            cut_idx = upper_cut - ell_offset
         
-        lower_idx = 0
+        # Safety check for valid indices
+        lower_idx = max(0, lower_idx)
+        cut_idx = min(len(fid_mean), cut_idx)
+        
         fid_cut = fid_mean[lower_idx:cut_idx]
         
         # Apply rebinning
@@ -567,6 +615,12 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         for j in range(i+1, n_bins):
             cross_pair_to_bins.append((i, j))
     
+    # Determine ell offset based on data source (same logic as training data)
+    if args.masked:
+        ell_offset = 2  # NaMaster data starts at ell=2
+    else:
+        ell_offset = 0  # Full-sky healpy data starts at ell=0
+    
     # Apply cuts to each cross-pair individually
     cross_fid_cut_list = []
     
@@ -583,17 +637,25 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         else:
             upper_cut = args.upper_cut
         
-        # Apply cuts (accounting for binning)
+        # Apply cuts (accounting for ell offset and binning)
         if args.lmax > 1500:
             ell_per_bin = 4.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         elif args.lmax > 1024:
             ell_per_bin = 2.0
-            cut_idx = int((upper_cut - args.lower_cut) / ell_per_bin)
+            lower_idx = int((args.lower_cut - ell_offset) / ell_per_bin)
+            cut_idx = int((upper_cut - ell_offset) / ell_per_bin)
         else:
-            cut_idx = upper_cut - args.lower_cut
+            # Unbinned data (nlb=1)
+            lower_idx = args.lower_cut - ell_offset
+            cut_idx = upper_cut - ell_offset
         
-        cross_fid_cut = cross_fid_this_pair[:cut_idx]
+        # Safety check for valid indices
+        lower_idx = max(0, lower_idx)
+        cut_idx = min(len(cross_fid_this_pair), cut_idx)
+        
+        cross_fid_cut = cross_fid_this_pair[lower_idx:cut_idx]
         cross_fid_cut_list.append(cross_fid_cut)
     
     if args.verbose:
