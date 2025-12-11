@@ -48,8 +48,13 @@ def parse_arguments():
                         help="Maximum multipole (lmax) used when computing power spectra. Must match the processing script's --lmax. Default is 1024.")
     parser.add_argument("--lower-cut", type=int, default=30,
                         help="Lower multipole cut for the power spectrum (l_min).")
-    parser.add_argument("--upper-cut", type=int, default=1024,
+    
+    upper_cut_group = parser.add_mutually_exclusive_group(required=False)
+    upper_cut_group.add_argument("--upper-cut", type=int, default=1024,
                         help="Upper multipole cut for the power spectrum (l_max).")
+    upper_cut_group.add_argument("--upper-cuts", type=str,
+                        help="Comma-separated list of upper multipole cuts for each bin (l_max).")
+    
     parser.add_argument("--rebin", type=int, default=1,
                         help="Rebinning factor for the power spectrum. Default is 1 (no rebinning).")
 
@@ -166,6 +171,25 @@ def parse_cross_pairs(cross_pairs_str):
         i, j = pair_str.split(',')
         pairs.append((int(i.strip()), int(j.strip())))
     return pairs
+
+def parse_upper_cuts(args):
+    """Parse upper cuts and validate against number of bins."""
+    # Determine number of bins
+    if args.bnt:
+        num_bins = len([int(b.strip()) for b in args.bnt_bins.split(',')])
+    else:
+        num_bins = len([int(b.strip()) for b in args.bins.split(',')])
+    
+    # Parse upper cuts
+    if args.upper_cuts:
+        upper_cuts = [int(cut.strip()) for cut in args.upper_cuts.split(',')]
+        if len(upper_cuts) != num_bins:
+            raise ValueError(f"Number of upper cuts ({len(upper_cuts)}) must match number of bins ({num_bins})")
+    else:
+        # Use single upper cut for all bins
+        upper_cuts = [args.upper_cut] * num_bins
+    
+    return upper_cuts
 
 def get_cross_indices_for_pairs(bin_indices, cross_pairs):
     """
@@ -299,10 +323,20 @@ def get_fsky_from_npz(file_path, verbose=False):
             print(f"  Warning: Could not read mask metadata from {os.path.basename(file_path)}: {e}")
         return None
 
-def load_and_process_auto_spectra(auto_data_paths, args):
-    """Load and process auto power spectra."""
+def load_and_process_auto_spectra(auto_data_paths, args, upper_cuts=None):
+    """Load and process auto power spectra.
+    
+    Args:
+        auto_data_paths: List of paths to auto power spectra files
+        args: Argument namespace
+        upper_cuts: List of upper multipole cuts for each bin (optional)
+    """
     auto_data_list = []
     f_sky = None
+    
+    # Use single upper_cut if upper_cuts not provided
+    if upper_cuts is None:
+        upper_cuts = [args.upper_cut] * len(auto_data_paths)
     
     for data_path in auto_data_paths:
         cls_full = np.load(data_path, allow_pickle=True)
@@ -327,17 +361,22 @@ def load_and_process_auto_spectra(auto_data_paths, args):
         if args.verbose:
             print(f"Computed f_sky = {f_sky:.4f} from mask area {args.mask_area_sqdeg:.0f} sq deg")
     
-    # Process auto power spectra: apply cuts, f_sky correction, and rebinning
+    # Process auto power spectra: apply cuts and rebinning
+    # NOTE: For masked data, f_sky correction should NOT be applied here
+    # because the power spectra were already computed on masked maps
     processed_auto_list = []
-    for cls_full in auto_data_list:
-        # Apply cuts
-        cls_cut = cls_full[:, args.lower_cut:args.upper_cut]
+    for i, cls_full in enumerate(auto_data_list):
+        upper_cut = upper_cuts[i]
+        if args.verbose:
+            print(f"Processing auto bin {i+1} with upper cut {upper_cut}")
         
-        # Apply f_sky correction if masked
-        if args.masked and f_sky is not None:
-            cls_cut = cls_cut / f_sky
-            if args.verbose:
-                print(f"Applied f_sky correction: divided by {f_sky:.4f}")
+        # Apply cuts
+        cls_cut = cls_full[:, args.lower_cut:upper_cut]
+        
+        # NOTE: f_sky correction removed - it was causing double-correction
+        # The masking is already accounted for in the power spectrum computation
+        if args.verbose and args.masked:
+            print(f"Note: Using masked power spectra (no additional f_sky correction needed)")
         
         # Apply rebinning if specified
         if args.rebin > 1:
@@ -353,7 +392,7 @@ def load_and_process_auto_spectra(auto_data_paths, args):
     
     return auto_data_vector
 
-def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_bins=None):
+def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_bins=None, upper_cuts=None):
     """Load and process aggregated cross power spectra.
     
     Args:
@@ -361,10 +400,15 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         args: Argument namespace
         cross_indices: Optional list of cross-pair indices to select
         n_bins: Number of bins (needed to infer multipole range per cross-pair)
+        upper_cuts: List of upper multipole cuts for each bin (optional)
     """
     cross_cls_full = np.load(cross_data_path, allow_pickle=True)
     if args.verbose:
         print(f"Loaded cross data from {os.path.basename(cross_data_path)}, shape: {cross_cls_full.shape}")
+    
+    # Use single upper_cut if upper_cuts not provided
+    if upper_cuts is None:
+        upper_cuts = [args.upper_cut] * n_bins if n_bins else [args.upper_cut]
     
     # Compute f_sky if masked
     f_sky = None
@@ -389,22 +433,34 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         n_ell_original = 1024  # Common default
         expected_cross_pairs = cross_cls_full.shape[1] // n_ell_original
     
+    # Create mapping of cross-pair index to bin pair
+    # For bins [1,2,3,4], pairs are ordered as: (0,1), (0,2), (0,3), (1,2), (1,3), (2,3)
+    cross_pair_to_bins = []
+    for i in range(n_bins):
+        for j in range(i + 1, n_bins):
+            cross_pair_to_bins.append((i, j))
+    
     # Apply cuts to each cross-pair individually
-    n_multipoles_cut = args.upper_cut - args.lower_cut
     cross_cls_cut_list = []
     
-    for i in range(expected_cross_pairs):
+    for pair_idx in range(expected_cross_pairs):
         # Extract this cross-pair's full multipole range
-        start_col = i * n_ell_original
-        end_col = (i + 1) * n_ell_original
+        start_col = pair_idx * n_ell_original
+        end_col = (pair_idx + 1) * n_ell_original
         cross_pair_full = cross_cls_full[:, start_col:end_col]
         
-        # Apply multipole cuts to this cross-pair
-        cross_pair_cut = cross_pair_full[:, args.lower_cut:args.upper_cut]
+        # Determine upper_cut for this cross pair (use maximum of the two bins)
+        bin_i, bin_j = cross_pair_to_bins[pair_idx]
+        upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
         
-        # Apply f_sky correction if masked
-        if args.masked and f_sky is not None:
-            cross_pair_cut = cross_pair_cut / f_sky
+        if args.verbose:
+            print(f"Processing cross pair {pair_idx} (bins {bin_i}, {bin_j}) with upper cut {upper_cut}")
+        
+        # Apply multipole cuts to this cross-pair
+        cross_pair_cut = cross_pair_full[:, args.lower_cut:upper_cut]
+        
+        # NOTE: f_sky correction removed - it was causing double-correction
+        # The masking is already accounted for in the power spectrum computation
         
         # Take absolute value if requested (for BNT cross spectra with negative values)
         if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
@@ -414,9 +470,12 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
     
     if args.verbose:
         print(f"Applied cuts to {len(cross_cls_cut_list)} cross pairs")
-        print(f"Each cross pair now has {n_multipoles_cut} multipoles (l={args.lower_cut} to l={args.upper_cut})")
-        if args.masked and f_sky is not None:
-            print(f"Applied f_sky correction: divided by {f_sky:.4f}")
+        if len(set(upper_cuts)) == 1:
+            print(f"Each cross pair now has up to {upper_cuts[0] - args.lower_cut} multipoles (l={args.lower_cut} to l={upper_cuts[0]})")
+        else:
+            print(f"Cross pairs have variable multipole ranges based on bin-specific upper cuts: {upper_cuts}")
+        if args.masked:
+            print(f"Note: Using masked power spectra (no additional f_sky correction needed)")
         if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
             print(f"Applied absolute value to BNT cross spectra (before rebinning)")
     
@@ -450,9 +509,20 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
     
     return cross_data_vector
 
-def load_and_process_auto_fiducial(auto_fiducial_paths, args):
-    """Load and process auto fiducial data."""
+def load_and_process_auto_fiducial(auto_fiducial_paths, args, upper_cuts=None):
+    """Load and process auto fiducial data.
+    
+    Args:
+        auto_fiducial_paths: List of paths to auto fiducial files
+        args: Argument namespace
+        upper_cuts: List of upper multipole cuts for each bin (optional)
+    """
     auto_fid_means = []
+    
+    # Use single upper_cut if upper_cuts not provided
+    if upper_cuts is None:
+        upper_cuts = [args.upper_cut] * len(auto_fiducial_paths)
+    
     for fiducial_path in auto_fiducial_paths:
         fid_full = np.load(fiducial_path, allow_pickle=True)
         fid_mean = np.mean(fid_full, axis=0)
@@ -470,13 +540,16 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
     
     # Process auto fiducial data according to cuts, f_sky correction, and rebinning
     auto_fid_data_list = []
-    for fid_mean in auto_fid_means:
-        # Apply cuts
-        fid_cut = fid_mean[args.lower_cut:args.upper_cut]
+    for i, fid_mean in enumerate(auto_fid_means):
+        upper_cut = upper_cuts[i]
+        if args.verbose:
+            print(f"Processing auto fiducial bin {i+1} with upper cut {upper_cut}")
         
-        # Apply f_sky correction if masked
-        if args.masked and f_sky is not None:
-            fid_cut = fid_cut / f_sky
+        # Apply cuts
+        fid_cut = fid_mean[args.lower_cut:upper_cut]
+        
+        # NOTE: f_sky correction removed - it was causing double-correction
+        # The masking is already accounted for in the power spectrum computation
         
         # Apply rebinning
         if args.rebin > 1:
@@ -486,15 +559,15 @@ def load_and_process_auto_fiducial(auto_fiducial_paths, args):
         
         auto_fid_data_list.append(fid_processed)
     
-    if args.verbose and args.masked and f_sky is not None:
-        print(f"Applied f_sky correction to auto fiducial: divided by {f_sky:.4f}")
+    if args.verbose and args.masked:
+        print(f"Note: Using masked power spectra (no additional f_sky correction needed)")
     
     # Concatenate all auto bins' fiducial data
     auto_fid_mean_processed = np.concatenate(auto_fid_data_list)
     
     return auto_fid_mean_processed
 
-def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=None, n_bins=None):
+def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=None, n_bins=None, upper_cuts=None):
     """Load and process cross fiducial data.
     
     Args:
@@ -502,11 +575,16 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         args: Argument namespace
         cross_indices: Optional list of cross-pair indices to select
         n_bins: Number of bins (needed to infer multipole range per cross-pair)
+        upper_cuts: List of upper multipole cuts for each bin (optional)
     """
     cross_fid_full = np.load(cross_fiducial_path, allow_pickle=True)
     cross_fid_mean = np.mean(cross_fid_full, axis=0)
     if args.verbose:
         print(f"Loaded cross fiducial data from {os.path.basename(cross_fiducial_path)}, shape: {cross_fid_full.shape}")
+    
+    # Use single upper_cut if upper_cuts not provided
+    if upper_cuts is None:
+        upper_cuts = [args.upper_cut] * n_bins if n_bins else [args.upper_cut]
     
     # Compute f_sky if masked
     f_sky = None
@@ -529,22 +607,33 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         n_ell_original = 1024
         expected_cross_pairs = len(cross_fid_mean) // n_ell_original
     
+    # Create mapping of cross-pair index to bin pair
+    cross_pair_to_bins = []
+    for i in range(n_bins):
+        for j in range(i + 1, n_bins):
+            cross_pair_to_bins.append((i, j))
+    
     # Apply cuts to each cross-pair individually
-    n_multipoles_cut = args.upper_cut - args.lower_cut
     cross_fid_cut_list = []
     
-    for i in range(expected_cross_pairs):
+    for pair_idx in range(expected_cross_pairs):
         # Extract this cross-pair's full multipole range
-        start_idx = i * n_ell_original
-        end_idx = (i + 1) * n_ell_original
+        start_idx = pair_idx * n_ell_original
+        end_idx = (pair_idx + 1) * n_ell_original
         cross_pair_full = cross_fid_mean[start_idx:end_idx]
         
-        # Apply multipole cuts to this cross-pair
-        cross_pair_cut = cross_pair_full[args.lower_cut:args.upper_cut]
+        # Determine upper_cut for this cross pair (use maximum of the two bins)
+        bin_i, bin_j = cross_pair_to_bins[pair_idx]
+        upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
         
-        # Apply f_sky correction if masked
-        if args.masked and f_sky is not None:
-            cross_pair_cut = cross_pair_cut / f_sky
+        if args.verbose:
+            print(f"Processing cross fiducial pair {pair_idx} (bins {bin_i}, {bin_j}) with upper cut {upper_cut}")
+        
+        # Apply multipole cuts to this cross-pair
+        cross_pair_cut = cross_pair_full[args.lower_cut:upper_cut]
+        
+        # Note: No f_sky correction applied - power spectra already computed on masked maps
+        # Applying f_sky correction here would double-count the masking effect
         
         # Take absolute value if requested (for BNT cross spectra with negative values)
         if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
@@ -554,8 +643,8 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
     
     if args.verbose:
         print(f"Applied cuts to {len(cross_fid_cut_list)} cross pairs in fiducial")
-        if args.masked and f_sky is not None:
-            print(f"Applied f_sky correction to cross fiducial: divided by {f_sky:.4f}")
+        if args.masked:
+            print(f"Note: Using masked power spectra (no additional f_sky correction needed)")
         if args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs:
             print(f"Applied absolute value to BNT cross fiducial spectra (before rebinning)")
     
@@ -735,6 +824,10 @@ def main():
     if args.masked:
         print(f"Using masked spectra with area ≈ {args.mask_area_sqdeg:.0f} sq deg (suffix: {args.mask_suffix})")
     
+    # Parse upper cuts
+    upper_cuts = parse_upper_cuts(args)
+    print(f"Using upper cuts: {upper_cuts}")
+    
     # Parse cross pairs if specified
     cross_pairs = parse_cross_pairs(args.cross_pairs)
     if cross_pairs and args.verbose:
@@ -822,8 +915,8 @@ def main():
     
     if not args.cross_only:
         # Load auto power spectra
-        auto_data_vector = load_and_process_auto_spectra(auto_data_paths, args)
-        auto_fid_vector = load_and_process_auto_fiducial(auto_fiducial_paths, args)
+        auto_data_vector = load_and_process_auto_spectra(auto_data_paths, args, upper_cuts)
+        auto_fid_vector = load_and_process_auto_fiducial(auto_fiducial_paths, args, upper_cuts)
         
         data_vector_parts.append(auto_data_vector)
         fid_vector_parts.append(auto_fid_vector)
@@ -833,8 +926,8 @@ def main():
     
     if not args.auto_only:
         # Load cross power spectra with optional selection
-        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args, cross_indices, n_bins)
-        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices, n_bins)
+        cross_data_vector = load_and_process_cross_spectra(cross_data_path, args, cross_indices, n_bins, upper_cuts)
+        cross_fid_vector = load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices, n_bins, upper_cuts)
         
         data_vector_parts.append(cross_data_vector)
         fid_vector_parts.append(cross_fid_vector)
@@ -850,7 +943,13 @@ def main():
     print(f"Combined fiducial shape: {combined_fid_vector.shape}")
 
     # Process power spectra description
-    ps_desc = f"l{args.lower_cut}-{args.upper_cut}"
+    if len(set(upper_cuts)) == 1:
+        # All upper cuts are the same
+        ps_desc = f"l{args.lower_cut}-{upper_cuts[0]}"
+    else:
+        # Different upper cuts for different bins
+        ps_desc = f"l{args.lower_cut}-{'-'.join(map(str, upper_cuts))}"
+    
     if args.rebin > 1:
         ps_desc += f"_r{args.rebin}"
     print(f"Processing power spectra with: {ps_desc}")

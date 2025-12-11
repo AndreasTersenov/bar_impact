@@ -74,17 +74,76 @@ def create_euclid_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0,
     return mask, f_sky, angular_radius_deg
 
 
-def get_cached_mask(nside=512, target_area_sqdeg=14000.0, _coords=(0.0, 90.0)):
-    """Return a cached Euclid-like mask to avoid recomputation in each worker."""
-    key = (int(nside), float(target_area_sqdeg), float(center_coords[0]), float(center_coords[1]))
+def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90.0), apodization_deg=0.0):
+    """Return a cached Euclid-like mask to avoid recomputation in each worker.
+
+    Added apodization support to reduce mode-coupling from sharp mask edges.
+    The cache key includes nside, target area, centre coordinates and apodization width.
+    """
+    # Normalize inputs for a stable cache key
+    lon = float(center_coords[0])
+    lat = float(center_coords[1])
+    key = (int(nside), float(target_area_sqdeg), round(lon, 6), round(lat, 6), float(apodization_deg))
+
     if key not in MASK_CACHE:
         mask, f_sky, angular_radius_deg = create_euclid_mask(
             nside=nside,
             target_area_sqdeg=target_area_sqdeg,
             center_coords=center_coords,
         )
+
+        # Apply apodization if requested (smooth the mask edges)
+        if apodization_deg and apodization_deg > 0.0:
+            mask = apodize_mask(mask, nside, center_coords, angular_radius_deg, apodization_deg)
+            f_sky = float(mask.mean())
+
         MASK_CACHE[key] = (mask, f_sky, angular_radius_deg)
+
     return MASK_CACHE[key]
+
+
+def apodize_mask(mask, nside, center_coords, angular_radius_deg, apodization_deg):
+    """Apply a cosine apodization to the binary disk mask.
+
+    The apodization is applied over an inner boundary of width `apodization_deg` (degrees).
+    Pixels with angular distance <= (angular_radius_deg - apodization_deg) are set to 1.
+    Pixels with angular distance >= angular_radius_deg are set to 0.
+    In between we apply a cosine taper.
+    """
+    if apodization_deg <= 0.0:
+        return mask
+
+    npix = hp.nside2npix(nside)
+    # get pixel vectors and compute angular distance to centre
+    pix_vecs = np.vstack(hp.pix2vec(nside, np.arange(npix)))  # shape (3, npix)
+    theta_center = np.deg2rad(90.0 - center_coords[1])
+    phi_center = np.deg2rad(center_coords[0])
+    center_vec = hp.ang2vec(theta_center, phi_center)
+
+    dots = np.dot(center_vec, pix_vecs)
+    dots = np.clip(dots, -1.0, 1.0)
+    ang_rad = np.arccos(dots)
+    ang_deg = np.rad2deg(ang_rad)
+
+    inner = angular_radius_deg - apodization_deg
+    inner = max(0.0, inner)
+
+    # Create new mask float array
+    new_mask = np.zeros_like(mask, dtype=np.float32)
+    inside_inner = ang_deg <= inner
+    outside = ang_deg >= angular_radius_deg
+    transition = (~inside_inner) & (~outside)
+
+    new_mask[inside_inner] = 1.0
+
+    # cosine taper between inner and angular_radius_deg
+    if np.any(transition):
+        x = (ang_deg[transition] - inner) / (angular_radius_deg - inner)
+        # x in [0,1], taper = 0.5*(1+cos(pi*x)) from 1 -> 0
+        taper = 0.5 * (1.0 + np.cos(np.pi * x))
+        new_mask[transition] = taper.astype(np.float32)
+
+    return new_mask
 
 
 def get_cross_power_spectra(maps_dict, lmax=1024):
