@@ -83,3 +83,12 @@ tarp/
 # Keep only specific data files if needed
 !data/README.md
 !examples/**/*.npy
+
+# checks
+scripts/compare_master_correction.py
+scripts/load_tension_arrays.py
+scripts/test_zero_variance_removal.py
+tests/test_combined_file_loading.py
+docs/NPE_INFERENCE_HALOFIT_GUIDE.md
+docs/ZERO_VARIANCE_PREPROCESSING.md
+scripts/setup_master.sh
