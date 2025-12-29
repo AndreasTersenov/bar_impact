@@ -142,6 +142,10 @@ def parse_arguments():
     parser.add_argument("--verbose", action="store_true",
                         help="Print detailed information about data loading and processing")
     
+    # Run identifier for multiple runs
+    parser.add_argument("--run", type=int, default=None,
+                        help="Run number identifier. If specified, appends '_runN' to output filenames for multiple runs.")
+    
     args = parser.parse_args()
     
     # Set fiducial type to match simulation type if not specified
@@ -979,6 +983,7 @@ def main():
     bnt_abs_suffix = "_abs" if (args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs) else ""
     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if args.noisy else ""
     mask_suffix = args.mask_suffix if args.masked else ""
+    run_suffix = f"_run{args.run}" if args.run is not None else ""
     
     # Save first example from training data
     example_train_filename = f"example_train_datavector_{bnt_prefix}{spectra_desc}_{args.simulation_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}{mask_suffix}{noise_suffix}.npy"
@@ -1145,6 +1150,8 @@ def main():
         plot_filename += args.mask_suffix
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.run is not None:
+        plot_filename += f"_run{args.run}"
     plot_filename += ".pdf"
     
     plt.savefig(os.path.join(args.output_dir, plot_filename), transparent=True)
@@ -1156,6 +1163,8 @@ def main():
         samples_filename += args.mask_suffix
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
+    if args.run is not None:
+        samples_filename += f"_run{args.run}"
     samples_filename += ".npy"
     
     np.save(os.path.join(args.samples_dir, samples_filename), samples)
