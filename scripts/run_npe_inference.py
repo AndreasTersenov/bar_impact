@@ -18,6 +18,44 @@ if tarp_path not in sys.path:
     sys.path.insert(0, tarp_path)
 from tarp import get_tarp_coverage
 
+def filter_zero_variance_bins(data, min_variance=1e-10, verbose=True):
+    """
+    Identify and filter out bins (features) with zero or near-zero variance.
+    
+    Args:
+        data: np.ndarray of shape (n_samples, n_features)
+        min_variance: Minimum variance threshold (default: 1e-10)
+        verbose: Whether to print information about filtered bins
+        
+    Returns:
+        valid_mask: Boolean array indicating which bins to keep
+        n_removed: Number of bins removed
+    """
+    # Compute variance across samples for each feature
+    variances = np.var(data, axis=0)
+    
+    # Create mask for valid (non-zero variance) bins
+    valid_mask = variances > min_variance
+    
+    n_total = len(valid_mask)
+    n_valid = np.sum(valid_mask)
+    n_removed = n_total - n_valid
+    
+    if verbose:
+        print(f"\nZero-variance bin filtering:")
+        print(f"  Total bins: {n_total}")
+        print(f"  Valid bins (variance > {min_variance}): {n_valid}")
+        print(f"  Removed bins: {n_removed}")
+        
+        if n_removed > 0:
+            zero_var_indices = np.where(~valid_mask)[0]
+            if len(zero_var_indices) <= 20:
+                print(f"  Removed bin indices: {zero_var_indices.tolist()}")
+            else:
+                print(f"  First 20 removed bin indices: {zero_var_indices[:20].tolist()}...")
+    
+    return valid_mask, n_removed
+
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run NPE inference on CosmoGRID simulations")
     
@@ -476,7 +514,15 @@ def main():
         # Now concatenate all bins together
         l1_scale = np.concatenate(bin_data_list, axis=1)
     
-    print(f"Combined datavector shape: {l1_scale.shape}")
+    print(f"Combined datavector shape (before filtering): {l1_scale.shape}")
+    
+    # Filter out zero-variance bins to prevent NaN loss during training
+    valid_bin_mask, n_removed = filter_zero_variance_bins(l1_scale, min_variance=1e-10, verbose=True)
+    l1_scale_filtered = l1_scale[:, valid_bin_mask]
+    print(f"Combined datavector shape (after filtering): {l1_scale_filtered.shape}")
+    
+    # Use the filtered data for training
+    l1_scale = l1_scale_filtered
 
     # Convert to JAX arrays
     params = jnp.array(params)
@@ -601,7 +647,11 @@ def main():
     
     # Concatenate all bins' fiducial data
     fid_mean_scale = np.concatenate(fid_data_list)
-    print(f"Combined fiducial data shape: {fid_mean_scale.shape}")
+    print(f"Combined fiducial data shape (before filtering): {fid_mean_scale.shape}")
+    
+    # Apply the same zero-variance bin mask used for training data
+    fid_mean_scale = fid_mean_scale[valid_bin_mask]
+    print(f"Combined fiducial data shape (after filtering): {fid_mean_scale.shape}")
 
     # Sample from the posterior
     print("Sampling from posterior...")
