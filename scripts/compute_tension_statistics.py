@@ -11,9 +11,10 @@ Outputs two tables:
 2. Subset 3-parameter tension (Omega_m, S_8, w_0)
 
 Usage:
-  python scripts/compute_tension_statistics.py [--run N]
+  python scripts/compute_tension_statistics.py [--run N] [--bnt]
   
   --run N: Optional run number to load samples with '_runN' suffix
+  --bnt: Use BNT-transformed data samples
 """
 
 import argparse
@@ -34,22 +35,38 @@ SUBSET_INDICES = [0, 1, 2]  # First 3 parameters
 SAMPLES_DIR = Path("/home/tersenov/software/bar_impact/outputs/samples")
 
 # Parameter ranges
-UPPER_CUTS = list(range(520, 1021, 20))  # 520, 540, ..., 1000, 1020
-MASK_AREAS = [2000.0, 5000.0, 10000.0, 14000.0, 28000.0]
+UPPER_CUTS = list(range(340, 1021, 20))  # 520, 540, ..., 1000, 1020
+MASK_AREAS = [2000.0, 5000.0, 10000.0, 14000.0, 28000.0, 35000.0]
 
 # Run number (set via command line)
 RUN_NUMBER = None
 
+# BNT flag (set via command line)
+USE_BNT = False
+
 def get_sample_filename(fiducial_type, upper_cut, mask_area):
     """Construct filename for posterior samples."""
-    # Determine lmax based on mask_area
-    lmax = 1530 if mask_area == 14000.0 else 1535
+    # Determine lmax based on mask_area and BNT mode
+    # For 14000.0 mask: 1530 for no-BNT, 1535 for BNT
+    # For other masks: always 1535
+    if mask_area == 14000.0 and not USE_BNT:
+        lmax = 1530
+    else:
+        lmax = 1535
     
     run_suffix = f"_run{RUN_NUMBER}" if RUN_NUMBER is not None else ""
+    bnt_prefix = "bnt_" if USE_BNT else ""
+    
+    # For BNT mode, upper_cut applies only to bin 1, others use 1024
+    # Use underscore-separated format (no brackets/spaces/commas)
+    if USE_BNT:
+        cut_spec = f"l100-{upper_cut}_1024_1024_1024"
+    else:
+        cut_spec = f"l100-{upper_cut}"
     
     filename = (
-        f"posterior_samples_ps_auto_cross_nobaryons_vs_{fiducial_type}_"
-        f"bins1234_l100-{upper_cut}_r10_masked_{int(mask_area)}sqdeg_apod2.0_master_noisy_s0.26{run_suffix}.npy"
+        f"posterior_samples_{bnt_prefix}ps_auto_cross_nobaryons_vs_{fiducial_type}_"
+        f"bins1234_{cut_spec}_r10_masked_{int(mask_area)}sqdeg_apod2.0_master_noisy_s0.26{run_suffix}.npy"
     )
     return SAMPLES_DIR / filename
 
@@ -82,19 +99,25 @@ def compute_tension(mcsamples1, mcsamples2):
         return None, None, None, None
 
 def main():
-    global RUN_NUMBER
+    global RUN_NUMBER, USE_BNT
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Compute tension statistics between nobaryons and baryonified posteriors")
     parser.add_argument("--run", type=int, default=None,
                         help="Run number to load samples with '_runN' suffix")
+    parser.add_argument("--bnt", action="store_true",
+                        help="Use BNT-transformed data samples")
     args = parser.parse_args()
     
     RUN_NUMBER = args.run
+    USE_BNT = args.bnt
     run_suffix = f"_run{RUN_NUMBER}" if RUN_NUMBER is not None else ""
+    bnt_suffix = "_bnt" if USE_BNT else ""
     
     print("="*80)
     print("Computing Tension Statistics: nobaryons vs baryonified")
+    if USE_BNT:
+        print("MODE: BNT-transformed data")
     if RUN_NUMBER is not None:
         print(f"RUN NUMBER: {RUN_NUMBER}")
     print("="*80)
@@ -163,8 +186,8 @@ def main():
     output_dir = Path("outputs/tension_analysis")
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    csv_full = output_dir / f"tension_nobaryons_vs_baryonified_full_6params{run_suffix}.csv"
-    csv_subset = output_dir / f"tension_nobaryons_vs_baryonified_subset_3params{run_suffix}.csv"
+    csv_full = output_dir / f"tension{bnt_suffix}_nobaryons_vs_baryonified_full_6params{run_suffix}.csv"
+    csv_subset = output_dir / f"tension{bnt_suffix}_nobaryons_vs_baryonified_subset_3params{run_suffix}.csv"
     
     df_full.to_csv(csv_full, index=False, float_format='%.5f')
     df_subset.to_csv(csv_subset, index=False, float_format='%.5f')
@@ -199,7 +222,7 @@ def main():
         print()
         
         # Save pivot table
-        pivot_csv_full = output_dir / f"tension_nobaryons_vs_baryonified_full_6params_pivot{run_suffix}.csv"
+        pivot_csv_full = output_dir / f"tension{bnt_suffix}_nobaryons_vs_baryonified_full_6params_pivot{run_suffix}.csv"
         pivot_full.to_csv(pivot_csv_full, float_format='%.3f')
         print(f"Saved pivot table to: {pivot_csv_full}")
         print()
@@ -213,7 +236,7 @@ def main():
         print()
         
         # Save pivot table
-        pivot_csv_subset = output_dir / f"tension_nobaryons_vs_baryonified_subset_3params_pivot{run_suffix}.csv"
+        pivot_csv_subset = output_dir / f"tension{bnt_suffix}_nobaryons_vs_baryonified_subset_3params_pivot{run_suffix}.csv"
         pivot_subset.to_csv(pivot_csv_subset, float_format='%.3f')
         print(f"Saved pivot table to: {pivot_csv_subset}")
         print()
