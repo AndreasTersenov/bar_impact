@@ -10,9 +10,11 @@ This script submits jobs with different combinations of:
 Jobs are distributed across GPUs 0, 1, 2 and run in parallel (one job per GPU at a time).
 
 Usage:
-  python scripts/submit_npe_inference_parameter_sweep_parallel.py [--run N]
+  python scripts/submit_npe_inference_parameter_sweep_parallel.py [--run N] [--rerun] [--bnt]
   
   --run N: Optional run number to append to output filenames (for multiple runs)
+  --rerun: Rerun all jobs even if output files already exist
+  --bnt: Use BNT-transformed data
 """
 
 import subprocess
@@ -38,15 +40,44 @@ FIXED_PARAMS = {
 
 # Variable parameters
 FIDUCIAL_TYPES = ["nobaryons", "baryonified"]
-UPPER_CUTS = list(range(520, 1021, 20))  # 520, 540, ..., 1000, 1020
-MASK_AREAS = [2000.0, 5000.0, 10000.0, 14000.0, 28000.0]
-GPUS = [0, 1, 2]
+UPPER_CUTS = list(range(340, 1021, 20))  # 340, 360, ..., 1000, 1020
+MASK_AREAS = [2000.0, 5000.0, 10000.0, 14000.0, 28000.0, 35000.0]
+GPUS = [0, 1]
 
 # Log directory
 LOG_DIR = Path("logs/npe_parameter_sweep")
 
+# Samples directory (where outputs are saved)
+SAMPLES_DIR = Path("/home/tersenov/software/bar_impact/outputs/samples")
+
 # Run number (set via command line)
 RUN_NUMBER = None
+
+# BNT flag (set via command line)
+USE_BNT = False
+
+def get_expected_output_filename(fiducial_type, upper_cut, mask_area):
+    """Construct the expected output filename for a job."""
+    run_suffix = f"_run{RUN_NUMBER}" if RUN_NUMBER is not None else ""
+    bnt_prefix = "bnt_" if USE_BNT else ""
+    
+    # For BNT mode, upper_cut applies only to bin 1, others use 1024
+    # Use underscore-separated format (no brackets/spaces/commas)
+    if USE_BNT:
+        cut_spec = f"l100-{upper_cut}_1024_1024_1024"
+    else:
+        cut_spec = f"l100-{upper_cut}"
+    
+    filename = (
+        f"posterior_samples_{bnt_prefix}ps_auto_cross_nobaryons_vs_{fiducial_type}_"
+        f"bins1234_{cut_spec}_r10_masked_{int(mask_area)}sqdeg_apod2.0_master_noisy_s0.26{run_suffix}.npy"
+    )
+    return SAMPLES_DIR / filename
+
+def check_output_exists(fiducial_type, upper_cut, mask_area):
+    """Check if the output file for this job already exists."""
+    output_path = get_expected_output_filename(fiducial_type, upper_cut, mask_area)
+    return output_path.exists()
 
 def build_command(fiducial_type, upper_cut, mask_area, gpu):
     """Build the command string for a specific parameter combination."""
@@ -60,15 +91,33 @@ def build_command(fiducial_type, upper_cut, mask_area, gpu):
         else:
             cmd_parts.append(f"--{key} {value}")
     
-    # Add lmax based on mask_area: 1530 for 14000.0, 1535 for others
-    lmax = "1530" if mask_area == 14000.0 else "1535"
+    # Add lmax based on mask_area and BNT mode
+    # For 14000.0 mask: 1530 for no-BNT, 1535 for BNT
+    # For other masks: always 1535
+    if mask_area == 14000.0 and not USE_BNT:
+        lmax = "1530"
+    else:
+        lmax = "1535"
     cmd_parts.append(f"--lmax {lmax}")
     
     # Add variable parameters
     cmd_parts.append(f"--fiducial-type {fiducial_type}")
-    cmd_parts.append(f"--upper-cut {upper_cut}")
+    
+    # Handle upper cut configuration
+    if USE_BNT:
+        # For BNT: variable upper cut for bin 1, fixed 1024 for bins 2,3,4
+        cmd_parts.append(f"--upper-cuts {upper_cut},1024,1024,1024")
+    else:
+        # Standard case: same upper cut for all bins
+        cmd_parts.append(f"--upper-cut {upper_cut}")
+    
     cmd_parts.append(f"--mask-area-sqdeg {mask_area}")
     cmd_parts.append(f"--gpu {gpu}")
+    
+    # Add BNT flag if specified
+    if USE_BNT:
+        cmd_parts.append("--bnt")
+        cmd_parts.append("--bnt-bins 0,1,2,3")
     
     # Add run number if specified
     if RUN_NUMBER is not None:
@@ -111,19 +160,27 @@ def check_processes(active_jobs):
     return completed
 
 def main():
-    global RUN_NUMBER, LOG_DIR
+    global RUN_NUMBER, LOG_DIR, USE_BNT
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Submit NPE inference parameter sweep jobs")
     parser.add_argument("--run", type=int, default=None,
                         help="Run number to append to output filenames (for multiple runs)")
+    parser.add_argument("--rerun", action="store_true",
+                        help="Rerun all jobs even if output files already exist")
+    parser.add_argument("--bnt", action="store_true",
+                        help="Use BNT-transformed data")
     args = parser.parse_args()
     
     RUN_NUMBER = args.run
+    USE_BNT = args.bnt
     
-    # Update log directory with run number if specified
+    # Update log directory with run number and BNT if specified
+    bnt_suffix = "_bnt" if USE_BNT else ""
     if RUN_NUMBER is not None:
-        LOG_DIR = Path(f"logs/npe_parameter_sweep_run{RUN_NUMBER}")
+        LOG_DIR = Path(f"logs/npe_parameter_sweep{bnt_suffix}_run{RUN_NUMBER}")
+    elif USE_BNT:
+        LOG_DIR = Path(f"logs/npe_parameter_sweep{bnt_suffix}")
     
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     
@@ -134,20 +191,46 @@ def main():
         MASK_AREAS
     ))
     
-    total_jobs = len(all_combinations)
+    # Filter out jobs that already have output files (unless --rerun is specified)
+    jobs_to_run = []
+    skipped_jobs = []
+    if args.rerun:
+        jobs_to_run = list(all_combinations)
+    else:
+        for combo in all_combinations:
+            fiducial_type, upper_cut, mask_area = combo
+            if check_output_exists(fiducial_type, upper_cut, mask_area):
+                skipped_jobs.append(combo)
+            else:
+                jobs_to_run.append(combo)
+    
+    total_jobs = len(jobs_to_run)
+    total_original = len(all_combinations)
     print("="*80)
     print("NPE Inference Parameter Sweep - PARALLEL EXECUTION")
+    if USE_BNT:
+        print("MODE: BNT-transformed data")
     if RUN_NUMBER is not None:
         print(f"RUN NUMBER: {RUN_NUMBER}")
+    if args.rerun:
+        print("RERUN MODE: Running all jobs regardless of existing outputs")
     print("="*80)
-    print(f"Total jobs to submit: {total_jobs}")
+    print(f"Total parameter combinations: {total_original}")
+    if not args.rerun:
+        print(f"  Already completed (skipping): {len(skipped_jobs)}")
+    print(f"  Jobs to run: {total_jobs}")
     print(f"  Fiducial types: {FIDUCIAL_TYPES}")
     print(f"  Upper cuts: {len(UPPER_CUTS)} values ({UPPER_CUTS[0]} to {UPPER_CUTS[-1]})")
     print(f"  Mask areas: {MASK_AREAS}")
     print(f"  GPUs: {GPUS} (running {len(GPUS)} jobs in parallel)")
-    print(f"  Batches: {(total_jobs + len(GPUS) - 1) // len(GPUS)}")
+    if total_jobs > 0:
+        print(f"  Batches: {(total_jobs + len(GPUS) - 1) // len(GPUS)}")
     print(f"  Log directory: {LOG_DIR}")
     print("="*80)
+    
+    if total_jobs == 0:
+        print("\nAll jobs already completed! Nothing to run.")
+        return
     
     # Ask for confirmation
     response = input("\nProceed with job submission? (yes/no): ")
@@ -159,7 +242,7 @@ def main():
     
     # Track active jobs: gpu -> (process, log_file, job_info)
     active_jobs = {}
-    job_queue = list(enumerate(all_combinations, start=1))
+    job_queue = list(enumerate(jobs_to_run, start=1))
     completed_count = 0
     
     start_time = time.time()
