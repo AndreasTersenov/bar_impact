@@ -121,7 +121,7 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
 def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
                 min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False,
                 apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
-                force_overwrite=False):
+                force_overwrite=False, min_snr_coarse=100, max_snr_coarse=200):
     """
     Process a single file: extract kappa maps for all bins, apply BNT transform, 
     compute L1 norms for the specified BNT bin, and save results.
@@ -178,7 +178,8 @@ def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
         kgs_bnt = BNT_MATRIX @ kgs  # This is the key step from the notebook
         
         _, l1norms = get_wtl1_sphere(
-            kgs_bnt[bnt_bin], nscales=5, nbins=40, Mask=mask, min_snr=min_snr, max_snr=max_snr, noise_std=noise_std
+            kgs_bnt[bnt_bin], nscales=5, nbins=40, Mask=mask, min_snr=min_snr, max_snr=max_snr, 
+            noise_std=noise_std, min_snr_coarse=min_snr_coarse, max_snr_coarse=max_snr_coarse
         )
         
         # Save results
@@ -234,6 +235,10 @@ def main():
                         help="Minimum SNR value.")
     parser.add_argument("--max-snr", type=float, default=13, 
                         help="Maximum SNR value.")
+    parser.add_argument("--min-snr-coarse", type=str, default="10,40,100,150",
+                        help="Comma-separated min SNR values for coarse scale per BNT bin (default: '10,40,100,150' for bins 0-3).")
+    parser.add_argument("--max-snr-coarse", type=str, default="50,100,200,300",
+                        help="Comma-separated max SNR values for coarse scale per BNT bin (default: '50,100,200,300' for bins 0-3).")
     parser.add_argument("--noise-std", type=float, default=0.0146,
                         help="Noise standard deviation for wavelet normalization.")
     
@@ -267,6 +272,19 @@ def main():
         if bnt_bin < 0 or bnt_bin > 3:
             print(f"Error: BNT bin {bnt_bin} is out of range [0, 3].")
             return
+    
+    # Parse per-bin coarse SNR ranges
+    min_snr_coarse_list = [float(x.strip()) for x in args.min_snr_coarse.split(',')]
+    max_snr_coarse_list = [float(x.strip()) for x in args.max_snr_coarse.split(',')]
+    coarse_snr_min = {i: min_snr_coarse_list[i] for i in range(len(min_snr_coarse_list))}
+    coarse_snr_max = {i: max_snr_coarse_list[i] for i in range(len(max_snr_coarse_list))}
+    
+    print(f"Coarse scale SNR ranges per BNT bin:")
+    for b in bnt_bin_numbers:
+        if b in coarse_snr_min and b in coarse_snr_max:
+            print(f"  BNT bin {b}: [{coarse_snr_min[b]}, {coarse_snr_max[b]}]")
+        else:
+            print(f"  BNT bin {b}: using defaults (no custom range specified)")
     
     # Convert mask_center to tuple
     mask_center = tuple(args.mask_center)
@@ -350,6 +368,11 @@ def main():
             suffix = f"_bnt_l1_norms_bin{bnt_bin+1}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
         print(f"Output suffix: {suffix}")
         
+        # Get coarse SNR range for this bin (with fallback defaults)
+        bin_min_snr_coarse = coarse_snr_min.get(bnt_bin, 100)
+        bin_max_snr_coarse = coarse_snr_max.get(bnt_bin, 200)
+        print(f"Using coarse scale SNR range: [{bin_min_snr_coarse}, {bin_max_snr_coarse}]")
+        
         # Process files in parallel with progress bar
         with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
             process_func = partial(
@@ -359,6 +382,8 @@ def main():
                 add_noise=not args.no_noise,
                 min_snr=args.min_snr,
                 max_snr=args.max_snr,
+                min_snr_coarse=bin_min_snr_coarse,
+                max_snr_coarse=bin_max_snr_coarse,
                 noise_std=args.noise_std,
                 verbose=args.verbose,
                 apply_mask=args.apply_mask,
