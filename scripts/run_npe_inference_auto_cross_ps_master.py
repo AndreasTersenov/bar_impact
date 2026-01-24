@@ -251,8 +251,12 @@ def construct_auto_paths(args):
     
     # Parse bin options
     if args.bnt:
-        bin_indices = [int(b) for b in args.bnt_bins.split(',')]
-        bin_desc = f"bnt_bins{''.join(map(str, bin_indices))}"
+        # BNT mode: bnt_bins are 0-indexed, but files use 1-indexed bin numbers
+        bnt_bin_indices = [int(b) for b in args.bnt_bins.split(',')]
+        # For file paths, convert to 1-indexed: bnt_bin 0 -> bin 1, etc.
+        bin_indices = [b + 1 for b in bnt_bin_indices]
+        # bin_desc for cross spectra files uses regular "bins" format with 1-indexed numbers
+        bin_desc = f"bins{''.join(map(str, bin_indices))}"
         map_type = args.simulation_type
     else:
         bin_indices = [int(b) for b in args.bins.split(',')]
@@ -268,8 +272,9 @@ def construct_auto_paths(args):
     
     for i, bin_idx in enumerate(bin_indices):
         if args.bnt:
-            data_filename = f"all_cls_grid_{map_type}_bnt{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
-            fiducial_filename = f"all_cls_fiducial_{args.fiducial_type}_bnt{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+            # BNT mode: use "all_bnt_cls_" prefix with 1-indexed bin number
+            data_filename = f"all_bnt_cls_grid_{map_type}_bin{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+            fiducial_filename = f"all_bnt_cls_fiducial_{args.fiducial_type}_bin{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         else:
             data_filename = f"all_cls_grid_{map_type}_bin{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
             fiducial_filename = f"all_cls_fiducial_{args.fiducial_type}_bin{bin_idx}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
@@ -286,8 +291,9 @@ def construct_cross_paths(args, bin_desc):
     lmax_suffix = f"_lmax{args.lmax}" if args.lmax != 1024 else ""
     
     if args.bnt:
-        data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
-        fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+        # BNT mode: use "all_bnt_cross_cls_" prefix with regular bin_desc (bins1234)
+        data_filename = f"all_bnt_cross_cls_grid_{args.simulation_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+        fiducial_filename = f"all_bnt_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
     else:
         data_filename = f"all_cross_cls_grid_{args.simulation_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
         fiducial_filename = f"all_cross_cls_fiducial_{args.fiducial_type}_{bin_desc}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
@@ -944,12 +950,20 @@ def main():
     # Process power spectra description
     if len(set(upper_cuts)) == 1:
         ps_desc = f"l{args.lower_cut}-{args.upper_cut}"
+        # For checkpoint path (filesystem-safe): same format
+        ps_desc_checkpoint = ps_desc
         if args.rebin > 1:
             ps_desc += f"_r{args.rebin}"
+            ps_desc_checkpoint += f"_r{args.rebin}"
     else:
+        # For display/filename: use list format [340, 1024, 1024, 1024]
         ps_desc = f"l{args.lower_cut}-{upper_cuts}"
+        # For checkpoint path: use underscore-separated format to avoid brackets
+        cuts_str = "_".join(map(str, upper_cuts))
+        ps_desc_checkpoint = f"l{args.lower_cut}-{cuts_str}"
         if args.rebin > 1:
             ps_desc += f"_r{args.rebin}"
+            ps_desc_checkpoint += f"_r{args.rebin}"
     print(f"Processing power spectra with: {ps_desc}")
     
     # Save the full datavector set for verification
@@ -1023,9 +1037,9 @@ def main():
     
     # Add BNT prefix to checkpoint name if using BNT data
     if args.bnt:
-        checkpoint_name = f"cosmoGRID_bnt_ps_weights_{args.simulation_type}_{bin_desc}_{ps_desc}"
+        checkpoint_name = f"cosmoGRID_bnt_ps_weights_{args.simulation_type}_{bin_desc}_{ps_desc_checkpoint}"
     else:
-        checkpoint_name = f"cosmoGRID_ps_weights_{args.simulation_type}_{bin_desc}_{ps_desc}"
+        checkpoint_name = f"cosmoGRID_ps_weights_{args.simulation_type}_{bin_desc}_{ps_desc_checkpoint}"
 
     if args.masked:
         checkpoint_name += args.mask_suffix
@@ -1145,7 +1159,7 @@ def main():
     
     bnt_prefix = "bnt_" if args.bnt else ""
     bnt_abs_suffix = "_abs" if (args.bnt and hasattr(args, 'bnt_cross_abs') and args.bnt_cross_abs) else ""
-    plot_filename = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}"
+    plot_filename = f"posterior_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc_checkpoint}{bnt_abs_suffix}"
     if args.masked:
         plot_filename += args.mask_suffix
     if args.noisy:
@@ -1158,7 +1172,7 @@ def main():
     print(f"Saved plot to {os.path.join(args.output_dir, plot_filename)}")
 
     # Save posterior samples with descriptive filename
-    samples_filename = f"posterior_samples_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc}{bnt_abs_suffix}"
+    samples_filename = f"posterior_samples_{bnt_prefix}ps_{spectra_type}_{args.simulation_type}_vs_{args.fiducial_type}_{bin_desc}_{ps_desc_checkpoint}{bnt_abs_suffix}"
     if args.masked:
         samples_filename += args.mask_suffix
     if args.noisy:
