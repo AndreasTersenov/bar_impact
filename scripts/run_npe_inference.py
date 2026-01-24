@@ -91,6 +91,8 @@ def parse_arguments():
                         help="Which scale index to analyze (0-indexed). Use for single scale analysis.")
     scale_group.add_argument("--scales", type=str, 
                         help="Comma-separated list of scale indices to analyze (0-indexed). Use for multi-scale analysis.")
+    scale_group.add_argument("--scales-per-bin", type=str,
+                        help="Semicolon-separated list of scale configurations per bin, e.g., '1,2,3;0,1,2,3;0,1,2,3;0,1,2,3' for different scales per bin.")
     
     # Datavector bin range selection
     bin_range_group = parser.add_mutually_exclusive_group(required=False)
@@ -130,6 +132,8 @@ def parse_arguments():
                         help="Number of posterior samples to generate")
     parser.add_argument("--random-seed", type=int, default=1, 
                         help="Random seed for sampling")
+    parser.add_argument("--run", type=int, default=None,
+                        help="Run number to append to output filenames (for multiple runs)")
     
     # Coverage testing parameters
     parser.add_argument("--run-coverage-test", action="store_true",
@@ -294,6 +298,96 @@ def run_tarp_coverage_test(posterior, combined_data_vector, params, args):
     print("="*60 + "\n")
     
     return ecp, alpha
+
+
+def train_with_nan_retry(inference, checkpoint_path, args, params, data, max_retries=10):
+    """
+    Train NPE with automatic retry if loss is NaN.
+    
+    Args:
+        inference: NPE inference object with simulations already appended
+        checkpoint_path: Path to save model checkpoints
+        args: Command-line arguments containing training parameters
+        params: Parameter array for reinitializing if needed
+        data: Data array for reinitializing if needed
+        max_retries: Maximum number of training attempts (default: 10)
+        
+    Returns:
+        inference: The trained inference object
+        metrics: Training metrics from successful run
+        density_estimator: Trained density estimator
+        
+    Raises:
+        RuntimeError: If all retry attempts fail
+    """
+    for attempt in range(1, max_retries + 1):
+        print(f"\n{'='*60}")
+        print(f"Training attempt {attempt}/{max_retries}")
+        print(f"{'='*60}")
+        
+        try:
+            # Train for full epochs
+            print(f"Training for {args.epochs} epochs...")
+            metrics, density_estimator = inference.train(
+                checkpoint_path=checkpoint_path,
+                num_epochs=args.epochs,
+                learning_rate=args.learning_rate,
+                training_batch_size=args.batch_size
+            )
+            
+            # Check if training or validation loss contains NaN
+            # Note: We only check train_loss and val_loss, NOT test_loss
+            # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
+            has_nan = False
+            nan_source = None
+            
+            # Check training loss (indicates bad initialization)
+            if hasattr(metrics, 'train_loss'):
+                train_loss = metrics.train_loss
+                if isinstance(train_loss, (list, np.ndarray)):
+                    if np.any(np.isnan(train_loss)):
+                        has_nan = True
+                        nan_source = 'training loss'
+                elif np.isnan(train_loss):
+                    has_nan = True
+                    nan_source = 'training loss'
+            
+            # Check validation loss (indicates training instability)
+            if not has_nan and hasattr(metrics, 'val_loss'):
+                val_loss = metrics.val_loss
+                if isinstance(val_loss, (list, np.ndarray)):
+                    if np.any(np.isnan(val_loss)):
+                        has_nan = True
+                        nan_source = 'validation loss'
+                elif np.isnan(val_loss):
+                    has_nan = True
+                    nan_source = 'validation loss'
+            
+            # Warn about test loss NaN but don't trigger retry
+            if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
+                print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
+            
+            if has_nan:
+                print(f"⚠ NaN detected in {nan_source} during attempt {attempt}. Reinitializing...")
+                # Reinitialize the inference object for a fresh start
+                inference = NPE()
+                inference = inference.append_simulations(params, data)
+                continue
+            
+            print(f"✓ Training completed successfully on attempt {attempt}")
+            return inference, metrics, density_estimator
+            
+        except Exception as e:
+            print(f"⚠ Error during training attempt {attempt}: {e}")
+            if attempt == max_retries:
+                raise
+            print("Retrying...")
+            # Reinitialize for retry
+            inference = NPE()
+            inference = inference.append_simulations(params, data)
+    
+    raise RuntimeError(f"Training failed after {max_retries} attempts due to persistent NaN loss")
+
 
 def plot_tarp_coverage(ecp, alpha, args, output_dir, filename_base):
     """
@@ -462,8 +556,47 @@ def main():
     # Parse bin ranges
     bin_ranges = parse_bin_ranges(args, num_redshift_bins)
 
-    # Extract scale data - either single scale or multiple scales
-    if args.scales:
+    # Extract scale data - either single scale, multiple scales, or per-bin scales
+    if args.scales_per_bin:
+        # Parse semicolon-separated scale configurations per bin
+        scales_per_bin = [[int(s.strip()) for s in bin_scales.split(',')] 
+                          for bin_scales in args.scales_per_bin.split(';')]
+        
+        if len(scales_per_bin) != num_redshift_bins:
+            raise ValueError(f"Number of scale configurations ({len(scales_per_bin)}) must match number of bins ({num_redshift_bins})")
+        
+        # Create scale description (use first bin's scales for naming, indicate per-bin)
+        first_bin_scales = scales_per_bin[0]
+        scale_desc = f"scales{''.join([str(s+1) for s in first_bin_scales])}_perbin"
+        print(f"Using per-bin scales:")
+        for i, bin_scales in enumerate(scales_per_bin):
+            print(f"  Bin {i+1}: scales {[s+1 for s in bin_scales]}")
+        
+        # Process each bin's data with its specific scales
+        bin_data_list = []
+        for i, (l1_full, scale_indices) in enumerate(zip(l1_full_bins, scales_per_bin)):
+            # Extract and concatenate scales for this bin
+            l1_scales = []
+            for scale_idx in scale_indices:
+                scale_data = l1_full[:, scale_idx]
+                
+                # Apply bin range if specified
+                if bin_ranges:
+                    start_bin, end_bin = bin_ranges[i]
+                    scale_data = scale_data[:, start_bin:end_bin+1]
+                    print(f"Applied bin range [{start_bin}:{end_bin}] to redshift bin {i+1}, scale {scale_idx+1}")
+                
+                l1_scales.append(scale_data)
+            
+            # Concatenate along feature dimension
+            bin_data = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
+                                      for scale_data in l1_scales], axis=1)
+            bin_data_list.append(bin_data)
+        
+        # Now concatenate all bins together
+        l1_scale = np.concatenate(bin_data_list, axis=1)
+        
+    elif args.scales:
         # Parse comma-separated scales
         scale_indices = [int(s.strip()) for s in args.scales.split(',')]
         scale_desc = f"scales{''.join([str(s+1) for s in scale_indices])}"
@@ -561,12 +694,14 @@ def main():
 
     # Train or load the model
     if args.train:
-        print(f"Starting NPE training for {args.epochs} epochs...")
-        metrics, density_estimator = inference.train(
+        print(f"Starting NPE training for {args.epochs} epochs (with NaN retry)...")
+        inference, metrics, density_estimator = train_with_nan_retry(
+            inference=inference,
             checkpoint_path=checkpoint_path,
-            num_epochs=args.epochs,
-            learning_rate=args.learning_rate,
-            training_batch_size=args.batch_size
+            args=args,
+            params=params,
+            data=l1_scale,
+            max_retries=10
         )
         print("Training completed")
     else:
@@ -602,6 +737,8 @@ def main():
             else:
                 range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
                 coverage_filename_base += range_desc
+        if args.run is not None:
+            coverage_filename_base += f"_run{args.run}"
         
         plot_tarp_coverage(ecp, alpha, args, args.output_dir, coverage_filename_base)
 
@@ -615,7 +752,27 @@ def main():
     
     # Process fiducial data according to scale selection
     fid_data_list = []
-    if args.scales:
+    if args.scales_per_bin:
+        # Extract and concatenate scales for each bin's fiducial with per-bin configuration
+        scales_per_bin = [[int(s.strip()) for s in bin_scales.split(',')] 
+                          for bin_scales in args.scales_per_bin.split(';')]
+        for i, (fid_mean, scale_indices) in enumerate(zip(fid_means, scales_per_bin)):
+            bin_fid_scales = []
+            for scale_idx in scale_indices:
+                scale_data = fid_mean[scale_idx]
+                
+                # Apply bin range if specified
+                if bin_ranges:
+                    start_bin, end_bin = bin_ranges[i]
+                    scale_data = scale_data[start_bin:end_bin+1]
+                
+                bin_fid_scales.append(scale_data)
+            
+            # Concatenate scales for this bin's fiducial
+            bin_fid_data = np.concatenate([scale_data.reshape(-1) 
+                                         for scale_data in bin_fid_scales])
+            fid_data_list.append(bin_fid_data)
+    elif args.scales:
         # Extract and concatenate scales for each bin's fiducial
         for i, fid_mean in enumerate(fid_means):
             bin_fid_scales = []
@@ -712,6 +869,8 @@ def main():
             # Individual bin ranges
             range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
             plot_filename += range_desc
+    if args.run is not None:
+        plot_filename += f"_run{args.run}"
     plot_filename += ".pdf"
     
     plt.savefig(os.path.join(args.output_dir, plot_filename), transparent=True)
@@ -735,6 +894,8 @@ def main():
             # Individual bin ranges
             range_desc = "_binranges" + "-".join([f"{start}-{end}" for start, end in bin_ranges])
             samples_filename += range_desc
+    if args.run is not None:
+        samples_filename += f"_run{args.run}"
     samples_filename += "_npe.npy"
     
     np.save(os.path.join(args.samples_dir, samples_filename), samples_bin_scale.samples)

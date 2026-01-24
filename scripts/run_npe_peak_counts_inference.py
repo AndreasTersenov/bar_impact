@@ -53,6 +53,10 @@ def parse_arguments():
                         help="Which scale index to analyze (0-indexed). Use for single scale analysis.")
     scale_group.add_argument("--scales", type=str, 
                         help="Comma-separated list of scale indices to analyze (0-indexed). Use for multi-scale analysis.")
+    scale_group.add_argument("--scales-per-bin", type=str,
+                        help="Semicolon-separated scale specifications per bin (0-indexed). "
+                             "E.g., '1,2,3;0,1,2,3;0,1,2,3;0,1,2,3' applies scales [1,2,3] to bin 1, "
+                             "[0,1,2,3] to bins 2,3,4. Use for BNT analysis with different cuts per bin.")
     
     parser.add_argument("--noisy", action="store_true", 
                         help="Use noisy datavectors")
@@ -81,6 +85,8 @@ def parse_arguments():
                         help="Number of posterior samples to generate")
     parser.add_argument("--random-seed", type=int, default=1, 
                         help="Random seed for sampling")
+    parser.add_argument("--run", type=int, default=None,
+                        help="Run number to append to output filenames (for multiple runs)")
     
     # Coverage testing parameters
     parser.add_argument("--run-coverage-test", action="store_true",
@@ -137,6 +143,85 @@ def parse_arguments():
     args.mask_label = mask_label
     
     return args
+
+def train_with_nan_retry(inference, checkpoint_path, args, params, data, max_retries=10):
+    """
+    Train NPE with automatic retry on NaN loss.
+    
+    Sometimes the loss initializes at NaN due to bad random initialization.
+    This function will retry training with a fresh initialization if NaN is detected.
+    
+    Args:
+        inference: NPE inference object (will be recreated on retry)
+        checkpoint_path: Path to save checkpoints
+        args: Command-line arguments
+        params: Parameter array
+        data: Data array
+        max_retries: Maximum number of retry attempts
+    
+    Returns:
+        tuple: (inference, metrics, density_estimator) on success
+    
+    Raises:
+        RuntimeError: If all retry attempts fail
+    """
+    for attempt in range(1, max_retries + 1):
+        print(f"\n{'='*60}")
+        print(f"Training attempt {attempt}/{max_retries}")
+        print(f"{'='*60}")
+        
+        print(f"Training for {args.epochs} epochs...")
+        metrics, density_estimator = inference.train(
+            checkpoint_path=checkpoint_path,
+            num_epochs=args.epochs,
+            learning_rate=args.learning_rate,
+            training_batch_size=args.batch_size
+        )
+        
+        # Check for NaN in training or validation loss only
+        # Note: We only check train_loss and val_loss, NOT test_loss
+        # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
+        has_nan = False
+        nan_source = None
+        
+        # Check training loss (indicates bad initialization)
+        if hasattr(metrics, 'train_loss'):
+            train_loss = metrics.train_loss
+            if isinstance(train_loss, (list, np.ndarray)):
+                if np.any(np.isnan(train_loss)):
+                    has_nan = True
+                    nan_source = 'training loss'
+            elif np.isnan(train_loss):
+                has_nan = True
+                nan_source = 'training loss'
+        
+        # Check validation loss (indicates training instability)
+        if not has_nan and hasattr(metrics, 'val_loss'):
+            val_loss = metrics.val_loss
+            if isinstance(val_loss, (list, np.ndarray)):
+                if np.any(np.isnan(val_loss)):
+                    has_nan = True
+                    nan_source = 'validation loss'
+            elif np.isnan(val_loss):
+                has_nan = True
+                nan_source = 'validation loss'
+        
+        # Warn about test loss NaN but don't trigger retry
+        if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
+            print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
+            
+        if not has_nan:
+            print(f"✓ Training completed successfully on attempt {attempt}")
+            return inference, metrics, density_estimator
+        
+        print(f"⚠ NaN detected in {nan_source} during attempt {attempt}. Reinitializing...")
+        
+        if attempt < max_retries:
+            # Reinitialize NPE for next attempt
+            inference = NPE()
+            inference = inference.append_simulations(params, data)
+    
+    raise RuntimeError(f"Training failed after {max_retries} attempts due to NaN loss")
 
 def run_tarp_coverage_test(posterior, combined_data_vector, params, args):
     """
@@ -388,8 +473,36 @@ def main():
         peak_counts_full_bins.append(peak_counts_full)
         print(f"Loaded peak counts data from {peak_counts_path}, shape: {peak_counts_full.shape}")
 
-    # Extract scale data - either single scale or multiple scales
-    if args.scales:
+    # Extract scale data - either single scale, multiple scales, or per-bin scales
+    if args.scales_per_bin:
+        # Parse semicolon-separated per-bin scale specifications
+        scales_per_bin = [[int(s.strip()) for s in bin_scales.split(',')] 
+                          for bin_scales in args.scales_per_bin.split(';')]
+        scale_desc = f"scales{''.join([str(s+1) for s in scales_per_bin[0]])}_perbin"
+        print(f"Using per-bin scales configuration: {scales_per_bin}")
+        
+        # Verify we have the right number of scale specs for the bins
+        if len(scales_per_bin) != len(peak_counts_full_bins):
+            raise ValueError(f"Number of per-bin scale specs ({len(scales_per_bin)}) must match number of bins ({len(peak_counts_full_bins)})")
+        
+        # Process each bin's data with its specific scale selection
+        bin_data_list = []
+        for bin_idx, (peak_counts_full, scale_indices) in enumerate(zip(peak_counts_full_bins, scales_per_bin)):
+            # Extract and concatenate scales for this bin
+            peak_counts_scales = []
+            for scale_idx in scale_indices:
+                peak_counts_scales.append(peak_counts_full[:, scale_idx])
+            
+            # Concatenate along feature dimension (axis=1)
+            bin_data = np.concatenate([scale_data.reshape(scale_data.shape[0], -1) 
+                                      for scale_data in peak_counts_scales], axis=1)
+            bin_data_list.append(bin_data)
+            print(f"Bin {bin_idx}: using scales {[s+1 for s in scale_indices]}, shape: {bin_data.shape}")
+        
+        # Now concatenate all bins together
+        peak_counts_scale = np.concatenate(bin_data_list, axis=1)
+        
+    elif args.scales:
         # Parse comma-separated scales
         scale_indices = [int(s.strip()) for s in args.scales.split(',')]
         scale_desc = f"scales{''.join([str(s+1) for s in scale_indices])}"
@@ -457,16 +570,18 @@ def main():
 
     # Train or load the model
     if args.train:
-        print(f"Starting NPE training for {args.epochs} epochs...")
+        print(f"Starting NPE training for {args.epochs} epochs (with NaN retry)...")
         print(f"Training data shapes - params: {params.shape}, data: {peak_counts_scale.shape}")
         print(f"Data ranges - params: [{params.min():.3f}, {params.max():.3f}], data: [{peak_counts_scale.min():.3f}, {peak_counts_scale.max():.3f}]")
         
         try:
-            metrics, density_estimator = inference.train(
+            inference, metrics, density_estimator = train_with_nan_retry(
+                inference=inference,
                 checkpoint_path=checkpoint_path,
-                num_epochs=args.epochs,
-                learning_rate=args.learning_rate,
-                training_batch_size=args.batch_size
+                args=args,
+                params=params,
+                data=peak_counts_scale,
+                max_retries=10
             )
             print("Training completed")
         except Exception as e:
@@ -536,7 +651,20 @@ def main():
     
     # Process fiducial data according to scale selection
     fid_data_list = []
-    if args.scales:
+    if args.scales_per_bin:
+        # Extract and concatenate scales for each bin's fiducial with per-bin configuration
+        scales_per_bin = [[int(s.strip()) for s in bin_scales.split(',')] 
+                          for bin_scales in args.scales_per_bin.split(';')]
+        for fid_mean, scale_indices in zip(fid_means, scales_per_bin):
+            bin_fid_scales = []
+            for scale_idx in scale_indices:
+                bin_fid_scales.append(fid_mean[scale_idx])
+            
+            # Concatenate scales for this bin's fiducial
+            bin_fid_data = np.concatenate([scale_data.reshape(-1) 
+                                         for scale_data in bin_fid_scales])
+            fid_data_list.append(bin_fid_data)
+    elif args.scales:
         # Extract and concatenate scales for each bin's fiducial
         for fid_mean in fid_means:
             bin_fid_scales = []
@@ -612,6 +740,8 @@ def main():
         plot_filename += f"_{args.mask_label}"
     if args.new_normalization:
         plot_filename += "_new_normalization"
+    if args.run is not None:
+        plot_filename += f"_run{args.run}"
     plot_filename += ".pdf"
     
     plt.savefig(os.path.join(args.output_dir, plot_filename), transparent=True)
@@ -629,6 +759,8 @@ def main():
         samples_filename += f"_{args.mask_label}"
     if args.new_normalization:
         samples_filename += "_new_normalization"
+    if args.run is not None:
+        samples_filename += f"_run{args.run}"
     samples_filename += "_npe.npy"
     
     np.save(os.path.join(args.samples_dir, samples_filename), samples_bin_scale.samples)
