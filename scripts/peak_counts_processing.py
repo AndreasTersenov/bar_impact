@@ -117,7 +117,7 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
                 noise_std=0.0146, nbins=31, min_val=-2, max_val=6, verbose=False,
                 apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
-                force_overwrite=False):
+                force_overwrite=False, min_snr_coarse=100, max_snr_coarse=200):
     """Process a single file: extract kappa map, apply optional mask, compute peak counts, save results."""
     
     # Define output filename based on bin number, noise level, and mask
@@ -237,8 +237,12 @@ def main():
                         help="Number of bins for the histogram.")
     parser.add_argument("--min-val", type=float, default=-2,
                         help="Minimum value for the histogram bins.")
-    parser.add_argument("--max-val", type=float, default=6,
+    parser.add_argument("--max-val", type=float, default=10,
                         help="Maximum value for the histogram bins.")
+    parser.add_argument("--min-snr-coarse", type=str, default="10,40,100,150",
+                        help="Comma-separated min SNR values for coarse scale per bin (default: '10,40,100,150' for bins 1-4).")
+    parser.add_argument("--max-snr-coarse", type=str, default="50,100,200,300",
+                        help="Comma-separated max SNR values for coarse scale per bin (default: '50,100,200,300' for bins 1-4).")
     
     # Execution options
     parser.add_argument("--num-workers", type=int, default=70,
@@ -304,7 +308,19 @@ def main():
     else:
         bin_numbers = [args.bin_number]
         print(f"Processing single bin: {args.bin_number}")
-    
+
+    # Parse per-bin coarse SNR ranges
+    min_snr_coarse_list = [float(x.strip()) for x in args.min_snr_coarse.split(',')]
+    max_snr_coarse_list = [float(x.strip()) for x in args.max_snr_coarse.split(',')]
+    coarse_snr_min = {i+1: min_snr_coarse_list[i] for i in range(len(min_snr_coarse_list))}
+    coarse_snr_max = {i+1: max_snr_coarse_list[i] for i in range(len(max_snr_coarse_list))}
+    print(f"Coarse scale SNR ranges per bin:")
+    for b in bin_numbers:
+        if b in coarse_snr_min and b in coarse_snr_max:
+            print(f"  Bin {b}: [{coarse_snr_min[b]}, {coarse_snr_max[b]}]")
+        else:
+            print(f"  Bin {b}: using defaults (no custom range specified)")
+
     # Print configuration information
     map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
@@ -371,6 +387,11 @@ def main():
             suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
         print(f"Output suffix: {suffix}")
         
+        # Get coarse SNR range for this bin (with fallback defaults)
+        bin_min_snr_coarse = coarse_snr_min.get(bin_number, 100)
+        bin_max_snr_coarse = coarse_snr_max.get(bin_number, 200)
+        print(f"Using coarse scale SNR range: [{bin_min_snr_coarse}, {bin_max_snr_coarse}]")
+        
         # Process files in parallel with progress bar
         with mp.Pool(processes=args.num_workers, initializer=seed_worker) as pool:
             process_func = partial(
@@ -387,6 +408,8 @@ def main():
                 mask_area_sqdeg=args.mask_area_sqdeg,
                 mask_center=mask_center,
                 force_overwrite=args.force_overwrite,
+                min_snr_coarse=bin_min_snr_coarse,
+                max_snr_coarse=bin_max_snr_coarse,
             )
             results = list(tqdm(
                 pool.imap(process_func, file_paths),
