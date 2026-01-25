@@ -77,10 +77,19 @@ from bar_impact.processing import (
     compute_peak_counts,
 )
 
-# Inference functions (will be implemented in Phase 3)
-# from bar_impact.inference import run_npe_inference
+# Inference classes and functions
+from bar_impact.inference import (
+    NPEInference,
+    NPEConfig,
+    NPEResult,
+    run_npe_inference,
+    CoverageTester,
+    CoverageConfig,
+    CoverageResult,
+    compute_tarp_coverage,
+)
 
-# Analysis functions
+# Analysis functions (will be implemented in Phase 4)
 # from bar_impact.analysis import aggregate_results
 
 __all__ = [
@@ -115,6 +124,16 @@ __all__ = [
     "PeakCountProcessor",
     "PeakCountConfig",
     "compute_peak_counts",
+    # Inference - NPE
+    "NPEInference",
+    "NPEConfig",
+    "NPEResult",
+    "run_npe_inference",
+    # Inference - Coverage
+    "CoverageTester",
+    "CoverageConfig",
+    "CoverageResult",
+    "compute_tarp_coverage",
     # Version
     "__version__",
 ]
