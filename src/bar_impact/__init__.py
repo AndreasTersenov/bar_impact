@@ -16,6 +16,7 @@ Main Features
 Quick Start
 -----------
 >>> from bar_impact.core import ConvergenceMap, SurveyMask
+>>> from bar_impact.processing import PowerSpectrumProcessor, L1NormProcessor
 >>> from bar_impact.constants import BNT_MATRIX_DEFAULT
 >>> 
 >>> # Load a map
@@ -25,6 +26,10 @@ Quick Start
 >>> mask = SurveyMask.create_disk_mask(nside=512, target_area_sqdeg=14000)
 >>> kappa_noisy = kappa.add_shape_noise(sigma_e=0.26)
 >>> kappa_masked = kappa_noisy.apply_mask(mask)
+>>> 
+>>> # Compute statistics
+>>> processor = PowerSpectrumProcessor(lmax=1024)
+>>> cls = processor.process_single(kappa_masked.data)
 """
 
 __version__ = "0.1.0"
@@ -50,12 +55,27 @@ from bar_impact.constants import (
     COSMO_PARAM_NAMES,
 )
 
-# Processing functions (will be implemented in Phase 2)
-# from bar_impact.processing import (
-#     process_l1_norms,
-#     process_power_spectrum,
-#     process_peak_counts,
-# )
+# Processing classes and functions
+from bar_impact.processing import (
+    # Base classes
+    BaseProcessor,
+    ProcessingConfig,
+    # BNT
+    apply_bnt_transform,
+    # Power spectrum
+    PowerSpectrumProcessor,
+    PowerSpectrumConfig,
+    compute_power_spectrum,
+    compute_cross_power_spectrum,
+    # L1 norms
+    L1NormProcessor,
+    L1NormConfig,
+    compute_l1_norms,
+    # Peak counts
+    PeakCountProcessor,
+    PeakCountConfig,
+    compute_peak_counts,
+)
 
 # Inference functions (will be implemented in Phase 3)
 # from bar_impact.inference import run_npe_inference
@@ -78,6 +98,23 @@ __all__ = [
     "DEFAULT_SIGMA_E",
     "DEFAULT_GALAXY_DENSITY",
     "COSMO_PARAM_NAMES",
+    # Processing - Base
+    "BaseProcessor",
+    "ProcessingConfig",
+    "apply_bnt_transform",
+    # Processing - Power spectrum
+    "PowerSpectrumProcessor",
+    "PowerSpectrumConfig",
+    "compute_power_spectrum",
+    "compute_cross_power_spectrum",
+    # Processing - L1 norms
+    "L1NormProcessor",
+    "L1NormConfig",
+    "compute_l1_norms",
+    # Processing - Peak counts
+    "PeakCountProcessor",
+    "PeakCountConfig",
+    "compute_peak_counts",
     # Version
     "__version__",
 ]
