@@ -10,6 +10,7 @@ from typing import Dict, List, Tuple
 
 __all__ = [
     # BNT Transform
+    "BNT_MATRIX",
     "BNT_MATRIX_DEFAULT",
     "get_bnt_matrix",
     # HEALPix defaults
@@ -51,6 +52,9 @@ BNT_MATRIX_DEFAULT: np.ndarray = np.array([
     [0.4521097, -1.4521097,   1.0,        0.0],
     [0.0,        0.25127807, -1.251278,   1.0],
 ], dtype=np.float64)
+
+# Alias for convenience
+BNT_MATRIX = BNT_MATRIX_DEFAULT
 
 
 def get_bnt_matrix(n_bins: int = 4, custom_matrix: np.ndarray = None) -> np.ndarray:
