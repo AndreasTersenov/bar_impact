@@ -102,12 +102,3 @@ __all__ = [
     "compute_pseudo_cls_simple",
     "MCM_CACHE",
 ]
-    # L1 norms
-    "L1NormProcessor",
-    "L1NormConfig",
-    "compute_l1_norms",
-    # Peak counts
-    "PeakCountProcessor",
-    "PeakCountConfig",
-    "compute_peak_counts",
-]
