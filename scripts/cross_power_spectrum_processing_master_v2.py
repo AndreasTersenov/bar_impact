@@ -45,28 +45,15 @@ from bar_impact.constants import (
 )
 from bar_impact.core.masks import SurveyMask
 from bar_impact.utils.noise import add_shape_noise
+from bar_impact.utils.reproducibility import get_deterministic_seed, seed_worker
+from bar_impact.utils.paths import get_data_file_paths
 from bar_impact.processing.master_correction import (
     HAS_NAMASTER,
     compute_power_spectra_master,
     compute_pseudo_cls_simple,
 )
 
-
-def get_deterministic_seed(file_path, global_seed=42):
-    """
-    Generate a deterministic seed from file path and global seed.
-    Ensures reproducibility across runs.
-    """
-    hash_input = f"{file_path}_{global_seed}".encode('utf-8')
-    hash_digest = hashlib.sha256(hash_input).digest()
-    seed = int.from_bytes(hash_digest[:4], byteorder='big')
-    return seed % (2**32)
-
-
-def seed_worker(global_seed):
-    """Initializer for multiprocessing pool with deterministic seeds."""
-    worker_id = mp.current_process()._identity[0] if mp.current_process()._identity else 0
-    np.random.seed((global_seed + worker_id) % (2**32))
+# Note: File processing happens inline (no extract needed - it's script-specific)
 
 
 def process_file(
@@ -361,34 +348,12 @@ def main():
         bin_edges = np.array([int(x) for x in args.bin_edges.split(',')])
         print(f"Using custom bin edges: {bin_edges}")
     
-    # Set base directory
-    if args.base_dir:
-        base_dir = args.base_dir
-    elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
-    else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
-    
-    # Set filename
-    filename = "projected_probes_maps_baryonified512.h5" if args.baryonified else "projected_probes_maps_nobaryons512.h5"
-    
-    # Build file list
-    if args.fiducial:
-        perm_dirs = [f"perm_{i:04d}" for i in range(200)]
-        file_paths = [
-            os.path.join(base_dir, perm, filename)
-            for perm in perm_dirs
-            if os.path.exists(os.path.join(base_dir, perm, filename))
-        ]
-    else:
-        cosmo_dirs = sorted([d for d in os.listdir(base_dir) if d.startswith("cosmo_")])
-        perm_dirs = [f"perm_{i:04d}" for i in range(7)]
-        file_paths = [
-            os.path.join(base_dir, cosmo, perm, filename)
-            for cosmo in cosmo_dirs
-            for perm in perm_dirs
-            if os.path.exists(os.path.join(base_dir, cosmo, perm, filename))
-        ]
+    # Get file paths using utility function
+    base_dir, file_paths = get_data_file_paths(
+        base_dir=args.base_dir,
+        fiducial=args.fiducial,
+        baryonified=args.baryonified,
+    )
     
     # Print configuration
     map_type = "baryonified" if args.baryonified else "nobaryons"

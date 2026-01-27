@@ -39,6 +39,8 @@ from bar_impact.constants import (
 )
 from bar_impact.core.masks import SurveyMask
 from bar_impact.utils.noise import add_shape_noise
+from bar_impact.utils.reproducibility import seed_worker
+from bar_impact.utils.paths import get_data_file_paths
 from bar_impact.processing.l1_norms import L1NormProcessor, L1NormConfig
 from bar_impact.processing.bnt_transforms import apply_bnt_transform
 
@@ -52,11 +54,6 @@ def suppress_stdout():
         yield
     finally:
         sys.stdout = saved_stdout
-
-
-def seed_worker():
-    """Initializer for multiprocessing pool to ensure unique random seeds."""
-    np.random.seed(int.from_bytes(os.urandom(4), byteorder='little'))
 
 
 def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
@@ -260,31 +257,12 @@ def main():
     else:
         base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
     
-    # Set the filename based on the baryonified flag
-    if args.baryonified:
-        filename = "projected_probes_maps_baryonified512.h5"
-    else:
-        filename = "projected_probes_maps_nobaryons512.h5"
-    
-    # Set permutation directories based on fiducial flag
-    if args.fiducial:
-        # Fiducial cosmology: perm_0000 to perm_0199 directly under base_dir
-        perm_dirs = [f"perm_{i:04d}" for i in range(200)]
-        file_paths = [
-            os.path.join(base_dir, perm, filename)
-            for perm in perm_dirs
-            if os.path.exists(os.path.join(base_dir, perm, filename))
-        ]
-    else:
-        # Grid cosmologies: cosmo_XXXX/perm_0000 to perm_0006
-        cosmo_dirs = sorted([d for d in os.listdir(base_dir) if d.startswith("cosmo_")])
-        perm_dirs = [f"perm_{i:04d}" for i in range(7)]
-        file_paths = [
-            os.path.join(base_dir, cosmo, perm, filename)
-            for cosmo in cosmo_dirs
-            for perm in perm_dirs
-            if os.path.exists(os.path.join(base_dir, cosmo, perm, filename))
-        ]
+    # Get file paths using utility function
+    base_dir, file_paths = get_data_file_paths(
+        base_dir=args.base_dir,
+        fiducial=args.fiducial,
+        baryonified=args.baryonified,
+    )
     
     # Print configuration information
     map_type = "baryonified" if args.baryonified else "nobaryons"
