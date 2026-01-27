@@ -222,6 +222,7 @@ class SurveyMask:
         target_area_sqdeg: float = DEFAULT_MASK_AREA_SQDEG,
         center_coords: Tuple[float, float] = DEFAULT_MASK_CENTER,
         apodization_deg: float = 2.0,
+        apodization_type: str = 'C1',
         use_cache: bool = True,
     ) -> "SurveyMask":
         """
@@ -240,6 +241,9 @@ class SurveyMask:
             Center (lon, lat) in degrees.
         apodization_deg : float, optional
             Width of the apodization region in degrees (default: 2.0).
+        apodization_type : str, optional
+            Type of apodization: 'C1' (cosine taper) or 'C2' (polynomial).
+            C2 is recommended for power spectrum analysis (default: 'C1').
         use_cache : bool, optional
             Whether to use cached masks.
             
@@ -251,12 +255,22 @@ class SurveyMask:
         Notes
         -----
         Apodization helps reduce edge effects in power spectrum
-        estimation. A cosine taper is used:
+        estimation.
+        
+        **C1 (cosine taper)**: Smooth but not twice differentiable
         
         .. math::
-            w(r) = \\frac{1}{2}\\left[1 + \\cos\\left(\\pi \\frac{r - r_0}{\\Delta r}\\right)\\right]
+            w(x) = \\frac{1}{2}\\left[1 + \\cos(\\pi x)\\right]
+        
+        **C2 (polynomial)**: Twice differentiable, better for power spectra
+        
+        .. math::
+            w(x) = \\begin{cases}
+                1 - 2x^2 & x < 0.5 \\\\
+                2(1-x)^2 & x \\geq 0.5
+            \\end{cases}
             
-        for pixels in the transition region.
+        where x is the normalized distance within the transition region.
         """
         # Check cache
         cache_key = (
@@ -265,6 +279,7 @@ class SurveyMask:
             float(center_coords[0]),
             float(center_coords[1]),
             float(apodization_deg),
+            str(apodization_type),
         )
         if use_cache and cache_key in _MASK_CACHE:
             return _MASK_CACHE[cache_key]
@@ -307,11 +322,21 @@ class SurveyMask:
         inner_mask = angular_dist_deg < inner_radius
         mask_data[inner_mask] = 1.0
         
-        # Transition region: cosine taper
+        # Transition region: cosine taper or polynomial
         transition_mask = (angular_dist_deg >= inner_radius) & (angular_dist_deg < outer_radius)
         if np.any(transition_mask):
             frac = (angular_dist_deg[transition_mask] - inner_radius) / apodization_deg
-            mask_data[transition_mask] = 0.5 * (1 + np.cos(np.pi * frac))
+            
+            if apodization_type == 'C1':
+                # C1 continuous (cosine taper): smooth but not twice-differentiable
+                mask_data[transition_mask] = 0.5 * (1 + np.cos(np.pi * frac))
+            elif apodization_type == 'C2':
+                # C2 continuous (polynomial): twice differentiable, better for power spectra
+                taper = np.where(frac < 0.5, 1.0 - 2 * frac**2, 2 * (1 - frac)**2)
+                mask_data[transition_mask] = taper.astype(np.float32)
+            else:
+                raise ValueError(f"Unknown apodization_type: {apodization_type}. "
+                               f"Must be 'C1' or 'C2'.")
         
         # Compute effective f_sky (weighted by mask values)
         f_sky = float(np.mean(mask_data))

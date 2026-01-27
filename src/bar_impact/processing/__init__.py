@@ -64,6 +64,15 @@ from bar_impact.processing.peak_counts import (
     compute_peak_counts,
 )
 
+# MASTER mode-coupling correction (optional - requires NaMaster)
+from bar_impact.processing.master_correction import (
+    HAS_NAMASTER,
+    compute_coupling_matrix,
+    compute_power_spectra_master,
+    compute_pseudo_cls_simple,
+    MCM_CACHE,
+)
+
 
 __all__ = [
     # Base classes
@@ -78,6 +87,21 @@ __all__ = [
     "PowerSpectrumConfig",
     "compute_power_spectrum",
     "compute_cross_power_spectrum",
+    # L1 norms
+    "L1NormProcessor",
+    "L1NormConfig",
+    "compute_l1_norms",
+    # Peak counts
+    "PeakCountProcessor",
+    "PeakCountConfig",
+    "compute_peak_counts",
+    # MASTER correction
+    "HAS_NAMASTER",
+    "compute_coupling_matrix",
+    "compute_power_spectra_master",
+    "compute_pseudo_cls_simple",
+    "MCM_CACHE",
+]
     # L1 norms
     "L1NormProcessor",
     "L1NormConfig",

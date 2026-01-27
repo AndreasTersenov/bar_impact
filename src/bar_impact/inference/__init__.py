@@ -36,6 +36,7 @@ from bar_impact.inference.npe import (
     run_npe_inference,
     train_npe_model,
     sample_posterior,
+    train_with_nan_retry,
 )
 
 # Coverage testing
@@ -58,6 +59,7 @@ __all__ = [
     "run_npe_inference",
     "train_npe_model",
     "sample_posterior",
+    "train_with_nan_retry",
     # Coverage
     "CoverageTester",
     "CoverageConfig",

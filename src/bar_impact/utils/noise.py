@@ -15,7 +15,9 @@ def add_shape_noise(
     nside: Optional[int] = None,
     area_deg2: Optional[float] = None,
     ngal_arcmin2: float = 30.0,
+    galaxy_density: Optional[float] = None,
     seed: Optional[int] = None,
+    rng: Optional[np.random.Generator] = None,
     inplace: bool = False
 ) -> np.ndarray:
     """
@@ -36,8 +38,13 @@ def add_shape_noise(
         Survey area in square degrees (full sky if not provided)
     ngal_arcmin2 : float, optional
         Galaxy number density in arcmin^-2 (default: 30.0)
+    galaxy_density : float, optional
+        Alias for ngal_arcmin2 (for backward compatibility)
     seed : int, optional
-        Random seed for reproducibility
+        Random seed for reproducibility (legacy interface)
+    rng : np.random.Generator, optional
+        Modern random number generator for reproducibility.
+        If provided, takes precedence over seed.
     inplace : bool, optional
         If True, modify map_data in place (default: False)
         
@@ -48,13 +55,17 @@ def add_shape_noise(
         
     Notes
     -----
-    The shape noise variance per pixel is calculated as:
+    The shape noise variance per pixel for convergence is:
     
     .. math::
-        \\sigma_{\\kappa}^2 = \\frac{\\sigma_e^2}{2 n_{\\rm gal} A_{\\rm pix}}
+        \\sigma_{\\kappa}^2 = \\frac{\\sigma_e^2}{n_{\\rm gal} A_{\\rm pix}}
         
     where :math:`n_{\\rm gal}` is the galaxy density and 
     :math:`A_{\\rm pix}` is the pixel area.
+    
+    Note: For shear components, there would be a factor of 2 in the denominator
+    because shear has two independent components. For convergence (a scalar),
+    we do NOT include this factor.
     
     Examples
     --------
@@ -64,10 +75,28 @@ def add_shape_noise(
     >>> kappa_noisy = add_shape_noise(kappa, sigma_e=0.26, nside=nside)
     >>> np.std(kappa_noisy) > np.std(kappa)
     True
+    
+    >>> # Using modern RNG for reproducibility
+    >>> rng = np.random.default_rng(42)
+    >>> kappa_noisy1 = add_shape_noise(kappa, rng=rng)
+    >>> rng = np.random.default_rng(42)
+    >>> kappa_noisy2 = add_shape_noise(kappa, rng=rng)
+    >>> np.allclose(kappa_noisy1, kappa_noisy2)
+    True
     """
-    if seed is not None:
+    # Handle backward compatibility alias
+    if galaxy_density is not None:
+        ngal_arcmin2 = galaxy_density
+    
+    # Set up random number generator
+    if rng is not None:
+        # Modern Generator interface (preferred)
+        pass
+    elif seed is not None:
+        # Legacy seed interface
         rng = np.random.RandomState(seed)
     else:
+        # Default: use global random state
         rng = np.random
     
     if not inplace:
@@ -83,20 +112,11 @@ def add_shape_noise(
     pixel_area_deg2 = pixel_area_sr * (180 / np.pi)**2
     pixel_area_arcmin2 = pixel_area_deg2 * 3600  # arcmin^2
     
-    # Calculate number of galaxies per pixel
-    if area_deg2 is not None:
-        # Partial sky survey
-        npix_survey = area_deg2 / pixel_area_deg2
-        fsky = npix_survey / len(map_data)
-    else:
-        # Full sky
-        fsky = 1.0
-    
-    ngal_per_pixel = ngal_arcmin2 * pixel_area_arcmin2 * fsky
-    
     # Calculate shape noise variance
-    if ngal_per_pixel > 0:
-        sigma_noise = sigma_e / np.sqrt(2 * ngal_per_pixel)
+    # For convergence: sigma_kappa = sigma_e / sqrt(n_gal * A_pix)
+    # (No factor of 2 - that's only for shear components)
+    if ngal_arcmin2 > 0:
+        sigma_noise = sigma_e / np.sqrt(ngal_arcmin2 * pixel_area_arcmin2)
     else:
         sigma_noise = 0.0
     
@@ -112,6 +132,7 @@ def generate_shape_noise_realization(
     npix: int,
     sigma_e: float = 0.26,
     ngal_arcmin2: float = 30.0,
+    galaxy_density: Optional[float] = None,
     nside: Optional[int] = None,
     seed: Optional[int] = None
 ) -> np.ndarray:
@@ -126,6 +147,8 @@ def generate_shape_noise_realization(
         Intrinsic ellipticity dispersion
     ngal_arcmin2 : float
         Galaxy number density
+    galaxy_density : float, optional
+        Alias for ngal_arcmin2 (for backward compatibility)
     nside : int, optional
         HEALPix nside (auto-detected if not provided)
     seed : int, optional
@@ -136,6 +159,10 @@ def generate_shape_noise_realization(
     np.ndarray
         Shape noise map
     """
+    # Handle backward compatibility
+    if galaxy_density is not None:
+        ngal_arcmin2 = galaxy_density
+    
     noise_map = np.zeros(npix)
     return add_shape_noise(
         noise_map,

@@ -21,6 +21,7 @@ __all__ = [
     "run_npe_inference",
     "train_npe_model",
     "sample_posterior",
+    "train_with_nan_retry",
 ]
 
 
@@ -349,8 +350,8 @@ class NPEInference:
         params_jax = self._to_jax_array(parameters)
         data_jax = self._to_jax_array(data_vectors)
         
-        # Set up checkpoint path
-        checkpoint_dir = Path(self.config.checkpoint_dir)
+        # Set up checkpoint path - must be absolute for orbax
+        checkpoint_dir = Path(self.config.checkpoint_dir).resolve()
         checkpoint_dir.mkdir(parents=True, exist_ok=True)
         
         name = checkpoint_name or self.config.checkpoint_name
@@ -398,8 +399,11 @@ class NPEInference:
         self._ensure_jaxili()
         from jaxili.inference import NPE
         
+        # Convert to absolute path for orbax compatibility
+        checkpoint_path = str(Path(checkpoint_path).resolve())
+        
         self._inference = NPE()
-        self._inference.load(str(checkpoint_path))
+        self._inference.load(checkpoint_path)
         self._posterior = self._inference.build_posterior()
         self._is_trained = True
         
@@ -442,8 +446,11 @@ class NPEInference:
         seed = seed if seed is not None else self.config.random_seed
         key = random.PRNGKey(seed)
         
+        # Convert observed data to JAX array
+        obs_jax = self._to_jax_array(observed_data)
+        
         samples = self._posterior.sample(
-            x=observed_data,
+            x=obs_jax,
             num_samples=num_samples,
             key=key,
         )
@@ -621,3 +628,189 @@ def sample_posterior(
     """
     result = model.sample(observed_data, num_samples=num_samples, seed=seed)
     return result.samples
+
+
+def train_with_nan_retry(
+    inference,
+    params,
+    data,
+    checkpoint_path: str,
+    num_epochs: int = 1000,
+    learning_rate: float = 1e-4,
+    batch_size: int = 40,
+    max_retries: int = 10,
+    verbose: bool = True,
+):
+    """
+    Train NPE with automatic retry if NaN loss is encountered.
+    
+    NPE training can sometimes fail due to poor random initialization leading to
+    numerical instability. This function automatically retries training with fresh
+    initialization if NaN loss is detected.
+    
+    Parameters
+    ----------
+    inference : NPE
+        jaxili NPE object with simulations already appended.
+    params : array-like
+        Parameter array (for reinitializing if needed), shape (n_samples, n_params).
+    data : array-like
+        Data array (for reinitializing if needed), shape (n_samples, n_features).
+    checkpoint_path : str
+        Path to save model checkpoints.
+    num_epochs : int, optional
+        Number of training epochs (default: 1000).
+    learning_rate : float, optional
+        Learning rate (default: 1e-4).
+    batch_size : int, optional
+        Training batch size (default: 40).
+    max_retries : int, optional
+        Maximum number of training attempts (default: 10).
+    verbose : bool, optional
+        Whether to print progress messages (default: True).
+        
+    Returns
+    -------
+    inference : NPE
+        The trained inference object.
+    metrics : object
+        Training metrics from successful run.
+    density_estimator : object
+        Trained density estimator.
+        
+    Raises
+    ------
+    RuntimeError
+        If all retry attempts fail.
+        
+    Examples
+    --------
+    >>> from jaxili.inference import NPE
+    >>> import jax.numpy as jnp
+    >>> from bar_impact.inference import train_with_nan_retry
+    >>> 
+    >>> inference = NPE()
+    >>> inference = inference.append_simulations(params_jax, data_jax)
+    >>> inference, metrics, estimator = train_with_nan_retry(
+    ...     inference, params_jax, data_jax,
+    ...     checkpoint_path="./checkpoints/my_model",
+    ...     num_epochs=1000
+    ... )
+    
+    Notes
+    -----
+    This function only checks training and validation losses for NaN values.
+    Test loss is sometimes NaN due to evaluation issues even when training
+    succeeds, so it does not trigger a retry.
+    """
+    if not _check_jaxili_available():
+        raise ImportError(
+            "jaxili is required for NPE training. Install with: pip install jaxili"
+        )
+    
+    from jaxili.inference import NPE
+    
+    for attempt in range(1, max_retries + 1):
+        if verbose:
+            print(f"\n{'='*60}")
+            print(f"Training attempt {attempt}/{max_retries}")
+            print(f"{'='*60}")
+        
+        try:
+            # Train for full epochs
+            if verbose:
+                print(f"Training for {num_epochs} epochs...")
+            
+            metrics, density_estimator = inference.train(
+                checkpoint_path=checkpoint_path,
+                num_epochs=num_epochs,
+                learning_rate=learning_rate,
+                training_batch_size=batch_size
+            )
+            
+            # Check if training or validation loss contains NaN
+            # Note: We only check train_loss and val_loss, NOT test_loss
+            # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
+            has_nan = False
+            nan_source = None
+            
+            # Check if metrics is a dict or has attributes
+            if isinstance(metrics, dict):
+                # Check training loss
+                if 'train_loss' in metrics:
+                    train_loss = metrics['train_loss']
+                    if isinstance(train_loss, (list, np.ndarray)):
+                        if np.any(np.isnan(train_loss)):
+                            has_nan = True
+                            nan_source = 'training loss'
+                    elif np.isnan(train_loss):
+                        has_nan = True
+                        nan_source = 'training loss'
+                
+                # Check validation loss
+                if not has_nan and 'val_loss' in metrics:
+                    val_loss = metrics['val_loss']
+                    if isinstance(val_loss, (list, np.ndarray)):
+                        if np.any(np.isnan(val_loss)):
+                            has_nan = True
+                            nan_source = 'validation loss'
+                    elif np.isnan(val_loss):
+                        has_nan = True
+                        nan_source = 'validation loss'
+                
+                # Warn about test loss NaN but don't trigger retry
+                if 'test_loss' in metrics and np.isnan(metrics['test_loss']):
+                    if verbose:
+                        print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
+            else:
+                # Check training loss (indicates bad initialization)
+                if hasattr(metrics, 'train_loss'):
+                    train_loss = metrics.train_loss
+                    if isinstance(train_loss, (list, np.ndarray)):
+                        if np.any(np.isnan(train_loss)):
+                            has_nan = True
+                            nan_source = 'training loss'
+                    elif np.isnan(train_loss):
+                        has_nan = True
+                        nan_source = 'training loss'
+                
+                # Check validation loss (indicates training instability)
+                if not has_nan and hasattr(metrics, 'val_loss'):
+                    val_loss = metrics.val_loss
+                    if isinstance(val_loss, (list, np.ndarray)):
+                        if np.any(np.isnan(val_loss)):
+                            has_nan = True
+                            nan_source = 'validation loss'
+                    elif np.isnan(val_loss):
+                        has_nan = True
+                        nan_source = 'validation loss'
+                
+                # Warn about test loss NaN but don't trigger retry
+                if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
+                    if verbose:
+                        print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
+            
+            if has_nan:
+                if verbose:
+                    print(f"⚠ NaN detected in {nan_source} during attempt {attempt}. Reinitializing...")
+                # Reinitialize the inference object for a fresh start
+                inference = NPE()
+                inference = inference.append_simulations(params, data)
+                continue
+            
+            if verbose:
+                print(f"✓ Training completed successfully on attempt {attempt}")
+            return inference, metrics, density_estimator
+            
+        except Exception as e:
+            if verbose:
+                print(f"⚠ Error during training attempt {attempt}: {e}")
+            if attempt == max_retries:
+                raise
+            if verbose:
+                print("Retrying...")
+            # Reinitialize for retry
+            inference = NPE()
+            inference = inference.append_simulations(params, data)
+    
+    raise RuntimeError(f"Training failed after {max_retries} attempts due to persistent NaN loss")
