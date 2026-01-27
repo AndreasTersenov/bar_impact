@@ -331,6 +331,136 @@ class ResultsAggregator:
         
         selected = data[:, scale_indices, :]
         return selected.reshape(selected.shape[0], -1)
+    
+    def select_scales_per_bin(
+        self,
+        data_list: List[np.ndarray],
+        scales_per_bin: List[List[int]],
+        nbins_per_scale: int = 40,
+    ) -> np.ndarray:
+        """
+        Select different wavelet scales for each redshift bin.
+        
+        Parameters
+        ----------
+        data_list : list of np.ndarray
+            List of data arrays, one per redshift bin.
+            Each has shape (n_samples, n_scales, nbins) or (n_samples, n_scales * nbins).
+        scales_per_bin : list of list of int
+            Scales to select for each bin. E.g., [[1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3]]
+        nbins_per_scale : int
+            Number of bins per scale.
+            
+        Returns
+        -------
+        np.ndarray
+            Concatenated selected scales from all bins, shape (n_samples, total_selected_bins).
+        """
+        selected_bins = []
+        
+        for bin_data, scale_indices in zip(data_list, scales_per_bin):
+            # Reshape if flattened
+            if bin_data.ndim == 2:
+                n_samples = bin_data.shape[0]
+                n_total = bin_data.shape[1]
+                n_scales = n_total // nbins_per_scale
+                bin_data = bin_data.reshape(n_samples, n_scales, nbins_per_scale)
+            
+            # Select specified scales
+            selected = bin_data[:, scale_indices, :]
+            flattened = selected.reshape(selected.shape[0], -1)
+            selected_bins.append(flattened)
+        
+        # Concatenate all bins
+        return np.concatenate(selected_bins, axis=1)
+    
+    def select_bin_range(
+        self,
+        data: np.ndarray,
+        start_idx: int,
+        end_idx: int,
+    ) -> np.ndarray:
+        """
+        Select a range of bins from datavector.
+        
+        Parameters
+        ----------
+        data : np.ndarray
+            Data array, shape (n_samples, n_features).
+        start_idx : int
+            Starting index (inclusive, 0-indexed).
+        end_idx : int
+            Ending index (inclusive, 0-indexed).
+            
+        Returns
+        -------
+        np.ndarray
+            Selected bin range.
+        """
+        return data[:, start_idx:end_idx+1]
+    
+    def select_bin_ranges_per_bin(
+        self,
+        data_list: List[np.ndarray],
+        bin_ranges: List[Tuple[int, int]],
+    ) -> np.ndarray:
+        """
+        Select different bin ranges for each redshift bin.
+        
+        Parameters
+        ----------
+        data_list : list of np.ndarray
+            List of data arrays, one per redshift bin.
+        bin_ranges : list of tuple
+            (start, end) indices for each bin.
+            
+        Returns
+        -------
+        np.ndarray
+            Concatenated selected ranges.
+        """
+        selected = []
+        for data, (start, end) in zip(data_list, bin_ranges):
+            selected.append(data[:, start:end+1])
+        return np.concatenate(selected, axis=1)
+    
+    def filter_zero_variance(
+        self,
+        data: np.ndarray,
+        min_variance: float = 1e-10,
+        return_mask: bool = False,
+    ) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
+        """
+        Filter out features with zero or near-zero variance.
+        
+        Parameters
+        ----------
+        data : np.ndarray
+            Data array, shape (n_samples, n_features).
+        min_variance : float
+            Minimum variance threshold.
+        return_mask : bool
+            If True, also return the boolean mask.
+            
+        Returns
+        -------
+        filtered_data : np.ndarray
+            Data with zero-variance features removed.
+        mask : np.ndarray, optional
+            Boolean mask indicating valid features (if return_mask=True).
+        """
+        variances = np.var(data, axis=0)
+        valid_mask = variances > min_variance
+        
+        n_removed = np.sum(~valid_mask)
+        if self.config.verbose and n_removed > 0:
+            print(f"Filtered {n_removed} zero-variance features out of {len(valid_mask)}")
+        
+        filtered_data = data[:, valid_mask]
+        
+        if return_mask:
+            return filtered_data, valid_mask
+        return filtered_data
 
 
 # Functional interface for backwards compatibility
