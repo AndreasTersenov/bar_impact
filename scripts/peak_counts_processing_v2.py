@@ -107,9 +107,9 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
         mask_suffix = f"_masked_{area_tag}sqdeg"
     
     if add_noise:
-        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{noise_level:.2f}.npy"
+        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}.npy"
+        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     

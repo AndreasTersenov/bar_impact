@@ -137,7 +137,8 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
             )
         
         # Apply mask if requested
-        mask_array = None
+        # Note: Following original script behavior - multiply map by mask
+        # rather than passing mask to get_wtl1_sphere
         if apply_mask:
             # Create or retrieve cached mask
             mask = SurveyMask.create_disk_mask(
@@ -146,11 +147,9 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
                 center_coords=mask_center,
                 use_cache=True
             )
-            mask_array = mask.data
-            # Note: We pass the mask to L1NormProcessor (which passes to get_wtl1_sphere)
-            # so it only computes L1 norms on valid (unmasked) pixels. We do NOT multiply
-            # kg*mask because that would create edge artifacts in the wavelet transform.
-        
+            # Apply mask by multiplication (matches original l1_norm_processing.py)
+            kg = kg * mask.data
+
         # Create L1 norm processor configuration
         config = L1NormConfig(
             nscales=DEFAULT_NUM_SCALES,
@@ -161,15 +160,16 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
             min_snr_coarse=min_snr_coarse,
             max_snr_coarse=max_snr_coarse,
         )
-        
+
         # Compute L1 norms
         processor = L1NormProcessor(config=config)
-        
+
         # Suppress pycs output
+        # Note: We do NOT pass mask to processor - the map is already masked
         with suppress_stdout():
             l1_norms = processor.process_single(
                 kg,
-                mask=mask_array,
+                mask=None,
             )
         
         # Save results

@@ -70,10 +70,11 @@ def process_file(file_path, bnt_bin=3, noise_level=0.26, add_noise=True,
         area_tag = int(round(mask_area_sqdeg))
         mask_suffix = f"_masked_{area_tag}sqdeg"
     
+    # Match original filename format: _bnt_peak_counts_bin{1-indexed}
     if add_noise:
-        suffix = f"_peak_counts_bnt{bnt_bin}{mask_suffix}_noisy_s{noise_level:.2f}.npy"
+        suffix = f"_bnt_peak_counts_bin{bnt_bin+1}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_peak_counts_bnt{bnt_bin}{mask_suffix}.npy"
+        suffix = f"_bnt_peak_counts_bin{bnt_bin+1}{mask_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -362,7 +363,7 @@ def main():
                     noise_suffix = f"_noisy_s{args.noise_level:.2f}" if not args.no_noise else ""
                     combined_path = os.path.join(
                         base_dir,
-                        f"all_peak_counts_bnt{bnt_bin}{mask_suffix}{noise_suffix}.npy"
+                        f"all_bnt_peak_counts_bin{bnt_bin+1}{mask_suffix}{noise_suffix}_new_normalization.npy"
                     )
                 
                 np.save(combined_path, all_peaks)
