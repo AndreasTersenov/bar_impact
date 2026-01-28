@@ -6,8 +6,7 @@ output paths with consistent naming conventions.
 """
 
 import os
-from typing import List, Tuple, Optional
-
+from typing import List, Optional, Tuple
 
 __all__ = [
     "get_data_file_paths",
@@ -22,7 +21,7 @@ def get_data_file_paths(
 ) -> Tuple[str, List[str]]:
     """
     Get list of data file paths for processing.
-    
+
     Parameters
     ----------
     base_dir : str, optional
@@ -31,14 +30,14 @@ def get_data_file_paths(
         Process fiducial cosmology (200 permutations) vs grid (N cosmo × 7 perms)
     baryonified : bool, optional
         Use baryonified maps vs nobaryons
-        
+
     Returns
     -------
     base_dir : str
         Resolved base directory path
     file_paths : List[str]
         List of full paths to data files that exist
-        
+
     Examples
     --------
     >>> base_dir, files = get_data_file_paths(fiducial=True, baryonified=False)
@@ -51,13 +50,19 @@ def get_data_file_paths(
     # Determine base directory
     if base_dir is None:
         if fiducial:
-            base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+            base_dir = (
+                "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+            )
         else:
             base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
-    
+
     # Determine filename
-    filename = "projected_probes_maps_baryonified512.h5" if baryonified else "projected_probes_maps_nobaryons512.h5"
-    
+    filename = (
+        "projected_probes_maps_baryonified512.h5"
+        if baryonified
+        else "projected_probes_maps_nobaryons512.h5"
+    )
+
     # Build file list
     if fiducial:
         # Fiducial: perm_0000 to perm_0199 directly under base_dir
@@ -77,7 +82,7 @@ def get_data_file_paths(
             for perm in perm_dirs
             if os.path.exists(os.path.join(base_dir, cosmo, perm, filename))
         ]
-    
+
     return base_dir, file_paths
 
 
@@ -100,7 +105,7 @@ def build_output_suffix(
 ) -> str:
     """
     Build consistent output file suffix.
-    
+
     Parameters
     ----------
     statistic_type : str
@@ -133,24 +138,24 @@ def build_output_suffix(
         Cross-only flag (for power spectrum)
     new_normalization : bool, optional
         Use new normalization tag
-        
+
     Returns
     -------
     str
         Output filename suffix (including extension)
-        
+
     Examples
     --------
     >>> suffix = build_output_suffix('l1_norms', bin_number=1, add_noise=True, noise_level=0.26)
     >>> suffix
     '_l1_norms_bin1_noisy_s0.26_new_normalization.npy'
-    
+
     >>> suffix = build_output_suffix('peak_counts', bnt_bin=2, apply_mask=True, mask_area_sqdeg=14000)
     >>> suffix
     '_peak_counts_bnt3_masked_14000sqdeg.npy'
     """
     parts = [f"_{statistic_type}"]
-    
+
     # Handle bin specification
     if bnt_bin is not None:
         # BNT bins are 0-indexed, display as 1-indexed
@@ -160,10 +165,10 @@ def build_output_suffix(
         bin_str = "".join([str(b + 1) for b in bnt_bin_range])
         if cross_only:
             parts.insert(0, "_bnt_cross")
-            parts[1] = f"_cls"
+            parts[1] = "_cls"
         else:
             parts.insert(0, "_bnt_all")
-            parts[1] = f"_cls"
+            parts[1] = "_cls"
         parts.append(f"_bins{bin_str}")
     elif bin_number is not None:
         # Single regular bin
@@ -176,12 +181,12 @@ def build_output_suffix(
         elif statistic_type == "cls":
             parts[0] = "_all_cls"
         parts.append(f"_bins{bin_str}")
-    
+
     # Mask information
     if apply_mask:
         area_tag = int(round(mask_area_sqdeg))
         parts.append(f"_masked_{area_tag}sqdeg")
-        
+
         # Apodization info (for power spectra)
         if apodization_scale_deg is not None:
             if apodization_scale_deg > 0:
@@ -189,7 +194,7 @@ def build_output_suffix(
                 parts.append(f"_{apod_tag}")
             else:
                 parts.append("_noapod")
-        
+
         # MASTER correction (for power spectra)
         if statistic_type == "cls" or "cls" in statistic_type:
             method_tag = "master" if use_namaster else "pseudo"
@@ -197,23 +202,23 @@ def build_output_suffix(
     elif statistic_type == "cls" or "cls" in statistic_type:
         # Power spectra without mask still get _master tag
         parts.append("_master")
-    
+
     # Noise information
     if add_noise:
         parts.append(f"_noisy_s{noise_level:.2f}")
-    
+
     # Lmax (for power spectra)
     if lmax is not None and lmax != 1024:
         parts.append(f"_lmax{lmax}")
-    
+
     # Normalization flag
-    if new_normalization and statistic_type in ['l1_norms', 'peak_counts']:
+    if new_normalization and statistic_type in ["l1_norms", "peak_counts"]:
         parts.append("_new_normalization")
-    
+
     # Extension
     if statistic_type == "cls" or "cls" in statistic_type:
         parts.append(".npz")
     else:
         parts.append(".npy")
-    
+
     return "".join(parts)

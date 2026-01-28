@@ -10,14 +10,13 @@ by measuring the distribution of local maxima at different SNR levels.
 
 from __future__ import annotations
 
-import numpy as np
-import healpy as hp
 from dataclasses import dataclass
-from typing import Optional, Tuple, List, Union
+from typing import List, Optional, Tuple
+
+import healpy as hp
+import numpy as np
 
 from bar_impact.processing.base import BaseProcessor, ProcessingConfig
-from bar_impact.constants import DEFAULT_NSIDE
-
 
 __all__ = ["PeakCountProcessor", "PeakCountConfig", "compute_peak_counts"]
 
@@ -25,17 +24,22 @@ __all__ = ["PeakCountProcessor", "PeakCountConfig", "compute_peak_counts"]
 # Default parameters for peak count computation
 # These should match the original peak_counts_processing.py script
 DEFAULT_NSCALES = 5  # Number of wavelet scales
-DEFAULT_NBINS = 31   # Number of SNR bins (matches original script)
+DEFAULT_NBINS = 31  # Number of SNR bins (matches original script)
 DEFAULT_MIN_VAL = -2.0  # Minimum SNR value (matches original script)
-DEFAULT_MAX_VAL = 10.0   # Maximum SNR value (matches original script)
+DEFAULT_MAX_VAL = 10.0  # Maximum SNR value (matches original script)
 
 
 def _check_pycs_available():
     """Check if pycs is available for peak computations."""
     try:
-        from pycs.astro.wl.hos_peaks_l1 import get_wtpeaks_sphere
+        from pycs.astro.wl.hos_peaks_l1 import get_wtpeaks_sphere  # noqa: F401
+
         return True
-    except ImportError:
+    except (ImportError, NameError, AttributeError):
+        # NameError and AttributeError can occur if pycs has internal issues
+        return False
+    except Exception:
+        # Catch any other unexpected errors during import
         return False
 
 
@@ -49,10 +53,10 @@ def compute_peak_counts(
 ) -> np.ndarray:
     """
     Compute peak counts at multiple wavelet scales.
-    
+
     This function wraps the pycs get_wtpeaks_sphere function which computes
     peak counts in starlet wavelet coefficient maps.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
@@ -67,17 +71,17 @@ def compute_peak_counts(
         Minimum SNR value for binning.
     max_val : float, optional
         Maximum SNR value for binning.
-        
+
     Returns
     -------
     np.ndarray
         Peak counts at each scale and SNR bin.
-        
+
     Raises
     ------
     ImportError
         If pycs is not installed.
-        
+
     Notes
     -----
     This function requires the pycs library (CosmoStat) to be installed.
@@ -85,12 +89,12 @@ def compute_peak_counts(
     """
     try:
         from pycs.astro.wl.hos_peaks_l1 import get_wtpeaks_sphere
-    except ImportError:
+    except ImportError as err:
         raise ImportError(
             "pycs library is required for peak count computation. "
             "Install via: pip install pycs"
-        )
-    
+        ) from err
+
     peak_counts, _ = get_wtpeaks_sphere(
         map_data,
         nscales=nscales,
@@ -100,7 +104,7 @@ def compute_peak_counts(
         Max=max_val,
         verbose=False,
     )
-    
+
     return np.array(peak_counts)
 
 
@@ -108,7 +112,7 @@ def compute_peak_counts(
 class PeakCountConfig(ProcessingConfig):
     """
     Configuration for peak count processing.
-    
+
     Parameters
     ----------
     nscales : int
@@ -122,7 +126,7 @@ class PeakCountConfig(ProcessingConfig):
     max_val : float
         Maximum SNR value for histogram.
     """
-    
+
     nscales: int = DEFAULT_NSCALES
     nbins: int = DEFAULT_NBINS
     noise_std: Optional[float] = None
@@ -133,11 +137,11 @@ class PeakCountConfig(ProcessingConfig):
 class PeakCountProcessor(BaseProcessor):
     """
     Processor for computing peak counts from convergence maps.
-    
+
     This processor computes peak counts from convergence maps using
     spherical starlet wavelets. Peak counts capture non-Gaussian
     information that complements power spectra and L1 norms.
-    
+
     Parameters
     ----------
     config : PeakCountConfig, optional
@@ -146,7 +150,7 @@ class PeakCountProcessor(BaseProcessor):
         Number of wavelet scales. Overrides config if provided.
     nbins : int, optional
         Number of SNR bins. Overrides config if provided.
-        
+
     Attributes
     ----------
     nscales : int
@@ -155,25 +159,25 @@ class PeakCountProcessor(BaseProcessor):
         Number of SNR bins.
     pycs_available : bool
         Whether pycs is available for computation.
-        
+
     Examples
     --------
     >>> from bar_impact.processing import PeakCountProcessor
     >>> processor = PeakCountProcessor(nscales=5, nbins=40)
-    >>> 
+    >>>
     >>> # Process a single map
     >>> peaks = processor.process_single(map_data)
     >>> peaks.shape
     (200,)  # 5 scales * 40 bins
-    
+
     Notes
     -----
     This processor requires the pycs library (CosmoStat) for wavelet
     computations. Install via: pip install pycs
     """
-    
+
     statistic_type = "peak_counts"
-    
+
     def __init__(
         self,
         config: Optional[PeakCountConfig] = None,
@@ -186,19 +190,35 @@ class PeakCountProcessor(BaseProcessor):
         # Create config if not provided
         if config is None:
             config = PeakCountConfig()
-        
+
         super().__init__(config)
-        
+
         # Override config values if explicitly provided
-        self.nscales = nscales if nscales is not None else getattr(config, 'nscales', DEFAULT_NSCALES)
-        self.nbins = nbins if nbins is not None else getattr(config, 'nbins', DEFAULT_NBINS)
-        self.noise_std = noise_std if noise_std is not None else getattr(config, 'noise_std', None)
-        self.min_val = min_val if min_val is not None else getattr(config, 'min_val', DEFAULT_MIN_VAL)
-        self.max_val = max_val if max_val is not None else getattr(config, 'max_val', DEFAULT_MAX_VAL)
-        
+        self.nscales = (
+            nscales
+            if nscales is not None
+            else getattr(config, "nscales", DEFAULT_NSCALES)
+        )
+        self.nbins = (
+            nbins if nbins is not None else getattr(config, "nbins", DEFAULT_NBINS)
+        )
+        self.noise_std = (
+            noise_std if noise_std is not None else getattr(config, "noise_std", None)
+        )
+        self.min_val = (
+            min_val
+            if min_val is not None
+            else getattr(config, "min_val", DEFAULT_MIN_VAL)
+        )
+        self.max_val = (
+            max_val
+            if max_val is not None
+            else getattr(config, "max_val", DEFAULT_MAX_VAL)
+        )
+
         # Check pycs availability
         self.pycs_available = _check_pycs_available()
-    
+
     def process_single(
         self,
         map_data: np.ndarray,
@@ -208,7 +228,7 @@ class PeakCountProcessor(BaseProcessor):
     ) -> np.ndarray:
         """
         Compute peak counts for a single map.
-        
+
         Parameters
         ----------
         map_data : np.ndarray
@@ -219,12 +239,12 @@ class PeakCountProcessor(BaseProcessor):
             Number of bins. Uses processor default if not provided.
         **kwargs
             Additional arguments (ignored).
-            
+
         Returns
         -------
         np.ndarray
             Peak counts, shape (nscales * nbins,).
-            
+
         Raises
         ------
         ImportError
@@ -235,10 +255,10 @@ class PeakCountProcessor(BaseProcessor):
                 "pycs library is required for peak count computation. "
                 "Install via: pip install pycs"
             )
-        
+
         _nscales = nscales if nscales is not None else self.nscales
         _nbins = nbins if nbins is not None else self.nbins
-        
+
         return compute_peak_counts(
             map_data,
             nscales=_nscales,
@@ -247,18 +267,18 @@ class PeakCountProcessor(BaseProcessor):
             min_val=self.min_val,
             max_val=self.max_val,
         )
-    
+
     def get_output_shape(self) -> Tuple[int]:
         """
         Get the output shape for peak counts.
-        
+
         Returns
         -------
         tuple
             Shape of the output peak count array.
         """
         return (self.nscales * self.nbins,)
-    
+
     def get_output_suffix(
         self,
         bin_number: Optional[int] = None,
@@ -266,19 +286,19 @@ class PeakCountProcessor(BaseProcessor):
     ) -> str:
         """Generate output filename suffix."""
         parts = ["_peaks"]
-        
+
         if bnt_bin is not None:
-            parts.append(f"_bnt{bnt_bin+1}")
+            parts.append(f"_bnt{bnt_bin + 1}")
         elif bin_number is not None:
             parts.append(f"_bin{bin_number}")
-        
+
         if self.config.apply_mask:
             area = int(round(self.config.mask_area_sqdeg))
             parts.append(f"_masked_{area}sqdeg")
-        
+
         if self.config.add_noise:
             parts.append(f"_noisy_s{self.config.noise_level:.2f}")
-        
+
         parts.append(f"_scales{self.nscales}_bins{self.nbins}")
         parts.append(".npy")
         return "".join(parts)
@@ -287,25 +307,25 @@ class PeakCountProcessor(BaseProcessor):
 def identify_peaks(
     map_data: np.ndarray,
     threshold: float = 0.0,
-) -> List[Tuple[int, float]]:
+) -> List[Tuple[int, np.floating]]:
     """
     Identify peak locations and values in a HEALPix map.
-    
+
     A pixel is considered a peak if its value is higher than all
     its neighbors.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
         Input HEALPix map.
     threshold : float, optional
         Minimum peak height to include (default: 0.0).
-        
+
     Returns
     -------
     list of tuples
         List of (pixel_index, peak_value) tuples.
-        
+
     Notes
     -----
     This is a simple implementation for identifying peaks directly
@@ -315,16 +335,16 @@ def identify_peaks(
     nside = hp.get_nside(map_data)
     npix = len(map_data)
     peaks = []
-    
+
     for ipix in range(npix):
         neighbors = hp.get_all_neighbours(nside, ipix)
         # Remove invalid neighbor indices (-1)
         neighbors = neighbors[neighbors >= 0]
-        
+
         pixel_val = map_data[ipix]
         if pixel_val > threshold and np.all(pixel_val > map_data[neighbors]):
             peaks.append((ipix, pixel_val))
-    
+
     return peaks
 
 
@@ -338,10 +358,10 @@ def process_peak_counts(
 ) -> np.ndarray:
     """
     Process a map to compute peak counts (functional interface).
-    
+
     This function provides a simple interface for computing peak counts
     without instantiating a processor object.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
@@ -354,7 +374,7 @@ def process_peak_counts(
         Shape noise level.
     **kwargs
         Additional arguments passed to processor.
-        
+
     Returns
     -------
     np.ndarray

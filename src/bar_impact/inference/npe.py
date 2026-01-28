@@ -8,15 +8,15 @@ using the jaxili library for simulation-based inference on cosmological data.
 from __future__ import annotations
 
 import os
-import numpy as np
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any, Tuple, Union, List
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
+import numpy as np
 
 __all__ = [
     "NPEInference",
-    "NPEConfig", 
+    "NPEConfig",
     "NPEResult",
     "run_npe_inference",
     "train_npe_model",
@@ -28,7 +28,8 @@ __all__ = [
 def _check_jaxili_available():
     """Check if jaxili is available."""
     try:
-        from jaxili.inference import NPE
+        from jaxili.inference import NPE  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -37,8 +38,9 @@ def _check_jaxili_available():
 def _check_jax_available():
     """Check if JAX is available."""
     try:
-        import jax
-        import jax.numpy as jnp
+        import jax  # noqa: F401
+        import jax.numpy as jnp  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -48,7 +50,7 @@ def _check_jax_available():
 class NPEConfig:
     """
     Configuration for Neural Posterior Estimation.
-    
+
     Parameters
     ----------
     num_epochs : int
@@ -67,7 +69,7 @@ class NPEConfig:
         Random seed for reproducibility.
     verbose : bool
         Whether to print training progress.
-        
+
     Examples
     --------
     >>> config = NPEConfig(
@@ -77,7 +79,7 @@ class NPEConfig:
     ...     checkpoint_dir="./checkpoints"
     ... )
     """
-    
+
     num_epochs: int = 1000
     learning_rate: float = 1e-4
     batch_size: int = 40
@@ -92,7 +94,7 @@ class NPEConfig:
 class NPEResult:
     """
     Container for NPE inference results.
-    
+
     Parameters
     ----------
     samples : np.ndarray
@@ -103,7 +105,7 @@ class NPEResult:
         The observed data used for inference.
     metadata : dict
         Additional metadata about the inference.
-        
+
     Attributes
     ----------
     num_samples : int
@@ -111,69 +113,73 @@ class NPEResult:
     num_params : int
         Number of parameters.
     """
-    
+
     samples: np.ndarray
     param_names: List[str] = field(default_factory=list)
     observed_data: Optional[np.ndarray] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     @property
     def num_samples(self) -> int:
         """Number of posterior samples."""
         return self.samples.shape[0]
-    
+
     @property
     def num_params(self) -> int:
         """Number of parameters."""
         return self.samples.shape[1]
-    
+
     def get_param_samples(self, param_name: str) -> np.ndarray:
         """
         Get samples for a specific parameter.
-        
+
         Parameters
         ----------
         param_name : str
             Name of the parameter.
-            
+
         Returns
         -------
         np.ndarray
             Samples for the specified parameter.
         """
         if param_name not in self.param_names:
-            raise ValueError(f"Unknown parameter: {param_name}. Available: {self.param_names}")
+            raise ValueError(
+                f"Unknown parameter: {param_name}. Available: {self.param_names}"
+            )
         idx = self.param_names.index(param_name)
         return self.samples[:, idx]
-    
+
     def get_mean(self) -> np.ndarray:
         """Get posterior mean for each parameter."""
         return np.mean(self.samples, axis=0)
-    
+
     def get_std(self) -> np.ndarray:
         """Get posterior standard deviation for each parameter."""
         return np.std(self.samples, axis=0)
-    
-    def get_quantiles(self, q: Union[float, List[float]] = [0.16, 0.5, 0.84]) -> np.ndarray:
+
+    def get_quantiles(self, q: Union[float, List[float]] = None) -> np.ndarray:
         """
         Get posterior quantiles.
-        
+
         Parameters
         ----------
         q : float or list of float
             Quantile(s) to compute.
-            
+
         Returns
         -------
         np.ndarray
             Quantiles, shape (len(q), num_params).
         """
+        if q is None:
+            q = [0.16, 0.5, 0.84]
         return np.quantile(self.samples, q, axis=0)
-    
+
     def summary(self) -> Dict[str, Dict[str, float]]:
         """
         Get summary statistics for all parameters.
-        
+
         Returns
         -------
         dict
@@ -190,11 +196,11 @@ class NPEResult:
                 "upper_68": float(quantiles[2, i]),
             }
         return summary
-    
+
     def save(self, filepath: Union[str, Path]) -> None:
         """
         Save results to a numpy file.
-        
+
         Parameters
         ----------
         filepath : str or Path
@@ -207,17 +213,17 @@ class NPEResult:
             observed_data=self.observed_data,
             metadata=self.metadata,
         )
-    
+
     @classmethod
     def load(cls, filepath: Union[str, Path]) -> "NPEResult":
         """
         Load results from a numpy file.
-        
+
         Parameters
         ----------
         filepath : str or Path
             Path to load results from.
-            
+
         Returns
         -------
         NPEResult
@@ -227,7 +233,7 @@ class NPEResult:
         return cls(
             samples=data["samples"],
             param_names=list(data["param_names"]),
-            observed_data=data["observed_data"] if "observed_data" in data else None,
+            observed_data=data.get("observed_data", None),
             metadata=data["metadata"].item() if "metadata" in data else {},
         )
 
@@ -235,17 +241,17 @@ class NPEResult:
 class NPEInference:
     """
     Neural Posterior Estimation inference wrapper.
-    
+
     This class wraps the jaxili NPE implementation for easy use in
     cosmological inference pipelines.
-    
+
     Parameters
     ----------
     config : NPEConfig, optional
         Configuration for the inference. Uses defaults if not provided.
     param_names : list of str, optional
         Names of the cosmological parameters.
-        
+
     Attributes
     ----------
     config : NPEConfig
@@ -254,29 +260,29 @@ class NPEInference:
         Whether the model has been trained.
     jaxili_available : bool
         Whether jaxili is installed.
-        
+
     Examples
     --------
     >>> from bar_impact.inference import NPEInference, NPEConfig
     >>> from bar_impact.constants import COSMO_PARAM_NAMES
-    >>> 
+    >>>
     >>> # Create inference object
     >>> config = NPEConfig(num_epochs=500, batch_size=64)
     >>> npe = NPEInference(config=config, param_names=COSMO_PARAM_NAMES)
-    >>> 
+    >>>
     >>> # Train on simulation data
     >>> npe.train(data_vectors, parameters)
-    >>> 
+    >>>
     >>> # Sample posterior for observed data
     >>> result = npe.sample(observed_data, num_samples=10000)
     >>> print(result.summary())
-    
+
     Notes
     -----
     This class requires jaxili to be installed. Install via:
     pip install jaxili
     """
-    
+
     def __init__(
         self,
         config: Optional[NPEConfig] = None,
@@ -284,37 +290,37 @@ class NPEInference:
     ):
         self.config = config if config is not None else NPEConfig()
         self.param_names = param_names or []
-        
+
         self._inference = None
         self._posterior = None
         self._is_trained = False
-        
+
         # Check dependencies
         self.jaxili_available = _check_jaxili_available()
         self.jax_available = _check_jax_available()
-        
+
         # Set GPU
         if self.jax_available:
             os.environ["CUDA_VISIBLE_DEVICES"] = self.config.gpu_id
-    
+
     @property
     def is_trained(self) -> bool:
         """Whether the model has been trained."""
         return self._is_trained
-    
+
     def _ensure_jaxili(self):
         """Ensure jaxili is available."""
         if not self.jaxili_available:
             raise ImportError(
-                "jaxili is required for NPE inference. "
-                "Install via: pip install jaxili"
+                "jaxili is required for NPE inference. Install via: pip install jaxili"
             )
-    
+
     def _to_jax_array(self, arr: np.ndarray):
         """Convert numpy array to JAX array."""
         import jax.numpy as jnp
+
         return jnp.array(arr)
-    
+
     def train(
         self,
         data_vectors: np.ndarray,
@@ -323,7 +329,7 @@ class NPEInference:
     ) -> Dict[str, Any]:
         """
         Train the NPE model on simulation data.
-        
+
         Parameters
         ----------
         data_vectors : np.ndarray
@@ -332,12 +338,12 @@ class NPEInference:
             Training parameters, shape (n_sims, n_params).
         checkpoint_name : str, optional
             Name for checkpoint. Overrides config if provided.
-            
+
         Returns
         -------
         dict
             Training metrics (loss history, etc.).
-            
+
         Raises
         ------
         ImportError
@@ -345,52 +351,54 @@ class NPEInference:
         """
         self._ensure_jaxili()
         from jaxili.inference import NPE
-        
+
         # Convert to JAX arrays
         params_jax = self._to_jax_array(parameters)
         data_jax = self._to_jax_array(data_vectors)
-        
+
         # Set up checkpoint path - must be absolute for orbax
         checkpoint_dir = Path(self.config.checkpoint_dir).resolve()
         checkpoint_dir.mkdir(parents=True, exist_ok=True)
-        
+
         name = checkpoint_name or self.config.checkpoint_name
         if name is None:
             name = f"npe_checkpoint_{data_vectors.shape[1]}features"
         checkpoint_path = str(checkpoint_dir / name)
-        
+
         if self.config.verbose:
-            print(f"Training NPE with {data_vectors.shape[0]} simulations, "
-                  f"{data_vectors.shape[1]} features, {parameters.shape[1]} parameters")
+            print(
+                f"Training NPE with {data_vectors.shape[0]} simulations, "
+                f"{data_vectors.shape[1]} features, {parameters.shape[1]} parameters"
+            )
             print(f"Checkpoint path: {checkpoint_path}")
-        
+
         # Initialize and train
         self._inference = NPE()
         self._inference = self._inference.append_simulations(params_jax, data_jax)
-        
+
         if self.config.verbose:
             print(f"Starting training for {self.config.num_epochs} epochs...")
-        
+
         metrics, _ = self._inference.train(
             checkpoint_path=checkpoint_path,
             num_epochs=self.config.num_epochs,
             learning_rate=self.config.learning_rate,
             training_batch_size=self.config.batch_size,
         )
-        
+
         # Build posterior
         self._posterior = self._inference.build_posterior()
         self._is_trained = True
-        
+
         if self.config.verbose:
             print("Training completed successfully")
-        
+
         return {"metrics": metrics, "checkpoint_path": checkpoint_path}
-    
+
     def load(self, checkpoint_path: Union[str, Path]) -> None:
         """
         Load a trained model from checkpoint.
-        
+
         Parameters
         ----------
         checkpoint_path : str or Path
@@ -398,18 +406,18 @@ class NPEInference:
         """
         self._ensure_jaxili()
         from jaxili.inference import NPE
-        
+
         # Convert to absolute path for orbax compatibility
         checkpoint_path = str(Path(checkpoint_path).resolve())
-        
+
         self._inference = NPE()
         self._inference.load(checkpoint_path)
         self._posterior = self._inference.build_posterior()
         self._is_trained = True
-        
+
         if self.config.verbose:
             print(f"Loaded model from {checkpoint_path}")
-    
+
     def sample(
         self,
         observed_data: np.ndarray,
@@ -418,7 +426,7 @@ class NPEInference:
     ) -> NPEResult:
         """
         Sample from the posterior given observed data.
-        
+
         Parameters
         ----------
         observed_data : np.ndarray
@@ -427,34 +435,36 @@ class NPEInference:
             Number of posterior samples to draw.
         seed : int, optional
             Random seed for sampling.
-            
+
         Returns
         -------
         NPEResult
             Container with posterior samples and metadata.
-            
+
         Raises
         ------
         RuntimeError
             If model has not been trained.
         """
         if not self._is_trained:
-            raise RuntimeError("Model must be trained before sampling. Call train() or load() first.")
-        
+            raise RuntimeError(
+                "Model must be trained before sampling. Call train() or load() first."
+            )
+
         import jax.random as random
-        
+
         seed = seed if seed is not None else self.config.random_seed
         key = random.PRNGKey(seed)
-        
+
         # Convert observed data to JAX array
         obs_jax = self._to_jax_array(observed_data)
-        
+
         samples = self._posterior.sample(
             x=obs_jax,
             num_samples=num_samples,
             key=key,
         )
-        
+
         return NPEResult(
             samples=np.array(samples),
             param_names=self.param_names,
@@ -464,7 +474,7 @@ class NPEInference:
                 "seed": seed,
             },
         )
-    
+
     def sample_batch(
         self,
         observed_data_batch: np.ndarray,
@@ -473,7 +483,7 @@ class NPEInference:
     ) -> np.ndarray:
         """
         Sample from posterior for multiple observations.
-        
+
         Parameters
         ----------
         observed_data_batch : np.ndarray
@@ -482,7 +492,7 @@ class NPEInference:
             Number of samples per observation.
         seed : int, optional
             Random seed.
-            
+
         Returns
         -------
         np.ndarray
@@ -490,15 +500,15 @@ class NPEInference:
         """
         if not self._is_trained:
             raise RuntimeError("Model must be trained before sampling.")
-        
+
         import jax
         import jax.random as random
-        
+
         seed = seed if seed is not None else self.config.random_seed
         master_key = random.PRNGKey(seed)
-        
+
         all_samples = []
-        for i, obs in enumerate(observed_data_batch):
+        for _i, obs in enumerate(observed_data_batch):
             sample_key, master_key = jax.random.split(master_key)
             samples = self._posterior.sample(
                 x=obs,
@@ -506,12 +516,13 @@ class NPEInference:
                 key=sample_key,
             )
             all_samples.append(np.array(samples))
-        
+
         # Stack: (num_samples, n_obs, n_params)
         return np.stack(all_samples, axis=1)
 
 
 # Functional interface for backwards compatibility
+
 
 def run_npe_inference(
     data_vectors: np.ndarray,
@@ -524,10 +535,10 @@ def run_npe_inference(
 ) -> Union[NPEResult, Dict[str, Any]]:
     """
     Run Neural Posterior Estimation on cosmological data.
-    
+
     This is a convenience function that trains an NPE model and optionally
     samples from the posterior.
-    
+
     Parameters
     ----------
     data_vectors : np.ndarray
@@ -544,7 +555,7 @@ def run_npe_inference(
         Configuration for the inference.
     **kwargs
         Additional keyword arguments passed to NPEConfig.
-        
+
     Returns
     -------
     NPEResult or dict
@@ -554,17 +565,17 @@ def run_npe_inference(
     # Create config from kwargs if not provided
     if config is None:
         config = NPEConfig(**{k: v for k, v in kwargs.items() if hasattr(NPEConfig, k)})
-    
+
     # Create and train
     npe = NPEInference(config=config, param_names=param_names)
     train_result = npe.train(data_vectors, parameters)
-    
+
     # Sample if observed data provided
     if observed_data is not None:
         result = npe.sample(observed_data, num_samples=num_samples)
         result.metadata.update(train_result)
         return result
-    
+
     return train_result
 
 
@@ -576,7 +587,7 @@ def train_npe_model(
 ) -> NPEInference:
     """
     Train a Neural Posterior Estimation model.
-    
+
     Parameters
     ----------
     data_vectors : np.ndarray
@@ -587,7 +598,7 @@ def train_npe_model(
         Training configuration.
     **kwargs
         Additional arguments for NPEConfig.
-        
+
     Returns
     -------
     NPEInference
@@ -595,7 +606,7 @@ def train_npe_model(
     """
     if config is None:
         config = NPEConfig(**{k: v for k, v in kwargs.items() if hasattr(NPEConfig, k)})
-    
+
     npe = NPEInference(config=config)
     npe.train(data_vectors, parameters)
     return npe
@@ -609,7 +620,7 @@ def sample_posterior(
 ) -> np.ndarray:
     """
     Sample from the posterior distribution.
-    
+
     Parameters
     ----------
     model : NPEInference
@@ -620,7 +631,7 @@ def sample_posterior(
         Number of samples to draw.
     seed : int, optional
         Random seed.
-        
+
     Returns
     -------
     np.ndarray
@@ -643,11 +654,11 @@ def train_with_nan_retry(
 ):
     """
     Train NPE with automatic retry if NaN loss is encountered.
-    
+
     NPE training can sometimes fail due to poor random initialization leading to
     numerical instability. This function automatically retries training with fresh
     initialization if NaN loss is detected.
-    
+
     Parameters
     ----------
     inference : NPE
@@ -668,7 +679,7 @@ def train_with_nan_retry(
         Maximum number of training attempts (default: 10).
     verbose : bool, optional
         Whether to print progress messages (default: True).
-        
+
     Returns
     -------
     inference : NPE
@@ -677,18 +688,18 @@ def train_with_nan_retry(
         Training metrics from successful run.
     density_estimator : object
         Trained density estimator.
-        
+
     Raises
     ------
     RuntimeError
         If all retry attempts fail.
-        
+
     Examples
     --------
     >>> from jaxili.inference import NPE
     >>> import jax.numpy as jnp
     >>> from bar_impact.inference import train_with_nan_retry
-    >>> 
+    >>>
     >>> inference = NPE()
     >>> inference = inference.append_simulations(params_jax, data_jax)
     >>> inference, metrics, estimator = train_with_nan_retry(
@@ -696,7 +707,7 @@ def train_with_nan_retry(
     ...     checkpoint_path="./checkpoints/my_model",
     ...     num_epochs=1000
     ... )
-    
+
     Notes
     -----
     This function only checks training and validation losses for NaN values.
@@ -707,101 +718,113 @@ def train_with_nan_retry(
         raise ImportError(
             "jaxili is required for NPE training. Install with: pip install jaxili"
         )
-    
+
     from jaxili.inference import NPE
-    
+
     for attempt in range(1, max_retries + 1):
         if verbose:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"Training attempt {attempt}/{max_retries}")
-            print(f"{'='*60}")
-        
+            print(f"{'=' * 60}")
+
         try:
             # Train for full epochs
             if verbose:
                 print(f"Training for {num_epochs} epochs...")
-            
+
             metrics, density_estimator = inference.train(
                 checkpoint_path=checkpoint_path,
                 num_epochs=num_epochs,
                 learning_rate=learning_rate,
-                training_batch_size=batch_size
+                training_batch_size=batch_size,
             )
-            
+
             # Check if training or validation loss contains NaN
             # Note: We only check train_loss and val_loss, NOT test_loss
             # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
             has_nan = False
             nan_source = None
-            
+
             # Check if metrics is a dict or has attributes
             if isinstance(metrics, dict):
                 # Check training loss
-                if 'train_loss' in metrics:
-                    train_loss = metrics['train_loss']
+                if "train_loss" in metrics:
+                    train_loss = metrics["train_loss"]
                     if isinstance(train_loss, (list, np.ndarray)):
                         if np.any(np.isnan(train_loss)):
                             has_nan = True
-                            nan_source = 'training loss'
+                            nan_source = "training loss"
                     elif np.isnan(train_loss):
                         has_nan = True
-                        nan_source = 'training loss'
-                
+                        nan_source = "training loss"
+
                 # Check validation loss
-                if not has_nan and 'val_loss' in metrics:
-                    val_loss = metrics['val_loss']
+                if not has_nan and "val_loss" in metrics:
+                    val_loss = metrics["val_loss"]
                     if isinstance(val_loss, (list, np.ndarray)):
                         if np.any(np.isnan(val_loss)):
                             has_nan = True
-                            nan_source = 'validation loss'
+                            nan_source = "validation loss"
                     elif np.isnan(val_loss):
                         has_nan = True
-                        nan_source = 'validation loss'
-                
+                        nan_source = "validation loss"
+
                 # Warn about test loss NaN but don't trigger retry
-                if 'test_loss' in metrics and np.isnan(metrics['test_loss']):
-                    if verbose:
-                        print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
+                if (
+                    "test_loss" in metrics
+                    and np.isnan(metrics["test_loss"])
+                    and verbose
+                ):
+                    print(
+                        "⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)"
+                    )
             else:
                 # Check training loss (indicates bad initialization)
-                if hasattr(metrics, 'train_loss'):
+                if hasattr(metrics, "train_loss"):
                     train_loss = metrics.train_loss
                     if isinstance(train_loss, (list, np.ndarray)):
                         if np.any(np.isnan(train_loss)):
                             has_nan = True
-                            nan_source = 'training loss'
+                            nan_source = "training loss"
                     elif np.isnan(train_loss):
                         has_nan = True
-                        nan_source = 'training loss'
-                
+                        nan_source = "training loss"
+
                 # Check validation loss (indicates training instability)
-                if not has_nan and hasattr(metrics, 'val_loss'):
+                if not has_nan and hasattr(metrics, "val_loss"):
                     val_loss = metrics.val_loss
                     if isinstance(val_loss, (list, np.ndarray)):
                         if np.any(np.isnan(val_loss)):
                             has_nan = True
-                            nan_source = 'validation loss'
+                            nan_source = "validation loss"
                     elif np.isnan(val_loss):
                         has_nan = True
-                        nan_source = 'validation loss'
-                
+                        nan_source = "validation loss"
+
                 # Warn about test loss NaN but don't trigger retry
-                if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
-                    if verbose:
-                        print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
-            
+                if (
+                    hasattr(metrics, "test_loss")
+                    and np.isnan(metrics.test_loss)
+                    and verbose
+                ):
+                    print(
+                        "⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)"
+                    )
+
             if has_nan:
                 if verbose:
-                    print(f"⚠ NaN detected in {nan_source} during attempt {attempt}. Reinitializing...")
+                    print(
+                        f"⚠ NaN detected in {nan_source} during attempt {attempt}. Reinitializing..."
+                    )
                 # Reinitialize the inference object for a fresh start
                 inference = NPE()
                 inference = inference.append_simulations(params, data)
                 continue
-            
+
             if verbose:
                 print(f"✓ Training completed successfully on attempt {attempt}")
             return inference, metrics, density_estimator
-            
+
         except Exception as e:
             if verbose:
                 print(f"⚠ Error during training attempt {attempt}: {e}")
@@ -812,5 +835,7 @@ def train_with_nan_retry(
             # Reinitialize for retry
             inference = NPE()
             inference = inference.append_simulations(params, data)
-    
-    raise RuntimeError(f"Training failed after {max_retries} attempts due to persistent NaN loss")
+
+    raise RuntimeError(
+        f"Training failed after {max_retries} attempts due to persistent NaN loss"
+    )
