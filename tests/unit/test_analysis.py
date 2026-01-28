@@ -7,9 +7,6 @@ import os
 import numpy as np
 import pytest
 
-# Import availability flag from conftest (pytest auto-imports conftest.py)
-from conftest import HAS_GETDIST
-
 from bar_impact.analysis.aggregation import (
     AggregationConfig,
     ResultsAggregator,
@@ -25,6 +22,9 @@ from bar_impact.analysis.visualization import (
     plot_power_spectrum,
     visualize_coverage,
 )
+
+# Import availability flag from conftest
+from tests.conftest import HAS_GETDIST
 
 # =============================================================================
 # AggregationConfig Tests

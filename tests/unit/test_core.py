@@ -4,7 +4,6 @@ Unit tests for the core module.
 Tests for ConvergenceMap, SurveyMask, and DataVector classes.
 """
 
-
 import healpy as hp
 import numpy as np
 import pytest

@@ -82,9 +82,9 @@ def test_bootstrap_with_fix_has_variation(bootstrap_fix_test_data):
     variation_fixed = np.std(
         [ecp_boot_fixed[i, mid_idx] for i in range(len(ecp_boot_fixed))]
     )
-    assert (
-        variation_fixed > 0.001
-    ), f"No variation across bootstrap samples: {variation_fixed:.6f}"
+    assert variation_fixed > 0.001, (
+        f"No variation across bootstrap samples: {variation_fixed:.6f}"
+    )
 
 
 def test_bootstrap_different_samples_vary(bootstrap_fix_test_data):

@@ -73,7 +73,9 @@ def run_tarp_coverage_test(
 
         from tarp import get_tarp_coverage
     except ImportError as e:
-        raise ImportError(f"TARP coverage testing requires JAX and TARP package: {e}") from e
+        raise ImportError(
+            f"TARP coverage testing requires JAX and TARP package: {e}"
+        ) from e
 
     if verbose:
         print("\n" + "=" * 60)
@@ -103,7 +105,7 @@ def run_tarp_coverage_test(
 
     for i, x_obs in enumerate(test_data):
         if verbose and (i + 1) % 10 == 0:
-            print(f"  {i+1}/{n_test} simulations processed")
+            print(f"  {i + 1}/{n_test} simulations processed")
 
         sample_key, master_key = jax.random.split(master_key)
         samples = posterior.sample(x=x_obs, num_samples=num_samples, key=sample_key)
@@ -277,9 +279,9 @@ def train_npe_with_nan_retry(
 
     for attempt in range(1, max_retries + 1):
         if verbose:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"Training attempt {attempt}/{max_retries}")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
             print(f"Training for {num_epochs} epochs...")
 
         metrics, density_estimator = inference.train(
@@ -300,7 +302,9 @@ def train_npe_with_nan_retry(
                 nan_source = "training loss"
                 if verbose:
                     first_nan_idx = np.where(np.isnan(train_loss))[0][0]
-                    print(f"  ❌ NaN detected in training loss at epoch {first_nan_idx}")
+                    print(
+                        f"  ❌ NaN detected in training loss at epoch {first_nan_idx}"
+                    )
 
         if hasattr(metrics, "val_loss") and not has_nan:
             val_loss = np.array(metrics.val_loss)

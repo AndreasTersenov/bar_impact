@@ -158,9 +158,7 @@ class NPEResult:
         """Get posterior standard deviation for each parameter."""
         return np.std(self.samples, axis=0)
 
-    def get_quantiles(
-        self, q: Union[float, List[float]] = None
-    ) -> np.ndarray:
+    def get_quantiles(self, q: Union[float, List[float]] = None) -> np.ndarray:
         """
         Get posterior quantiles.
 
@@ -314,8 +312,7 @@ class NPEInference:
         """Ensure jaxili is available."""
         if not self.jaxili_available:
             raise ImportError(
-                "jaxili is required for NPE inference. "
-                "Install via: pip install jaxili"
+                "jaxili is required for NPE inference. Install via: pip install jaxili"
             )
 
     def _to_jax_array(self, arr: np.ndarray):
@@ -726,9 +723,9 @@ def train_with_nan_retry(
 
     for attempt in range(1, max_retries + 1):
         if verbose:
-            print(f"\n{'='*60}")
+            print(f"\n{'=' * 60}")
             print(f"Training attempt {attempt}/{max_retries}")
-            print(f"{'='*60}")
+            print(f"{'=' * 60}")
 
         try:
             # Train for full epochs
@@ -773,7 +770,11 @@ def train_with_nan_retry(
                         nan_source = "validation loss"
 
                 # Warn about test loss NaN but don't trigger retry
-                if "test_loss" in metrics and np.isnan(metrics["test_loss"]) and verbose:
+                if (
+                    "test_loss" in metrics
+                    and np.isnan(metrics["test_loss"])
+                    and verbose
+                ):
                     print(
                         "⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)"
                     )
@@ -801,7 +802,11 @@ def train_with_nan_retry(
                         nan_source = "validation loss"
 
                 # Warn about test loss NaN but don't trigger retry
-                if hasattr(metrics, "test_loss") and np.isnan(metrics.test_loss) and verbose:
+                if (
+                    hasattr(metrics, "test_loss")
+                    and np.isnan(metrics.test_loss)
+                    and verbose
+                ):
                     print(
                         "⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)"
                     )

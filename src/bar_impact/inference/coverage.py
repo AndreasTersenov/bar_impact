@@ -302,8 +302,7 @@ class CoverageTester:
         """Ensure TARP is available."""
         if not self.tarp_available:
             raise ImportError(
-                "TARP is required for coverage testing. "
-                "Install via: pip install tarp"
+                "TARP is required for coverage testing. Install via: pip install tarp"
             )
 
     def test(
@@ -355,7 +354,7 @@ class CoverageTester:
         all_samples = []
         for i, x_obs in enumerate(test_data):
             if self.config.verbose and (i + 1) % 10 == 0:
-                print(f"  Progress: {i+1}/{n_test} simulations")
+                print(f"  Progress: {i + 1}/{n_test} simulations")
 
             samples = sample_fn(x_obs, self.config.num_samples)
             all_samples.append(samples)

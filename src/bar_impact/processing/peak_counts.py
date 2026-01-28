@@ -288,7 +288,7 @@ class PeakCountProcessor(BaseProcessor):
         parts = ["_peaks"]
 
         if bnt_bin is not None:
-            parts.append(f"_bnt{bnt_bin+1}")
+            parts.append(f"_bnt{bnt_bin + 1}")
         elif bin_number is not None:
             parts.append(f"_bin{bin_number}")
 

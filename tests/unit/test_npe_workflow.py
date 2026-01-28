@@ -19,8 +19,8 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
-# Import availability flags from conftest (pytest auto-imports conftest.py)
-from conftest import HAS_GETDIST, HAS_JAX
+# Import availability flags from conftest
+from tests.conftest import HAS_GETDIST, HAS_JAX
 
 # Check if all required dependencies are available for npe_workflow
 HAS_NPE_WORKFLOW_DEPS = HAS_JAX and HAS_GETDIST

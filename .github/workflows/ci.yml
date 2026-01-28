@@ -3,7 +3,7 @@ name: CI
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [main, master, develop, 'feat/*']
   pull_request:
     branches: [main, master, develop]
 
@@ -69,7 +69,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -79,7 +79,7 @@ jobs:
 
       - name: Run mypy
         run: |
-          mypy src/bar_impact/ --ignore-missing-imports
+          mypy src/bar_impact/
 
   # Build check (ensure package can be built)
   build:

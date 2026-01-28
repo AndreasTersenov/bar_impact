@@ -40,23 +40,5 @@ repos:
       - id: ruff
         args: ['--fix', '--exit-non-zero-on-fix']
 
-  # Type checking with mypy
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - numpy>=1.20
-          - types-setuptools
-        args: ['--ignore-missing-imports']
-        files: ^src/bar_impact/
-        pass_filenames: false
-        entry: mypy src/bar_impact/
-
-# Configuration for specific hooks
-ci:
-  autofix_commit_msg: |
-    [pre-commit.ci] auto fixes from pre-commit hooks
-  autoupdate_commit_msg: |
-    [pre-commit.ci] pre-commit autoupdate
-  skip: [mypy]  # Skip mypy in CI (run separately with full deps)
+  # Note: mypy is run separately in CI (type-check job) with full dependencies
+  # Removed from pre-commit to avoid dependency issues in CI environment

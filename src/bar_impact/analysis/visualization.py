@@ -421,7 +421,7 @@ class CoveragePlotter:
                 ecp + z * ecp_std,
                 color=color,
                 alpha=0.3,
-                label=f"{int(confidence_level*100)}% CI",
+                label=f"{int(confidence_level * 100)}% CI",
             )
 
         # Styling
@@ -471,7 +471,7 @@ class CoveragePlotter:
         n_results = len(coverage_results)
 
         if labels is None:
-            labels = [f"Result {i+1}" for i in range(n_results)]
+            labels = [f"Result {i + 1}" for i in range(n_results)]
 
         if colors is None:
             colors = [f"C{i}" for i in range(n_results)]

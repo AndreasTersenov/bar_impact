@@ -8,7 +8,6 @@ Tests cover:
 - Per-bin operations
 """
 
-
 import numpy as np
 
 
