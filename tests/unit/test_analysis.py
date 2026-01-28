@@ -23,8 +23,12 @@ from bar_impact.analysis.visualization import (
     visualize_coverage,
 )
 
-# Import availability flag from conftest
-from tests.conftest import HAS_GETDIST
+# Check if getdist is available
+try:
+    from getdist import plots  # noqa: F401
+    HAS_GETDIST = True
+except ImportError:
+    HAS_GETDIST = False
 
 # =============================================================================
 # AggregationConfig Tests
