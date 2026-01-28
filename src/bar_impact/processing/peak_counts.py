@@ -23,10 +23,11 @@ __all__ = ["PeakCountProcessor", "PeakCountConfig", "compute_peak_counts"]
 
 
 # Default parameters for peak count computation
+# These should match the original peak_counts_processing.py script
 DEFAULT_NSCALES = 5  # Number of wavelet scales
-DEFAULT_NBINS = 40   # Number of SNR bins
-DEFAULT_MIN_VAL = -4.0  # Minimum SNR value
-DEFAULT_MAX_VAL = 4.0   # Maximum SNR value
+DEFAULT_NBINS = 31   # Number of SNR bins (matches original script)
+DEFAULT_MIN_VAL = -2.0  # Minimum SNR value (matches original script)
+DEFAULT_MAX_VAL = 10.0   # Maximum SNR value (matches original script)
 
 
 def _check_pycs_available():

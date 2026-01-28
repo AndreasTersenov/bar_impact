@@ -14,7 +14,7 @@ def add_shape_noise(
     sigma_e: float = 0.26,
     nside: Optional[int] = None,
     area_deg2: Optional[float] = None,
-    ngal_arcmin2: float = 30.0,
+    ngal_arcmin2: float = 6.75,  # Matches DEFAULT_GALAXY_DENSITY in constants.py
     galaxy_density: Optional[float] = None,
     seed: Optional[int] = None,
     rng: Optional[np.random.Generator] = None,
@@ -131,7 +131,7 @@ def add_shape_noise(
 def generate_shape_noise_realization(
     npix: int,
     sigma_e: float = 0.26,
-    ngal_arcmin2: float = 30.0,
+    ngal_arcmin2: float = 6.75,  # Matches DEFAULT_GALAXY_DENSITY in constants.py
     galaxy_density: Optional[float] = None,
     nside: Optional[int] = None,
     seed: Optional[int] = None

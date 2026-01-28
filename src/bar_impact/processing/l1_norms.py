@@ -23,12 +23,13 @@ __all__ = ["L1NormProcessor", "L1NormConfig", "compute_l1_norms"]
 
 
 # Default parameters for L1 norm computation
+# These should match the values in bar_impact/constants.py
 DEFAULT_NSCALES = 5  # Number of wavelet scales
 DEFAULT_NBINS = 40   # Number of histogram bins for L1 norm
-DEFAULT_MIN_SNR = -4.0  # Minimum SNR for fine scales
-DEFAULT_MAX_SNR = 4.0   # Maximum SNR for fine scales
-DEFAULT_MIN_SNR_COARSE = -3.0  # Minimum SNR for coarse scale
-DEFAULT_MAX_SNR_COARSE = 3.0   # Maximum SNR for coarse scale
+DEFAULT_MIN_SNR = -13.0  # Minimum SNR for fine scales (matches original scripts)
+DEFAULT_MAX_SNR = 13.0   # Maximum SNR for fine scales (matches original scripts)
+DEFAULT_MIN_SNR_COARSE = -13.0  # Minimum SNR for coarse scale
+DEFAULT_MAX_SNR_COARSE = 13.0   # Maximum SNR for coarse scale
 
 
 def _check_pycs_available():
