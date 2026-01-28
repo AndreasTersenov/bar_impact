@@ -8,4 +8,3 @@ Step-by-step guides for common analysis workflows.
 
    CROSS_POWER_SPECTRUM_WORKFLOW
    BNT_INFERENCE_WORKFLOW
-   WORKFLOW_CROSS_SPECTRA_AGGREGATION
