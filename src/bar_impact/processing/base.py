@@ -7,19 +7,17 @@ processors inherit from, ensuring a consistent interface.
 
 from __future__ import annotations
 
-import os
-import numpy as np
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union, List, Dict, Any, Callable
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from typing import Dict, List, Optional, Union
+
+import numpy as np
 from tqdm import tqdm
 
+from bar_impact.core.datavectors import DataVector, DataVectorCollection
 from bar_impact.core.maps import ConvergenceMap, ConvergenceMapCollection
 from bar_impact.core.masks import SurveyMask
-from bar_impact.core.datavectors import DataVector, DataVectorCollection
-
 
 __all__ = ["BaseProcessor", "ProcessingConfig"]
 
@@ -28,7 +26,7 @@ __all__ = ["BaseProcessor", "ProcessingConfig"]
 class ProcessingConfig:
     """
     Configuration for batch processing operations.
-    
+
     Parameters
     ----------
     add_noise : bool
@@ -51,7 +49,7 @@ class ProcessingConfig:
         Whether to overwrite existing output files.
     output_dir : str or Path, optional
         Directory for output files.
-        
+
     Examples
     --------
     >>> config = ProcessingConfig(
@@ -61,7 +59,7 @@ class ProcessingConfig:
     ...     mask_area_sqdeg=14000.0
     ... )
     """
-    
+
     add_noise: bool = True
     noise_level: float = 0.26
     galaxy_density: float = 6.75
@@ -78,40 +76,40 @@ class ProcessingConfig:
 class BaseProcessor(ABC):
     """
     Abstract base class for summary statistic processors.
-    
+
     This class defines the interface that all processors must implement,
     and provides common functionality for batch processing.
-    
+
     Parameters
     ----------
     config : ProcessingConfig, optional
         Configuration for processing. Uses defaults if not provided.
-        
+
     Attributes
     ----------
     config : ProcessingConfig
         The processing configuration.
     statistic_type : str
         Name of the summary statistic (set by subclasses).
-        
+
     Examples
     --------
     Subclasses must implement the `process_single` method:
-    
+
     >>> class MyProcessor(BaseProcessor):
     ...     statistic_type = "my_statistic"
-    ...     
+    ...
     ...     def process_single(self, map_data):
     ...         return np.sum(np.abs(map_data))
     """
-    
+
     # Subclasses must set this
     statistic_type: str = "base"
-    
+
     def __init__(self, config: Optional[ProcessingConfig] = None):
         self.config = config or ProcessingConfig()
         self._mask_cache: Dict[tuple, SurveyMask] = {}
-    
+
     @abstractmethod
     def process_single(
         self,
@@ -120,23 +118,23 @@ class BaseProcessor(ABC):
     ) -> np.ndarray:
         """
         Process a single map to compute the summary statistic.
-        
+
         This method must be implemented by all subclasses.
-        
+
         Parameters
         ----------
         map_data : np.ndarray or ConvergenceMap
             Input convergence map.
         **kwargs
             Additional processor-specific parameters.
-            
+
         Returns
         -------
         np.ndarray
             Computed summary statistic.
         """
         pass
-    
+
     def process(
         self,
         map_data: Union[np.ndarray, ConvergenceMap],
@@ -145,7 +143,7 @@ class BaseProcessor(ABC):
     ) -> DataVector:
         """
         Process a map with optional preprocessing (noise, masking).
-        
+
         Parameters
         ----------
         map_data : np.ndarray or ConvergenceMap
@@ -154,7 +152,7 @@ class BaseProcessor(ABC):
             Whether to apply noise and masking based on config.
         **kwargs
             Additional processor-specific parameters.
-            
+
         Returns
         -------
         DataVector
@@ -165,14 +163,14 @@ class BaseProcessor(ABC):
             map_obj = ConvergenceMap(data=map_data)
         else:
             map_obj = map_data
-        
+
         # Apply preprocessing if requested
         if apply_preprocessing:
             map_obj = self._preprocess(map_obj)
-        
+
         # Compute statistic
         result = self.process_single(map_obj.data, **kwargs)
-        
+
         # Wrap in DataVector
         metadata = {
             "nside": map_obj.nside,
@@ -182,13 +180,13 @@ class BaseProcessor(ABC):
         }
         if self.config.apply_mask:
             metadata["mask_area_sqdeg"] = self.config.mask_area_sqdeg
-        
+
         return DataVector(
             data=result,
             statistic_type=self.statistic_type,
             metadata=metadata,
         )
-    
+
     def process_collection(
         self,
         collection: ConvergenceMapCollection,
@@ -199,7 +197,7 @@ class BaseProcessor(ABC):
     ) -> Union[DataVector, List[DataVector]]:
         """
         Process a collection of maps (multiple redshift bins).
-        
+
         Parameters
         ----------
         collection : ConvergenceMapCollection
@@ -212,7 +210,7 @@ class BaseProcessor(ABC):
             Whether to concatenate results into single DataVector.
         **kwargs
             Additional processor-specific parameters.
-            
+
         Returns
         -------
         DataVector or List[DataVector]
@@ -221,13 +219,13 @@ class BaseProcessor(ABC):
         # Apply BNT if requested
         if apply_bnt:
             collection = collection.apply_bnt_transform(bnt_matrix=bnt_matrix)
-        
+
         # Process each map
         results = []
         for kappa_map in collection:
             dv = self.process(kappa_map, apply_preprocessing=True, **kwargs)
             results.append(dv)
-        
+
         if concatenate and len(results) > 1:
             # Concatenate all data vectors
             combined_data = np.concatenate([dv.data.ravel() for dv in results])
@@ -244,7 +242,7 @@ class BaseProcessor(ABC):
             return results[0]
         else:
             return results
-    
+
     def process_batch(
         self,
         file_paths: List[Union[str, Path]],
@@ -256,7 +254,7 @@ class BaseProcessor(ABC):
     ) -> DataVectorCollection:
         """
         Process multiple files in parallel.
-        
+
         Parameters
         ----------
         file_paths : List[str or Path]
@@ -271,7 +269,7 @@ class BaseProcessor(ABC):
             Whether to show progress bar.
         **kwargs
             Additional processor-specific parameters.
-            
+
         Returns
         -------
         DataVectorCollection
@@ -280,10 +278,10 @@ class BaseProcessor(ABC):
         # Normalize bin_numbers to list
         if isinstance(bin_numbers, int):
             bin_numbers = [bin_numbers]
-        
-        n_files = len(file_paths)
+
+        len(file_paths)
         all_data_vectors = []
-        
+
         # Process files
         if self.config.n_workers > 1:
             # Parallel processing
@@ -292,7 +290,11 @@ class BaseProcessor(ABC):
             )
         else:
             # Sequential processing
-            iterator = tqdm(file_paths, desc=f"Processing {self.statistic_type}") if progress else file_paths
+            iterator = (
+                tqdm(file_paths, desc=f"Processing {self.statistic_type}")
+                if progress
+                else file_paths
+            )
             for filepath in iterator:
                 try:
                     dv = self._process_file(filepath, bin_numbers, **kwargs)
@@ -301,20 +303,20 @@ class BaseProcessor(ABC):
                 except Exception as e:
                     if self.config.verbose:
                         print(f"Error processing {filepath}: {e}")
-        
+
         if not all_data_vectors:
             raise ValueError("No files were successfully processed")
-        
+
         # Stack into collection
         data_array = np.array([dv.data.ravel() for dv in all_data_vectors])
-        
+
         # Use provided params or create placeholder
         if cosmology_params is None:
             cosmology_params = np.zeros((len(all_data_vectors), 1))
-        
+
         return DataVectorCollection(
             data_vectors=data_array,
-            parameters=cosmology_params[:len(all_data_vectors)],
+            parameters=cosmology_params[: len(all_data_vectors)],
             statistic_type=self.statistic_type,
             param_names=param_names,
             metadata={
@@ -328,16 +330,16 @@ class BaseProcessor(ABC):
                 },
             },
         )
-    
+
     def _process_file(
         self,
         filepath: Union[str, Path],
         bin_numbers: List[int],
         **kwargs,
-    ) -> Optional[DataVector]:
+    ) -> Optional[Union[DataVector, List[DataVector]]]:
         """
         Process a single file (internal method).
-        
+
         Parameters
         ----------
         filepath : str or Path
@@ -346,7 +348,7 @@ class BaseProcessor(ABC):
             Bin numbers to process.
         **kwargs
             Additional parameters.
-            
+
         Returns
         -------
         DataVector or None
@@ -362,16 +364,12 @@ class BaseProcessor(ABC):
                 collection = ConvergenceMapCollection.from_h5(
                     filepath, bin_numbers=bin_numbers
                 )
-                return self.process_collection(
-                    collection, 
-                    concatenate=True,
-                    **kwargs
-                )
+                return self.process_collection(collection, concatenate=True, **kwargs)
         except Exception as e:
             if self.config.verbose:
                 print(f"Error processing {filepath}: {e}")
             return None
-    
+
     def _process_batch_parallel(
         self,
         file_paths: List[Union[str, Path]],
@@ -381,14 +379,18 @@ class BaseProcessor(ABC):
     ) -> List[DataVector]:
         """
         Process batch in parallel (internal method).
-        
+
         Note: Due to pickling constraints, this uses a simpler approach
         that may not preserve all processor state.
         """
         # For now, fall back to sequential processing
         # Full parallel support would require more careful handling
         results = []
-        iterator = tqdm(file_paths, desc=f"Processing {self.statistic_type}") if progress else file_paths
+        iterator = (
+            tqdm(file_paths, desc=f"Processing {self.statistic_type}")
+            if progress
+            else file_paths
+        )
         for filepath in iterator:
             try:
                 dv = self._process_file(filepath, bin_numbers, **kwargs)
@@ -398,23 +400,23 @@ class BaseProcessor(ABC):
                 if self.config.verbose:
                     print(f"Error processing {filepath}: {e}")
         return results
-    
+
     def _preprocess(self, map_obj: ConvergenceMap) -> ConvergenceMap:
         """
         Apply preprocessing (noise, masking) to a map.
-        
+
         Parameters
         ----------
         map_obj : ConvergenceMap
             Input map.
-            
+
         Returns
         -------
         ConvergenceMap
             Preprocessed map.
         """
         result = map_obj.copy()
-        
+
         # Add noise if configured
         if self.config.add_noise and not result.is_noisy:
             result = result.add_shape_noise(
@@ -422,14 +424,14 @@ class BaseProcessor(ABC):
                 galaxy_density=self.config.galaxy_density,
                 seed=self.config.random_seed,
             )
-        
+
         # Apply mask if configured
         if self.config.apply_mask:
             mask = self._get_cached_mask(result.nside)
             result = result.apply_mask(mask)
-        
+
         return result
-    
+
     def _get_cached_mask(self, nside: int) -> SurveyMask:
         """Get or create a cached mask."""
         cache_key = (
@@ -445,7 +447,7 @@ class BaseProcessor(ABC):
                 center_coords=self.config.mask_center,
             )
         return self._mask_cache[cache_key]
-    
+
     def get_output_suffix(
         self,
         bin_number: Optional[int] = None,
@@ -453,35 +455,35 @@ class BaseProcessor(ABC):
     ) -> str:
         """
         Generate output filename suffix based on configuration.
-        
+
         Parameters
         ----------
         bin_number : int, optional
             Redshift bin number.
         bnt_bin : int, optional
             BNT bin number.
-            
+
         Returns
         -------
         str
             Filename suffix.
         """
         parts = [f"_{self.statistic_type}"]
-        
+
         if bnt_bin is not None:
             parts.append(f"_bnt{bnt_bin+1}")
         elif bin_number is not None:
             parts.append(f"_bin{bin_number}")
-        
+
         if self.config.apply_mask:
             area = int(round(self.config.mask_area_sqdeg))
             parts.append(f"_masked_{area}sqdeg")
-        
+
         if self.config.add_noise:
             parts.append(f"_noisy_s{self.config.noise_level:.2f}")
-        
+
         parts.append(".npy")
         return "".join(parts)
-    
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(statistic_type='{self.statistic_type}')"

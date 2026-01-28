@@ -10,14 +10,14 @@ in the convergence field through wavelet decomposition.
 
 from __future__ import annotations
 
-import numpy as np
-import healpy as hp
 from dataclasses import dataclass
-from typing import Optional, Tuple, List, Union
+from typing import Optional, Tuple
 
-from bar_impact.processing.base import BaseProcessor, ProcessingConfig
+import healpy as hp
+import numpy as np
+
 from bar_impact.constants import DEFAULT_NSIDE
-
+from bar_impact.processing.base import BaseProcessor, ProcessingConfig
 
 __all__ = ["L1NormProcessor", "L1NormConfig", "compute_l1_norms"]
 
@@ -25,17 +25,18 @@ __all__ = ["L1NormProcessor", "L1NormConfig", "compute_l1_norms"]
 # Default parameters for L1 norm computation
 # These should match the values in bar_impact/constants.py
 DEFAULT_NSCALES = 5  # Number of wavelet scales
-DEFAULT_NBINS = 40   # Number of histogram bins for L1 norm
+DEFAULT_NBINS = 40  # Number of histogram bins for L1 norm
 DEFAULT_MIN_SNR = -13.0  # Minimum SNR for fine scales (matches original scripts)
-DEFAULT_MAX_SNR = 13.0   # Maximum SNR for fine scales (matches original scripts)
+DEFAULT_MAX_SNR = 13.0  # Maximum SNR for fine scales (matches original scripts)
 DEFAULT_MIN_SNR_COARSE = -13.0  # Minimum SNR for coarse scale
-DEFAULT_MAX_SNR_COARSE = 13.0   # Maximum SNR for coarse scale
+DEFAULT_MAX_SNR_COARSE = 13.0  # Maximum SNR for coarse scale
 
 
 def _check_pycs_available():
     """Check if pycs is available for wavelet computations."""
     try:
-        from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere
+        from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere  # noqa: F401
+
         return True
     except (ImportError, NameError, AttributeError):
         # NameError and AttributeError can occur if pycs has internal issues
@@ -58,10 +59,10 @@ def compute_l1_norms(
 ) -> np.ndarray:
     """
     Compute L1 norms of wavelet coefficients.
-    
+
     This function wraps the pycs get_wtl1_sphere function which computes
     L1 norms of starlet wavelet coefficients at multiple scales.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
@@ -82,17 +83,17 @@ def compute_l1_norms(
         Minimum SNR for coarse scale bins.
     max_snr_coarse : float, optional
         Maximum SNR for coarse scale bins.
-        
+
     Returns
     -------
     np.ndarray
         L1 norms for each wavelet scale.
-        
+
     Raises
     ------
     ImportError
         If pycs is not installed.
-        
+
     Notes
     -----
     This function requires the pycs library (CosmoStat) to be installed.
@@ -100,12 +101,12 @@ def compute_l1_norms(
     """
     try:
         from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere
-    except ImportError:
+    except ImportError as err:
         raise ImportError(
             "pycs library is required for L1 norm computation. "
             "Install via: pip install pycs"
-        )
-    
+        ) from err
+
     _, l1norms = get_wtl1_sphere(
         map_data,
         nscales=nscales,
@@ -117,7 +118,7 @@ def compute_l1_norms(
         min_snr_coarse=min_snr_coarse,
         max_snr_coarse=max_snr_coarse,
     )
-    
+
     return np.array(l1norms)
 
 
@@ -125,7 +126,7 @@ def compute_l1_norms(
 class L1NormConfig(ProcessingConfig):
     """
     Configuration for L1 norm processing.
-    
+
     Parameters
     ----------
     nscales : int
@@ -143,7 +144,7 @@ class L1NormConfig(ProcessingConfig):
     max_snr_coarse : float
         Maximum SNR for coarse scale histogram bins.
     """
-    
+
     nscales: int = DEFAULT_NSCALES
     nbins: int = DEFAULT_NBINS
     noise_std: Optional[float] = None
@@ -156,11 +157,11 @@ class L1NormConfig(ProcessingConfig):
 class L1NormProcessor(BaseProcessor):
     """
     Processor for computing L1 norms of wavelet coefficients.
-    
+
     This processor computes L1 norms from convergence maps using
     spherical starlet wavelets. L1 norms capture non-Gaussian
     information that is lost in the power spectrum.
-    
+
     Parameters
     ----------
     config : L1NormConfig, optional
@@ -169,7 +170,7 @@ class L1NormProcessor(BaseProcessor):
         Number of wavelet scales. Overrides config if provided.
     nbins : int, optional
         Number of histogram bins. Overrides config if provided.
-        
+
     Attributes
     ----------
     nscales : int
@@ -178,28 +179,28 @@ class L1NormProcessor(BaseProcessor):
         Number of histogram bins.
     pycs_available : bool
         Whether pycs is available for computation.
-        
+
     Examples
     --------
     >>> from bar_impact.processing import L1NormProcessor
     >>> processor = L1NormProcessor(nscales=5, nbins=40)
-    >>> 
+    >>>
     >>> # Process a single map
     >>> l1 = processor.process_single(map_data)
     >>> l1.shape
     (200,)  # 5 scales * 40 bins
-    >>> 
+    >>>
     >>> # Process with mask
     >>> l1 = processor.process_single(map_data, mask=survey_mask)
-    
+
     Notes
     -----
     This processor requires the pycs library (CosmoStat) for wavelet
     computations. Install via: pip install pycs
     """
-    
+
     statistic_type = "l1_norm"
-    
+
     def __init__(
         self,
         config: Optional[L1NormConfig] = None,
@@ -214,21 +215,45 @@ class L1NormProcessor(BaseProcessor):
         # Create config if not provided
         if config is None:
             config = L1NormConfig()
-        
+
         super().__init__(config)
-        
+
         # Override config values if explicitly provided
-        self.nscales = nscales if nscales is not None else getattr(config, 'nscales', DEFAULT_NSCALES)
-        self.nbins = nbins if nbins is not None else getattr(config, 'nbins', DEFAULT_NBINS)
-        self.noise_std = noise_std if noise_std is not None else getattr(config, 'noise_std', None)
-        self.min_snr = min_snr if min_snr is not None else getattr(config, 'min_snr', DEFAULT_MIN_SNR)
-        self.max_snr = max_snr if max_snr is not None else getattr(config, 'max_snr', DEFAULT_MAX_SNR)
-        self.min_snr_coarse = min_snr_coarse if min_snr_coarse is not None else getattr(config, 'min_snr_coarse', DEFAULT_MIN_SNR_COARSE)
-        self.max_snr_coarse = max_snr_coarse if max_snr_coarse is not None else getattr(config, 'max_snr_coarse', DEFAULT_MAX_SNR_COARSE)
-        
+        self.nscales = (
+            nscales
+            if nscales is not None
+            else getattr(config, "nscales", DEFAULT_NSCALES)
+        )
+        self.nbins = (
+            nbins if nbins is not None else getattr(config, "nbins", DEFAULT_NBINS)
+        )
+        self.noise_std = (
+            noise_std if noise_std is not None else getattr(config, "noise_std", None)
+        )
+        self.min_snr = (
+            min_snr
+            if min_snr is not None
+            else getattr(config, "min_snr", DEFAULT_MIN_SNR)
+        )
+        self.max_snr = (
+            max_snr
+            if max_snr is not None
+            else getattr(config, "max_snr", DEFAULT_MAX_SNR)
+        )
+        self.min_snr_coarse = (
+            min_snr_coarse
+            if min_snr_coarse is not None
+            else getattr(config, "min_snr_coarse", DEFAULT_MIN_SNR_COARSE)
+        )
+        self.max_snr_coarse = (
+            max_snr_coarse
+            if max_snr_coarse is not None
+            else getattr(config, "max_snr_coarse", DEFAULT_MAX_SNR_COARSE)
+        )
+
         # Check pycs availability
         self.pycs_available = _check_pycs_available()
-    
+
     def process_single(
         self,
         map_data: np.ndarray,
@@ -239,7 +264,7 @@ class L1NormProcessor(BaseProcessor):
     ) -> np.ndarray:
         """
         Compute L1 norms for a single map.
-        
+
         Parameters
         ----------
         map_data : np.ndarray
@@ -252,12 +277,12 @@ class L1NormProcessor(BaseProcessor):
             Number of bins. Uses processor default if not provided.
         **kwargs
             Additional arguments (ignored).
-            
+
         Returns
         -------
         np.ndarray
             L1 norms, shape (nscales * nbins,).
-            
+
         Raises
         ------
         ImportError
@@ -268,10 +293,10 @@ class L1NormProcessor(BaseProcessor):
                 "pycs library is required for L1 norm computation. "
                 "Install via: pip install pycs"
             )
-        
+
         _nscales = nscales if nscales is not None else self.nscales
         _nbins = nbins if nbins is not None else self.nbins
-        
+
         return compute_l1_norms(
             map_data,
             nscales=_nscales,
@@ -283,18 +308,18 @@ class L1NormProcessor(BaseProcessor):
             min_snr_coarse=self.min_snr_coarse,
             max_snr_coarse=self.max_snr_coarse,
         )
-    
+
     def get_output_shape(self) -> Tuple[int]:
         """
         Get the output shape for L1 norms.
-        
+
         Returns
         -------
         tuple
             Shape of the output L1 norm array.
         """
         return (self.nscales * self.nbins,)
-    
+
     def get_output_suffix(
         self,
         bin_number: Optional[int] = None,
@@ -302,19 +327,19 @@ class L1NormProcessor(BaseProcessor):
     ) -> str:
         """Generate output filename suffix."""
         parts = ["_l1"]
-        
+
         if bnt_bin is not None:
             parts.append(f"_bnt{bnt_bin+1}")
         elif bin_number is not None:
             parts.append(f"_bin{bin_number}")
-        
+
         if self.config.apply_mask:
             area = int(round(self.config.mask_area_sqdeg))
             parts.append(f"_masked_{area}sqdeg")
-        
+
         if self.config.add_noise:
             parts.append(f"_noisy_s{self.config.noise_level:.2f}")
-        
+
         parts.append(f"_scales{self.nscales}_bins{self.nbins}")
         parts.append(".npy")
         return "".join(parts)
@@ -331,10 +356,10 @@ def process_l1_norms(
 ) -> np.ndarray:
     """
     Process a map to compute L1 norms (functional interface).
-    
+
     This function provides a simple interface for computing L1 norms
     without instantiating a processor object.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
@@ -349,7 +374,7 @@ def process_l1_norms(
         Shape noise level.
     **kwargs
         Additional arguments passed to processor.
-        
+
     Returns
     -------
     np.ndarray
@@ -367,19 +392,19 @@ def compute_wavelet_transform(
 ) -> Tuple[np.ndarray, ...]:
     """
     Compute wavelet transform of a spherical map.
-    
+
     Parameters
     ----------
     map_data : np.ndarray
         Input HEALPix map.
     num_scales : int, optional
         Number of scales for the wavelet decomposition.
-        
+
     Returns
     -------
     tuple of np.ndarray
         Wavelet coefficients at each scale.
-        
+
     Raises
     ------
     ImportError
@@ -387,14 +412,14 @@ def compute_wavelet_transform(
     """
     try:
         from pycs.sparsity.mrs.mrs_starlet import CMRStarlet
-    except ImportError:
+    except ImportError as err:
         raise ImportError(
             "pycs library is required for wavelet computation. "
             "Install via: pip install pycs"
-        )
-    
+        ) from err
+
     nside = hp.get_nside(map_data)
     starlet = CMRStarlet(nside=nside, nscales=num_scales)
     starlet.decompose(map_data)
-    
+
     return tuple(starlet.coef[i] for i in range(num_scales))

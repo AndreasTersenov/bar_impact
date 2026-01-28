@@ -28,28 +28,27 @@ compute_tarp_coverage
     Compute TARP coverage from posterior samples.
 """
 
-# NPE classes and functions
-from bar_impact.inference.npe import (
-    NPEInference,
-    NPEConfig,
-    NPEResult,
-    run_npe_inference,
-    train_npe_model,
-    sample_posterior,
-    train_with_nan_retry,
-)
-
 # Coverage testing
 from bar_impact.inference.coverage import (
-    CoverageTester,
     CoverageConfig,
     CoverageResult,
+    CoverageTester,
     compute_tarp_coverage,
 )
 
 # Fisher forecast (placeholder)
 from bar_impact.inference.fisher import run_fisher_forecast
 
+# NPE classes and functions
+from bar_impact.inference.npe import (
+    NPEConfig,
+    NPEInference,
+    NPEResult,
+    run_npe_inference,
+    sample_posterior,
+    train_npe_model,
+    train_with_nan_retry,
+)
 
 __all__ = [
     # NPE

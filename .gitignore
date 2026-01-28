@@ -48,6 +48,10 @@ htmlcov/
 .dmypy.json
 dmypy.json
 
+# Sphinx documentation
+docs/_build/
+docs/api/generated/
+
 # Data files (large files that shouldn't be in git)
 *.fits
 *.npy

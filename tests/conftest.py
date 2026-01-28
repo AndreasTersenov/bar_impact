@@ -7,21 +7,26 @@ This module provides:
 - Test collection configuration
 """
 
-import pytest
-import numpy as np
-import healpy as hp
 import tempfile
 from pathlib import Path
 
+import healpy as hp
+import numpy as np
+import pytest
 
 # =============================================================================
 # Optional Dependency Detection
 # =============================================================================
 
+
 def _check_pycs_available():
     """Check if pycs (CosmoStat) is available and working."""
     try:
-        from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere, get_wtpeaks_sphere
+        from pycs.astro.wl.hos_peaks_l1 import (  # noqa: F401
+            get_wtl1_sphere,
+            get_wtpeaks_sphere,
+        )
+
         return True
     except (ImportError, NameError, AttributeError):
         # NameError and AttributeError can occur if pycs has internal issues
@@ -34,7 +39,8 @@ def _check_pycs_available():
 def _check_pymaster_available():
     """Check if pymaster (NaMaster) is available."""
     try:
-        import pymaster as nmt
+        import pymaster as nmt  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -43,8 +49,9 @@ def _check_pymaster_available():
 def _check_jax_available():
     """Check if JAX is available."""
     try:
-        import jax
-        import jax.numpy as jnp
+        import jax  # noqa: F401
+        import jax.numpy as jnp  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -53,7 +60,8 @@ def _check_jax_available():
 def _check_jaxili_available():
     """Check if jaxili is available."""
     try:
-        from jaxili.inference import NPE
+        from jaxili.inference import NPE  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -62,7 +70,8 @@ def _check_jaxili_available():
 def _check_tarp_available():
     """Check if TARP is available."""
     try:
-        from tarp import get_tarp_coverage
+        from tarp import get_tarp_coverage  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -71,7 +80,8 @@ def _check_tarp_available():
 def _check_getdist_available():
     """Check if getdist is available."""
     try:
-        from getdist import plots
+        from getdist import plots  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -91,39 +101,26 @@ HAS_GETDIST = _check_getdist_available()
 # =============================================================================
 
 requires_pycs = pytest.mark.skipif(
-    not HAS_PYCS,
-    reason="pycs (CosmoStat) not installed"
+    not HAS_PYCS, reason="pycs (CosmoStat) not installed"
 )
 
 requires_namaster = pytest.mark.skipif(
-    not HAS_NAMASTER,
-    reason="pymaster (NaMaster) not installed"
+    not HAS_NAMASTER, reason="pymaster (NaMaster) not installed"
 )
 
-requires_jax = pytest.mark.skipif(
-    not HAS_JAX,
-    reason="JAX not installed"
-)
+requires_jax = pytest.mark.skipif(not HAS_JAX, reason="JAX not installed")
 
-requires_jaxili = pytest.mark.skipif(
-    not HAS_JAXILI,
-    reason="jaxili not installed"
-)
+requires_jaxili = pytest.mark.skipif(not HAS_JAXILI, reason="jaxili not installed")
 
-requires_tarp = pytest.mark.skipif(
-    not HAS_TARP,
-    reason="TARP not installed"
-)
+requires_tarp = pytest.mark.skipif(not HAS_TARP, reason="TARP not installed")
 
-requires_getdist = pytest.mark.skipif(
-    not HAS_GETDIST,
-    reason="getdist not installed"
-)
+requires_getdist = pytest.mark.skipif(not HAS_GETDIST, reason="getdist not installed")
 
 
 # =============================================================================
 # Common Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def small_nside():
@@ -168,12 +165,14 @@ def sample_param_names():
 # Fixtures for Optional Dependencies
 # =============================================================================
 
+
 @pytest.fixture
 def jax_random_key():
     """Get a JAX random key (skipped if JAX not available)."""
     if not HAS_JAX:
         pytest.skip("JAX not available")
     import jax
+
     return jax.random.PRNGKey(42)
 
 
@@ -183,12 +182,14 @@ def jnp_array():
     if not HAS_JAX:
         pytest.skip("JAX not available")
     import jax.numpy as jnp
+
     return jnp
 
 
 # =============================================================================
 # Test Collection Configuration
 # =============================================================================
+
 
 def pytest_configure(config):
     """Register custom markers."""
@@ -198,21 +199,11 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "requires_namaster: mark test as requiring pymaster library"
     )
-    config.addinivalue_line(
-        "markers", "requires_jax: mark test as requiring JAX"
-    )
-    config.addinivalue_line(
-        "markers", "requires_jaxili: mark test as requiring jaxili"
-    )
-    config.addinivalue_line(
-        "markers", "requires_tarp: mark test as requiring TARP"
-    )
+    config.addinivalue_line("markers", "requires_jax: mark test as requiring JAX")
+    config.addinivalue_line("markers", "requires_jaxili: mark test as requiring jaxili")
+    config.addinivalue_line("markers", "requires_tarp: mark test as requiring TARP")
     config.addinivalue_line(
         "markers", "requires_getdist: mark test as requiring getdist"
     )
-    config.addinivalue_line(
-        "markers", "slow: mark test as slow running"
-    )
-    config.addinivalue_line(
-        "markers", "integration: mark test as integration test"
-    )
+    config.addinivalue_line("markers", "slow: mark test as slow running")
+    config.addinivalue_line("markers", "integration: mark test as integration test")

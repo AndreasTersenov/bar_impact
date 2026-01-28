@@ -11,32 +11,33 @@ are installed.
 """
 
 from bar_impact.utils.io import load_healpy_map, save_results
-from bar_impact.utils.noise import add_shape_noise
-from bar_impact.utils.reproducibility import (
-    get_deterministic_seed,
-    seed_worker,
-    create_seed_worker_initializer,
-)
-from bar_impact.utils.paths import (
-    get_data_file_paths,
-    build_output_suffix,
-)
 from bar_impact.utils.logging import (
-    get_logger,
+    LoggingContext,
     configure_logging,
-    set_log_level,
     disable_logging,
     enable_logging,
-    LoggingContext,
+    get_logger,
+    set_log_level,
+)
+from bar_impact.utils.noise import add_shape_noise
+from bar_impact.utils.paths import (
+    build_output_suffix,
+    get_data_file_paths,
+)
+from bar_impact.utils.reproducibility import (
+    create_seed_worker_initializer,
+    get_deterministic_seed,
+    seed_worker,
 )
 
 # Conditionally import inference utilities (requires JAX, jaxili, tarp)
 try:
     from bar_impact.utils.inference import (
-        run_tarp_coverage_test,
         plot_tarp_coverage,
+        run_tarp_coverage_test,
         train_npe_with_nan_retry,
     )
+
     _HAS_INFERENCE_UTILS = True
 except ImportError:
     _HAS_INFERENCE_UTILS = False
@@ -48,14 +49,15 @@ except ImportError:
 try:
     from bar_impact.utils.npe_workflow import (
         STANDARD_COSMO_PARAMS,
-        initialize_npe,
-        train_or_load_npe,
         create_triangle_plot,
-        sample_and_save_posterior,
-        setup_jax_environment,
+        initialize_npe,
         print_analysis_summary,
         print_completion_summary,
+        sample_and_save_posterior,
+        setup_jax_environment,
+        train_or_load_npe,
     )
+
     _HAS_NPE_WORKFLOW = True
 except ImportError:
     _HAS_NPE_WORKFLOW = False
@@ -92,21 +94,25 @@ __all__ = [
 
 # Add inference utilities if available
 if _HAS_INFERENCE_UTILS:
-    __all__.extend([
-        "run_tarp_coverage_test",
-        "plot_tarp_coverage",
-        "train_npe_with_nan_retry",
-    ])
+    __all__.extend(
+        [
+            "run_tarp_coverage_test",
+            "plot_tarp_coverage",
+            "train_npe_with_nan_retry",
+        ]
+    )
 
 # Add NPE workflow utilities if available
 if _HAS_NPE_WORKFLOW:
-    __all__.extend([
-        "STANDARD_COSMO_PARAMS",
-        "initialize_npe",
-        "train_or_load_npe",
-        "create_triangle_plot",
-        "sample_and_save_posterior",
-        "setup_jax_environment",
-        "print_analysis_summary",
-        "print_completion_summary",
-    ])
+    __all__.extend(
+        [
+            "STANDARD_COSMO_PARAMS",
+            "initialize_npe",
+            "train_or_load_npe",
+            "create_triangle_plot",
+            "sample_and_save_posterior",
+            "setup_jax_environment",
+            "print_analysis_summary",
+            "print_completion_summary",
+        ]
+    )

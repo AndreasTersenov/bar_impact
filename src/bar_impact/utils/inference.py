@@ -5,11 +5,10 @@ This module provides helper functions for NPE workflows, including
 TARP coverage testing and training with NaN handling.
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
-from typing import Tuple, Optional, Any
-import os
+from typing import Any, Tuple
 
+import matplotlib.pyplot as plt
+import numpy as np
 
 __all__ = [
     "run_tarp_coverage_test",
@@ -31,11 +30,11 @@ def run_tarp_coverage_test(
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     Run TARP coverage test on posterior estimator.
-    
+
     Uses TARP (Test of Accuracy with Random Points) to assess whether
     posterior coverage is well-calibrated by comparing expected coverage
     probability (ECP) against credibility levels.
-    
+
     Parameters
     ----------
     posterior : object
@@ -56,73 +55,68 @@ def run_tarp_coverage_test(
         Number of bootstrap iterations.
     verbose : bool
         Whether to print progress.
-        
+
     Returns
     -------
     ecp : np.ndarray
         Expected coverage probability.
     alpha : np.ndarray
         Credibility levels.
-        
+
     Notes
     -----
     Requires JAX and the TARP package.
     """
     try:
-        from jax import random
         import jax
+        from jax import random
+
         from tarp import get_tarp_coverage
     except ImportError as e:
-        raise ImportError(
-            f"TARP coverage testing requires JAX and TARP package: {e}"
-        )
-    
+        raise ImportError(f"TARP coverage testing requires JAX and TARP package: {e}") from e
+
     if verbose:
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("Running TARP Coverage Test")
-        print("="*60)
-    
+        print("=" * 60)
+
     # Select subset of simulations
     n_total = data.shape[0]
     n_test = min(num_test_sims, n_total)
-    
+
     np.random.seed(seed)
     test_indices = np.random.choice(n_total, size=n_test, replace=False)
-    
+
     if verbose:
         print(f"Using {n_test} simulations from training set")
         print(f"Generating {num_samples} posterior samples per simulation")
-    
+
     test_data = data[test_indices]
     test_params = params[test_indices]
-    
+
     # Generate posterior samples for each test simulation
     all_samples = []
     master_key = random.PRNGKey(seed)
-    
+
     if verbose:
         print("Generating posterior samples...")
-    
+
     for i, x_obs in enumerate(test_data):
         if verbose and (i + 1) % 10 == 0:
             print(f"  {i+1}/{n_test} simulations processed")
-        
+
         sample_key, master_key = jax.random.split(master_key)
-        samples = posterior.sample(
-            x=x_obs,
-            num_samples=num_samples,
-            key=sample_key
-        )
+        samples = posterior.sample(x=x_obs, num_samples=num_samples, key=sample_key)
         all_samples.append(np.array(samples))
-    
+
     # Stack samples: shape (n_samples, n_sims, n_params)
     all_samples = np.stack(all_samples, axis=1)
-    
+
     if verbose:
         print(f"Posterior samples shape: {all_samples.shape}")
         print(f"True parameters shape: {test_params.shape}")
         print("\nComputing TARP coverage...")
-    
+
     # Compute TARP coverage
     ecp, alpha = get_tarp_coverage(
         samples=all_samples,
@@ -133,13 +127,13 @@ def run_tarp_coverage_test(
         norm=True,
         bootstrap=bootstrap,
         num_bootstrap=num_bootstrap if bootstrap else 100,
-        seed=seed
+        seed=seed,
     )
-    
+
     if verbose:
         print("TARP coverage computation complete!")
-        print("="*60 + "\n")
-    
+        print("=" * 60 + "\n")
+
     return ecp, alpha
 
 
@@ -153,7 +147,7 @@ def plot_tarp_coverage(
 ) -> None:
     """
     Plot TARP coverage diagnostics.
-    
+
     Parameters
     ----------
     ecp : np.ndarray
@@ -171,44 +165,44 @@ def plot_tarp_coverage(
         Resolution for saved figure.
     """
     plt.figure(figsize=figsize)
-    
+
     if bootstrap and ecp.ndim == 2:
         # Plot mean with uncertainty band
         ecp_mean = np.mean(ecp, axis=0)
         ecp_std = np.std(ecp, axis=0)
-        plt.plot(alpha, ecp_mean, 'b-', linewidth=2, label='TARP coverage')
+        plt.plot(alpha, ecp_mean, "b-", linewidth=2, label="TARP coverage")
         plt.fill_between(
             alpha,
             ecp_mean - ecp_std,
             ecp_mean + ecp_std,
             alpha=0.3,
-            color='blue',
-            label='Bootstrap uncertainty'
+            color="blue",
+            label="Bootstrap uncertainty",
         )
     else:
         # Single run or mean already computed
         ecp_to_plot = np.mean(ecp, axis=0) if ecp.ndim == 2 else ecp
-        plt.plot(alpha, ecp_to_plot, 'b-', linewidth=2, label='TARP coverage')
-    
+        plt.plot(alpha, ecp_to_plot, "b-", linewidth=2, label="TARP coverage")
+
     # Plot ideal calibration
-    plt.plot([0, 1], [0, 1], 'k--', linewidth=1.5, label='Ideal calibration')
-    
+    plt.plot([0, 1], [0, 1], "k--", linewidth=1.5, label="Ideal calibration")
+
     # Formatting
-    plt.xlabel('Credibility Level', fontsize=12)
-    plt.ylabel('Expected Coverage Probability', fontsize=12)
-    plt.title('TARP Coverage Diagnostic', fontsize=14, fontweight='bold')
+    plt.xlabel("Credibility Level", fontsize=12)
+    plt.ylabel("Expected Coverage Probability", fontsize=12)
+    plt.title("TARP Coverage Diagnostic", fontsize=14, fontweight="bold")
     plt.legend(fontsize=10)
     plt.grid(True, alpha=0.3)
     plt.xlim(0, 1)
     plt.ylim(0, 1)
     plt.tight_layout()
-    
+
     # Save plot
     plot_path = f"{output_path}_tarp_coverage.pdf"
     plt.savefig(plot_path, transparent=True, dpi=dpi)
     print(f"Saved TARP coverage plot to {plot_path}")
     plt.close()
-    
+
     # Save coverage data
     data_path = f"{output_path}_tarp_coverage_data.npz"
     if bootstrap:
@@ -231,10 +225,10 @@ def train_npe_with_nan_retry(
 ) -> Tuple[Any, Any, Any]:
     """
     Train NPE with automatic retry on NaN loss.
-    
+
     Sometimes the loss initializes at NaN due to bad random initialization.
     This function will retry training with a fresh initialization if NaN is detected.
-    
+
     Parameters
     ----------
     inference : object
@@ -255,7 +249,7 @@ def train_npe_with_nan_retry(
         Maximum number of retry attempts.
     verbose : bool
         Whether to print progress.
-        
+
     Returns
     -------
     inference : object
@@ -264,42 +258,42 @@ def train_npe_with_nan_retry(
         Training metrics.
     density_estimator : object
         Trained density estimator.
-        
+
     Raises
     ------
     RuntimeError
         If all retry attempts fail due to NaN loss.
-        
+
     Notes
     -----
     Only checks train_loss and val_loss for NaN. Test loss can sometimes
     be NaN due to evaluation issues even when training succeeded.
     """
     try:
-        from jaxili.inference import NPE
         import jax.numpy as jnp
-    except ImportError:
-        raise ImportError("This function requires jaxili and JAX")
-    
+        from jaxili.inference import NPE
+    except ImportError as err:
+        raise ImportError("This function requires jaxili and JAX") from err
+
     for attempt in range(1, max_retries + 1):
         if verbose:
             print(f"\n{'='*60}")
             print(f"Training attempt {attempt}/{max_retries}")
             print(f"{'='*60}")
             print(f"Training for {num_epochs} epochs...")
-        
+
         metrics, density_estimator = inference.train(
             checkpoint_path=checkpoint_path,
             num_epochs=num_epochs,
             learning_rate=learning_rate,
-            training_batch_size=batch_size
+            training_batch_size=batch_size,
         )
-        
+
         # Check for NaN in training or validation loss
         has_nan = False
         nan_source = None
-        
-        if hasattr(metrics, 'train_loss'):
+
+        if hasattr(metrics, "train_loss"):
             train_loss = np.array(metrics.train_loss)
             if np.any(np.isnan(train_loss)):
                 has_nan = True
@@ -307,38 +301,40 @@ def train_npe_with_nan_retry(
                 if verbose:
                     first_nan_idx = np.where(np.isnan(train_loss))[0][0]
                     print(f"  ❌ NaN detected in training loss at epoch {first_nan_idx}")
-        
-        if hasattr(metrics, 'val_loss') and not has_nan:
+
+        if hasattr(metrics, "val_loss") and not has_nan:
             val_loss = np.array(metrics.val_loss)
             if np.any(np.isnan(val_loss)):
                 has_nan = True
                 nan_source = "validation loss"
                 if verbose:
                     first_nan_idx = np.where(np.isnan(val_loss))[0][0]
-                    print(f"  ❌ NaN detected in validation loss at epoch {first_nan_idx}")
-        
+                    print(
+                        f"  ❌ NaN detected in validation loss at epoch {first_nan_idx}"
+                    )
+
         if not has_nan:
             if verbose:
-                print(f"  ✅ Training successful!")
-                if hasattr(metrics, 'train_loss'):
+                print("  ✅ Training successful!")
+                if hasattr(metrics, "train_loss"):
                     final_train_loss = metrics.train_loss[-1]
                     print(f"  Final training loss: {final_train_loss:.6f}")
-                if hasattr(metrics, 'val_loss'):
+                if hasattr(metrics, "val_loss"):
                     final_val_loss = metrics.val_loss[-1]
                     print(f"  Final validation loss: {final_val_loss:.6f}")
             return inference, metrics, density_estimator
-        
+
         # NaN detected, retry if attempts remain
         if attempt < max_retries:
             if verbose:
-                print(f"  Retrying with fresh initialization...")
+                print("  Retrying with fresh initialization...")
             # Reinitialize inference object
             inference = NPE()
             inference = inference.append_simulations(jnp.array(params), jnp.array(data))
         else:
             if verbose:
                 print(f"  All {max_retries} attempts failed")
-    
+
     raise RuntimeError(
         f"Training failed after {max_retries} attempts due to NaN in {nan_source}"
     )

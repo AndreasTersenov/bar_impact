@@ -32,7 +32,7 @@ Quick Start
 >>> cls = processor.process_single(kappa_masked.data)
 """
 
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
 try:
     __version__ = version("bar_impact")
@@ -42,58 +42,24 @@ except PackageNotFoundError:
 
 __author__ = "Andreas Tersenov"
 
+# Constants
+from bar_impact.constants import (
+    BNT_MATRIX_DEFAULT,
+    COSMO_PARAM_NAMES,
+    DEFAULT_GALAXY_DENSITY,
+    DEFAULT_LMAX,
+    DEFAULT_NSIDE,
+    DEFAULT_SIGMA_E,
+    get_bnt_matrix,
+)
+
 # Core data structures
 from bar_impact.core import (
     ConvergenceMap,
     ConvergenceMapCollection,
-    SurveyMask,
     DataVector,
     DataVectorCollection,
-)
-
-# Constants
-from bar_impact.constants import (
-    BNT_MATRIX_DEFAULT,
-    get_bnt_matrix,
-    DEFAULT_NSIDE,
-    DEFAULT_LMAX,
-    DEFAULT_SIGMA_E,
-    DEFAULT_GALAXY_DENSITY,
-    COSMO_PARAM_NAMES,
-)
-
-# Processing classes and functions
-from bar_impact.processing import (
-    # Base classes
-    BaseProcessor,
-    ProcessingConfig,
-    # BNT
-    apply_bnt_transform,
-    # Power spectrum
-    PowerSpectrumProcessor,
-    PowerSpectrumConfig,
-    compute_power_spectrum,
-    compute_cross_power_spectrum,
-    # L1 norms
-    L1NormProcessor,
-    L1NormConfig,
-    compute_l1_norms,
-    # Peak counts
-    PeakCountProcessor,
-    PeakCountConfig,
-    compute_peak_counts,
-)
-
-# Inference classes and functions
-from bar_impact.inference import (
-    NPEInference,
-    NPEConfig,
-    NPEResult,
-    run_npe_inference,
-    CoverageTester,
-    CoverageConfig,
-    CoverageResult,
-    compute_tarp_coverage,
+    SurveyMask,
 )
 
 # Custom exceptions
@@ -101,16 +67,45 @@ from bar_impact.exceptions import (
     BarImpactError,
     ConfigurationError,
     DataLoadError,
-    ProcessingError,
-    MaskError,
-    TransformError,
     InferenceError,
-    TrainingError,
+    MaskError,
+    ProcessingError,
     SamplingError,
+    TrainingError,
+    TransformError,
+)
+
+# Inference classes and functions
+from bar_impact.inference import (
+    CoverageConfig,
+    CoverageResult,
+    CoverageTester,
+    NPEConfig,
+    NPEInference,
+    NPEResult,
+    compute_tarp_coverage,
+    run_npe_inference,
+)
+
+# Processing classes and functions
+from bar_impact.processing import (  # Base classes; BNT; Power spectrum; L1 norms; Peak counts
+    BaseProcessor,
+    L1NormConfig,
+    L1NormProcessor,
+    PeakCountConfig,
+    PeakCountProcessor,
+    PowerSpectrumConfig,
+    PowerSpectrumProcessor,
+    ProcessingConfig,
+    apply_bnt_transform,
+    compute_cross_power_spectrum,
+    compute_l1_norms,
+    compute_peak_counts,
+    compute_power_spectrum,
 )
 
 # Logging utilities
-from bar_impact.utils.logging import get_logger, configure_logging
+from bar_impact.utils.logging import configure_logging, get_logger
 
 # Analysis functions (will be implemented in Phase 4)
 # from bar_impact.analysis import aggregate_results
@@ -118,7 +113,7 @@ from bar_impact.utils.logging import get_logger, configure_logging
 __all__ = [
     # Core classes
     "ConvergenceMap",
-    "ConvergenceMapCollection", 
+    "ConvergenceMapCollection",
     "SurveyMask",
     "DataVector",
     "DataVectorCollection",

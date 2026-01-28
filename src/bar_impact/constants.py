@@ -5,8 +5,9 @@ This module centralizes all physical constants, transformation matrices,
 and default parameter values used throughout the package.
 """
 
+from typing import Tuple
+
 import numpy as np
-from typing import Dict, List, Tuple
 
 __all__ = [
     # BNT Transform
@@ -46,12 +47,15 @@ __all__ = [
 # Default BNT transformation matrix for 4 redshift bins
 # This is a lower-triangular matrix that nulls correlations between bins
 # Derived for the specific redshift distribution of the survey
-BNT_MATRIX_DEFAULT: np.ndarray = np.array([
-    [1.0,        0.0,         0.0,        0.0],
-    [-1.0,       1.0,         0.0,        0.0],
-    [0.4521097, -1.4521097,   1.0,        0.0],
-    [0.0,        0.25127807, -1.251278,   1.0],
-], dtype=np.float64)
+BNT_MATRIX_DEFAULT: np.ndarray = np.array(
+    [
+        [1.0, 0.0, 0.0, 0.0],
+        [-1.0, 1.0, 0.0, 0.0],
+        [0.4521097, -1.4521097, 1.0, 0.0],
+        [0.0, 0.25127807, -1.251278, 1.0],
+    ],
+    dtype=np.float64,
+)
 
 # Alias for convenience
 BNT_MATRIX = BNT_MATRIX_DEFAULT
@@ -60,7 +64,7 @@ BNT_MATRIX = BNT_MATRIX_DEFAULT
 def get_bnt_matrix(n_bins: int = 4, custom_matrix: np.ndarray = None) -> np.ndarray:
     """
     Get the BNT transformation matrix.
-    
+
     Parameters
     ----------
     n_bins : int, optional
@@ -68,27 +72,27 @@ def get_bnt_matrix(n_bins: int = 4, custom_matrix: np.ndarray = None) -> np.ndar
     custom_matrix : np.ndarray, optional
         Custom BNT matrix to use instead of the default.
         Must be shape (n_bins, n_bins).
-        
+
     Returns
     -------
     np.ndarray
         BNT transformation matrix of shape (n_bins, n_bins).
-        
+
     Raises
     ------
     ValueError
         If n_bins != 4 and no custom_matrix is provided, or if
         custom_matrix has wrong shape.
-        
+
     Notes
     -----
     The BNT transform is designed to null cross-correlations between
     different redshift bins, making the resulting maps statistically
     independent. This is useful for tomographic weak lensing analysis.
-    
+
     The default matrix is derived for a Stage-III-like survey with
     4 tomographic bins.
-    
+
     Examples
     --------
     >>> bnt = get_bnt_matrix()
@@ -96,7 +100,7 @@ def get_bnt_matrix(n_bins: int = 4, custom_matrix: np.ndarray = None) -> np.ndar
     (4, 4)
     >>> bnt[0, 0]
     1.0
-    
+
     >>> # Using a custom matrix
     >>> custom = np.eye(3)
     >>> bnt = get_bnt_matrix(n_bins=3, custom_matrix=custom)
@@ -109,13 +113,13 @@ def get_bnt_matrix(n_bins: int = 4, custom_matrix: np.ndarray = None) -> np.ndar
                 f"n_bins={n_bins}. Expected shape ({n_bins}, {n_bins})."
             )
         return custom_matrix.copy()
-    
+
     if n_bins != 4:
         raise ValueError(
             f"Default BNT matrix only available for n_bins=4, got {n_bins}. "
             "Please provide a custom_matrix for other bin configurations."
         )
-    
+
     return BNT_MATRIX_DEFAULT.copy()
 
 

@@ -37,42 +37,41 @@ from bar_impact.processing.base import (
 
 # BNT transforms
 from bar_impact.processing.bnt_transforms import (
+    BNT_MATRIX_DEFAULT,
     apply_bnt_transform,
     get_bnt_matrix,
-    BNT_MATRIX_DEFAULT,
-)
-
-# Power spectrum processing
-from bar_impact.processing.power_spectrum import (
-    PowerSpectrumProcessor,
-    PowerSpectrumConfig,
-    compute_power_spectrum,
-    compute_cross_power_spectrum,
 )
 
 # L1 norm processing
 from bar_impact.processing.l1_norms import (
-    L1NormProcessor,
     L1NormConfig,
+    L1NormProcessor,
     compute_l1_norms,
-)
-
-# Peak count processing
-from bar_impact.processing.peak_counts import (
-    PeakCountProcessor,
-    PeakCountConfig,
-    compute_peak_counts,
 )
 
 # MASTER mode-coupling correction (optional - requires NaMaster)
 from bar_impact.processing.master_correction import (
     HAS_NAMASTER,
+    MCM_CACHE,
     compute_coupling_matrix,
     compute_power_spectra_master,
     compute_pseudo_cls_simple,
-    MCM_CACHE,
 )
 
+# Peak count processing
+from bar_impact.processing.peak_counts import (
+    PeakCountConfig,
+    PeakCountProcessor,
+    compute_peak_counts,
+)
+
+# Power spectrum processing
+from bar_impact.processing.power_spectrum import (
+    PowerSpectrumConfig,
+    PowerSpectrumProcessor,
+    compute_cross_power_spectrum,
+    compute_power_spectrum,
+)
 
 __all__ = [
     # Base classes

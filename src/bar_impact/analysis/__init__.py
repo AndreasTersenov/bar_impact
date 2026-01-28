@@ -6,21 +6,21 @@ performing statistical analysis, and creating visualizations.
 """
 
 from bar_impact.analysis.aggregation import (
-    ResultsAggregator,
     AggregationConfig,
-    aggregate_results,
+    ResultsAggregator,
     aggregate_l1_norms,
     aggregate_power_spectra,
+    aggregate_results,
     load_datavectors,
 )
 from bar_impact.analysis.visualization import (
-    PosteriorPlotter,
     CoveragePlotter,
-    PowerSpectrumPlotter,
     PlotConfig,
-    visualize_coverage,
+    PosteriorPlotter,
+    PowerSpectrumPlotter,
     plot_power_spectrum,
     plot_triangle,
+    visualize_coverage,
 )
 
 __all__ = [

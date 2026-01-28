@@ -399,8 +399,6 @@ class SamplingError(InferenceError):
         n_obtained: Optional[int] = None,
         **context: Any,
     ):
-        super().__init__(
-            message, n_samples=n_samples, n_obtained=n_obtained, **context
-        )
+        super().__init__(message, n_samples=n_samples, n_obtained=n_obtained, **context)
         self.n_samples = n_samples
         self.n_obtained = n_obtained

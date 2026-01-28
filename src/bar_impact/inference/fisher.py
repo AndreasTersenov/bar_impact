@@ -5,19 +5,20 @@ This module provides functions for computing Fisher information
 and forecasting parameter constraints.
 """
 
+from typing import Dict
+
 import numpy as np
-from typing import Tuple, Dict, List
 
 
 def run_fisher_forecast(
     data_vectors: np.ndarray,
     parameters: np.ndarray,
     fiducial_params: np.ndarray,
-    **kwargs
+    **kwargs,
 ) -> Dict[str, np.ndarray]:
     """
     Compute Fisher forecast for parameter constraints.
-    
+
     Parameters
     ----------
     data_vectors : np.ndarray
@@ -28,7 +29,7 @@ def run_fisher_forecast(
         Fiducial cosmology values
     **kwargs
         Additional options
-        
+
     Returns
     -------
     dict
@@ -36,7 +37,7 @@ def run_fisher_forecast(
         - 'fisher_matrix': Fisher information matrix
         - 'covariance': Parameter covariance matrix
         - 'marginalized_errors': 1-sigma marginalized errors
-        
+
     Notes
     -----
     This is a placeholder that will be implemented in the next step.
@@ -45,13 +46,11 @@ def run_fisher_forecast(
 
 
 def compute_fisher_matrix(
-    data_vectors: np.ndarray,
-    parameters: np.ndarray,
-    covariance: np.ndarray
+    data_vectors: np.ndarray, parameters: np.ndarray, covariance: np.ndarray
 ) -> np.ndarray:
     """
     Compute the Fisher information matrix.
-    
+
     Parameters
     ----------
     data_vectors : np.ndarray
@@ -60,7 +59,7 @@ def compute_fisher_matrix(
         Parameters
     covariance : np.ndarray
         Data covariance matrix
-        
+
     Returns
     -------
     np.ndarray

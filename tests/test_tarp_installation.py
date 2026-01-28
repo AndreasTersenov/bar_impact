@@ -8,16 +8,18 @@ Note: These tests are skipped if TARP is not installed.
 
 import os
 import sys
+
 import numpy as np
 import pytest
 
 # Check if TARP is available
 try:
     # Add tarp package to path (for local installation)
-    tarp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tarp', 'src')
+    tarp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tarp", "src")
     if tarp_path not in sys.path:
         sys.path.insert(0, tarp_path)
     from tarp import get_tarp_coverage
+
     HAS_TARP = True
 except ImportError:
     HAS_TARP = False
@@ -44,7 +46,7 @@ def synthetic_tarp_data():
     samples = np.random.normal(
         loc=theta[np.newaxis, :, :],
         scale=sigma[np.newaxis, :, :],
-        size=(num_samples, num_sims, num_dims)
+        size=(num_samples, num_sims, num_dims),
     )
 
     return samples, theta
@@ -66,7 +68,7 @@ def test_tarp_coverage_basic(synthetic_tarp_data):
         references="random",
         metric="euclidean",
         norm=True,
-        bootstrap=False
+        bootstrap=False,
     )
 
     # Check output shapes
@@ -88,7 +90,7 @@ def test_tarp_coverage_calibration(synthetic_tarp_data):
         references="random",
         metric="euclidean",
         norm=True,
-        bootstrap=False
+        bootstrap=False,
     )
 
     # Check if coverage is reasonable (well-calibrated posteriors)
@@ -110,7 +112,7 @@ def test_tarp_bootstrap(synthetic_tarp_data):
         metric="euclidean",
         norm=True,
         bootstrap=True,
-        num_bootstrap=10
+        num_bootstrap=10,
     )
 
     # Bootstrap should return 2D arrays
@@ -129,7 +131,7 @@ def test_tarp_different_metrics(synthetic_tarp_data):
             references="random",
             metric=metric,
             norm=True,
-            bootstrap=False
+            bootstrap=False,
         )
 
         assert len(ecp) > 0, f"Failed for metric: {metric}"
