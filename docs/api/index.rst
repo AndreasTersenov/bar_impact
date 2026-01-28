@@ -1,19 +1,10 @@
 API Reference
 =============
 
-This section contains the complete API documentation for BAR_IMPACT,
-automatically generated from the source code docstrings.
-
 Core Module
 -----------
 
 Data structures for convergence maps, masks, and data vectors.
-
-.. autosummary::
-   :toctree: generated
-   :recursive:
-
-   bar_impact.core
 
 .. automodule:: bar_impact.core
    :members:
@@ -25,12 +16,6 @@ Processing Module
 
 Summary statistic processors for power spectra, L1 norms, and peak counts.
 
-.. autosummary::
-   :toctree: generated
-   :recursive:
-
-   bar_impact.processing
-
 .. automodule:: bar_impact.processing
    :members:
    :undoc-members:
@@ -41,12 +26,6 @@ Inference Module
 
 Neural Posterior Estimation and coverage testing.
 
-.. autosummary::
-   :toctree: generated
-   :recursive:
-
-   bar_impact.inference
-
 .. automodule:: bar_impact.inference
    :members:
    :undoc-members:
@@ -56,12 +35,6 @@ Utils Module
 ------------
 
 Utility functions for I/O, noise generation, and reproducibility.
-
-.. autosummary::
-   :toctree: generated
-   :recursive:
-
-   bar_impact.utils
 
 .. automodule:: bar_impact.utils
    :members:

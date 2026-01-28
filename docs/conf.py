@@ -26,12 +26,10 @@ version = ".".join(release.split(".")[:2])
 # -- General configuration ---------------------------------------------------
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
-    "sphinx_autodoc_typehints",
     "myst_parser",
 ]
 
@@ -82,10 +80,6 @@ autodoc_default_options = {
 }
 
 autodoc_typehints = "description"
-autodoc_typehints_description_target = "documented"
-
-# Autosummary settings
-autosummary_generate = True
 
 # Napoleon settings (for Google/NumPy style docstrings)
 napoleon_google_docstring = True
