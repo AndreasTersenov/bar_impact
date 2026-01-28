@@ -8,6 +8,14 @@ import shutil
 import tempfile
 
 import numpy as np
+import pytest
+
+# Skip if scripts directory doesn't exist (e.g., in CI)
+SCRIPTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "scripts")
+pytestmark = pytest.mark.skipif(
+    not os.path.exists(os.path.join(SCRIPTS_DIR, "cross_power_spectrum_processing.py")),
+    reason="Script not available in CI environment"
+)
 
 
 def create_test_npz_files(test_dir, n_files=5, bin_range=None, lmax=1024):
@@ -68,7 +76,7 @@ def test_aggregation():
         # Import the aggregation function
         import sys
 
-        sys.path.insert(0, "/home/tersenov/software/bar_impact/scripts")
+        sys.path.insert(0, SCRIPTS_DIR)
         from cross_power_spectrum_processing import aggregate_for_inference
 
         # Run aggregation
