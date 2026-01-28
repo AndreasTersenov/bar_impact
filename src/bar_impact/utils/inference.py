@@ -68,9 +68,8 @@ def run_tarp_coverage_test(
     Requires JAX and the TARP package.
     """
     try:
-        import jax
+        import jax  # noqa: I001
         from jax import random
-
         from tarp import get_tarp_coverage
     except ImportError as e:
         raise ImportError(
