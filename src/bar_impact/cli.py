@@ -6,7 +6,16 @@ This module provides the main CLI entry point for the package.
 
 import argparse
 import sys
+from importlib.metadata import version, PackageNotFoundError
 from pathlib import Path
+
+
+def _get_version() -> str:
+    """Get package version from metadata."""
+    try:
+        return version("bar_impact")
+    except PackageNotFoundError:
+        return "0.1.0.dev0"
 
 
 def main():
@@ -15,11 +24,11 @@ def main():
         description="BAR_IMPACT: Baryon Impact Analysis for Cosmological Maps",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    
+
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s 0.1.0'
+        version=f'%(prog)s {_get_version()}'
     )
     
     subparsers = parser.add_subparsers(dest='command', help='Available commands')

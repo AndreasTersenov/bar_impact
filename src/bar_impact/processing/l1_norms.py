@@ -37,7 +37,11 @@ def _check_pycs_available():
     try:
         from pycs.astro.wl.hos_peaks_l1 import get_wtl1_sphere
         return True
-    except ImportError:
+    except (ImportError, NameError, AttributeError):
+        # NameError and AttributeError can occur if pycs has internal issues
+        return False
+    except Exception:
+        # Catch any other unexpected errors during import
         return False
 
 
