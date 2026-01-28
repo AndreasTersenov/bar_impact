@@ -8,14 +8,7 @@ across different redshift bins.
 import numpy as np
 from typing import Optional
 
-
-# BNT transformation matrix (from notebooks)
-BNT_MATRIX = np.array([
-    [1/2, 1/2, 1/2, 1/2],
-    [-np.sqrt(3/20), -np.sqrt(3/20), np.sqrt(3/20), np.sqrt(3/20)],
-    [-1/2, 1/2, 1/2, -1/2],
-    [np.sqrt(3/20), -np.sqrt(3/20), -np.sqrt(3/20), np.sqrt(3/20)]
-])
+from bar_impact.constants import BNT_MATRIX_DEFAULT, get_bnt_matrix
 
 
 def apply_bnt_transform(
@@ -50,7 +43,7 @@ def apply_bnt_transform(
     (4, 3145728)
     """
     if bnt_matrix is None:
-        bnt_matrix = BNT_MATRIX
+        bnt_matrix = BNT_MATRIX_DEFAULT
     
     # Apply transformation: BNT @ maps
     if maps.ndim == 2:
@@ -64,20 +57,5 @@ def apply_bnt_transform(
         return transformed.reshape(original_shape)
 
 
-def get_bnt_matrix(n_bins: int = 4) -> np.ndarray:
-    """
-    Get the BNT transformation matrix for a given number of bins.
-    
-    Parameters
-    ----------
-    n_bins : int
-        Number of redshift bins (currently only 4 is supported)
-        
-    Returns
-    -------
-    np.ndarray
-        BNT transformation matrix of shape (n_bins, n_bins)
-    """
-    if n_bins != 4:
-        raise ValueError("Currently only 4-bin BNT is implemented")
-    return BNT_MATRIX.copy()
+# Re-export get_bnt_matrix from constants for backward compatibility
+__all__ = ["apply_bnt_transform", "get_bnt_matrix", "BNT_MATRIX_DEFAULT"]
