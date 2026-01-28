@@ -7,20 +7,39 @@ Tests cover:
 - Posterior sampling
 - Triangle plot generation
 - Standard cosmological parameter configuration
+
+Note: These tests require JAX, jaxili, and getdist, and are skipped if any are not available.
 """
 
 import os
 import tempfile
 import pytest
 import numpy as np
-import jax.numpy as jnp
 from pathlib import Path
 from unittest.mock import MagicMock, patch, Mock
 
+from tests.conftest import HAS_JAX, HAS_JAXILI, HAS_GETDIST
 
+# Check if all required dependencies are available for npe_workflow
+HAS_NPE_WORKFLOW_DEPS = HAS_JAX and HAS_GETDIST
+
+# Skip marker for tests requiring npe_workflow dependencies
+requires_npe_workflow = pytest.mark.skipif(
+    not HAS_NPE_WORKFLOW_DEPS,
+    reason="JAX and getdist required for npe_workflow tests"
+)
+
+# Conditionally import jax.numpy
+if HAS_JAX:
+    import jax.numpy as jnp
+else:
+    jnp = None  # Will be skipped in tests
+
+
+@requires_npe_workflow
 class TestNPEInitialization:
     """Tests for NPE initialization."""
-    
+
     def test_initialize_npe_basic(self):
         """Test basic NPE initialization."""
         from bar_impact.utils.npe_workflow import initialize_npe
@@ -63,9 +82,10 @@ class TestNPEInitialization:
             assert call_args[0][1].shape == (n_sims, n_features)
 
 
+@requires_npe_workflow
 class TestTrainOrLoadNPE:
     """Tests for train_or_load_npe workflow function."""
-    
+
     def test_train_new_model_basic(self):
         """Test training a new model."""
         from bar_impact.utils.npe_workflow import train_or_load_npe
@@ -183,9 +203,10 @@ class TestTrainOrLoadNPE:
             )
 
 
+@requires_npe_workflow
 class TestTrianglePlot:
     """Tests for triangle plot generation."""
-    
+
     def test_create_triangle_plot_basic(self, tmp_path):
         """Test basic triangle plot creation."""
         from bar_impact.utils.npe_workflow import create_triangle_plot
@@ -266,9 +287,10 @@ class TestTrianglePlot:
             assert nested_dir.exists()
 
 
+@requires_npe_workflow
 class TestSampleAndSavePosterior:
     """Tests for sample_and_save_posterior workflow function."""
-    
+
     def test_sample_and_save_basic(self, tmp_path):
         """Test basic posterior sampling and saving."""
         from bar_impact.utils.npe_workflow import sample_and_save_posterior
@@ -348,9 +370,10 @@ class TestSampleAndSavePosterior:
             assert call_kwargs['param_config'] == custom_params
 
 
+@requires_npe_workflow
 class TestStandardCosmologyConfig:
     """Tests for standard cosmological parameter configuration."""
-    
+
     def test_standard_cosmo_params_exists(self):
         """Test that STANDARD_COSMO_PARAMS is defined."""
         from bar_impact.utils.npe_workflow import STANDARD_COSMO_PARAMS
@@ -394,9 +417,10 @@ class TestStandardCosmologyConfig:
         assert 50.0 < fiducial[3] < 100.0
 
 
+@requires_npe_workflow
 class TestPrintFunctions:
     """Tests for print helper functions."""
-    
+
     def test_print_analysis_summary(self, capsys):
         """Test analysis summary printing."""
         from bar_impact.utils.npe_workflow import print_analysis_summary
@@ -456,9 +480,10 @@ class TestPrintFunctions:
         assert 'coverage.pdf' in captured.out
 
 
+@requires_npe_workflow
 class TestSetupJAXEnvironment:
     """Tests for JAX environment setup."""
-    
+
     def test_setup_jax_environment_gpu(self):
         """Test JAX setup with GPU."""
         from bar_impact.utils.npe_workflow import setup_jax_environment

@@ -1,96 +1,148 @@
 #!/usr/bin/env python3
 """
-Test script to verify that bootstrap uncertainties are reasonable.
-This script compares bootstrap variance before and after the fix.
+Test to verify that TARP bootstrap uncertainties are reasonable.
+This test compares bootstrap variance to ensure it's in expected range.
+
+Note: These tests are skipped if TARP is not installed.
 """
 
 import os
 import sys
 import numpy as np
+import pytest
 
-# Add tarp package to path
-tarp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tarp', 'src')
-if tarp_path not in sys.path:
-    sys.path.insert(0, tarp_path)
+# Check if TARP is available
+try:
+    # Add tarp package to path (for local installation)
+    tarp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tarp', 'src')
+    if tarp_path not in sys.path:
+        sys.path.insert(0, tarp_path)
+    from tarp import get_tarp_coverage
+    HAS_TARP = True
+except ImportError:
+    HAS_TARP = False
+    get_tarp_coverage = None
 
-from tarp import get_tarp_coverage
+pytestmark = pytest.mark.skipif(not HAS_TARP, reason="TARP not installed")
 
-# Generate test data
-print("Generating test data...")
-np.random.seed(42)
 
-num_samples = 200
-num_sims = 100
-num_dims = 5
+@pytest.fixture
+def bootstrap_test_data():
+    """Generate test data for bootstrap uncertainty testing."""
+    np.random.seed(42)
 
-# True parameter values
-theta = np.random.uniform(low=-5, high=5, size=(num_sims, num_dims))
+    num_samples = 200
+    num_sims = 100
+    num_dims = 5
 
-# Posterior samples (Gaussian around true values with varying uncertainty)
-log_sigma = np.random.uniform(low=-2, high=-0.5, size=(num_sims, num_dims))
-sigma = np.exp(log_sigma)
-samples = np.random.normal(
-    loc=theta[np.newaxis, :, :], 
-    scale=sigma[np.newaxis, :, :], 
-    size=(num_samples, num_sims, num_dims)
-)
+    # True parameter values
+    theta = np.random.uniform(low=-5, high=5, size=(num_sims, num_dims))
 
-print(f"  Samples shape: {samples.shape}")
-print(f"  Theta shape: {theta.shape}")
+    # Posterior samples (Gaussian around true values with varying uncertainty)
+    log_sigma = np.random.uniform(low=-2, high=-0.5, size=(num_sims, num_dims))
+    sigma = np.exp(log_sigma)
+    samples = np.random.normal(
+        loc=theta[np.newaxis, :, :],
+        scale=sigma[np.newaxis, :, :],
+        size=(num_samples, num_sims, num_dims)
+    )
 
-# Run TARP with bootstrap
-print("\nRunning TARP coverage test with bootstrap...")
-ecp_boot, alpha = get_tarp_coverage(
-    samples=samples,
-    theta=theta,
-    references="random",
-    metric="euclidean",
-    norm=True,
-    bootstrap=True,
-    num_bootstrap=50,
-    seed=42
-)
+    return samples, theta
 
-print(f"  Bootstrap ECP shape: {ecp_boot.shape}")
 
-# Compute statistics
-ecp_mean = np.mean(ecp_boot, axis=0)
-ecp_std = np.std(ecp_boot, axis=0)
+def test_bootstrap_shape(bootstrap_test_data):
+    """Test that bootstrap returns correct shape."""
+    samples, theta = bootstrap_test_data
 
-print("\nBootstrap uncertainty statistics:")
-print(f"  Mean std across credibility levels: {np.mean(ecp_std):.4f}")
-print(f"  Max std: {np.max(ecp_std):.4f}")
-print(f"  Min std: {np.min(ecp_std):.4f}")
+    ecp_boot, alpha = get_tarp_coverage(
+        samples=samples,
+        theta=theta,
+        references="random",
+        metric="euclidean",
+        norm=True,
+        bootstrap=True,
+        num_bootstrap=50,
+        seed=42
+    )
 
-# Check if uncertainties are reasonable (should be > 0.01 typically)
-if np.mean(ecp_std) > 0.01:
-    print("\n✓ Bootstrap uncertainties look reasonable!")
-    print(f"  Average uncertainty: {np.mean(ecp_std):.4f} (good range: 0.01-0.05)")
-elif np.mean(ecp_std) > 0.005:
-    print("\n⚠ Bootstrap uncertainties are moderate")
-    print(f"  Average uncertainty: {np.mean(ecp_std):.4f}")
-    print("  Consider increasing num_bootstrap or num_sims for more reliable estimates")
-else:
-    print("\n⚠ Bootstrap uncertainties seem too small!")
-    print(f"  Average uncertainty: {np.mean(ecp_std):.4f}")
-    print("  This might indicate an issue with the bootstrap implementation")
+    # Bootstrap should return 2D array with num_bootstrap rows
+    assert ecp_boot.ndim == 2
+    assert ecp_boot.shape[0] == 50
 
-# Show some example values
-print("\nExample uncertainties at different credibility levels:")
-for i in range(len(alpha)):
-    print(f"  α = {alpha[i]:.2f}: mean ECP = {ecp_mean[i]:.3f} ± {ecp_std[i]:.3f}")
 
-# Compare variation across bootstrap samples
-print("\nVariation across bootstrap samples:")
-variation = np.max(ecp_boot, axis=0) - np.min(ecp_boot, axis=0)
-print(f"  Mean range (max-min): {np.mean(variation):.4f}")
-print(f"  Max range: {np.max(variation):.4f}")
+def test_bootstrap_uncertainty_reasonable(bootstrap_test_data):
+    """Test that bootstrap uncertainties are non-trivial."""
+    samples, theta = bootstrap_test_data
 
-if np.mean(variation) > 0.05:
-    print("\n✓ Good variation across bootstrap samples!")
-else:
-    print("\n⚠ Limited variation - uncertainties might be underestimated")
+    ecp_boot, alpha = get_tarp_coverage(
+        samples=samples,
+        theta=theta,
+        references="random",
+        metric="euclidean",
+        norm=True,
+        bootstrap=True,
+        num_bootstrap=50,
+        seed=42
+    )
 
-print("\n" + "="*60)
-print("Bootstrap uncertainty test complete!")
-print("="*60)
+    # Compute bootstrap standard deviation
+    ecp_std = np.std(ecp_boot, axis=0)
+
+    # Mean uncertainty should be reasonable (not zero, not huge)
+    mean_std = np.mean(ecp_std)
+    assert mean_std > 0.001, f"Bootstrap std too small: {mean_std:.6f}"
+    assert mean_std < 0.5, f"Bootstrap std unexpectedly large: {mean_std:.4f}"
+
+
+def test_bootstrap_variation(bootstrap_test_data):
+    """Test that bootstrap samples show meaningful variation."""
+    samples, theta = bootstrap_test_data
+
+    ecp_boot, alpha = get_tarp_coverage(
+        samples=samples,
+        theta=theta,
+        references="random",
+        metric="euclidean",
+        norm=True,
+        bootstrap=True,
+        num_bootstrap=50,
+        seed=42
+    )
+
+    # Check variation across bootstrap samples
+    variation = np.max(ecp_boot, axis=0) - np.min(ecp_boot, axis=0)
+    mean_variation = np.mean(variation)
+
+    # Should have some meaningful variation
+    assert mean_variation > 0.01, f"Bootstrap variation too small: {mean_variation:.4f}"
+
+
+def test_bootstrap_reproducibility(bootstrap_test_data):
+    """Test that bootstrap results are reproducible with same seed."""
+    samples, theta = bootstrap_test_data
+
+    ecp_boot1, alpha1 = get_tarp_coverage(
+        samples=samples,
+        theta=theta,
+        references="random",
+        metric="euclidean",
+        norm=True,
+        bootstrap=True,
+        num_bootstrap=20,
+        seed=123
+    )
+
+    ecp_boot2, alpha2 = get_tarp_coverage(
+        samples=samples,
+        theta=theta,
+        references="random",
+        metric="euclidean",
+        norm=True,
+        bootstrap=True,
+        num_bootstrap=20,
+        seed=123
+    )
+
+    # Same seed should give same results
+    np.testing.assert_array_almost_equal(ecp_boot1, ecp_boot2)
+    np.testing.assert_array_almost_equal(alpha1, alpha2)

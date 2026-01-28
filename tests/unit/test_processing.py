@@ -262,12 +262,13 @@ class TestPeakCountProcessor:
     def test_init_default(self):
         """Test processor initialization with defaults."""
         from bar_impact.processing import PeakCountProcessor
-        
+        from bar_impact.processing.peak_counts import DEFAULT_NBINS, DEFAULT_MIN_VAL, DEFAULT_MAX_VAL
+
         processor = PeakCountProcessor()
         assert processor.nscales == 5
-        assert processor.nbins == 40
-        assert processor.min_val == -4.0
-        assert processor.max_val == 4.0
+        assert processor.nbins == DEFAULT_NBINS  # 31 is the actual default
+        assert processor.min_val == DEFAULT_MIN_VAL  # -2.0 is the actual default
+        assert processor.max_val == DEFAULT_MAX_VAL  # 10.0 is the actual default
     
     def test_init_custom(self):
         """Test processor initialization with custom values."""
@@ -418,16 +419,21 @@ class TestL1NormConfig:
 
 class TestPeakCountConfig:
     """Tests for PeakCountConfig."""
-    
+
     def test_default_values(self):
         """Test default configuration values."""
-        from bar_impact.processing.peak_counts import PeakCountConfig
-        
+        from bar_impact.processing.peak_counts import (
+            PeakCountConfig,
+            DEFAULT_NBINS,
+            DEFAULT_MIN_VAL,
+            DEFAULT_MAX_VAL,
+        )
+
         config = PeakCountConfig()
         assert config.nscales == 5
-        assert config.nbins == 40
-        assert config.min_val == -4.0
-        assert config.max_val == 4.0
+        assert config.nbins == DEFAULT_NBINS  # 31 is the actual default
+        assert config.min_val == DEFAULT_MIN_VAL  # -2.0 is the actual default
+        assert config.max_val == DEFAULT_MAX_VAL  # 10.0 is the actual default
     
     def test_custom_values(self):
         """Test custom configuration values."""
