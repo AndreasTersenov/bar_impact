@@ -184,7 +184,7 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
 def main():
     """Main function to handle command-line arguments and run processing."""
     parser = argparse.ArgumentParser(
-        description="Process HEALPix maps to compute peak counts using modular bar_impact package.
+        description="Process HEALPix maps to compute peak counts using modular bar_impact package."
     )
     
     # Main processing options

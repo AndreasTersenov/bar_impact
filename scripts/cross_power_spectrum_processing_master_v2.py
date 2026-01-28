@@ -218,7 +218,7 @@ def process_file(
         # Prepare data for saving
         save_dict = {}
         for (i, j), cls in cls_dict.items():
-            key = f"cl_{i}_{j}"
+            key = f"cls_{i}_{j}"  # Use "cls_" to match original script format
             save_dict[key] = cls
         
         # Add metadata
