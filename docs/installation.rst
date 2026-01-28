@@ -4,7 +4,7 @@ Installation
 Requirements
 ------------
 
-BAR_IMPACT requires Python 3.8 or later and the following core dependencies:
+BAR_IMPACT requires Python 3.9 or later and the following core dependencies:
 
 - numpy >= 1.20
 - healpy >= 1.15

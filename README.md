@@ -1,187 +1,97 @@
 # BAR_IMPACT
 
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![CI](https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml/badge.svg)](https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A Python package for analyzing the impact of baryonic physics on cosmological weak lensing maps through advanced statistical methods including wavelet analysis, power spectra, peak counting, and simulation-based inference.
+A Python package for analyzing the impact of baryonic physics on cosmological weak lensing maps using simulation-based inference.
 
-## Features
+## Overview
 
-- **Multiple Analysis Methods**
-  - Wavelet-based L1 norm calculations
-  - Angular power spectrum analysis  
-  - Peak counting statistics
-  - Bernardeau-Nishimichi-Taruya (BNT) transforms for nulling redshift correlations
+BAR_IMPACT provides tools for:
 
-- **Statistical Inference**
-  - Neural Posterior Estimation (NPE) using JAX
-  - Fisher information forecasts
-  - TARP coverage testing for posterior validation
+- **Summary Statistics**: L1 norms (wavelet coefficients), angular power spectra, peak counts
+- **Tomographic Analysis**: BNT (Bernardeau-Nishimichi-Taruya) transform for nulling redshift correlations
+- **Simulation-Based Inference**: Neural Posterior Estimation (NPE) with JAX
+- **Posterior Validation**: TARP coverage testing
 
-- **Map Processing**
-  - HEALPix convergence map processing
-  - Shape noise simulation
-  - Multi-scale wavelet decomposition
-
-- **Computational Performance**
-  - Multiprocessing support
-  - Optimized for large simulation datasets
-  - Batch processing capabilities
-
-##  Quick Start
-
-### Installation
+## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/AndreasTersenov/bar_impact.git
-cd bar_impact
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install in development mode
+# Basic installation
 pip install -e .
+
+# With inference dependencies (JAX, jaxili)
+pip install -e ".[inference]"
+
+# With development tools
+pip install -e ".[dev]"
+
+# All dependencies
+pip install -e ".[all]"
 ```
 
-**External Dependencies:**
-- [pycs (CosmoStat)](https://github.com/CosmoStat/cosmostat) - Required for wavelet analysis
-- [jaxili](https://github.com/users/jaxili) - Optional, for NPE inference
+### External Dependencies
 
-See [docs/TARP_DEPENDENCY.md](docs/TARP_DEPENDENCY.md) for TARP installation.
+- **[pycs](https://github.com/CosmoStat/cosmostat)** - Required for wavelet L1 norms and peak counts
+- **[jaxili](https://github.com/jaxili)** - Required for NPE inference
 
-### Basic Usage
+## Quick Start
 
 ```python
-import numpy as np
-from bar_impact.processing import apply_bnt_transform
-from bar_impact.utils import load_healpy_map, add_shape_noise
+from bar_impact.core import ConvergenceMap, SurveyMask
+from bar_impact.processing import PowerSpectrumProcessor
 
-# Load a convergence map
-kappa_map = load_healpy_map('path/to/map.fits')
+# Load convergence map
+kappa = ConvergenceMap.from_h5("simulation.h5", bin_number=1)
 
-# Add observational noise
-noisy_map = add_shape_noise(kappa_map, sigma_e=0.26, nside=512)
+# Add shape noise and apply survey mask
+kappa = kappa.add_shape_noise(sigma_e=0.26)
+mask = SurveyMask.create_disk_mask(nside=512, target_area_sqdeg=14000)
+kappa = kappa.apply_mask(mask)
 
-# Apply BNT transform to multiple redshift bins
-maps = np.array([map_bin1, map_bin2, map_bin3, map_bin4])
-bnt_maps = apply_bnt_transform(maps)
+# Compute power spectrum
+processor = PowerSpectrumProcessor(lmax=1024)
+cls = processor.process_single(kappa.data)
 ```
 
-### Command-Line Scripts
-
-Process L1 norms from convergence maps:
-```bash
-python scripts/l1_norm_processing.py --fiducial --save-combined
-```
-
-Run Neural Posterior Estimation:
-```bash
-python scripts/run_npe_inference.py \\
-    --data-file outputs/l1_norms_combined.npz \\
-    --output-dir outputs/inference/ \\
-    --run-coverage
-```
-
-See [scripts/README.md](scripts/README.md) for all available scripts.
-
-## Repository Structure
+## Package Structure
 
 ```
-bar_impact/
-├── src/bar_impact/          # Main package
-│   ├── processing/          # Data processing modules
-│   ├── inference/           # NPE and Fisher analysis
-│   ├── analysis/            # Aggregation and visualization
-│   └── utils/               # I/O and utilities
-├── scripts/                 # Command-line scripts
-├── notebooks/               # Jupyter notebooks
-├── tests/                   # Test suite
-├── docs/                    # Documentation
-│   ├── workflows/           # Step-by-step guides
-│   ├── tarp/                # TARP coverage testing
-│   └── bugfixes/            # Historical fixes
-├── data/                    # Input data (gitignored)
-├── outputs/                 # Results (gitignored)
-└── examples/                # Usage examples
+src/bar_impact/
+├── core/           # ConvergenceMap, SurveyMask, DataVector
+├── processing/     # L1NormProcessor, PowerSpectrumProcessor, PeakCountProcessor
+├── inference/      # NPEInference, CoverageTester
+├── analysis/       # Aggregation and visualization
+├── utils/          # I/O, noise generation, reproducibility
+└── constants.py    # BNT matrices, default parameters
 ```
 
 ## Documentation
 
-- **[Full Documentation](docs/README.md)** - Complete documentation index
-- **[Workflows](docs/workflows/)** - Step-by-step analysis guides
-- **[TARP Guide](docs/tarp/)** - Coverage testing documentation
-- **[Scripts Reference](scripts/README.md)** - All available scripts
+- [Installation Guide](docs/installation.rst)
+- [Quick Start Tutorial](docs/quickstart.rst)
+- [Workflow Guides](docs/workflows/)
+- [TARP Coverage Testing](docs/tarp/)
 
-### Key Workflows
+## Testing
 
-- [BNT Inference Workflow](docs/workflows/BNT_INFERENCE_WORKFLOW.md)
-- [Cross Power Spectrum Analysis](docs/workflows/CROSS_POWER_SPECTRUM_WORKFLOW.md)
-- [Data Aggregation](docs/workflows/WORKFLOW_CROSS_SPECTRA_AGGREGATION.md)
-
-<!-- ## Science Background
-
-This package analyzes the impact of baryonic physics on weak gravitational lensing observables. Baryonic processes (gas cooling, star formation, AGN feedback) affect the matter distribution and therefore the lensing signal.
-
-**Key Methods:**
-- **Wavelet L1 Norms**: Quantify non-Gaussian features induced by baryons
-- **Band-limited Nulling (BNT)**: Decorrelate signals across redshift bins
-- **Neural Posterior Estimation**: Infer cosmological parameters accounting for baryonic uncertainties -->
-
-## Development Status
-
-**Current Version**: 0.1.0 (Alpha)
-
-The package is under active development. The core functionality is implemented in scripts, with ongoing refactoring to create a more modular library structure.
-
-<!-- ### Roadmap
-
-- [x] Core processing scripts
-- [x] Package structure and metadata
-- [x] Documentation organization
-- [ ] Extract core functionality to library modules
-- [ ] Comprehensive test suite
-- [ ] API documentation
-- [ ] Example notebooks
-- [ ] PyPI release -->
-
-<!-- ## Contributing
-
-Contributions are welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request -->
+```bash
+pytest tests/ -v
+```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
-## Acknowledgments
+## Citation
 
-- [CosmoStat](https://github.com/CosmoStat) and [wl-stats-torch](https://github.com/AndreasTersenov/wl_stats_torch) for the pycs wavelet library
-- [TARP](https://github.com/Ciela-Institute/tarp) for coverage testing tools
-- [JAX](https://github.com/google/jax) ecosystem for numerical computing
-
-## Contact
-
-**Andreas Tersenov**
-- GitHub: [@AndreasTersenov](https://github.com/AndreasTersenov)
-<!-- 
-## 📖 Citation
-
-If you use this code in your research, please cite:
+If you use this package, please cite:
 
 ```bibtex
-@software{bar_impact2025,
+@software{bar_impact,
   author = {Tersenov, Andreas},
-  title = {BAR\_IMPACT: Baryon Impact Analysis for Cosmological Maps},
-  year = {2025},
+  title = {BAR_IMPACT: Baryon Impact Analysis for Weak Lensing},
   url = {https://github.com/AndreasTersenov/bar_impact}
 }
 ```
-
---- -->
-
-**Status**: 🚧 Under Active Development | **Last Updated**: November 2025

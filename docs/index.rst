@@ -1,93 +1,69 @@
-BAR_IMPACT Documentation
-========================
+BAR_IMPACT
+==========
 
-**BAR_IMPACT** is a Python package for analyzing the impact of baryonic physics
-on cosmological weak lensing maps. It provides tools for wavelet analysis,
-power spectra computation, peak counting, and Neural Posterior Estimation (NPE)
-for simulation-based inference.
+A Python package for analyzing the impact of baryonic physics on cosmological weak lensing maps.
 
-.. note::
+.. image:: https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml
 
-   This project is under active development.
+.. image:: https://img.shields.io/badge/python-3.9+-blue.svg
+   :target: https://www.python.org/downloads/
 
-Features
+Overview
 --------
 
-- **Convergence Map Processing**: Load, manipulate, and process HEALPix convergence maps
-- **Multiple Summary Statistics**: L1 norms, power spectra, peak counts
-- **BNT Transform**: Bernardeau-Nishimichi-Taruya transform for tomographic analysis
-- **NPE Inference**: Neural Posterior Estimation using JAX and jaxili
-- **Coverage Testing**: TARP-based coverage diagnostics
-- **Reproducibility**: Deterministic seeding for consistent results
+BAR_IMPACT provides tools for:
 
-Quick Start
------------
+- **Summary Statistics**: L1 norms, angular power spectra, peak counts
+- **Tomographic Analysis**: BNT transform for nulling redshift correlations
+- **Simulation-Based Inference**: Neural Posterior Estimation (NPE) with JAX
+- **Posterior Validation**: TARP coverage testing
+
+Quick Example
+-------------
 
 .. code-block:: python
 
    from bar_impact.core import ConvergenceMap, SurveyMask
    from bar_impact.processing import PowerSpectrumProcessor
-   from bar_impact.constants import BNT_MATRIX_DEFAULT
 
-   # Load a convergence map
-   kappa = ConvergenceMap.from_h5("map.h5", bin_number=1)
+   # Load and process a convergence map
+   kappa = ConvergenceMap.from_h5("simulation.h5", bin_number=1)
+   kappa = kappa.add_shape_noise(sigma_e=0.26)
 
-   # Add shape noise and apply mask
+   # Apply survey mask
    mask = SurveyMask.create_disk_mask(nside=512, target_area_sqdeg=14000)
-   kappa_noisy = kappa.add_shape_noise(sigma_e=0.26)
-   kappa_masked = kappa_noisy.apply_mask(mask)
+   kappa = kappa.apply_mask(mask)
 
    # Compute power spectrum
    processor = PowerSpectrumProcessor(lmax=1024)
-   cls = processor.process_single(kappa_masked.data)
-
-Installation
-------------
-
-.. code-block:: bash
-
-   # Basic installation
-   pip install -e .
-
-   # With all optional dependencies
-   pip install -e ".[all]"
-
-   # With specific extras
-   pip install -e ".[inference]"  # JAX, jaxili for NPE
-   pip install -e ".[dev]"        # Development tools
+   cls = processor.process_single(kappa.data)
 
 Contents
 --------
 
 .. toctree::
    :maxdepth: 2
-   :caption: User Guide
+   :caption: Getting Started
 
    installation
    quickstart
-   tutorials/index
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference
+   :caption: User Guide
+
+   tutorials/index
+   workflows/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
 
    api/index
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Workflows
-
-   workflows/index
-
-Development
------------
-
-- `CONTRIBUTING.md <https://github.com/AndreasTersenov/bar_impact/blob/main/CONTRIBUTING.md>`_ - Development guidelines
-- `CHANGELOG.md <https://github.com/AndreasTersenov/bar_impact/blob/main/CHANGELOG.md>`_ - Version history
-
-Indices and tables
-==================
+Indices
+-------
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
