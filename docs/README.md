@@ -1,63 +1,39 @@
 # BAR_IMPACT Documentation
 
-Welcome to the BAR_IMPACT documentation! This directory contains comprehensive guides, workflows, and technical documentation for the package.
+Documentation for the BAR_IMPACT package for analyzing baryon impact on cosmological weak lensing maps.
 
-## 📚 Documentation Structure
+## Documentation Structure
 
-### [Workflows](workflows/)
+### User Guides
+
+- **[Installation](installation.rst)** - How to install the package
+- **[Quick Start](quickstart.rst)** - Getting started with basic usage
+- **[API Reference](api/)** - API documentation
+
+### Workflows
+
 Step-by-step guides for common analysis workflows:
-- [BNT Inference Workflow](workflows/BNT_INFERENCE_WORKFLOW.md) - Complete guide for running BNT inference
+
+- [BNT Inference Workflow](workflows/BNT_INFERENCE_WORKFLOW.md) - Running BNT (nulling) inference
 - [Cross Power Spectrum Workflow](workflows/CROSS_POWER_SPECTRUM_WORKFLOW.md) - Processing cross power spectra
-- [Cross Spectra Aggregation Workflow](workflows/WORKFLOW_CROSS_SPECTRA_AGGREGATION.md) - Aggregating cross spectra results
-- [Splitting Guide](workflows/SPLITTING_GUIDE.md) - Guide for data splitting strategies
+- [Cross Spectra Aggregation](workflows/WORKFLOW_CROSS_SPECTRA_AGGREGATION.md) - Aggregating results for inference
 
-### [TARP Coverage Testing](tarp/)
-Documentation for Test of Accuracy with Random Points (TARP) coverage testing:
-- [TARP Coverage Testing Guide](tarp/TARP_COVERAGE_TESTING.md) - Introduction and usage
-- [TARP Quick Reference](tarp/TARP_QUICK_REFERENCE.md) - Quick reference guide
-- [TARP Visual Guide](tarp/TARP_VISUAL_GUIDE.md) - Visual explanations
-- [TARP Changes](tarp/TARP_CHANGES.md) - Changelog for TARP integration
-- [TARP Scripts Summary](tarp/TARP_ALL_SCRIPTS_SUMMARY.md) - Overview of TARP scripts
+### Coverage Testing
 
-### [Bug Fixes & Improvements](bugfixes/)
-Historical documentation of bug fixes and improvements:
-- [Bootstrap Fix](bugfixes/BOOTSTRAP_FIX.md) - Bootstrap uncertainty calculation fix
-- [BNT RNG Fix Summary](bugfixes/BNT_RNG_FIX_SUMMARY.md) - Random number generation fix for BNT
-- [RNG Seeding Fix](bugfixes/RNG_SEEDING_FIX.md) - General RNG seeding improvements
-- [Cross Spectra Bug Fix](bugfixes/BUG_FIX_CROSS_SPECTRA.md) - Cross power spectrum bug fixes
-- [Lmax Handling Fix](bugfixes/LMAX_HANDLING_FIX.md) - Maximum multipole handling improvements
+- [TARP Coverage Testing](tarp/TARP_COVERAGE_TESTING.md) - Validating posterior quality with TARP
+- [TARP Quick Reference](tarp/TARP_QUICK_REFERENCE.md) - Quick reference for TARP commands
 
-### [Implementation Notes](implementation/)
-Technical implementation details:
-- [Implementation Summary](implementation/IMPLEMENTATION_SUMMARY.md) - Overall implementation notes
+### Advanced Topics
 
-## 🚀 Quick Start
+- [NPE Inference with Halofit](NPE_INFERENCE_HALOFIT_GUIDE.md) - Using Halofit predictions for inference
 
-For new users, we recommend:
-1. Read the main [README](../README.md) first
-2. Follow a relevant workflow guide from [workflows/](workflows/)
-3. Check [TARP documentation](tarp/) if you need coverage testing
+## Building Documentation
 
-## 📖 API Documentation
-
-API documentation is available in the source code docstrings. To build HTML documentation:
+To build the HTML documentation:
 
 ```bash
-# Coming soon - Sphinx documentation setup
+cd docs
+make html
 ```
 
-## 🤝 Contributing
-
-When adding new documentation:
-- Place workflow guides in `workflows/`
-- Place bug fix documentation in `bugfixes/`
-- Place TARP-related docs in `tarp/`
-- Place implementation notes in `implementation/`
-- Update this index file
-
-## 📝 Documentation Standards
-
-- Use clear, descriptive titles
-- Include code examples where appropriate
-- Add links to related documentation
-- Keep content up-to-date with code changes
+The built documentation will be in `docs/_build/html/`.

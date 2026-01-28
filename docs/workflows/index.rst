@@ -1,7 +1,7 @@
 Workflow Guides
 ===============
 
-These guides provide step-by-step instructions for common analysis workflows.
+Step-by-step guides for common analysis workflows.
 
 .. toctree::
    :maxdepth: 2
@@ -9,4 +9,3 @@ These guides provide step-by-step instructions for common analysis workflows.
    CROSS_POWER_SPECTRUM_WORKFLOW
    BNT_INFERENCE_WORKFLOW
    WORKFLOW_CROSS_SPECTRA_AGGREGATION
-   SPLITTING_GUIDE
