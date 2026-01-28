@@ -21,6 +21,16 @@ from bar_impact.utils.inference import (
     plot_tarp_coverage,
     train_npe_with_nan_retry,
 )
+from bar_impact.utils.npe_workflow import (
+    STANDARD_COSMO_PARAMS,
+    initialize_npe,
+    train_or_load_npe,
+    create_triangle_plot,
+    sample_and_save_posterior,
+    setup_jax_environment,
+    print_analysis_summary,
+    print_completion_summary,
+)
 
 __all__ = [
     "load_healpy_map",
@@ -34,4 +44,12 @@ __all__ = [
     "run_tarp_coverage_test",
     "plot_tarp_coverage",
     "train_npe_with_nan_retry",
+    "STANDARD_COSMO_PARAMS",
+    "initialize_npe",
+    "train_or_load_npe",
+    "create_triangle_plot",
+    "sample_and_save_posterior",
+    "setup_jax_environment",
+    "print_analysis_summary",
+    "print_completion_summary",
 ]
