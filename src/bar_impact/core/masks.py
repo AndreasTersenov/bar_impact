@@ -312,20 +312,23 @@ class SurveyMask:
         angular_dist_deg = np.degrees(np.arccos(np.clip(cos_dist, -1, 1)))
         
         # Define transition region
-        inner_radius = base_mask.angular_radius_deg - apodization_deg / 2
-        outer_radius = base_mask.angular_radius_deg + apodization_deg / 2
-        
+        # Note: apodization_deg specifies the half-width on each side, so total
+        # transition width is 2 * apodization_deg (matching original scripts)
+        inner_radius = base_mask.angular_radius_deg - apodization_deg
+        outer_radius = base_mask.angular_radius_deg + apodization_deg
+        transition_width = 2 * apodization_deg
+
         # Create apodized mask
         mask_data = np.zeros(npix, dtype=np.float32)
-        
+
         # Inner region: fully unmasked
-        inner_mask = angular_dist_deg < inner_radius
+        inner_mask = angular_dist_deg < max(0, inner_radius)
         mask_data[inner_mask] = 1.0
-        
+
         # Transition region: cosine taper or polynomial
-        transition_mask = (angular_dist_deg >= inner_radius) & (angular_dist_deg < outer_radius)
+        transition_mask = (angular_dist_deg >= max(0, inner_radius)) & (angular_dist_deg < outer_radius)
         if np.any(transition_mask):
-            frac = (angular_dist_deg[transition_mask] - inner_radius) / apodization_deg
+            frac = (angular_dist_deg[transition_mask] - max(0, inner_radius)) / transition_width
             
             if apodization_type == 'C1':
                 # C1 continuous (cosine taper): smooth but not twice-differentiable
