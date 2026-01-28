@@ -455,7 +455,7 @@ def main():
     print("\n" + "="*60)
     print("Building Posterior")
     print("="*60)
-    posterior = inference.build_posterior(density_estimator)
+    posterior = inference.build_posterior()
     print("Posterior built successfully!")
     
     # Load fiducial data

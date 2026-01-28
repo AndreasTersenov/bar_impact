@@ -444,11 +444,13 @@ def main():
     
     # Filter zero-variance bins using ResultsAggregator
     print(f"\nFiltering zero-variance features...")
-    combined_data_vector, n_removed = aggregator.filter_zero_variance(
+    original_features = combined_data_vector.shape[1]
+    combined_data_vector = aggregator.filter_zero_variance(
         combined_data_vector,
         min_variance=1e-10,
         return_mask=False
     )
+    n_removed = original_features - combined_data_vector.shape[1]
     print(f"Removed {n_removed} zero-variance features")
     print(f"Final datavector shape: {combined_data_vector.shape}")
     
@@ -567,13 +569,13 @@ def main():
     else:
         temp_data = data_list[0]
     
-    # Get mask
-    valid_mask = aggregator.filter_zero_variance(
+    # Get mask (filter_zero_variance returns (filtered_data, mask) when return_mask=True)
+    _, valid_mask = aggregator.filter_zero_variance(
         temp_data,
         min_variance=1e-10,
         return_mask=True
     )
-    
+
     # Apply mask to fiducial
     fiducial_data = fiducial_data[valid_mask]
     print(f"Fiducial data shape after processing: {fiducial_data.shape}")
