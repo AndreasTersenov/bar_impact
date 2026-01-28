@@ -96,7 +96,7 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-addopts = "-v --cov=bar_impact --cov-report=html --cov-report=term-missing"
+addopts = "-v"
 
 [tool.mypy]
 python_version = "3.8"
