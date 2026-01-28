@@ -31,7 +31,12 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "myst_parser",
+    "numpydoc",
 ]
+
+# numpydoc settings
+numpydoc_show_class_members = False
+numpydoc_class_members_toctree = False
 
 # MyST parser settings (for Markdown support)
 myst_enable_extensions = [

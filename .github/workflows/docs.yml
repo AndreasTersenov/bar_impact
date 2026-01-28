@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e ".[docs]"
-          pip install sphinx sphinx-rtd-theme myst-parser
+          pip install sphinx sphinx-rtd-theme myst-parser numpydoc
 
       - name: Build documentation
         run: |
