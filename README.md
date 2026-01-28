@@ -1,6 +1,7 @@
 # BAR_IMPACT
 
 [![CI](https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml/badge.svg)](https://github.com/AndreasTersenov/bar_impact/actions/workflows/ci.yml)
+[![Documentation Status](https://readthedocs.org/projects/bar-impact/badge/?version=latest)](https://bar-impact.readthedocs.io/en/latest/?badge=latest)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -69,10 +70,11 @@ src/bar_impact/
 
 ## Documentation
 
-- [Installation Guide](docs/installation.rst)
-- [Quick Start Tutorial](docs/quickstart.rst)
-- [Workflow Guides](docs/workflows/)
-- [TARP Coverage Testing](docs/tarp/)
+Full documentation is available at **[bar-impact.readthedocs.io](https://bar-impact.readthedocs.io/)**
+
+- [Installation Guide](https://bar-impact.readthedocs.io/en/latest/installation.html)
+- [Quick Start Tutorial](https://bar-impact.readthedocs.io/en/latest/quickstart.html)
+- [API Reference](https://bar-impact.readthedocs.io/en/latest/api/index.html)
 
 ## Testing
 
