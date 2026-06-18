@@ -19,6 +19,12 @@ from functools import partial
 from pycs.sparsity.mrs.mrs_starlet import CMRStarlet
 from pycs.astro.wl.hos_peaks_l1 import get_wtpeaks_sphere
 
+# Speed up the pycs spherical starlet transform (map2alm iter, neighbour cache).
+# See scripts/pycs_speedups.py. Must run before the multiprocessing Pool is
+# created so forked workers inherit the patches.
+import pycs_speedups
+pycs_speedups.enable(starlet_iter=1)
+
 # BNT transformation matrix
 BNT_MATRIX = np.array([[ 1.        ,  0.        ,  0.        ,  0.        ],
                        [-1.        ,  1.        ,  0.        ,  0.        ],
