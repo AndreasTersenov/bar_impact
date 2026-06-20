@@ -97,9 +97,11 @@ def parse_arguments():
     # Sampling parameters
     parser.add_argument("--num-samples", type=int, default=3000, 
                         help="Number of posterior samples to generate")
-    parser.add_argument("--random-seed", type=int, default=1, 
+    parser.add_argument("--random-seed", type=int, default=1,
                         help="Random seed for sampling")
-    
+    parser.add_argument("--run", type=int, default=None,
+                        help="Run index appended to the output filename (for multi-run error bars).")
+
     # Coverage testing parameters
     parser.add_argument("--run-coverage-test", action="store_true",
                         help="Run TARP coverage test to assess posterior quality")
@@ -1045,10 +1047,13 @@ def main():
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_name)
     print(f"Checkpoint path: {checkpoint_path}")
 
-    # Initialize NPE
+    # Initialize NPE. Seed the train/val split from --random-seed so runs are reproducible
+    # and genuinely independent (jaxili otherwise uses an unseeded split; see masked worker B2).
     inference = NPE()
-    inference = inference.append_simulations(params, combined_data_vector)
-    print("Added simulations to NPE")
+    inference = inference.append_simulations(
+        params, combined_data_vector, key=random.PRNGKey(args.random_seed)
+    )
+    print(f"Added simulations to NPE (split key seed={args.random_seed})")
 
     # Train or load the model
     if args.train:
@@ -1060,6 +1065,13 @@ def main():
             training_batch_size=args.batch_size
         )
         print("Training completed")
+        # NaN/Inf-loss gate: abort without saving so the orchestrator retries with a fresh seed.
+        train_loss = float(metrics.get("train/loss", float("nan")))
+        val_loss = float(metrics.get("val/loss", float("nan")))
+        if not (np.isfinite(train_loss) and np.isfinite(val_loss)):
+            print(f"[QA] non-finite NPE loss (train={train_loss}, val={val_loss}) at "
+                  f"seed={args.random_seed} — aborting without saving (exit 42).")
+            sys.exit(42)
     else:
         print("Attempting to load existing model...")
         try:
@@ -1186,8 +1198,10 @@ def main():
         samples_filename += f"_{args.mask_label}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
+    if getattr(args, "run", None) is not None:
+        samples_filename += f"_run{args.run}"
     samples_filename += "_npe.npy"
-    
+
     np.save(os.path.join(args.samples_dir, samples_filename), samples_bin_scale.samples)
     print(f"Saved posterior samples to {os.path.join(args.samples_dir, samples_filename)}")
 

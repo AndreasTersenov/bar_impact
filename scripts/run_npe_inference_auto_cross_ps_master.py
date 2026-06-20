@@ -80,7 +80,9 @@ def parse_arguments():
                         help="Area of the sky mask in square degrees (default: 14000).")
     parser.add_argument("--apodization-scale-deg", type=float, default=2.0,
                         help="Apodization scale in degrees (default: 2.0). Must match processing.")
-    
+    parser.add_argument("--subtract-mean", action="store_true",
+                        help="Use the mean-subtracted (mass-sheet gauge) '_submean' data vectors.")
+
     # Cross power spectra configuration
     parser.add_argument("--cross-data-dir", type=str,
                         help="Directory containing aggregated cross power spectra files. If not specified, uses data-dir.")
@@ -173,6 +175,11 @@ def parse_arguments():
     else:
         mask_suffix = "_master"
         mask_label = "Full-sky_master"
+
+    # Mean-subtracted (mass-sheet gauge) data carry a "_submean" tag right after "_master".
+    if getattr(args, "subtract_mean", False):
+        mask_suffix += "_submean"
+        mask_label += " (sub-mean)"
 
     args.mask_area_tag = area_tag if args.masked else None
     args.mask_suffix = mask_suffix
@@ -1055,21 +1062,43 @@ def main():
     checkpoint_path = os.path.join(checkpoint_dir, checkpoint_name)
     print(f"Checkpoint path: {checkpoint_path}")
 
-    # Initialize NPE
+    # Initialize NPE.
+    # Seed the train/val split from --random-seed so runs are reproducible and genuinely
+    # independent. (jaxili's append_simulations otherwise falls back to
+    # jr.PRNGKey(np.random.randint(0,1000)) — an UNSEEDED split, the real source of the old
+    # uncontrolled run-to-run scatter; see docs/PLAN_tension_submean_l37.md B2.)
     inference = NPE()
-    inference = inference.append_simulations(params, combined_data_vector)
-    print("Added simulations to NPE")
+    inference = inference.append_simulations(
+        params, combined_data_vector, key=random.PRNGKey(args.random_seed)
+    )
+    print(f"Added simulations to NPE (split key seed={args.random_seed})")
 
     # Train or load the model
     if args.train:
         print(f"Training for {args.epochs} epochs...")
+        # Per-run variation comes from the SEEDED train/val split above
+        # (append_simulations key) — the same mechanism the paper's run scatter came from,
+        # now reproducible. The flow init stays at jaxili's default 42 (matching the paper).
+        # NOTE: jaxili's train(seed=...) is buggy in this version — it forwards seed both
+        # explicitly and via **kwargs to create_trainer ("multiple values for 'seed'"), so we
+        # do NOT pass it. `training_batch_size=` is the correct kwarg; the old `batch_size=`
+        # landed in **kwargs and was silently ignored (B7).
         metrics, density_estimator = inference.train(
             checkpoint_path=checkpoint_path,
             num_epochs=args.epochs,
-            batch_size=args.batch_size,
-            learning_rate=args.learning_rate
+            training_batch_size=args.batch_size,
+            learning_rate=args.learning_rate,
         )
         print(f"Training completed. Model saved to {checkpoint_path}")
+
+        # NaN/Inf-loss gate: a diverged flow yields ~prior (uninformative) samples. Abort
+        # WITHOUT saving so the orchestrator retries with a fresh seed (exit code 42).
+        train_loss = float(metrics.get("train/loss", float("nan")))
+        val_loss = float(metrics.get("val/loss", float("nan")))
+        if not (np.isfinite(train_loss) and np.isfinite(val_loss)):
+            print(f"[QA] non-finite NPE loss (train={train_loss}, val={val_loss}) at "
+                  f"seed={args.random_seed} — aborting without saving (exit 42).")
+            sys.exit(42)
     else:
         print(f"Loading model from {checkpoint_path}")
         inference.load(checkpoint_path)
