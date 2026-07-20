@@ -44,6 +44,9 @@ RUN_NUMBER = None
 # BNT flag (set via command line)
 USE_BNT = False
 
+# Submean flag (set via command line)
+USE_SUBMEAN = False
+
 def get_sample_filename(fiducial_type, mask_area, scales):
     """Construct filename for posterior samples."""
     # Construct scale description (scales are 1-indexed in filename)
@@ -62,9 +65,10 @@ def get_sample_filename(fiducial_type, mask_area, scales):
     bnt_prefix = "bnt_" if USE_BNT else ""
     
     # Format: posterior_samples_[bnt_]pc_{simulation_type}_vs_{fiducial_type}_{bin_spec}_{scale_desc}_noisy_s{noise}_masked_{mask}sqdeg_new_normalization_npe.npy
+    submean_tag = "_submean" if USE_SUBMEAN else ""
     filename = (
         f"posterior_samples_{bnt_prefix}pc_nobaryons_vs_{fiducial_type}_{bin_spec}_{scale_desc}_"
-        f"noisy_s0.26_masked_{int(mask_area)}sqdeg_new_normalization{run_suffix}_npe.npy"
+        f"noisy_s0.26_masked_{int(mask_area)}sqdeg{submean_tag}_new_normalization{run_suffix}_npe.npy"
     )
     return SAMPLES_DIR / filename
 
@@ -98,7 +102,7 @@ def compute_tension(mcsamples1, mcsamples2):
         return None, None, None, None
 
 def main():
-    global RUN_NUMBER, USE_BNT
+    global RUN_NUMBER, USE_BNT, USE_SUBMEAN
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Compute peak counts tension statistics between nobaryons and baryonified posteriors")
@@ -106,10 +110,13 @@ def main():
                         help="Run number to load samples with '_runN' suffix")
     parser.add_argument("--bnt", action="store_true",
                         help="Use BNT-transformed data samples")
+    parser.add_argument("--submean", action="store_true",
+                        help="Use footprint-mean-subtracted ('_submean') posterior samples")
     args = parser.parse_args()
-    
+
     RUN_NUMBER = args.run
     USE_BNT = args.bnt
+    USE_SUBMEAN = args.submean
     run_suffix = f"_run{RUN_NUMBER}" if RUN_NUMBER is not None else ""
     bnt_suffix = "_bnt" if USE_BNT else ""
     

@@ -27,16 +27,28 @@ COORD_COLS = ["area", "upper_cut"]
 
 
 def build_campaign(args) -> configs.PSCampaign:
-    if args.fullsky:
+    if args.fullsky and getattr(args, "bnt_bin1", False):
+        camp = configs.fullsky_bnt_bin1_campaign(lmin=args.lmin)
+    elif args.fullsky:
         camp = configs.fullsky_campaign(lmin=args.lmin)
     elif args.paper_raw:
         camp = configs.paper_raw_l100_campaign()
+    elif getattr(args, "bnt_bin1", False):
+        camp = configs.bnt_bin1_campaign(lmin=args.lmin)
+        if args.areas:
+            camp.areas = tuple(args.areas)
+    elif getattr(args, "bnt_cutall", False):
+        camp = configs.bnt_cutall_campaign(lmin=args.lmin)
+        if args.areas:
+            camp.areas = tuple(args.areas)
     else:
         camp = configs.submean_l37_campaign(lmin=args.lmin)
         if args.areas:
             camp.areas = tuple(args.areas)
     if args.upper_cuts:
         camp.upper_cuts = tuple(args.upper_cuts)
+    if getattr(args, "rebin", None):
+        camp.rebin = args.rebin
     if args.runs:
         camp.runs = tuple(None if r == 0 else r for r in args.runs)
     return camp
@@ -66,9 +78,15 @@ def main():
                    help="Reproduce the published raw ℓ≥100 numbers (legacy flat layout).")
     p.add_argument("--fullsky", action="store_true",
                    help="Full-sky (healpy) campaign instead of the masked footprints.")
+    p.add_argument("--bnt-bin1", action="store_true",
+                   help="BNT bin-1-only scale-cut campaign (cut just BNT bin 1's spectra).")
+    p.add_argument("--bnt-cutall", action="store_true",
+                   help="BNT uniform-cut campaign (cut all BNT bins; cut-everything control).")
     p.add_argument("--lmin", type=int, default=37, help="ℓ-floor (submean campaign). Default 37.")
     p.add_argument("--areas", type=int, nargs="*", help="Footprints (sqdeg). Default: all six.")
     p.add_argument("--upper-cuts", type=int, nargs="*", help="Upper cuts. Default: paper grid.")
+    p.add_argument("--rebin", type=int, default=None,
+                   help="ℓ-rebin factor (default: campaign's, 10). Must match the sweep's --rebin.")
     p.add_argument("--runs", type=int, nargs="*",
                    help="Run indices to aggregate (0 = the unsuffixed base run). Default: base.")
     p.add_argument("--out-dir", type=str, default=None,

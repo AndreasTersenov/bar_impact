@@ -40,7 +40,7 @@ FIXED_PARAMS = {
 FIDUCIAL_TYPES = ["nobaryons", "baryonified"]
 MASK_AREAS = [2001.0, 5001.0, 10001.0, 14001.0, 28001.0, 35001.0]
 SCALE_CONFIGS = ["0,1,2,3", "1,2,3"]  # Wavelet configurations
-GPUS = [0, 1, 2]
+GPUS = [0, 1]
 
 # Log directory
 LOG_DIR = Path("logs/npe_peak_counts_parameter_sweep")
@@ -100,9 +100,15 @@ def build_command(fiducial_type, mask_area, scales, gpu):
     cmd_parts.append(f"--mask-area-sqdeg {mask_area}")
     
     # Handle scale configuration
-    if USE_BNT and scales == "1,2,3":
-        # For BNT with no 0th scale: bin 1 uses "1,2,3", bins 2,3,4 use "0,1,2,3"
-        cmd_parts.append(f'--scales-per-bin "1,2,3;0,1,2,3;0,1,2,3;0,1,2,3"')
+    if USE_BNT:
+        # For BNT: always use per-bin configuration
+        # Scale cuts apply only to bin 1, other bins use all scales (0,1,2,3)
+        if scales == "1,2,3":
+            # Bin 1 has cut (no scale 0), others use all scales
+            cmd_parts.append(f'--scales-per-bin "1,2,3;0,1,2,3;0,1,2,3;0,1,2,3"')
+        else:  # scales == "0,1,2,3"
+            # All bins use all scales
+            cmd_parts.append(f'--scales-per-bin "0,1,2,3;0,1,2,3;0,1,2,3;0,1,2,3"')
     else:
         # Standard case: same scales for all bins
         cmd_parts.append(f"--scales {scales}")

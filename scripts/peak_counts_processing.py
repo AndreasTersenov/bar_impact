@@ -120,22 +120,31 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
     return MASK_CACHE[key]
 
 
-def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
+def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
                 noise_std=0.0146, nbins=31, min_val=-2, max_val=6, verbose=False,
                 apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
-                force_overwrite=False, min_snr_coarse=100, max_snr_coarse=200):
-    """Process a single file: extract kappa map, apply optional mask, compute peak counts, save results."""
-    
+                force_overwrite=False, min_snr_coarse=100, max_snr_coarse=200,
+                submean=False):
+    """Process a single file: extract kappa map, apply optional mask, compute peak counts, save results.
+
+    With ``submean`` (only meaningful for masked runs), the footprint mean is subtracted from the
+    masked field before the starlet transform. The masked field steps from <kappa> down to 0 at the
+    boundary, and that (cosmology-dependent) step leaks into the detail-scale peaks, spuriously
+    tightening masked-peak constraints; subtracting the mean removes the step at the source. Mirrors
+    the masked-PS submean. Outputs carry a ``_submean`` tag so they do not collide with the originals.
+    """
+
     # Define output filename based on bin number, noise level, and mask
     mask_suffix = ""
     if apply_mask:
         area_tag = int(round(mask_area_sqdeg))
         mask_suffix = f"_masked_{area_tag}sqdeg"
-    
+    submean_suffix = "_submean" if (apply_mask and submean) else ""
+
     if add_noise:
-        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
+        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}{submean_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}_new_normalization.npy"
+        suffix = f"_peak_counts_bin{bin_number}{mask_suffix}{submean_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -166,7 +175,10 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
                 center_coords=mask_center,
             )
             kg = kg * mask
-        
+            if submean:
+                # subtract the footprint mean, re-zero the exterior (kills the boundary step)
+                kg = (kg - kg[mask != 0].mean()) * mask
+
         peak_counts, _ = get_wtpeaks_sphere(
             kg, nscales=5, noise_std=noise_std, nbins=nbins, Min=min_val, Max=max_val, verbose=False
         )
@@ -265,8 +277,16 @@ def main():
                         help="Remove empty output files before processing.")
     parser.add_argument("--force-overwrite", action="store_true",
                         help="Force reprocessing of files even if output already exists.")
-    
+    parser.add_argument("--submean", action="store_true",
+                        help="Subtract the footprint mean from the masked field before the starlet "
+                             "transform (fixes the spurious masked-peak tightness; mirrors the PS "
+                             "submean). Requires --apply-mask; tags outputs '_submean'.")
+
     args = parser.parse_args()
+
+    if args.submean and not args.apply_mask:
+        print("Warning: --submean has no effect without --apply-mask; ignoring.")
+        args.submean = False
     
     # Set the base directory based on fiducial flag or override
     if args.base_dir:
@@ -416,6 +436,7 @@ def main():
                 force_overwrite=args.force_overwrite,
                 min_snr_coarse=bin_min_snr_coarse,
                 max_snr_coarse=bin_max_snr_coarse,
+                submean=args.submean,
             )
             results = list(tqdm(
                 pool.imap(process_func, file_paths),
@@ -452,11 +473,12 @@ def main():
                 if args.apply_mask:
                     area_tag = int(round(args.mask_area_sqdeg))
                     mask_suffix = f"_masked_{area_tag}sqdeg"
-                
+                submean_suffix = "_submean" if (args.apply_mask and args.submean) else ""
+
                 if args.no_noise:
-                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_new_normalization.npy")
+                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}{submean_suffix}_new_normalization.npy")
                 else:
-                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+                    combined_output = os.path.join(base_dir, f"all_peak_counts_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}{submean_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
             elif len(bin_numbers) > 1:
                 # If custom output is specified for multiple bins, add bin number to filename
                 base, ext = os.path.splitext(combined_output)

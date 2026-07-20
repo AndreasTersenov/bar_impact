@@ -122,19 +122,25 @@ def get_cached_mask(nside=512, target_area_sqdeg=14000.0, center_coords=(0.0, 90
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
                 min_snr=-13, max_snr=13, noise_std=0.0146, verbose=False,
                 apply_mask=False, mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
-                force_overwrite=False):
-    """Process a single file: extract kappa map, apply optional mask, compute L1 norms, save results."""
+                force_overwrite=False, submean=False):
+    """Process a single file: extract kappa map, apply optional mask, compute L1 norms, save results.
+
+    With ``submean`` (only meaningful for masked runs), the footprint mean is subtracted from the
+    masked map before the starlet transform, re-zeroing the exterior. This mean-centers the coarse
+    scale (which otherwise carries the mass-sheet) and kills the boundary step. Outputs carry a
+    ``_submean`` tag so they do not collide with the originals."""
     
     # Define output filename based on bin number, noise level, and mask
     mask_suffix = ""
     if apply_mask:
         area_tag = int(round(mask_area_sqdeg))
         mask_suffix = f"_masked_{area_tag}sqdeg"
-    
+    submean_suffix = "_submean" if submean else ""
+
     if add_noise:
-        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}{submean_suffix}_noisy_s{noise_level:.2f}_new_normalization.npy"
     else:
-        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_new_normalization.npy"
+        suffix = f"_l1_norms_bin{bin_number}{mask_suffix}{submean_suffix}_new_normalization.npy"
     
     save_path = file_path.replace(".h5", suffix)
     
@@ -165,7 +171,13 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
                 center_coords=mask_center,
             )
             kg = kg * mask
-        
+            if submean:
+                # subtract the footprint mean, re-zero the exterior (kills the boundary step)
+                kg = (kg - kg[mask != 0].mean()) * mask
+        elif submean:
+            # full-sky: subtract the monopole (mean-centers the coarse scale; no-op on detail scales)
+            kg = kg - kg.mean()
+
         _, l1norms = get_wtl1_sphere(
             kg, nscales=5, nbins=40, min_snr=min_snr, max_snr=max_snr, noise_std=noise_std
         )
@@ -237,8 +249,15 @@ def main():
                         help="Path for combined output file.")
     parser.add_argument("--force-overwrite", action="store_true",
                         help="Force reprocessing of files even if output already exists.")
-    
+    parser.add_argument("--submean", action="store_true",
+                        help="Subtract the footprint mean before the starlet transform "
+                             "(only meaningful for masked runs). Requires --apply-mask; "
+                             "tags outputs '_submean'.")
+
     args = parser.parse_args()
+
+    # --submean is valid both masked (subtract the footprint mean) and full-sky (subtract the
+    # monopole). Full-sky it is a no-op on the detail scales and only mean-centers the coarse scale.
     
     # Set the base directory based on fiducial flag or override
     if args.base_dir:
@@ -321,11 +340,12 @@ def main():
         if args.apply_mask:
             area_tag = int(round(args.mask_area_sqdeg))
             mask_suffix = f"_masked_{area_tag}sqdeg"
-        
+        submean_suffix = "_submean" if args.submean else ""
+
         if args.no_noise:
-            suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_new_normalization.npy"
+            suffix = f"_l1_norms_bin{bin_number}{mask_suffix}{submean_suffix}_new_normalization.npy"
         else:
-            suffix = f"_l1_norms_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
+            suffix = f"_l1_norms_bin{bin_number}{mask_suffix}{submean_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy"
         print(f"Output suffix: {suffix}")
         
         # Process files in parallel with progress bar
@@ -343,6 +363,7 @@ def main():
                 mask_area_sqdeg=args.mask_area_sqdeg,
                 mask_center=mask_center,
                 force_overwrite=args.force_overwrite,
+                submean=args.submean,
             )
             results = list(tqdm(
                 pool.imap(process_func, file_paths),
@@ -379,11 +400,12 @@ def main():
                 if args.apply_mask:
                     area_tag = int(round(args.mask_area_sqdeg))
                     mask_suffix = f"_masked_{area_tag}sqdeg"
-                
+                submean_suffix = "_submean" if args.submean else ""
+
                 if args.no_noise:
-                    combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_new_normalization.npy")
+                    combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}{submean_suffix}_new_normalization.npy")
                 else:
-                    combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
+                    combined_output = os.path.join(base_dir, f"all_l1_norms_{dataset_name}_{map_suffix}_bin{bin_number}{mask_suffix}{submean_suffix}_noisy_s{args.noise_level:.2f}_new_normalization.npy")
             elif len(bin_numbers) > 1:
                 # If custom output is specified for multiple bins, add bin number to filename
                 base, ext = os.path.splitext(combined_output)

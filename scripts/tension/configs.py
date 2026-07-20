@@ -32,10 +32,17 @@ class PSCampaign:
     runs: Sequence[Optional[int]] = (None,)     # (None,) = single base run; e.g. (1,2,3,4,5)
     statistic: str = "ps"
     pipeline: str = "master"                    # "master" (masked NaMaster) | "healpy" (full-sky)
+    bnt: bool = False                           # apply BNT (loads all_bnt_* grids, bnt_ posteriors)
+    cut_bins: Sequence[int] = (1, 2, 3, 4)      # 1-indexed bins that receive the swept ℓmax cut
+    full_cut: int = 1024                        # ℓmax for bins NOT in cut_bins (kept "full")
 
     @property
     def gauge(self) -> str:
         return "submean" if self.submean else "raw"
+
+    def per_bin_cuts(self, upper_cut: int):
+        """Swept upper_cut -> 4 per-bin ℓmax values; only `cut_bins` get the cut (x-cut rule)."""
+        return [upper_cut if b in self.cut_bins else self.full_cut for b in (1, 2, 3, 4)]
 
     @property
     def tag(self) -> str:
@@ -52,11 +59,16 @@ class PSCampaign:
     def posterior_path(self, role: str, area, upper_cut: int, run: Optional[int] = None):
         if self.pipeline == "healpy":
             return paths.fullsky_posterior_path(
-                self.tag, role=role, lower=self.lmin, upper=upper_cut, run=run, rebin=self.rebin)
+                self.tag, role=role, lower=self.lmin, upper=upper_cut, run=run, rebin=self.rebin,
+                bnt=self.bnt,
+                cuts=self.per_bin_cuts(upper_cut) if self.bnt else None,
+            )
         if self.layout == "tree":
             return paths.ps_posterior_path(
                 self.tag, role=role, lower=self.lmin, upper=upper_cut, area=area,
                 run=run, rebin=self.rebin, submean=self.submean,
+                bnt=self.bnt,
+                cuts=self.per_bin_cuts(upper_cut) if self.bnt else None,
             )
         if self.layout == "flat":
             return paths.legacy_ps_posterior_path(
@@ -81,6 +93,25 @@ def paper_raw_l100_campaign(**overrides) -> PSCampaign:
     return PSCampaign(**defaults)
 
 
+def bnt_bin1_campaign(**overrides) -> PSCampaign:
+    """BNT, monopole-subtracted, ℓ≥37: sweep ONLY BNT bin-1's ℓmax (bins 2-4 held at full range).
+    The baryon-nulling test — does cutting the one contaminated bin unbias the contours while
+    keeping bins 2-4's constraining power? See docs/BNT_on_spectra.md §8."""
+    defaults = dict(lmin=37, submean=True, layout="tree", statistic="bnt_ps_bin1",
+                    bnt=True, cut_bins=(1,))
+    defaults.update(overrides)
+    return PSCampaign(**defaults)
+
+
+def bnt_cutall_campaign(**overrides) -> PSCampaign:
+    """BNT, monopole-subtracted, ℓ≥37: sweep a uniform ℓmax across all BNT bins — the BNT analog
+    of the original cut-everything curve (isolates BNT's effect from the bin-1-only cut)."""
+    defaults = dict(lmin=37, submean=True, layout="tree", statistic="bnt_ps_all",
+                    bnt=True, cut_bins=(1, 2, 3, 4))
+    defaults.update(overrides)
+    return PSCampaign(**defaults)
+
+
 def fullsky_campaign(**overrides) -> PSCampaign:
     """Full-sky (healpy pipeline) ℓ≥37 campaign — the f_sky→1 endpoint.
 
@@ -89,5 +120,21 @@ def fullsky_campaign(**overrides) -> PSCampaign:
     plan's option-(a) caveat: same scale-cut trend, not magnitude-comparable.
     """
     defaults = dict(lmin=37, pipeline="healpy", areas=("fullsky",))
+    defaults.update(overrides)
+    return PSCampaign(**defaults)
+
+
+def fullsky_bnt_bin1_campaign(**overrides) -> PSCampaign:
+    """Full-sky (healpy) BNT bin-1-only scale-cut campaign — the f_sky→1 endpoint of the
+    bnt_bin1 test. Sweeps ONLY BNT bin-1's ℓmax (bins 2-4 held full) on the full-sky healpy
+    pipeline. Tag = "bnt_ps_bin1_fullsky_l37".
+
+    Requires the healpy worker's cross-cut x-cut fix (min, not max) — without it the bin-1
+    cross spectra leak through uncut. Like the plain fullsky campaign, this is healpy 10-ℓ
+    binning, NOT magnitude-comparable to the masked NaMaster nlb=4 (40-ℓ) panels — same
+    scale-cut trend only.
+    """
+    defaults = dict(lmin=37, pipeline="healpy", areas=("fullsky",),
+                    statistic="bnt_ps_bin1", bnt=True, cut_bins=(1,))
     defaults.update(overrides)
     return PSCampaign(**defaults)

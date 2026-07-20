@@ -18,7 +18,7 @@ if tarp_path not in sys.path:
     sys.path.insert(0, tarp_path)
 from tarp import get_tarp_coverage
 
-def filter_zero_variance_bins(data, min_variance=1e-10, verbose=True):
+def filter_zero_variance_bins(data, min_variance=1e-5, rel_threshold=1e-6, verbose=True):
     """
     Identify and filter out bins (features) with zero or near-zero variance.
     
@@ -33,9 +33,17 @@ def filter_zero_variance_bins(data, min_variance=1e-10, verbose=True):
     """
     # Compute variance across samples for each feature
     variances = np.var(data, axis=0)
-    
-    # Create mask for valid (non-zero variance) bins
-    valid_mask = variances > min_variance
+
+    # Absolute floor AND a RELATIVE floor. An absolute min_variance (e.g. 1e-5) only catches exactly-
+    # constant bins; bins that are near-constant *relative to the data scale* (l1 values ~1e6, so a bin
+    # with variance ~0.1-100 is effectively flat) survive it, then blow up under the z-score (x-mean)/std
+    # -> NaN validation loss. Worst for small footprints (e.g. 2001 sqdeg) with many sparse SNR bins.
+    pos = variances[variances > 0]
+    rel_floor = rel_threshold * np.median(pos) if pos.size else 0.0
+    threshold = max(min_variance, rel_floor)
+
+    # Create mask for valid (sufficiently varying) bins
+    valid_mask = variances > threshold
     
     n_total = len(valid_mask)
     n_valid = np.sum(valid_mask)
@@ -109,7 +117,10 @@ def parse_arguments():
                         help="Use masked datavectors (Euclid-like sky mask)")
     parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
                         help="Area of the sky mask in square degrees (default: 14000).")
-    
+    parser.add_argument("--submean", action="store_true",
+                        help="Use footprint-mean-subtracted datavectors (the '_submean' tag). "
+                             "Works masked and full-sky (full-sky is a no-op on the data, tag only).")
+
     # Fiducial configuration  
     parser.add_argument("--fiducial-type", type=str, choices=["baryonified", "nobaryons"],
                         default=None,  # Will default to match simulation-type if not specified
@@ -168,15 +179,16 @@ def parse_arguments():
     if args.fiducial_type is None:
         args.fiducial_type = args.simulation_type
     
-    # Set mask suffixes
+    # Set mask suffixes (submean_tag applies to BOTH masked and full-sky; tags inputs AND outputs)
+    submean_tag = "_submean" if args.submean else ""
     if args.masked:
         area_tag = int(round(args.mask_area_sqdeg))
-        mask_suffix = f"_masked_{area_tag}sqdeg"
-        mask_label = f"masked_{area_tag}sqdeg"
+        mask_suffix = f"_masked_{area_tag}sqdeg{submean_tag}"
+        mask_label = f"masked_{area_tag}sqdeg{submean_tag}"
     else:
         area_tag = None
-        mask_suffix = ""
-        mask_label = ""
+        mask_suffix = submean_tag
+        mask_label = "fullsky_submean" if args.submean else ""
     
     args.mask_area_tag = area_tag
     args.mask_suffix = mask_suffix
@@ -340,31 +352,29 @@ def train_with_nan_retry(inference, checkpoint_path, args, params, data, max_ret
             # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
             has_nan = False
             nan_source = None
-            
-            # Check training loss (indicates bad initialization)
-            if hasattr(metrics, 'train_loss'):
-                train_loss = metrics.train_loss
-                if isinstance(train_loss, (list, np.ndarray)):
-                    if np.any(np.isnan(train_loss)):
-                        has_nan = True
-                        nan_source = 'training loss'
-                elif np.isnan(train_loss):
+
+            # NOTE: jaxili's inference.train() returns a DICT keyed 'train/loss','val/loss','test/loss'
+            # (see jaxili/inference/npe.py), NOT an object with .train_loss attributes. The previous
+            # hasattr(metrics, 'val_loss') check was therefore ALWAYS False, so this retry never fired:
+            # a NaN validation loss silently produced a collapsed (prior-width) posterior reported as
+            # "successful". Read the dict keys (with attribute fallback) so the retry actually works.
+            def _get_loss(m, attr_key, dict_key):
+                if isinstance(m, dict):
+                    return m.get(dict_key)
+                return getattr(m, attr_key, None)
+
+            for src, val in [('training loss', _get_loss(metrics, 'train_loss', 'train/loss')),
+                             ('validation loss', _get_loss(metrics, 'val_loss', 'val/loss'))]:
+                if val is None:
+                    continue
+                if np.any(np.isnan(np.asarray(val, dtype=float))):
                     has_nan = True
-                    nan_source = 'training loss'
-            
-            # Check validation loss (indicates training instability)
-            if not has_nan and hasattr(metrics, 'val_loss'):
-                val_loss = metrics.val_loss
-                if isinstance(val_loss, (list, np.ndarray)):
-                    if np.any(np.isnan(val_loss)):
-                        has_nan = True
-                        nan_source = 'validation loss'
-                elif np.isnan(val_loss):
-                    has_nan = True
-                    nan_source = 'validation loss'
-            
-            # Warn about test loss NaN but don't trigger retry
-            if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
+                    nan_source = src
+                    break
+
+            # Test loss NaN is an eval-only artifact; warn but don't retry on it.
+            test_val = _get_loss(metrics, 'test_loss', 'test/loss')
+            if test_val is not None and np.any(np.isnan(np.asarray(test_val, dtype=float))):
                 print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
             
             if has_nan:
@@ -482,16 +492,16 @@ def construct_paths(args):
         l1_prefix = "all_bnt_l1_norms"
         fiducial_prefix = "all_bnt_l1_norms"
         
-        # For BNT mode, use the bnt bins
+        # For BNT mode, use the bnt bins and new_grid subdirectory
         for bnt_bin_idx in bnt_bin_indices:
             bin_spec = f"bin{bnt_bin_idx+1}"
             
-            # Grid path
+            # Grid path (BNT data is in new_grid subdirectory)
             l1_filename = f"{l1_prefix}_grid_{args.simulation_type}_{bin_spec}{args.mask_suffix}{noise_suffix}{normalization_suffix}.npy"
-            l1_path = os.path.join(args.data_dir, "grid", l1_filename)
+            l1_path = os.path.join(args.data_dir, "new_grid", l1_filename)
             l1_paths.append(l1_path)
             
-            # Fiducial path
+            # Fiducial path (BNT fiducials are in regular fiducial subdirectory)
             fiducial_filename = f"{fiducial_prefix}_fiducial_{args.fiducial_type}_{bin_spec}{args.mask_suffix}{noise_suffix}{normalization_suffix}.npy"
             fiducial_path = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial", fiducial_filename)
             fiducial_paths.append(fiducial_path)
@@ -650,7 +660,7 @@ def main():
     print(f"Combined datavector shape (before filtering): {l1_scale.shape}")
     
     # Filter out zero-variance bins to prevent NaN loss during training
-    valid_bin_mask, n_removed = filter_zero_variance_bins(l1_scale, min_variance=1e-10, verbose=True)
+    valid_bin_mask, n_removed = filter_zero_variance_bins(l1_scale, min_variance=1e-5, verbose=True)
     l1_scale_filtered = l1_scale[:, valid_bin_mask]
     print(f"Combined datavector shape (after filtering): {l1_scale_filtered.shape}")
     
@@ -669,7 +679,7 @@ def main():
     datavector_desc = f"{args.simulation_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         datavector_desc += f"_noisy_s{args.noise_level:.2f}"
-    if args.masked:
+    if args.mask_label:
         datavector_desc += f"_{args.mask_label}"
     if args.new_normalization:
         datavector_desc += "_new_normalization"
@@ -701,7 +711,7 @@ def main():
             args=args,
             params=params,
             data=l1_scale,
-            max_retries=10
+            max_retries=20
         )
         print("Training completed")
     else:
@@ -726,7 +736,7 @@ def main():
         coverage_filename_base = f"l1norms_{args.simulation_type}_{bin_spec}_{scale_desc}"
         if args.noisy:
             coverage_filename_base += f"_noisy_s{args.noise_level:.2f}"
-        if args.masked:
+        if args.mask_label:
             coverage_filename_base += f"_{args.mask_label}"
         if args.new_normalization:
             coverage_filename_base += "_new_normalization"
@@ -856,7 +866,7 @@ def main():
     plot_filename = f"posterior_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         plot_filename += f"_noisy_s{args.noise_level:.2f}"
-    if args.masked:
+    if args.mask_label:
         plot_filename += f"_{args.mask_label}"
     if args.new_normalization:
         plot_filename += "_new_normalization"
@@ -881,7 +891,7 @@ def main():
     samples_filename = f"posterior_samples_{args.simulation_type}_vs_{args.fiducial_type}_{bin_spec}_{scale_desc}"
     if args.noisy:
         samples_filename += f"_noisy_s{args.noise_level:.2f}"
-    if args.masked:
+    if args.mask_label:
         samples_filename += f"_{args.mask_label}"
     if args.new_normalization:
         samples_filename += "_new_normalization"

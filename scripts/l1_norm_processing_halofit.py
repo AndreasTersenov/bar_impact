@@ -144,7 +144,7 @@ def compute_l1_norm_from_pdf(kappa_values, pdf_values):
     Returns:
     - l1_norm: scalar L1 norm value
     """
-    return np.trapz(np.abs(kappa_values) * pdf_values, kappa_values)
+    return np.trapezoid(np.abs(kappa_values) * pdf_values, kappa_values)
 
 
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
@@ -726,6 +726,10 @@ def main():
     print(f"Processing complete!")
     print(f"Total simulations processed: {len(file_paths)} ({dataset_label})")
     print(f"{'='*70}")
+    # print the absolute paths of the saved combined files if they were created
+
+    print(f"\nCombined output files:")
+
 
 
 if __name__ == "__main__":

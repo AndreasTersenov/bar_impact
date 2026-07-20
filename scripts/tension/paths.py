@@ -16,7 +16,7 @@ run_npe_inference_auto_cross_ps_master.py (so the worker's --samples-dir output 
 where io.py later looks). Verified against on-disk files in tests/test_paths.py.
 """
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Sequence
 
 REPO = Path("/mnt/home/tersenov/software/bar_impact")
 ROOT = REPO / "outputs" / "baryon_tension"
@@ -93,14 +93,25 @@ def ps_posterior_filename(
     run: Optional[int] = None,
     bins: str = "1234",
     sim: str = "nobaryons",
+    bnt: bool = False,
+    cuts: Optional[Sequence[int]] = None,
 ) -> str:
     """Reproduce the worker's PS auto+cross posterior filename exactly.
 
     Worker assembly (run_npe_inference_auto_cross_ps_master.py):
-      posterior_samples_ps_auto_cross_{sim}_vs_{fid}_bins{bins}_l{lo}-{up}[_r{rebin}]
+      posterior_samples_[bnt_]ps_auto_cross_{sim}_vs_{fid}_bins{bins}_l{lo}-{cut_desc}[_r{rebin}]
         _masked_{int(area)}sqdeg_apod{apod}_master[_submean]_noisy_s{noise:.2f}[_run{N}].npy
+
+    `cut_desc` is `{up}` for a uniform cut, or `{c1}_{c2}_{c3}_{c4}` when the per-bin `cuts`
+    differ (BNT bin-1 sweep) — matching the worker's `len(set(upper_cuts)) == 1` branch.
     """
-    name = f"posterior_samples_ps_auto_cross_{sim}_vs_{fiducial}_bins{bins}_l{lower}-{upper}"
+    bnt_prefix = "bnt_" if bnt else ""
+    if cuts is not None and len(set(cuts)) > 1:
+        cut_desc = "_".join(str(c) for c in cuts)
+    else:
+        cut_desc = str(upper)
+    name = (f"posterior_samples_{bnt_prefix}ps_auto_cross_{sim}_vs_{fiducial}"
+            f"_bins{bins}_l{lower}-{cut_desc}")
     if rebin and rebin > 1:
         name += f"_r{rebin}"
     name += f"_masked_{int(area)}sqdeg_apod{apod}_master"
@@ -133,13 +144,27 @@ def fullsky_posterior_filename(
     run: Optional[int] = None,
     bins: str = "1234",
     sim: str = "nobaryons",
+    bnt: bool = False,
+    cuts: Optional[Sequence[int]] = None,
 ) -> str:
     """Reproduce the healpy full-sky worker's PS auto+cross posterior filename.
 
-    run_npe_inference_auto_cross_ps.py (no mask): ..._l{lo}-{up}[_r{rebin}]_noisy_s{n:.2f}
-      [_run{N}]_npe.npy   (note the trailing _npe, and no mask/submean tags).
+    run_npe_inference_auto_cross_ps.py (no mask): posterior_samples_[bnt_]ps_auto_cross_
+      {sim}_vs_{fid}_bins{bins}_l{lo}-{cut_desc}[_r{rebin}]_noisy_s{n:.2f}[_run{N}]_npe.npy
+      (trailing _npe; no mask/submean tags for full sky).
+
+    `cut_desc` is `{up}` for a uniform cut, or the per-bin cuts joined with HYPHENS when they
+    differ (BNT bin-1 sweep) — the healpy worker uses '-'.join (line 958), NOT the master
+    worker's '_'.join. Matching it exactly is what lets the sweep's resume-check and the tension
+    loader find the file.
     """
-    name = f"posterior_samples_ps_auto_cross_{sim}_vs_{fiducial}_bins{bins}_l{lower}-{upper}"
+    bnt_prefix = "bnt_" if bnt else ""
+    if cuts is not None and len(set(cuts)) > 1:
+        cut_desc = "-".join(str(c) for c in cuts)
+    else:
+        cut_desc = str(upper)
+    name = (f"posterior_samples_{bnt_prefix}ps_auto_cross_{sim}_vs_{fiducial}"
+            f"_bins{bins}_l{lower}-{cut_desc}")
     if rebin and rebin > 1:
         name += f"_r{rebin}"
     name += f"_noisy_s{noise:.2f}"

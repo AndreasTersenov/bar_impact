@@ -23,7 +23,7 @@ import pandas as pd
 import scipy.stats
 from pathlib import Path
 from getdist import MCSamples
-import tensiometer.utilities as utilities
+import tensiometer.utilities as utilities5
 from tensiometer import gaussian_tension
 
 # Parameter labels

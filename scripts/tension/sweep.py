@@ -82,8 +82,13 @@ def job_checkpoint_dir(camp: PSCampaign, job: Job) -> Path:
 
 def build_worker_cmd(camp: PSCampaign, job: Job, gpu: int) -> List[str]:
     ckpt = str(job_checkpoint_dir(camp, job))
+    # BNT campaigns drive a per-bin cut (only cut_bins get job.upper_cut); else a single cut.
+    if getattr(camp, "bnt", False):
+        cut_args = ["--upper-cuts", ",".join(str(c) for c in camp.per_bin_cuts(job.upper_cut))]
+    else:
+        cut_args = ["--upper-cut", str(job.upper_cut)]
     common_tail = [
-        "--lower-cut", str(camp.lmin), "--upper-cut", str(job.upper_cut),
+        "--lower-cut", str(camp.lmin), *cut_args,
         "--rebin", str(camp.rebin),
         "--train", "--gpu", str(gpu), "--random-seed", str(job.seed),
         "--run", str(job.run),
@@ -91,13 +96,17 @@ def build_worker_cmd(camp: PSCampaign, job: Job, gpu: int) -> List[str]:
         "--checkpoint-dir", ckpt,
     ]
     if camp.pipeline == "healpy":
-        # Full-sky healpy pipeline: no mask, no submean, no NaMaster lmax.
+        # Full-sky healpy pipeline: no mask, no submean, no NaMaster lmax (lmax defaults to 1024,
+        # matching the full-sky grids). BNT is supported by the healpy worker; the per-bin
+        # --upper-cuts already ride in common_tail via cut_args, so we only add the BNT flags.
+        bnt_args = ["--bnt", "--bnt-bins", "0,1,2,3"] if getattr(camp, "bnt", False) else []
         return [
             PY_JAXILI, str(HEALPY_WORKER),
             "--simulation-type", "nobaryons",
             "--fiducial-type", paths.FID_BY_ROLE[job.role],
             "--noisy", "--noise-level", "0.26",
-        ] + common_tail
+        ] + bnt_args + common_tail
+    bnt_args = ["--bnt", "--bnt-bins", "0,1,2,3"] if getattr(camp, "bnt", False) else []
     return [
         PY_JAXILI, str(WORKER),
         "--simulation-type", "nobaryons",
@@ -106,7 +115,7 @@ def build_worker_cmd(camp: PSCampaign, job: Job, gpu: int) -> List[str]:
         "--apodization-scale-deg", "2.0",
         "--noisy", "--noise-level", "0.26",
         "--subtract-mean", "--lmax", "1535",
-    ] + common_tail
+    ] + bnt_args + common_tail
 
 
 def _qa_record(job: Job, prior_lo, prior_hi) -> dict:

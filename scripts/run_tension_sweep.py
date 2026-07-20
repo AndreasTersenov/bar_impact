@@ -26,6 +26,9 @@ def main():
     p.add_argument("--lmin", type=int, default=37, help="ℓ-floor (default 37).")
     p.add_argument("--areas", type=int, nargs="*", help="Footprints. Default: all six.")
     p.add_argument("--upper-cuts", type=int, nargs="*", help="Upper cuts. Default: paper grid.")
+    p.add_argument("--rebin", type=int, default=None,
+                   help="ℓ-rebin factor (default: campaign's, 10). Raise (e.g. 40) to coarsen the "
+                        "full-sky healpy data vector toward the masked 40-ℓ binning.")
     p.add_argument("--runs", type=int, nargs="*", default=[1, 2, 3, 4, 5],
                    help="Run indices (each a distinct seed). Default: 1..5.")
     p.add_argument("--gpus", type=int, nargs="*", default=[0, 1],
@@ -42,18 +45,31 @@ def main():
                         "Needed when packing — e.g. 0.15 (~6 GB). Default: jaxili default (~0.75).")
     p.add_argument("--fullsky", action="store_true",
                    help="Full-sky (healpy) campaign instead of the masked footprints.")
+    p.add_argument("--bnt-bin1", action="store_true",
+                   help="BNT campaign: sweep ONLY BNT bin-1's ℓmax (bins 2-4 full). See "
+                        "docs/BNT_on_spectra.md.")
+    p.add_argument("--bnt-cutall", action="store_true",
+                   help="BNT campaign: sweep a uniform ℓmax on all BNT bins (cut-everything control).")
     p.add_argument("--dry-run", action="store_true",
                    help="Print the job plan and an example command; do not train.")
     args = p.parse_args()
 
-    if args.fullsky:
+    if args.fullsky and args.bnt_bin1:
+        camp = configs.fullsky_bnt_bin1_campaign(lmin=args.lmin, runs=tuple(args.runs))
+    elif args.fullsky:
         camp = configs.fullsky_campaign(lmin=args.lmin, runs=tuple(args.runs))
+    elif args.bnt_bin1:
+        camp = configs.bnt_bin1_campaign(lmin=args.lmin, runs=tuple(args.runs))
+    elif args.bnt_cutall:
+        camp = configs.bnt_cutall_campaign(lmin=args.lmin, runs=tuple(args.runs))
     else:
         camp = configs.submean_l37_campaign(lmin=args.lmin, runs=tuple(args.runs))
-        if args.areas:
-            camp.areas = tuple(args.areas)
+    if not args.fullsky and args.areas:
+        camp.areas = tuple(args.areas)
     if args.upper_cuts:
         camp.upper_cuts = tuple(args.upper_cuts)
+    if args.rebin:
+        camp.rebin = args.rebin
 
     if args.dry_run:
         jobs = sweep.plan_jobs(camp, args.seed_base)
