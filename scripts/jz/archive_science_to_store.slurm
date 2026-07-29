@@ -50,7 +50,15 @@ df -h "$DEST" | tail -1
 echo
 
 # Top-level loose files go in their own tarball; each big subdir gets one.
-GROUPS=(grid new_grid fiducial)
+#
+# NOT named GROUPS: that is a bash builtin array holding the invoking user's numeric
+# group IDs. Assigning to it is silently ignored, and the loop below then iterated over
+# 300264 302541 305230 -- the GIDs -- tarring nothing and still reporting success.
+SUBDIRS=(grid new_grid fiducial)
+
+for g in "${SUBDIRS[@]}"; do
+  [ -d "$SRC/$g" ] || { echo "[fatal] expected directory $SRC/$g does not exist"; exit 1; }
+done
 
 rc_all=0
 
@@ -73,8 +81,7 @@ else
 fi
 echo
 
-for g in "${GROUPS[@]}"; do
-  if [ ! -d "$SRC/$g" ]; then echo "[warn] $SRC/$g missing -- skipped"; continue; fi
+for g in "${SUBDIRS[@]}"; do
   if [ -f "$DEST/$g.tar.sha256" ]; then
     echo "[skip] $g (already has a checksum -- delete it to force a rebuild)"
     continue
