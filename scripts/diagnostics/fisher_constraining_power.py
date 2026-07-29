@@ -400,3 +400,97 @@ with open(f"{OUT}/fisher_fom_table.json", "w") as fh:
                           "n_fid": 200, "n_grid": len(params)},
                "results": results}, fh, indent=2)
 print(f"wrote {OUT}/fisher_fom_table.json  and  fisher_covs.npz")
+
+# ------------------------------------- provenance --------------------------------------------
+# Standing rule (docs/HANDOFF_JZ_PAPER_FIGURES.md §0): each figure gets _values.csv and
+# _provenance.json beside it. fisher_fom_table.json already holds the config and every
+# probe's FoM, but it is keyed by probe across ALL regimes — it does not record which four
+# probes a given contour figure actually drew, and the figure is what gets cited.
+import csv as _csv, subprocess as _sub, datetime as _dt
+
+_FIGURE_PROBES = {
+    "fisher_contours": ["PS l100-1024 (paper)", "PS l37-1024 (recovered)",
+                        "l1 scales1234", "peaks scales1234"],
+    "fisher_contours_baryon_safe": ["PS l100-400", "PS l37-400 (HOS-l-matched)",
+                                    "l1 scales234", "peaks scales234"],
+}
+
+
+def _ver(mod):
+    try:
+        return __import__(mod).__version__
+    except Exception:
+        return "unavailable"
+
+
+try:
+    _commit = _sub.check_output(
+        ["git", "rev-parse", "--short", "HEAD"],
+        cwd=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        stderr=_sub.DEVNULL, text=True).strip()
+except Exception:
+    _commit = "unknown"
+
+for _fig, _probes in _FIGURE_PROBES.items():
+    _stem = f"{OUT}/{_fig}"
+    _keys = ("sig_Om", "sig_S8", "sig_w0", "area_Om_S8", "area_Om_w0", "corr_Om_w0",
+             "FoM6", "n_feat", "hartlap")
+    with open(_stem + "_values.csv", "w", newline="") as _fh:
+        _w = _csv.writer(_fh)
+        _w.writerow(["probe"] + list(_keys))
+        for _p in _probes:
+            _r = results.get(_p)
+            if _r is None:
+                print(f"[warn] {_fig}: probe {_p!r} absent from results")
+                continue
+            _w.writerow([_p] + [f"{_r[k]:.10g}" if isinstance(_r[k], float) else _r[k]
+                                for k in _keys])
+    # The ellipses are what the reader sees, so ship the 3x3 (Om,S8,w0) sub-covariance each
+    # one was drawn from, not only the scalar summaries.
+    with open(_stem + "_covariance.csv", "w", newline="") as _fh:
+        _w = _csv.writer(_fh)
+        _w.writerow(["probe", "row", "Om", "S8", "w0"])
+        for _p in _probes:
+            if _p not in covs:
+                continue
+            _c = np.asarray(covs[_p])[:3, :3]
+            for _i, _nm in enumerate(("Om", "S8", "w0")):
+                _w.writerow([_p, _nm] + [f"{v:.10g}" for v in _c[_i]])
+
+    with open(_stem + "_provenance.json", "w") as _fh:
+        json.dump({
+            "figure": _fig,
+            "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
+            "git_commit": _commit,
+            "probes_drawn": _probes,
+            "contour_level": "68% 2D (1.52 sigma semi-axis scaling)",
+            "regime": ("baryon-safe: PS lmax=400, HOS drop the finest wavelet scale "
+                       "(scales234)" if "baryon_safe" in _fig else
+                       "full-ell: PS to lmax=1024, HOS keep all four scales (scales1234)"),
+            "footprint": "FULL SKY (healpy), noisy sigma_e=0.26 — NOT the masked paper analysis",
+            "method": ("Gaussian Fisher: linear Jacobian over the 16965-cosmology grid + "
+                       "Hartlap-corrected sample covariance from 200 fiducial perms"),
+            "jacobian_mode": JAC_MODE,
+            "local_bw": LOCAL_BW,
+            "fiducial_cosmology": dict(zip(PN, FID_PARAMS.tolist())),
+            "ps_edges": PS_EDGES.tolist(),
+            "hos_scales_full": HOS_SCALES_FULL,
+            "hos_scales_baryon_safe": HOS_SCALES_BSAFE,
+            "versions": {m: _ver(m) for m in ("numpy", "scipy", "matplotlib")},
+            "caveats": [
+                "FISHER, not NPE. The Jacobian is a linear response fit and is the dominant "
+                "approximation; it can over- OR under-state a probe's sensitivity, so do not "
+                "read the HOS FoM as a bound on the NPE. See the module docstring.",
+                "The HOS gain is jacobian-sensitive: l1's 6-param FoM lead over PS l100 is "
+                "~x70 with a global linear Jacobian but ~x17 with the local derivative used "
+                "here (JAC_MODE='local').",
+                "200 fiducial perms may under-estimate the non-Gaussian covariance tails of "
+                "l1/peaks, which would make the HOS look optimistically tight.",
+                "FULL-SKY, not the masked paper footprint.",
+                "Regenerated after the RAID0 disk failure destroyed both the .pdf and .png "
+                "(100% zeros) and fisher_covs.npz. Every input .npy was verified readable "
+                "first; fisher_fom_table_PRECRASH_REFERENCE.json is the surviving pre-crash "
+                "table, kept for numerical comparison.",
+            ],
+        }, _fh, indent=2)
+    print(f"wrote {_stem}_values.csv / _covariance.csv / _provenance.json")

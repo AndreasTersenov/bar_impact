@@ -121,7 +121,10 @@ def parse_arguments():
                         help="Use masked datavectors (Euclid-like sky mask)")
     parser.add_argument("--mask-area-sqdeg", type=float, default=14000.0,
                         help="Area of the sky mask in square degrees (default: 14000).")
-    
+    parser.add_argument("--submean", action="store_true",
+                        help="Use footprint-mean-subtracted masked datavectors (the '_submean' tag); "
+                             "fixes the spurious masked-peak tightness. Requires --masked.")
+
     args = parser.parse_args()
     
     # Set fiducial type to match simulation type if not specified
@@ -131,8 +134,9 @@ def parse_arguments():
     # Set mask suffixes
     if args.masked:
         area_tag = int(round(args.mask_area_sqdeg))
-        mask_suffix = f"_masked_{area_tag}sqdeg"
-        mask_label = f"masked_{area_tag}sqdeg"
+        submean_tag = "_submean" if args.submean else ""   # tags BOTH inputs and outputs
+        mask_suffix = f"_masked_{area_tag}sqdeg{submean_tag}"
+        mask_label = f"masked_{area_tag}sqdeg{submean_tag}"
     else:
         area_tag = None
         mask_suffix = ""
@@ -183,31 +187,31 @@ def train_with_nan_retry(inference, checkpoint_path, args, params, data, max_ret
         # Test loss can sometimes be NaN due to evaluation issues even when training succeeded
         has_nan = False
         nan_source = None
-        
-        # Check training loss (indicates bad initialization)
-        if hasattr(metrics, 'train_loss'):
-            train_loss = metrics.train_loss
-            if isinstance(train_loss, (list, np.ndarray)):
-                if np.any(np.isnan(train_loss)):
-                    has_nan = True
-                    nan_source = 'training loss'
-            elif np.isnan(train_loss):
+
+        # NOTE: jaxili's inference.train() returns a DICT keyed 'train/loss','val/loss','test/loss'
+        # (see jaxili/inference/npe.py), NOT an object with .train_loss attributes. The previous
+        # hasattr(metrics, 'val_loss') check was therefore ALWAYS False, so this retry never fired:
+        # a NaN validation loss silently produced a collapsed (prior-width) posterior reported as
+        # "successful". Read the dict keys (with attribute fallback) so the retry actually works.
+        # Ported from the unmerged branch collect-uncommitted-bar-2026-07-20 (9401279), where it
+        # was already fixed for the l1 runner (run_npe_inference.py) but never merged here.
+        def _get_loss(m, attr_key, dict_key):
+            if isinstance(m, dict):
+                return m.get(dict_key)
+            return getattr(m, attr_key, None)
+
+        for src, val in [('training loss', _get_loss(metrics, 'train_loss', 'train/loss')),
+                         ('validation loss', _get_loss(metrics, 'val_loss', 'val/loss'))]:
+            if val is None:
+                continue
+            if np.any(np.isnan(np.asarray(val, dtype=float))):
                 has_nan = True
-                nan_source = 'training loss'
-        
-        # Check validation loss (indicates training instability)
-        if not has_nan and hasattr(metrics, 'val_loss'):
-            val_loss = metrics.val_loss
-            if isinstance(val_loss, (list, np.ndarray)):
-                if np.any(np.isnan(val_loss)):
-                    has_nan = True
-                    nan_source = 'validation loss'
-            elif np.isnan(val_loss):
-                has_nan = True
-                nan_source = 'validation loss'
-        
-        # Warn about test loss NaN but don't trigger retry
-        if hasattr(metrics, 'test_loss') and np.isnan(metrics.test_loss):
+                nan_source = src
+                break
+
+        # Test loss NaN is an eval-only artifact; warn but don't retry on it.
+        test_val = _get_loss(metrics, 'test_loss', 'test/loss')
+        if test_val is not None and np.any(np.isnan(np.asarray(test_val, dtype=float))):
             print(f"⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)")
             
         if not has_nan:
