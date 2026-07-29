@@ -1,0 +1,40 @@
+{
+  "figure": "nsigma_vs_lmax_with_fullsky",
+  "generated_utc": "2026-07-29T16:51:33+00:00",
+  "git_commit": "701fba8",
+  "errbar": "std",
+  "threshold_sigma": 0.3,
+  "fullsky_panel": true,
+  "source_tables": [
+    "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv",
+    "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/baryon_tension/ps_fullsky_l37/tables/tension_3param_agg.csv"
+  ],
+  "derivation": "aggregated campaign table (NOT recomputed from posteriors)",
+  "estimator": "tensiometer gaussian_tension.Q_DM -> chi2.cdf -> from_confidence_to_sigma",
+  "param_subset": [
+    0,
+    1,
+    2
+  ],
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "lmin": 37,
+  "versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "getdist": "1.4.3",
+    "tensiometer": "1.1.0",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
+    "Read from the campaign's aggregated table, which survived intact (n=5/5 on every row, 0 exclusions) \u2014 so unlike nsigma_vs_area these points are NOT re-averaged over a damaged subset and should reproduce the pre-crash figure exactly.",
+    "The 6-param tables of this campaign are zero-length disk-failure casualties; only the 3-param subset is available.",
+    "Threshold crossings are first-upcrossing linear interpolations; these curves are non-monotonic in places (2000 deg2 dips at lmax 940), so a global or last crossing would give a larger, less conservative lmax.",
+    "Full sky uses the healpy 10-ell-bin pipeline vs the masked NaMaster nlb=4 (40-ell); the trend is comparable, the magnitude is not."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "figure": "nsigma_vs_lmax_bnt_bin1_allareas",
+  "generated_utc": "2026-07-29T16:58:23+00:00",
+  "git_commit": "701fba8",
+  "errbar": "std",
+  "threshold_sigma": 0.3,
+  "n_seeds_bnt": [
+    5
+  ],
+  "n_seeds_nonbnt": [
+    5
+  ],
+  "source_tables": {
+    "bnt": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/baryon_tension/bnt_ps_bin1_submean_l37/tables/tension_3param_agg.csv",
+    "non_bnt": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
+  },
+  "derivation": "aggregated campaign tables (NOT recomputed from posteriors)",
+  "estimator": "tensiometer gaussian_tension.Q_DM -> chi2.cdf -> from_confidence_to_sigma",
+  "param_subset": [
+    0,
+    1,
+    2
+  ],
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "lmin": 37,
+  "rebin_note": null,
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.1"
+  },
+  "caveats": [
+    "Crossings are the lowest grid cut with mean >= threshold (no interpolation), matching how this campaign has always reported them."
+  ]
+}
