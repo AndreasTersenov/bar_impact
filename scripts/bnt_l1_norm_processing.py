@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# filepath: /home/tersenov/software/bar_impact/scripts/bnt_l1_norm_processing.py
+# filepath: /lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/scripts/bnt_l1_norm_processing.py
 """
 BNT L1 Norm Processing Script - Applies BNT transform to cosmological maps and computes L1 norms.
 """
@@ -277,9 +277,9 @@ def main():
     if args.base_dir:
         base_dir = args.base_dir
     elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/new_grid/"
     
     # Set the filename based on the baryonified flag
     if args.baryonified:

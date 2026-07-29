@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# filepath: /home/tersenov/software/bar_impact/scripts/run_npe_peak_counts_inference.py
+# filepath: /lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/scripts/run_npe_peak_counts_inference.py
 
 import os
 import sys
@@ -23,7 +23,7 @@ def parse_arguments():
     
     # Data configuration
     parser.add_argument("--data-dir", type=str, 
-                        default='/home/tersenov/CosmoGridV1/stage3_forecast',
+                        default='/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast',
                         help="Base directory for data")
     
     parser.add_argument("--simulation-type", type=str, choices=["baryonified", "nobaryons"],
@@ -103,9 +103,9 @@ def parse_arguments():
                         help="Random seed for coverage testing")
     
     # Output parameters
-    parser.add_argument("--output-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/plots",
+    parser.add_argument("--output-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/plots",
                         help="Directory to save output plots")
-    parser.add_argument("--samples-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/samples",
+    parser.add_argument("--samples-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples",
                         help="Directory to save posterior samples")
     
     # GPU configuration

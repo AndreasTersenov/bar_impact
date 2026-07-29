@@ -18,7 +18,19 @@ import numpy as np
 import scipy.stats
 from getdist import MCSamples
 
-import tensiometer.utilities as utilities
+# tensiometer relocated this. `utilities` used to be a MODULE exposing
+# from_confidence_to_sigma directly; as of 1.x it is a PACKAGE and the function lives in
+# tensiometer.utilities.stats_utilities. Verified identical to norm.ppf(0.5*(1+P)) to
+# 1e-16, so this is a pure relocation, not a behaviour change. Try the new path first
+# and fall back, so this works against whichever tensiometer is installed.
+#
+# Worth knowing: q_dm_tension() below catches broadly and returns NaN rather than
+# raising, so this AttributeError surfaced only as `nsigma=nan` on every row — a whole
+# figure of NaNs rather than an obvious failure.
+try:                                                     # tensiometer >= 1.x
+    import tensiometer.utilities.stats_utilities as utilities
+except ImportError:                                      # pre-1.x layout
+    import tensiometer.utilities as utilities
 from tensiometer import gaussian_tension
 
 # Cosmological parameters carried in the posterior columns, in order.

@@ -415,7 +415,7 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26,
                 mask_area_sqdeg=14000.0, mask_center=(0.0, 90.0),
                 apodization_type='C2', apodization_scale_deg=2.0,
                 use_namaster=True, bin_edges=None, global_seed=42,
-                force_overwrite=False):
+                force_overwrite=False, subtract_mean=False):
     """
     Process a single file: extract kappa maps, apply mask, compute MASTER-corrected spectra.
     
@@ -447,9 +447,10 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26,
         mask_suffix = "_master"
     
     noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
+    submean_suffix = "_submean" if subtract_mean else ""
     spectra_type = "cross_cls" if cross_only else "all_cls"
-    
-    suffix = f"_{spectra_type}_bins{bin_str}{mask_suffix}{noise_suffix}{lmax_suffix}.npz"
+
+    suffix = f"_{spectra_type}_bins{bin_str}{mask_suffix}{submean_suffix}{noise_suffix}{lmax_suffix}.npz"
     save_path = file_path.replace(".h5", suffix)
     
     # Skip if already processed (unless force_overwrite is set)
@@ -513,7 +514,20 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26,
             mask = np.ones(hp.nside2npix(nside), dtype=np.float32)
             f_sky = 1.0
             angular_radius_deg = 180.0
-        
+
+        # Optional mass-sheet gauge: remove the mask-weighted monopole of each map BEFORE
+        # NaMaster. The masked field w*kappa otherwise injects a mu^2 * |w_l|^2 term into
+        # low ell (the disk mask's red pseudo-spectrum), and the absolute mean convergence
+        # is unobservable from shear. Only the monopole is removed; the dipole is kept
+        # (a kappa gradient IS observable via shear).
+        monopoles = {}
+        if subtract_mean:
+            wsum = float(np.sum(mask))
+            for bin_num in list(maps_dict.keys()):
+                mu = float(np.sum(mask * maps_dict[bin_num]) / wsum)
+                maps_dict[bin_num] = maps_dict[bin_num] - mu
+                monopoles[bin_num] = mu
+
         # Compute power spectra with MASTER correction
         cls_dict, ells = compute_power_spectra_master(
             maps_dict=maps_dict,
@@ -552,7 +566,13 @@ def process_file(file_path, bin_range=[1, 2, 3, 4], noise_level=0.26,
             save_dict['apodization_type'] = apodization_type
             save_dict['apodization_scale_deg'] = float(apodization_scale_deg)
             save_dict['mode_coupling_corrected'] = bool(use_namaster and HAS_NAMASTER)
-        
+
+        save_dict['mean_subtracted'] = bool(subtract_mean)
+        if subtract_mean:
+            save_dict['monopoles'] = np.array(
+                [monopoles.get(b, 0.0) for b in sorted(maps_dict.keys())]
+            )
+
         if missing_bins:
             save_dict['missing_bins'] = np.array(missing_bins)
         
@@ -578,7 +598,8 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
                            dataset_type="grid", map_type="nobaryons",
                            noise_level=0.26, add_noise=True, lmax=1024,
                            verbose=False, apply_mask=False, mask_area_sqdeg=None,
-                           apodization_scale_deg=2.0, use_namaster=True):
+                           apodization_scale_deg=2.0, use_namaster=True,
+                           subtract_mean=False):
     """
     Aggregate MASTER-corrected .npz files into inference-ready .npy format.
     
@@ -671,8 +692,9 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
         mask_suffix = "_master"
     
     noise_suffix = f"_noisy_s{noise_level:.2f}" if add_noise else ""
+    submean_suffix = "_submean" if subtract_mean else ""
     lmax_suffix = f"_lmax{lmax}" if lmax != 1024 else ""
-    
+
     os.makedirs(output_dir, exist_ok=True)
     created_files = []
     
@@ -681,7 +703,7 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
     for bin_num in bin_range:
         if auto_spectra[bin_num]:
             auto_array = np.array(auto_spectra[bin_num])
-            filename = f"all_cls_{dataset_type}_{map_type}_bin{bin_num}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+            filename = f"all_cls_{dataset_type}_{map_type}_bin{bin_num}{mask_suffix}{submean_suffix}{noise_suffix}{lmax_suffix}.npy"
             output_path = os.path.join(output_dir, filename)
             np.save(output_path, auto_array)
             created_files.append(output_path)
@@ -700,7 +722,7 @@ def aggregate_for_inference(processed_files, output_dir, bin_range=[1, 2, 3, 4],
     if cross_data_parts:
         cross_combined = np.concatenate(cross_data_parts, axis=1)
         bin_str = "".join(map(str, bin_range))
-        filename = f"all_cross_cls_{dataset_type}_{map_type}_bins{bin_str}{mask_suffix}{noise_suffix}{lmax_suffix}.npy"
+        filename = f"all_cross_cls_{dataset_type}_{map_type}_bins{bin_str}{mask_suffix}{submean_suffix}{noise_suffix}{lmax_suffix}.npy"
         output_path = os.path.join(output_dir, filename)
         np.save(output_path, cross_combined)
         created_files.append(output_path)
@@ -755,7 +777,11 @@ def main():
                        help="Apodization width in degrees (0 = no apodization).")
     parser.add_argument("--no-namaster", action="store_true",
                        help="Disable NaMaster (use naive pseudo-Cls - for testing only).")
-    
+    parser.add_argument("--subtract-mean", action="store_true",
+                       help="Remove the mask-weighted monopole of each map before NaMaster "
+                            "(mass-sheet gauge; removes mu^2 leakage into low ell). Default "
+                            "off; tags outputs with '_submean'.")
+
     # Algorithm options
     parser.add_argument("--lmax", type=int, default=1024,
                        help="Maximum multipole.")
@@ -807,9 +833,9 @@ def main():
     if args.base_dir:
         base_dir = args.base_dir
     elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/new_grid/"
     
     # Set filename
     filename = "projected_probes_maps_baryonified512.h5" if args.baryonified else "projected_probes_maps_nobaryons512.h5"
@@ -880,7 +906,8 @@ def main():
             use_namaster=use_namaster,
             bin_edges=bin_edges,
             global_seed=args.global_seed,
-            force_overwrite=args.force_overwrite
+            force_overwrite=args.force_overwrite,
+            subtract_mean=args.subtract_mean
         )
         
         results = list(tqdm(
@@ -909,9 +936,10 @@ def main():
             apply_mask=args.apply_mask,
             mask_area_sqdeg=args.mask_area_sqdeg,
             apodization_scale_deg=args.apodization_scale_deg,
-            use_namaster=use_namaster
+            use_namaster=use_namaster,
+            subtract_mean=args.subtract_mean
         )
-        
+
         if created_files:
             print("\n✓ Inference-ready files:")
             for f in created_files:

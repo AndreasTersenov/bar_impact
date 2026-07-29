@@ -49,7 +49,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--data-dir",
         type=str,
-        default="/home/tersenov/CosmoGridV1/stage3_forecast",
+        default="/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast",
         help="Base directory for data",
     )
     parser.add_argument(
@@ -183,7 +183,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="/home/tersenov/software/bar_impact/outputs/fisher",
+        default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/fisher",
         help="Directory to save Fisher matrix outputs",
     )
     parser.add_argument(

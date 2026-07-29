@@ -4,11 +4,17 @@ Publication figure (A&A profile). σ(S8) and FoM3 of the nobaryons posterior vs 
 PS = ℓmin=37 low-ℓ-recovered range (l37-1020); HOS = scales1234 (coarse dropped). See docs/scaling_vs_area_submean.md."""
 import numpy as np, glob, matplotlib
 matplotlib.use("Agg")
+import os
 import matplotlib.pyplot as plt
 from matplotlib.ticker import LogLocator
 from scipy.stats import linregress
 
-plt.style.use("/home/tersenov/.claude/skills/figure-polish/style/aa.mplstyle")
+_AA = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))), "styles", "aa.mplstyle")
+if os.path.exists(_AA):
+    plt.style.use(_AA)
+else:
+    print(f"[warn] A&A style not found at {_AA} — using matplotlib defaults")
 
 D = "outputs/samples"
 PSD = "outputs/baryon_tension/ps_submean_l37/posteriors"
@@ -19,12 +25,24 @@ def met(f):
     return np.sqrt(c[1, 1]), 1.0 / np.sqrt(np.linalg.det(c))
 
 def avg(files):
-    S, F = [], []
+    # ValueError/OSError added after the disk failure: a stripe-damaged .npy makes
+    # numpy read the header as pickled data and raise ValueError, which the original
+    # (FileNotFoundError, IndexError) clause let through. Skipping them keeps the seed
+    # average honest; the skip count is printed so a reduced seed count is visible
+    # rather than silent.
+    S, F, skipped = [], [], 0
     for f in files:
-        try: s, fm = met(f)
-        except (FileNotFoundError, IndexError): continue
+        try:
+            s, fm = met(f)
+        except (FileNotFoundError, IndexError, ValueError, OSError):
+            skipped += 1
+            continue
         if s < 0.08: S.append(s); F.append(fm)        # drop any residual prior-collapsed seed
-    return (np.mean(S), np.std(S), np.mean(F), len(S)) if S else (np.nan, np.nan, np.nan, 0)
+    if skipped:
+        print(f"    [skip] {skipped}/{len(files)} unreadable (disk-failure damage)")
+    # index 3 is the seed scatter of FoM3, so panel (b) can carry error bars like panel (a).
+    return ((np.mean(S), np.std(S), np.mean(F), np.std(F), len(S))
+            if S else (np.nan, np.nan, np.nan, np.nan, 0))
 
 HOS = [2001, 5001, 10001, 14001, 28001, 35001]
 PS  = [2000, 5000, 10000, 14000, 28000, 35000]
@@ -50,13 +68,13 @@ fig, ax = plt.subplots(1, 2, figsize=(W, 0.46 * W))
 for j, (name, A, m, c, ls, mk) in enumerate(SERIES):
     A = np.array(A, float)
     s8  = np.array([x[0] for x in m]); es = np.array([x[1] for x in m])
-    fom = np.array([x[2] for x in m])
+    fom = np.array([x[2] for x in m]); ef = np.array([x[3] for x in m])
     ss = linregress(np.log(A), np.log(s8)).slope
     sf = linregress(np.log(A), np.log(fom)).slope
     ax[0].errorbar(A, s8, yerr=es, color=c, ls=ls, marker=mk, ms=4.5, lw=1.4,
                    capsize=2, elinewidth=0.9, label=rf"{name} ($\alpha={ss:+.2f}$)")
-    ax[1].plot(A, fom, color=c, ls=ls, marker=mk, ms=4.5, lw=1.4,
-               label=rf"{name} ($\alpha={sf:+.2f}$)")
+    ax[1].errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=4.5, lw=1.4,
+                   capsize=2, elinewidth=0.9, label=rf"{name} ($\alpha={sf:+.2f}$)")
 
 # reference slopes (anchored at 14000), neutral gray dotted
 Aref = np.array([1.7e3, 4.2e4])
@@ -79,4 +97,4 @@ fig.savefig(out + ".pdf"); fig.savefig(out + ".png", dpi=300)
 print("wrote", out + ".pdf / .png")
 for name, A, m, c, ls, mk in SERIES:
     A = np.array(A, float); s8 = np.array([x[0] for x in m])
-    print(f"  {name:14s} slope sig(S8) = {linregress(np.log(A), np.log(s8)).slope:+.2f}  (nseed {[x[3] for x in m]})")
+    print(f"  {name:14s} slope sig(S8) = {linregress(np.log(A), np.log(s8)).slope:+.2f}  (nseed {[x[4] for x in m]})")

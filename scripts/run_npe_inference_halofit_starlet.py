@@ -35,7 +35,7 @@ def parse_arguments():
                         help="Which dataset to use for training (halofit or fiducial)")
     
     parser.add_argument("--data-dir", type=str, 
-                        default='/home/tersenov/CosmoGridV1/stage3_forecast',
+                        default='/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast',
                         help="Base directory for data")
     
     # Analysis configuration
@@ -105,10 +105,10 @@ def parse_arguments():
     
     # Output parameters
     parser.add_argument("--output-dir", type=str, 
-                        default="/home/tersenov/software/bar_impact/outputs/plots",
+                        default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/plots",
                         help="Directory to save output plots")
     parser.add_argument("--samples-dir", type=str, 
-                        default="/home/tersenov/software/bar_impact/outputs/samples",
+                        default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples",
                         help="Directory to save posterior samples")
     
     # GPU configuration
@@ -313,12 +313,12 @@ def construct_paths(args):
     if args.training_dataset == "halofit":
         base_dir = os.path.join(args.data_dir, "grid")
         params_filename = "selected_params_halofit.npy"
-        params_path = os.path.join("/home/tersenov/software/bar_impact/data", params_filename)
+        params_path = os.path.join("/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/data", params_filename)
         dataset_suffix = "halofit"
     else:  # fiducial
         base_dir = os.path.join(args.data_dir, "fiducial", "cosmo_fiducial")
         params_filename = "selected_params_fiducial.npy"
-        params_path = os.path.join("/home/tersenov/software/bar_impact/data", params_filename)
+        params_path = os.path.join("/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/data", params_filename)
         dataset_suffix = "fiducial"
     
     # Parse bin options

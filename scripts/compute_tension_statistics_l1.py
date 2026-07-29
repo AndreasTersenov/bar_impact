@@ -32,7 +32,7 @@ LABELS_SUBSET = [r"$\Omega_{m}$", r"$S_8$", r"$w_0$"]
 SUBSET_INDICES = [0, 1, 2]  # First 3 parameters
 
 # Sample directory
-SAMPLES_DIR = Path("/home/tersenov/software/bar_impact/outputs/samples")
+SAMPLES_DIR = Path("/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples")
 
 # Parameter ranges (matching submit_npe_inference_l1_parameter_sweep_parallel.py)
 MASK_AREAS = [2001.0, 2002.0, 5001.0, 10001.0, 14001.0, 28001.0, 35001.0]

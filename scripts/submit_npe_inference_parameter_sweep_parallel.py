@@ -48,7 +48,7 @@ GPUS = [0, 1]
 LOG_DIR = Path("logs/npe_parameter_sweep")
 
 # Samples directory (where outputs are saved)
-SAMPLES_DIR = Path("/home/tersenov/software/bar_impact/outputs/samples")
+SAMPLES_DIR = Path("/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples")
 
 # Run number (set via command line)
 RUN_NUMBER = None

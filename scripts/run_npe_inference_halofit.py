@@ -313,7 +313,7 @@ def main():
     
     # Selection file
     parser.add_argument("--selection-file", type=str,
-                        default="/home/tersenov/software/bar_impact/data/selected_indices_halofit.npy",
+                        default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/data/selected_indices_halofit.npy",
                         help="Path to the Halofit selection indices file (ignored if --fiducial is set).")
     
     # Main processing options
@@ -376,9 +376,9 @@ def main():
     if args.base_dir:
         base_dir = args.base_dir
     elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/grid/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/grid/"
     
     # Set the filename based on the baryonified flag
     if args.baryonified:

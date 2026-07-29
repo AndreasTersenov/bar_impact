@@ -11,7 +11,7 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from tension import plots  # noqa: E402
 
-REPO = "/home/tersenov/software/bar_impact"
+REPO = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact"
 MASKED = f"{REPO}/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
 FULLSKY = f"{REPO}/outputs/baryon_tension/ps_fullsky_l37/tables/tension_3param_agg.csv"
 

@@ -499,9 +499,9 @@ def main():
     if args.base_dir:
         base_dir = args.base_dir
     elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/new_grid/"
     
     # Set the filename based on the baryonified flag
     if args.baryonified:

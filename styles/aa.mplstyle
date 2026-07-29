@@ -1,0 +1,68 @@
+# Astronomy & Astrophysics figure style.
+#
+# RECONSTRUCTION. The original lived on Titan at
+#   /home/tersenov/.claude/skills/figure-polish/style/aa.mplstyle
+# and did not survive the disk failure — it is absent from the rescued mount and
+# from every transfer. This is a rebuild against A&A's published figure guidelines
+# and the sizing the plotting scripts already assume (W = 7.087 in double-column,
+# legend fontsize 8, panel labels 9).
+#
+# It reproduces the journal's *conventions*, not the original file byte-for-byte.
+# Figures regenerated with it may differ cosmetically from the pre-crash versions;
+# the scientific content is unaffected. Adjust to taste rather than treating it as
+# authoritative.
+
+# --- type -------------------------------------------------------------------
+# Times-like serif to match A&A body text. Falls back through progressively more
+# common faces so this never hard-fails on a cluster with a thin font set.
+font.family:        serif
+font.serif:         Times New Roman, Nimbus Roman No9 L, Liberation Serif, DejaVu Serif
+mathtext.fontset:   stix
+font.size:          9
+
+axes.labelsize:     9
+axes.titlesize:     9
+xtick.labelsize:    8
+ytick.labelsize:    8
+legend.fontsize:    8
+
+# --- axes -------------------------------------------------------------------
+axes.linewidth:     0.8
+axes.grid:          False
+axes.axisbelow:     True
+axes.formatter.use_mathtext: True
+axes.prop_cycle:    cycler('color', ['0072B2', 'D55E00', '009E73', 'CC79A7', 'E69F00', '56B4E9', 'F0E442', '000000'])
+
+# --- lines and markers ------------------------------------------------------
+lines.linewidth:    1.2
+lines.markersize:   4
+lines.markeredgewidth: 0.8
+
+# --- ticks: inward on all four sides, minor ticks visible -------------------
+xtick.direction:    in
+ytick.direction:    in
+xtick.top:          True
+ytick.right:        True
+xtick.minor.visible: True
+ytick.minor.visible: True
+xtick.major.size:   4.0
+ytick.major.size:   4.0
+xtick.minor.size:   2.0
+ytick.minor.size:   2.0
+xtick.major.width:  0.8
+ytick.major.width:  0.8
+xtick.minor.width:  0.6
+ytick.minor.width:  0.6
+
+# --- legend -----------------------------------------------------------------
+legend.frameon:     False
+legend.handlelength: 2.2
+legend.borderaxespad: 0.5
+
+# --- output -----------------------------------------------------------------
+figure.dpi:         150
+savefig.dpi:        300
+savefig.bbox:       tight
+savefig.pad_inches: 0.02
+pdf.fonttype:       42
+ps.fonttype:        42

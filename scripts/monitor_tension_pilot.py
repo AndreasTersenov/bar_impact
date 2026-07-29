@@ -23,8 +23,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # make `tension`
 
 from tension import aggregate, compute, configs, paths, plots  # noqa: E402
 
-PLOT_PDF = "/home/tersenov/software/bar_impact/plots/nsigma_vs_upper_cut_masks.pdf"
-PLOT_PNG = "/home/tersenov/software/bar_impact/plots/nsigma_vs_upper_cut_masks.png"
+PLOT_PDF = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/plots/nsigma_vs_upper_cut_masks.pdf"
+PLOT_PNG = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/plots/nsigma_vs_upper_cut_masks.png"
 COORDS = ("area", "upper_cut")
 
 

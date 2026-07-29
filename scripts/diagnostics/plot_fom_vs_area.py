@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""FoM3(Om, S8, w0) vs mask area — PS / peaks / L1, submean, no scale cuts.
+
+Single-panel standalone version of panel (b) of plot_scaling_vs_area.py, made for the
+referee response rather than the paper. Same inputs, same seed-averaging, same QA cut;
+only the presentation differs — one panel, decluttered axes, per-point seed error bars.
+
+Run with the jaxili interpreter:
+  /lustre/fswork/projects/rech/nzu/ulx34io/envs/jaxili/bin/python \
+      scripts/diagnostics/plot_fom_vs_area.py
+"""
+import os
+import glob
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FixedLocator, FuncFormatter, NullFormatter, LogLocator
+from scipy.stats import linregress
+
+_AA = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__)))), "styles", "aa.mplstyle")
+if os.path.exists(_AA):
+    plt.style.use(_AA)
+else:
+    print(f"[warn] A&A style not found at {_AA} — using matplotlib defaults")
+
+D = "outputs/samples"
+PSD = "outputs/baryon_tension/ps_submean_l37/posteriors"
+P3 = [0, 1, 2]  # Om, S8, w0
+
+HOS = [2001, 5001, 10001, 14001, 28001, 35001]
+PS = [2000, 5000, 10000, 14000, 28000, 35000]
+
+
+def met(f):
+    a = np.load(f)
+    c = np.cov(a[:, P3], rowvar=False)
+    return np.sqrt(c[1, 1]), 1.0 / np.sqrt(np.linalg.det(c))
+
+
+def avg(files):
+    """Seed-average. ValueError/OSError catch disk-failure-damaged .npy (numpy reads a
+    mangled header as pickled data); skips are reported so a thinned average is visible."""
+    S, F, skipped = [], [], 0
+    for f in files:
+        try:
+            s, fm = met(f)
+        except (FileNotFoundError, IndexError, ValueError, OSError):
+            skipped += 1
+            continue
+        if s < 0.08:                      # drop prior-collapsed seeds
+            S.append(s)
+            F.append(fm)
+    if skipped:
+        print(f"    [skip] {skipped}/{len(files)} unreadable (disk-failure damage)")
+    if not S:
+        return np.nan, np.nan, 0
+    return np.mean(F), np.std(F), len(S)
+
+
+def hf(prefix, A):
+    stem = (f"{D}/posterior_samples_{prefix}nobaryons_vs_nobaryons_bins1234_scales1234"
+            f"_noisy_s0.26_masked_{A}sqdeg_submean_new_normalization")
+    return [f"{stem}_npe.npy"] + [f"{stem}_run{r}_npe.npy" for r in (2, 3, 4, 5)]
+
+
+def pf(A):
+    return glob.glob(f"{PSD}/mask_{A:05d}/null/posterior_samples_ps_auto_cross_"
+                     f"nobaryons_vs_nobaryons_bins1234_l37-1020_r10_masked_{A}sqdeg"
+                     f"_apod2.0_master_submean_noisy_s0.26*.npy")
+
+
+# Okabe-Ito, matching plot_scaling_vs_area.py so the two figures stay consistent.
+SERIES = [
+    ("Power spectrum", PS,  [avg(pf(A)) for A in PS],          "#0072B2", "-",  "o"),
+    ("Peak counts",    HOS, [avg(hf("pc_", A)) for A in HOS],  "#D55E00", "--", "s"),
+    ("L1 norm",        HOS, [avg(hf("", A)) for A in HOS],     "#009E73", "-.", "^"),
+]
+
+W = 3.543                                  # A&A single column (90 mm)
+fig, ax = plt.subplots(figsize=(W, W * 0.95))
+
+ps_anchor = None
+for name, A, m, c, ls, mk in SERIES:
+    A = np.array(A, float)
+    fom = np.array([x[0] for x in m])
+    ef = np.array([x[1] for x in m])
+    slope = linregress(np.log(A), np.log(fom)).slope
+    ax.errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=4.0, lw=1.3,
+                capsize=2, elinewidth=0.9,
+                label=rf"{name} ($\alpha={slope:+.2f}$)")
+    if name == "Power spectrum":
+        ps_anchor = float(fom[list(A).index(14000.0)])
+
+# Ideal-scaling guide, anchored ON the power-spectrum curve at 14000 deg^2 rather
+# than at a fixed offset below it. Pinning it to the data means the line crosses PS
+# at the anchor and fans away at both ends, so the gap IS the slope difference
+# (measured alpha ~ +1.3 vs the ideal +1.5) instead of an arbitrary vertical offset.
+# Anchor is read from the series, so it stays correct if the inputs change.
+Aref = np.array([1.7e3, 4.2e4])
+ax.plot(Aref, ps_anchor * (Aref / 14000.) ** 1.5, color="0.45", ls=":", lw=1.0,
+        zorder=0, label=r"$A^{+3/2}$ (ideal)")
+
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_xlabel(r"mask area $[\mathrm{deg}^2]$")
+ax.set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},\,S_8,\,w_0)$")
+
+# --- decluttered axes -------------------------------------------------------
+# The data spans only ~1.25 decades (2000-35000), so matplotlib's default log
+# locator puts majors at 1e3/1e4 and then labels minors to fill the gap — which is
+# what made the old ticks collide. Label the surveyed areas explicitly instead, in
+# plain numbers, and silence every minor label.
+ax.set_xlim(1.6e3, 4.6e4)
+ax.xaxis.set_major_locator(FixedLocator([2000, 5000, 10000, 20000, 40000]))
+ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v/1000:g}k"))
+ax.xaxis.set_minor_locator(LogLocator(base=10, subs=np.arange(2, 10) * 0.1, numticks=20))
+ax.xaxis.set_minor_formatter(NullFormatter())
+
+# y: decade majors only, minors unlabelled
+ax.yaxis.set_major_locator(LogLocator(base=10, numticks=8))
+ax.yaxis.set_minor_locator(LogLocator(base=10, subs=np.arange(2, 10) * 0.1, numticks=40))
+ax.yaxis.set_minor_formatter(NullFormatter())
+
+ax.tick_params(which="both", direction="in", top=True, right=True)
+ax.tick_params(which="major", length=4)
+ax.tick_params(which="minor", length=2)
+ax.legend(frameon=False, fontsize=7, handlelength=2.2, loc="upper left",
+          borderaxespad=0.4, labelspacing=0.35)
+
+fig.tight_layout(pad=0.3)
+out = "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats"
+fig.savefig(out + ".pdf")
+fig.savefig(out + ".png", dpi=300)
+print("wrote", out + ".pdf / .png")
+
+print(f"\n  {'statistic':16s}" + "".join(f"{a:>11d}" for a in PS))
+for name, A, m, c, ls, mk in SERIES:
+    print(f"  {name:16s}" + "".join(f"{x[0]:>11.3g}" for x in m))
+    print(f"  {'  +/- (seed)':16s}" + "".join(f"{x[1]:>11.3g}" for x in m))
+    print(f"  {'  nseed':16s}" + "".join(f"{x[2]:>11d}" for x in m))

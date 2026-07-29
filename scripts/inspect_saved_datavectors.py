@@ -151,7 +151,7 @@ def main():
     parser = argparse.ArgumentParser(description="Inspect saved datavector examples")
     parser.add_argument("files", nargs="*", help="Specific files to inspect. If not provided, searches in outputs/samples/")
     parser.add_argument("--samples-dir", type=str, 
-                       default="/home/tersenov/software/bar_impact/outputs/samples",
+                       default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples",
                        help="Directory containing saved datavector examples")
     parser.add_argument("--n-bins", type=int, default=4,
                        help="Number of bins (default: 4)")

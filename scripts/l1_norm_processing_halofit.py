@@ -144,7 +144,7 @@ def compute_l1_norm_from_pdf(kappa_values, pdf_values):
     Returns:
     - l1_norm: scalar L1 norm value
     """
-    return np.trapz(np.abs(kappa_values) * pdf_values, kappa_values)
+    return np.trapezoid(np.abs(kappa_values) * pdf_values, kappa_values)
 
 
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
@@ -324,7 +324,7 @@ def main():
     
     # Selection file
     parser.add_argument("--selection-file", type=str,
-                        default="/home/tersenov/software/bar_impact/data/selected_indices_halofit.npy",
+                        default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/data/selected_indices_halofit.npy",
                         help="Path to the Halofit selection indices file (ignored if --fiducial is set).")
     
     # Main processing options
@@ -394,10 +394,10 @@ def main():
     if args.base_dir:
         base_dir = args.base_dir
     elif args.fiducial:
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/"
     else:
         # Use new_grid for nobaryons, grid for baryonified
-        base_dir = "/home/tersenov/CosmoGridV1/stage3_forecast/new_grid/"
+        base_dir = "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/new_grid/"
     
     # Set the filename based on the baryonified flag
     if args.baryonified:
@@ -726,6 +726,10 @@ def main():
     print(f"Processing complete!")
     print(f"Total simulations processed: {len(file_paths)} ({dataset_label})")
     print(f"{'='*70}")
+    # print the absolute paths of the saved combined files if they were created
+
+    print(f"\nCombined output files:")
+
 
 
 if __name__ == "__main__":

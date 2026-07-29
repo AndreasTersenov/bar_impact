@@ -34,7 +34,7 @@ def parse_arguments():
     
     # Data configuration
     parser.add_argument("--data-dir", type=str, 
-                        default='/home/tersenov/CosmoGridV1/stage3_forecast',
+                        default='/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast',
                         help="Base directory for data")
     
     parser.add_argument("--simulation-type", type=str, choices=["baryonified", "nobaryons"],
@@ -82,6 +82,15 @@ def parse_arguments():
                         help="Apodization scale in degrees (default: 2.0). Must match processing.")
     parser.add_argument("--subtract-mean", action="store_true",
                         help="Use the mean-subtracted (mass-sheet gauge) '_submean' data vectors.")
+    parser.add_argument("--compress", type=str, default="none", choices=["none", "whiten"],
+                        help="Data-vector preprocessing before the flow. 'whiten' = full-rank "
+                             "Cholesky whitening (decorrelate, keep all dims; fit on training, "
+                             "applied to obs). Default 'none' (jaxili's per-feature z-score). "
+                             "See docs/PLAN_bnt_npe_whitening.md.")
+    parser.add_argument("--dump-cache", type=str, default=None,
+                        help="Build the (theta, x, x_fid) cache for this config (RAW, pre-whitening) "
+                             "to <dir>/cache.npz and exit before training. For the VMIM compressor "
+                             "(docs/PLAN_bnt_neural_compression.md), which does its own whitening.")
 
     # Cross power spectra configuration
     parser.add_argument("--cross-data-dir", type=str,
@@ -131,9 +140,9 @@ def parse_arguments():
                         help="Random seed for coverage testing")
     
     # Output parameters
-    parser.add_argument("--output-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/plots",
+    parser.add_argument("--output-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/plots",
                         help="Directory to save output plots")
-    parser.add_argument("--samples-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/samples",
+    parser.add_argument("--samples-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples",
                         help="Directory to save posterior samples")
     
     # GPU configuration
@@ -470,10 +479,13 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         end_idx = (pair_idx + 1) * n_ells_per_pair
         cross_cls_this_pair = cross_cls_full[:, start_idx:end_idx]
         
-        # Determine cuts for this pair (use max of the two bins' cuts)
+        # x-cut rule (Taylor, Bernardeau & Huff 2020, arXiv:2007.00675 Eq. 23): a cross between
+        # bins i,j inherits the MORE restrictive cut (smaller ell_max => min), so a scale cut on a
+        # contaminated bin propagates to every spectrum involving it. (Was max(), a latent bug;
+        # no-op for uniform cuts so prior single--upper-cut runs are unchanged. See docs/BNT_on_spectra.md.)
         if pair_idx < len(cross_pair_to_bins):
             bin_i, bin_j = cross_pair_to_bins[pair_idx]
-            upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
+            upper_cut = min(upper_cuts[bin_i], upper_cuts[bin_j])
         else:
             upper_cut = args.upper_cut
         
@@ -647,10 +659,11 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         end_idx = (pair_idx + 1) * n_ells_per_pair
         cross_fid_this_pair = cross_fid_mean[start_idx:end_idx]
         
-        # Determine cuts for this pair
+        # x-cut rule: cross inherits the MORE restrictive bin cut (min ell_max); must match the
+        # data-side rule above so training and observation vectors stay aligned.
         if pair_idx < len(cross_pair_to_bins):
             bin_i, bin_j = cross_pair_to_bins[pair_idx]
-            upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
+            upper_cut = min(upper_cuts[bin_i], upper_cuts[bin_j])
         else:
             upper_cut = args.upper_cut
         
@@ -954,6 +967,16 @@ def main():
     print(f"\nCombined datavector shape: {combined_data_vector.shape}")
     print(f"Combined fiducial shape: {combined_fid_vector.shape}")
 
+    # VMIM cache dump: write the RAW (cut/rebinned, un-whitened) (theta, x, x_fid) and exit.
+    if args.dump_cache:
+        os.makedirs(args.dump_cache, exist_ok=True)
+        out = os.path.join(args.dump_cache, "cache.npz")
+        np.savez(out, theta=np.asarray(params), x=np.asarray(combined_data_vector),
+                 x_fid=np.asarray(combined_fid_vector))
+        print(f"[dump-cache] wrote {out} theta={np.asarray(params).shape} "
+              f"x={np.asarray(combined_data_vector).shape} x_fid={np.asarray(combined_fid_vector).shape}")
+        return
+
     # Process power spectra description
     if len(set(upper_cuts)) == 1:
         ps_desc = f"l{args.lower_cut}-{args.upper_cut}"
@@ -1019,6 +1042,25 @@ def main():
     print(f"  Shape: {combined_fid_vector.shape}, first 10 values: {combined_fid_vector[:10]}")
     
     
+    # Optional full-rank whitening of the data vector (decorrelate the features before the flow).
+    # jaxili's default per-feature z-score handles magnitude but NOT correlations — the wrong
+    # normalization for BNT vectors (strong anti-correlations + nulled directions). Cholesky
+    # whitening x -> L^-1 (x - mu), L = chol(Cov_train + ridge), decorrelates while keeping every
+    # dimension (invertible => removes no information). Fit on TRAINING, apply identical transform
+    # to the observation. After whitening Cov ~ I, so jaxili's z-score is ~a no-op (left on).
+    # See docs/PLAN_bnt_npe_whitening.md.
+    if args.compress == "whiten":
+        mu = combined_data_vector.mean(axis=0)
+        C = np.cov(combined_data_vector, rowvar=False)
+        ridge = 1e-10 * np.median(np.diag(C))
+        L = np.linalg.cholesky(C + ridge * np.eye(C.shape[0]))
+        Linv = np.linalg.inv(L)
+        combined_data_vector = (combined_data_vector - mu) @ Linv.T
+        combined_fid_vector = Linv @ (combined_fid_vector - mu)
+        print(f"[compress] whitened {combined_data_vector.shape[1]} features "
+              f"(cov cond={np.linalg.cond(C):.2e}, ridge={ridge:.2e}); "
+              f"whitened-train diag mean={np.cov(combined_data_vector, rowvar=False).diagonal().mean():.3f}")
+
     # Convert to JAX arrays
     params = jnp.array(params)
     combined_data_vector = jnp.array(combined_data_vector)

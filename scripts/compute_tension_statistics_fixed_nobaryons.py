@@ -35,7 +35,7 @@ LABELS_SUBSET = [r"$\Omega_{m}$", r"$S_8$", r"$w_0$"]
 SUBSET_INDICES = [0, 1, 2]  # First 3 parameters
 
 # Sample directory
-SAMPLES_DIR = Path("/home/tersenov/software/bar_impact/outputs/samples")
+SAMPLES_DIR = Path("/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples")
 
 # Parameter ranges
 UPPER_CUTS = list(range(340, 1021, 20))  # 520, 540, ..., 1000, 1020

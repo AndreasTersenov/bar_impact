@@ -24,7 +24,7 @@ def parse_arguments():
     
     # Data configuration
     parser.add_argument("--data-dir", type=str, 
-                        default='/home/tersenov/CosmoGridV1/stage3_forecast',
+                        default='/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast',
                         help="Base directory for data")
     
     parser.add_argument("--simulation-type", type=str, choices=["baryonified", "nobaryons"],
@@ -117,9 +117,9 @@ def parse_arguments():
                         help="Random seed for coverage testing")
     
     # Output parameters
-    parser.add_argument("--output-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/plots",
+    parser.add_argument("--output-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/plots",
                         help="Directory to save output plots")
-    parser.add_argument("--samples-dir", type=str, default="/home/tersenov/software/bar_impact/outputs/samples",
+    parser.add_argument("--samples-dir", type=str, default="/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples",
                         help="Directory to save posterior samples")
     
     # GPU configuration
@@ -451,10 +451,13 @@ def load_and_process_cross_spectra(cross_data_path, args, cross_indices=None, n_
         end_col = (pair_idx + 1) * n_ell_original
         cross_pair_full = cross_cls_full[:, start_col:end_col]
         
-        # Determine upper_cut for this cross pair (use maximum of the two bins)
+        # x-cut rule (Taylor, Bernardeau & Huff 2020, arXiv:2007.00675 Eq. 23): a cross between
+        # bins i,j must use the TIGHTER (min) cut — contamination in the more-cut bin propagates
+        # to every spectrum involving it. (Was max(), a latent bug; only bites when per-bin cuts
+        # differ, e.g. the BNT bin-1 sweep. Mirrors the validated fix in the master worker.)
         bin_i, bin_j = cross_pair_to_bins[pair_idx]
-        upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
-        
+        upper_cut = min(upper_cuts[bin_i], upper_cuts[bin_j])
+
         if args.verbose:
             print(f"Processing cross pair {pair_idx} (bins {bin_i}, {bin_j}) with upper cut {upper_cut}")
         
@@ -624,10 +627,12 @@ def load_and_process_cross_fiducial(cross_fiducial_path, args, cross_indices=Non
         end_idx = (pair_idx + 1) * n_ell_original
         cross_pair_full = cross_fid_mean[start_idx:end_idx]
         
-        # Determine upper_cut for this cross pair (use maximum of the two bins)
+        # x-cut rule (Taylor, Bernardeau & Huff 2020, arXiv:2007.00675 Eq. 23): see the data-path
+        # comment above. Use the TIGHTER (min) cut for each cross pair. (Was max(); no-op unless
+        # per-bin cuts differ, as in the BNT bin-1 sweep. Mirrors the master worker.)
         bin_i, bin_j = cross_pair_to_bins[pair_idx]
-        upper_cut = max(upper_cuts[bin_i], upper_cuts[bin_j])
-        
+        upper_cut = min(upper_cuts[bin_i], upper_cuts[bin_j])
+
         if args.verbose:
             print(f"Processing cross fiducial pair {pair_idx} (bins {bin_i}, {bin_j}) with upper cut {upper_cut}")
         

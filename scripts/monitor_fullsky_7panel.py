@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from tension import aggregate, compute, configs, plots  # noqa: E402
 
-REPO = "/home/tersenov/software/bar_impact"
+REPO = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact"
 MASKED_AGG = f"{REPO}/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
 OUT_PDF = f"{REPO}/plots/nsigma_vs_upper_cut_with_fullsky.pdf"
 OUT_PNG = f"{REPO}/plots/nsigma_vs_upper_cut_with_fullsky.png"
