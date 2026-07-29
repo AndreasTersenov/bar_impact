@@ -94,6 +94,21 @@ Always preserve the existing figure first — see `_reference_pre_regen/`.
 - **Broad `except` hides API breaks.** `q_dm_tension` returns NaN on any exception, so
   tensiometer relocating `from_confidence_to_sigma` surfaced as `nσ=nan` on every row
   rather than a failure. Fixed, but the pattern recurs in this codebase.
+- **Hardcoded numbers in figure code that no longer reproduce.** `EXTRACTED_R40` in
+  `build_bnt_bin1_allareas_plot.py` annotates each panel with a "% extracted" that divides
+  by a non-BNT-at-rebin-40 tension **that was never written to a table**; dividing by the
+  shipped rebin-10 campaign gives entirely different numbers (57/65/65/76/99/99 vs the
+  annotated 87/85/82/76/93/93 — only 14000 coincides). The same file hardcoded its run
+  count per variant. Both now read from data or declare themselves unreproducible in the
+  sidecar. **Assume every literal in a plotting script is stale until checked.**
+- **`GROUPS` is a bash builtin** holding the invoking user's numeric group IDs. Assigning
+  to it in a SLURM script is silently ignored; the archive job's loop iterated over
+  `300264 302541 305230`, tarred nothing, and exited 0. Never use it as a variable name.
+- **`$STORE` is not mounted on `cpu_p1`.** Any job touching it needs
+  `--partition=archive` (20 h, 1 core, no allocation charge). Submitted elsewhere it dies
+  instantly on `mkdir: cannot create directory '/lustre/fsstor': Permission denied`.
+- **getdist 1.4.3 (aname) cannot draw filled contours** under matplotlib ≥3.8 —
+  `QuadContourSet.tcolors` was removed. See §1: contour work goes in jaxili.
 
 ## 5. Science note — the √A line
 
@@ -154,9 +169,24 @@ has no such problem — all three statistics exist there in the corrected conven
   absent.
 - **Permanently lost:** 34 notebooks, 533 `vmim_v2` intermediates,
   `jolly-toasting-robin.md`. Campaign *results* survived.
-- **`$SCRATCH` purges after 30 idle days.** Memories are archived to `$WORK` and
-  `$STORE`; the 83 GB science archive to `$STORE` was still running at handoff —
-  check `du -sh /lustre/fsstor/projects/rech/prk/ulx34io/titan_recovery`.
+- **`$SCRATCH` purges after 30 idle days.** Memories are archived to `$WORK` and `$STORE`.
+  The science archive is **done**: 82 GB in **13 inodes** at
+  `/lustre/fsstor/projects/rech/nzu/ulx34io/titan_recovery/science_data`, as four
+  tarballs with member indexes (`.tar.list`) and `.tar.sha256`, each verified by
+  `tar -tf` readback and an exact member count (grid 225770, new_grid 587,
+  fiducial 124179). 28 minutes on `--partition=archive`.
+
+  **Archive to STORE with tar, never rsync.** The first attempt copied file-for-file and
+  consumed **93,785 of prk's 100,000-inode STORE quota** — a team-shared quota — to store
+  3.73 GiB of 83 GB. `stage3_forecast` holds 350,578 files; it could never have finished.
+  Presents as "Disk quota exceeded" while `df` shows tens of TB free: inodes, not bytes.
+
+  **Still to reclaim:** `rm -rf /lustre/fsstor/projects/rech/prk/ulx34io/titan_recovery/science_data`
+  frees those 93,785 inodes. Safe — the source is intact and the nzu tarballs verify —
+  but it is a delete on shared storage, left for an explicit go-ahead.
+
+  Extract one file without unpacking 72 GB:
+  `grep -n 'the/path' new_grid.tar.list` then `tar -xf new_grid.tar -C dest the/path`.
 - **git:** HEAD `def9087`, in sync with GitHub. ~235 uncommitted changes from this
   session (path repoints, the new style, provenance code, new scripts) — review and
   commit.

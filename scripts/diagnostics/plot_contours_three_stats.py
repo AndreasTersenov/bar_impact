@@ -163,9 +163,13 @@ def main():
             tag = f"{label}" if args.mode != "both" else f"{label} — {role}"
             mcs.append(MCSamples(samples=s, names=names, labels=labels, label=tag))
             colors.append(STYLE[label])
-            filled.append(role == "null")
+            # Filled+solid vs open+dashed distinguishes null from biased, so it only
+            # carries meaning in `both`. In a single-mode figure every series is the
+            # same role, and dashing them all just makes the figure harder to read.
+            solo = args.mode != "both"
+            filled.append(solo or role == "null")
             line_args.append({"color": STYLE[label], "lw": 1.6,
-                              "ls": "-" if role == "null" else "--"})
+                              "ls": "-" if (solo or role == "null") else "--"})
             legend.append(tag)
             rows.append({"statistic": label, "role": role, "n_runs": len(runs),
                          "runs": runs, "n_samples": int(s.shape[0]),
