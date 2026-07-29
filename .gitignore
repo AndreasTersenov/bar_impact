@@ -92,3 +92,14 @@ tests/test_combined_file_loading.py
 docs/NPE_INFERENCE_HALOFIT_GUIDE.md
 docs/ZERO_VARIANCE_PREPROCESSING.md
 scripts/setup_master.sh
+
+# Recovery-era artefacts — never track these
+# (comments must be on their own line; inline ones become part of the pattern)
+# backup of the corrupt pre-recovery git repo
+.git.damaged-*/
+# staging area for Titan transfers
+recovery_inbox/
+# run logs: bulky, reproducible, not source
+logs/
+# pre-regeneration figure snapshots
+outputs/plots/**/_reference_pre_regen/

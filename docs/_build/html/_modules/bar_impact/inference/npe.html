@@ -1,0 +1,1473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bar_impact.inference.npe &mdash; BAR_IMPACT 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BAR_IMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#basic-installation">Basic Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#optional-dependencies">Optional Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#external-dependencies">External Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#running-tests">Running Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#loading-convergence-maps">Loading Convergence Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#creating-survey-masks">Creating Survey Masks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#adding-shape-noise">Adding Shape Noise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-power-spectra">Computing Power Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-l1-norms">Computing L1 Norms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-peak-counts">Computing Peak Counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#bnt-transform">BNT Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#using-constants">Using Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#power-spectrum-analysis">Power Spectrum Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#l1-norm-analysis">L1 Norm Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#bnt-transform-workflow">BNT Transform Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#npe-inference">NPE Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows/index.html">Workflow Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html">Cross Power Spectrum Processing Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#quick-start">Quick Start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-grid-data-nobaryons-no-noise">For Grid Data (nobaryons, no noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-fiducial-data">For Fiducial Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#with-noise">With Noise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-baryonified-maps">For Baryonified Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#command-line-arguments">Command-Line Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#processing-options">Processing Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#noise-options">Noise Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#algorithm-parameters">Algorithm Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#execution-options">Execution Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#output-options">Output Options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#output-file-structure">Output File Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#without-aggregate-for-inference">Without <code class="docutils literal notranslate"><span class="pre">--aggregate-for-inference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#with-aggregate-for-inference">With <code class="docutils literal notranslate"><span class="pre">--aggregate-for-inference</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#complete-workflow-example">Complete Workflow Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#process-grid-and-fiducial-together">Process Grid and Fiducial Together</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#run-inference">Run Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#verification">Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#files-already-exist">Files already exist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#missing-bins-in-some-files">Missing bins in some files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#memory-issues">Memory issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#wrong-file-names">Wrong file names</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#custom-output-directory">Custom output directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#specific-bins-only">Specific bins only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#cross-correlations-only-no-autos">Cross-correlations only (no autos)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html">BNT Cross Power Spectrum Inference Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#new-feature-direct-aggregation-for-inference">New Feature: Direct Aggregation for Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#quick-start">Quick Start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-grid-data-no-noise">For Grid Data (No Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-grid-data-with-noise">For Grid Data (With Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-fiducial-data-no-noise">For Fiducial Data (No Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-fiducial-data-with-noise">For Fiducial Data (With Noise)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#custom-output-directory">Custom Output Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#complete-workflow-process-both-grid-and-fiducial">Complete Workflow: Process Both Grid and Fiducial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#running-inference">Running Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#file-format">File Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#auto-power-spectra-files">Auto Power Spectra Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#cross-power-spectra-file">Cross Power Spectra File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#command-line-arguments">Command-Line Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#processing-options">Processing Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#noise-options">Noise Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#algorithm-parameters">Algorithm Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#execution-options">Execution Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#output-options">Output Options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#verifying-output-files">Verifying Output Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#no-files-to-aggregate">No files to aggregate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#wrong-output-directory">Wrong output directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#mismatched-file-counts">Mismatched file counts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#advantages-of-this-workflow">Advantages of This Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#old-vs-new-workflow">Old vs New Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#old-workflow-3-steps">Old Workflow (3 steps)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#new-workflow-1-step">New Workflow (1 step)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#bnt-bin-indexing">BNT Bin Indexing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/bar_impact.html">bar_impact package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#main-features">Main Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.npix"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.__init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.__post_init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.add_shape_noise"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.add_shape_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.apply_mask"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.apply_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.bin_number"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.bin_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.bnt_bin"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.bnt_bin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.compute_cross_power_spectrum"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.compute_cross_power_spectrum()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.compute_power_spectrum"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.compute_power_spectrum()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.copy"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.cosmology_id"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.cosmology_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.from_fits"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.from_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.from_h5"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.from_h5()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.is_bnt_transformed"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.is_bnt_transformed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.is_noisy"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.is_noisy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.noise_level"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.noise_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id0"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.nside"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.permutation_id"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.permutation_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.pixel_area_arcmin2"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.pixel_area_arcmin2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.pixel_area_sr"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.pixel_area_sr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.simulation_type"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.simulation_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.to_fits"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.to_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.data"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.data</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.n_bins"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.n_bins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.nside"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.__init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.__post_init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.add_shape_noise"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.add_shape_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.apply_bnt_transform"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.apply_bnt_transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.compute_all_power_spectra"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.compute_all_power_spectra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.from_array"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.from_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.from_h5"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.from_h5()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id1"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.n_bins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id2"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.to_array"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.to_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.maps"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.maps</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask"><code class="docutils literal notranslate"><span class="pre">SurveyMask</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.npix"><code class="docutils literal notranslate"><span class="pre">SurveyMask.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.__init__"><code class="docutils literal notranslate"><span class="pre">SurveyMask.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.__post_init__"><code class="docutils literal notranslate"><span class="pre">SurveyMask.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.angular_radius_deg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.angular_radius_deg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.apodization_deg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.apodization_deg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.area_sqdeg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.area_sqdeg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.center_coords"><code class="docutils literal notranslate"><span class="pre">SurveyMask.center_coords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.copy"><code class="docutils literal notranslate"><span class="pre">SurveyMask.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.create_apodized_disk_mask"><code class="docutils literal notranslate"><span class="pre">SurveyMask.create_apodized_disk_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.create_disk_mask"><code class="docutils literal notranslate"><span class="pre">SurveyMask.create_disk_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.f_sky"><code class="docutils literal notranslate"><span class="pre">SurveyMask.f_sky</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.from_fits"><code class="docutils literal notranslate"><span class="pre">SurveyMask.from_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.full_sky"><code class="docutils literal notranslate"><span class="pre">SurveyMask.full_sky()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.invert"><code class="docutils literal notranslate"><span class="pre">SurveyMask.invert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.is_binary"><code class="docutils literal notranslate"><span class="pre">SurveyMask.is_binary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.n_unmasked_pixels"><code class="docutils literal notranslate"><span class="pre">SurveyMask.n_unmasked_pixels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id3"><code class="docutils literal notranslate"><span class="pre">SurveyMask.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.nside"><code class="docutils literal notranslate"><span class="pre">SurveyMask.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.to_fits"><code class="docutils literal notranslate"><span class="pre">SurveyMask.to_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.data"><code class="docutils literal notranslate"><span class="pre">SurveyMask.data</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector"><code class="docutils literal notranslate"><span class="pre">DataVector</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.n_features"><code class="docutils literal notranslate"><span class="pre">DataVector.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.__init__"><code class="docutils literal notranslate"><span class="pre">DataVector.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.__post_init__"><code class="docutils literal notranslate"><span class="pre">DataVector.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.concatenate"><code class="docutils literal notranslate"><span class="pre">DataVector.concatenate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.cosmology_params"><code class="docutils literal notranslate"><span class="pre">DataVector.cosmology_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.filter_zero_variance"><code class="docutils literal notranslate"><span class="pre">DataVector.filter_zero_variance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.flatten"><code class="docutils literal notranslate"><span class="pre">DataVector.flatten()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.from_dict"><code class="docutils literal notranslate"><span class="pre">DataVector.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.load"><code class="docutils literal notranslate"><span class="pre">DataVector.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id4"><code class="docutils literal notranslate"><span class="pre">DataVector.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.normalize"><code class="docutils literal notranslate"><span class="pre">DataVector.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.param_names"><code class="docutils literal notranslate"><span class="pre">DataVector.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.save"><code class="docutils literal notranslate"><span class="pre">DataVector.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.select_features"><code class="docutils literal notranslate"><span class="pre">DataVector.select_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.shape"><code class="docutils literal notranslate"><span class="pre">DataVector.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.to_dict"><code class="docutils literal notranslate"><span class="pre">DataVector.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.data"><code class="docutils literal notranslate"><span class="pre">DataVector.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.statistic_type"><code class="docutils literal notranslate"><span class="pre">DataVector.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.metadata"><code class="docutils literal notranslate"><span class="pre">DataVector.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_simulations"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_features"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_params"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.__init__"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.__post_init__"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.filter_zero_variance"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.filter_zero_variance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.get_single"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.get_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.load"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id5"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id6"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id7"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.normalize"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.param_names"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.save"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.train_test_split"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.train_test_split()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.data_vectors"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.data_vectors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.parameters"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.statistic_type"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.metadata"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.get_bnt_matrix"><code class="docutils literal notranslate"><span class="pre">get_bnt_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor"><code class="docutils literal notranslate"><span class="pre">BaseProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.config"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_batch"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_batch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_collection"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id8"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.__init__"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.add_noise"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.add_noise</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.apply_mask"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.apply_mask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.force_overwrite"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.force_overwrite</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.galaxy_density"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.galaxy_density</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.mask_area_sqdeg"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.mask_area_sqdeg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.mask_center"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.mask_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.n_workers"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.n_workers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.noise_level"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.noise_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.output_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.random_seed"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.random_seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.verbose"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.apply_bnt_transform"><code class="docutils literal notranslate"><span class="pre">apply_bnt_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.lmax"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.lmax</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.ell_range"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.ell_range</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_all_cross_spectra"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_all_cross_spectra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_cross"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_cross()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.__init__"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.bin_width"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.bin_width</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.binning"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.binning</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.ell_max"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.ell_max</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.ell_min"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.ell_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.lmax"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.lmax</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_power_spectrum"><code class="docutils literal notranslate"><span class="pre">compute_power_spectrum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_cross_power_spectrum"><code class="docutils literal notranslate"><span class="pre">compute_cross_power_spectrum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.nscales"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.nscales</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.nbins"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.pycs_available"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.pycs_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.get_output_shape"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.get_output_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig"><code class="docutils literal notranslate"><span class="pre">L1NormConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.__init__"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.max_snr"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.max_snr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.max_snr_coarse"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.max_snr_coarse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.min_snr"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.min_snr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.min_snr_coarse"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.min_snr_coarse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.nbins"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.noise_std"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.noise_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.nscales"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.nscales</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_l1_norms"><code class="docutils literal notranslate"><span class="pre">compute_l1_norms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.nscales"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.nscales</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.nbins"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.pycs_available"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.pycs_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.get_output_shape"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.get_output_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.__init__"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.max_val"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.max_val</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.min_val"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.min_val</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.nbins"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.noise_std"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.noise_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.nscales"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.nscales</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_peak_counts"><code class="docutils literal notranslate"><span class="pre">compute_peak_counts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference"><code class="docutils literal notranslate"><span class="pre">NPEInference</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.config"><code class="docutils literal notranslate"><span class="pre">NPEInference.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.is_trained"><code class="docutils literal notranslate"><span class="pre">NPEInference.is_trained</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.jaxili_available"><code class="docutils literal notranslate"><span class="pre">NPEInference.jaxili_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.__init__"><code class="docutils literal notranslate"><span class="pre">NPEInference.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id9"><code class="docutils literal notranslate"><span class="pre">NPEInference.is_trained</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.load"><code class="docutils literal notranslate"><span class="pre">NPEInference.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.sample"><code class="docutils literal notranslate"><span class="pre">NPEInference.sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.sample_batch"><code class="docutils literal notranslate"><span class="pre">NPEInference.sample_batch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.train"><code class="docutils literal notranslate"><span class="pre">NPEInference.train()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig"><code class="docutils literal notranslate"><span class="pre">NPEConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.__init__"><code class="docutils literal notranslate"><span class="pre">NPEConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.batch_size"><code class="docutils literal notranslate"><span class="pre">NPEConfig.batch_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.checkpoint_dir"><code class="docutils literal notranslate"><span class="pre">NPEConfig.checkpoint_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.checkpoint_name"><code class="docutils literal notranslate"><span class="pre">NPEConfig.checkpoint_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.gpu_id"><code class="docutils literal notranslate"><span class="pre">NPEConfig.gpu_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.learning_rate"><code class="docutils literal notranslate"><span class="pre">NPEConfig.learning_rate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.num_epochs"><code class="docutils literal notranslate"><span class="pre">NPEConfig.num_epochs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.random_seed"><code class="docutils literal notranslate"><span class="pre">NPEConfig.random_seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.verbose"><code class="docutils literal notranslate"><span class="pre">NPEConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult"><code class="docutils literal notranslate"><span class="pre">NPEResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.num_samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.num_params"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.__init__"><code class="docutils literal notranslate"><span class="pre">NPEResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_mean"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_mean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_param_samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_param_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_quantiles"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_quantiles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_std"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_std()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.load"><code class="docutils literal notranslate"><span class="pre">NPEResult.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id10"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id11"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.observed_data"><code class="docutils literal notranslate"><span class="pre">NPEResult.observed_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.save"><code class="docutils literal notranslate"><span class="pre">NPEResult.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.summary"><code class="docutils literal notranslate"><span class="pre">NPEResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.param_names"><code class="docutils literal notranslate"><span class="pre">NPEResult.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.metadata"><code class="docutils literal notranslate"><span class="pre">NPEResult.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.run_npe_inference"><code class="docutils literal notranslate"><span class="pre">run_npe_inference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester"><code class="docutils literal notranslate"><span class="pre">CoverageTester</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.config"><code class="docutils literal notranslate"><span class="pre">CoverageTester.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.tarp_available"><code class="docutils literal notranslate"><span class="pre">CoverageTester.tarp_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageTester.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test_from_samples"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test_npe"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test_npe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig"><code class="docutils literal notranslate"><span class="pre">CoverageConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.bootstrap"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.bootstrap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.metric"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.metric</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.normalize"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.normalize</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_bootstrap"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_bootstrap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_samples"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_sims"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_sims</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.references"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.references</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.seed"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.verbose"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult"><code class="docutils literal notranslate"><span class="pre">CoverageResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.is_calibrated"><code class="docutils literal notranslate"><span class="pre">CoverageResult.is_calibrated</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp_mean"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp_mean</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp_std"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.get_deviation_from_diagonal"><code class="docutils literal notranslate"><span class="pre">CoverageResult.get_deviation_from_diagonal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id12"><code class="docutils literal notranslate"><span class="pre">CoverageResult.is_calibrated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.load"><code class="docutils literal notranslate"><span class="pre">CoverageResult.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.save"><code class="docutils literal notranslate"><span class="pre">CoverageResult.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.summary"><code class="docutils literal notranslate"><span class="pre">CoverageResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.alpha"><code class="docutils literal notranslate"><span class="pre">CoverageResult.alpha</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.config"><code class="docutils literal notranslate"><span class="pre">CoverageResult.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.metadata"><code class="docutils literal notranslate"><span class="pre">CoverageResult.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_tarp_coverage"><code class="docutils literal notranslate"><span class="pre">compute_tarp_coverage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError"><code class="docutils literal notranslate"><span class="pre">BarImpactError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.message"><code class="docutils literal notranslate"><span class="pre">BarImpactError.message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.context"><code class="docutils literal notranslate"><span class="pre">BarImpactError.context</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.__init__"><code class="docutils literal notranslate"><span class="pre">BarImpactError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConfigurationError.__init__"><code class="docutils literal notranslate"><span class="pre">ConfigurationError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataLoadError"><code class="docutils literal notranslate"><span class="pre">DataLoadError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataLoadError.__init__"><code class="docutils literal notranslate"><span class="pre">DataLoadError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingError"><code class="docutils literal notranslate"><span class="pre">ProcessingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingError.__init__"><code class="docutils literal notranslate"><span class="pre">ProcessingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.MaskError"><code class="docutils literal notranslate"><span class="pre">MaskError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.MaskError.__init__"><code class="docutils literal notranslate"><span class="pre">MaskError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TransformError"><code class="docutils literal notranslate"><span class="pre">TransformError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TransformError.__init__"><code class="docutils literal notranslate"><span class="pre">TransformError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.InferenceError"><code class="docutils literal notranslate"><span class="pre">InferenceError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.InferenceError.__init__"><code class="docutils literal notranslate"><span class="pre">InferenceError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TrainingError"><code class="docutils literal notranslate"><span class="pre">TrainingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TrainingError.__init__"><code class="docutils literal notranslate"><span class="pre">TrainingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SamplingError"><code class="docutils literal notranslate"><span class="pre">SamplingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SamplingError.__init__"><code class="docutils literal notranslate"><span class="pre">SamplingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.analysis.html">bar_impact.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.core.html">bar_impact.core package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.inference.html">bar_impact.inference package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.processing.html">bar_impact.processing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.utils.html">bar_impact.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.cli.html">bar_impact.cli module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.constants.html">bar_impact.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.exceptions.html">bar_impact.exceptions module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BAR_IMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">bar_impact.inference.npe</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bar_impact.inference.npe</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Neural Posterior Estimation for cosmological inference.</span>
+
+<span class="sd">This module provides classes and functions for training and running NPE</span>
+<span class="sd">using the jaxili library for simulation-based inference on cosmological data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;NPEInference&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NPEConfig&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NPEResult&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;run_npe_inference&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_npe_model&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sample_posterior&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_with_nan_retry&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_jaxili_available</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if jaxili is available.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">jaxili.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">NPE</span>  <span class="c1"># noqa: F401</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_jax_available</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if JAX is available.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>  <span class="c1"># noqa: F401</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>  <span class="c1"># noqa: F401</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="NPEConfig">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NPEConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configuration for Neural Posterior Estimation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_epochs : int</span>
+<span class="sd">        Number of training epochs.</span>
+<span class="sd">    learning_rate : float</span>
+<span class="sd">        Learning rate for optimization.</span>
+<span class="sd">    batch_size : int</span>
+<span class="sd">        Training batch size.</span>
+<span class="sd">    checkpoint_dir : str or Path</span>
+<span class="sd">        Directory for saving model checkpoints.</span>
+<span class="sd">    checkpoint_name : str, optional</span>
+<span class="sd">        Name for the checkpoint. Auto-generated if not provided.</span>
+<span class="sd">    gpu_id : str</span>
+<span class="sd">        GPU index to use (e.g., &quot;0&quot;, &quot;1&quot;).</span>
+<span class="sd">    random_seed : int</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        Whether to print training progress.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; config = NPEConfig(</span>
+<span class="sd">    ...     num_epochs=1000,</span>
+<span class="sd">    ...     learning_rate=1e-4,</span>
+<span class="sd">    ...     batch_size=40,</span>
+<span class="sd">    ...     checkpoint_dir=&quot;./checkpoints&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span>
+    <span class="n">checkpoint_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;./checkpoints&quot;</span>
+    <span class="n">checkpoint_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">gpu_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="NPEResult">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NPEResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Container for NPE inference results.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    samples : np.ndarray</span>
+<span class="sd">        Posterior samples, shape (num_samples, num_params).</span>
+<span class="sd">    param_names : list of str</span>
+<span class="sd">        Names of the parameters.</span>
+<span class="sd">    observed_data : np.ndarray</span>
+<span class="sd">        The observed data used for inference.</span>
+<span class="sd">    metadata : dict</span>
+<span class="sd">        Additional metadata about the inference.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_samples : int</span>
+<span class="sd">        Number of posterior samples.</span>
+<span class="sd">    num_params : int</span>
+<span class="sd">        Number of parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">samples</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">param_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">observed_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of posterior samples.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of parameters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<div class="viewcode-block" id="NPEResult.get_param_samples">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.get_param_samples">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_param_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get samples for a specific parameter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        param_name : str</span>
+<span class="sd">            Name of the parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Samples for the specified parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">param_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown parameter: </span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">. Available: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">param_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.get_mean">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.get_mean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get posterior mean for each parameter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.get_std">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.get_std">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_std</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get posterior standard deviation for each parameter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.get_quantiles">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.get_quantiles">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_quantiles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get posterior quantiles.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        q : float or list of float</span>
+<span class="sd">            Quantile(s) to compute.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Quantiles, shape (len(q), num_params).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.summary">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get summary statistics for all parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary with parameter names as keys and statistics as values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">quantiles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_quantiles</span><span class="p">([</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">])</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">):</span>
+            <span class="n">summary</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])),</span>
+                <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])),</span>
+                <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">quantiles</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span>
+                <span class="s2">&quot;lower_68&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">quantiles</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span>
+                <span class="s2">&quot;upper_68&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">quantiles</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">]),</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="n">summary</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.save">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save results to a numpy file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Path to save the results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savez</span><span class="p">(</span>
+            <span class="n">filepath</span><span class="p">,</span>
+            <span class="n">samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span>
+            <span class="n">param_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">,</span>
+            <span class="n">observed_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">observed_data</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEResult.load">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEResult.load">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;NPEResult&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load results from a numpy file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Path to load results from.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        NPEResult</span>
+<span class="sd">            Loaded results.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">samples</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">],</span>
+            <span class="n">param_names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;param_names&quot;</span><span class="p">]),</span>
+            <span class="n">observed_data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;observed_data&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">else</span> <span class="p">{},</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NPEInference">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NPEInference</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Neural Posterior Estimation inference wrapper.</span>
+
+<span class="sd">    This class wraps the jaxili NPE implementation for easy use in</span>
+<span class="sd">    cosmological inference pipelines.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    config : NPEConfig, optional</span>
+<span class="sd">        Configuration for the inference. Uses defaults if not provided.</span>
+<span class="sd">    param_names : list of str, optional</span>
+<span class="sd">        Names of the cosmological parameters.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    config : NPEConfig</span>
+<span class="sd">        Configuration settings.</span>
+<span class="sd">    is_trained : bool</span>
+<span class="sd">        Whether the model has been trained.</span>
+<span class="sd">    jaxili_available : bool</span>
+<span class="sd">        Whether jaxili is installed.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from bar_impact.inference import NPEInference, NPEConfig</span>
+<span class="sd">    &gt;&gt;&gt; from bar_impact.constants import COSMO_PARAM_NAMES</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create inference object</span>
+<span class="sd">    &gt;&gt;&gt; config = NPEConfig(num_epochs=500, batch_size=64)</span>
+<span class="sd">    &gt;&gt;&gt; npe = NPEInference(config=config, param_names=COSMO_PARAM_NAMES)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Train on simulation data</span>
+<span class="sd">    &gt;&gt;&gt; npe.train(data_vectors, parameters)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Sample posterior for observed data</span>
+<span class="sd">    &gt;&gt;&gt; result = npe.sample(observed_data, num_samples=10000)</span>
+<span class="sd">    &gt;&gt;&gt; print(result.summary())</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This class requires jaxili to be installed. Install via:</span>
+<span class="sd">    pip install jaxili</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NPEInference.__init__">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NPEConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">param_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">NPEConfig</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_names</span> <span class="o">=</span> <span class="n">param_names</span> <span class="ow">or</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posterior</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Check dependencies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jaxili_available</span> <span class="o">=</span> <span class="n">_check_jaxili_available</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jax_available</span> <span class="o">=</span> <span class="n">_check_jax_available</span><span class="p">()</span>
+
+        <span class="c1"># Set GPU</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jax_available</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CUDA_VISIBLE_DEVICES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gpu_id</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_trained</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the model has been trained.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_jaxili</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure jaxili is available.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">jaxili_available</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">&quot;jaxili is required for NPE inference. Install via: pip install jaxili&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_to_jax_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert numpy array to JAX array.&quot;&quot;&quot;</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NPEInference.train">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference.train">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data_vectors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">checkpoint_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the NPE model on simulation data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_vectors : np.ndarray</span>
+<span class="sd">            Training data vectors, shape (n_sims, n_features).</span>
+<span class="sd">        parameters : np.ndarray</span>
+<span class="sd">            Training parameters, shape (n_sims, n_params).</span>
+<span class="sd">        checkpoint_name : str, optional</span>
+<span class="sd">            Name for checkpoint. Overrides config if provided.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Training metrics (loss history, etc.).</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ImportError</span>
+<span class="sd">            If jaxili is not installed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_jaxili</span><span class="p">()</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">jaxili.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">NPE</span>
+
+        <span class="c1"># Convert to JAX arrays</span>
+        <span class="n">params_jax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_jax_array</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">data_jax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_jax_array</span><span class="p">(</span><span class="n">data_vectors</span><span class="p">)</span>
+
+        <span class="c1"># Set up checkpoint path - must be absolute for orbax</span>
+        <span class="n">checkpoint_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">checkpoint_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">checkpoint_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">checkpoint_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">checkpoint_name</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;npe_checkpoint_</span><span class="si">{</span><span class="n">data_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">features&quot;</span>
+        <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">checkpoint_dir</span> <span class="o">/</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Training NPE with </span><span class="si">{</span><span class="n">data_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> simulations, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_vectors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> features, </span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> parameters&quot;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checkpoint path: </span><span class="si">{</span><span class="n">checkpoint_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize and train</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span> <span class="o">=</span> <span class="n">NPE</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">append_simulations</span><span class="p">(</span><span class="n">params_jax</span><span class="p">,</span> <span class="n">data_jax</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting training for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2"> epochs...&quot;</span><span class="p">)</span>
+
+        <span class="n">metrics</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+            <span class="n">checkpoint_path</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
+            <span class="n">num_epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_epochs</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">,</span>
+            <span class="n">training_batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Build posterior</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">build_posterior</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training completed successfully&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;checkpoint_path&quot;</span><span class="p">:</span> <span class="n">checkpoint_path</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="NPEInference.load">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference.load">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load a trained model from checkpoint.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        checkpoint_path : str or Path</span>
+<span class="sd">            Path to the checkpoint directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_jaxili</span><span class="p">()</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">jaxili.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">NPE</span>
+
+        <span class="c1"># Convert to absolute path for orbax compatibility</span>
+        <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span> <span class="o">=</span> <span class="n">NPE</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inference</span><span class="o">.</span><span class="n">build_posterior</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded model from </span><span class="si">{</span><span class="n">checkpoint_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEInference.sample">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference.sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">observed_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NPEResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sample from the posterior given observed data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        observed_data : np.ndarray</span>
+<span class="sd">            Observed data vector, shape (n_features,).</span>
+<span class="sd">        num_samples : int, optional</span>
+<span class="sd">            Number of posterior samples to draw.</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            Random seed for sampling.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        NPEResult</span>
+<span class="sd">            Container with posterior samples and metadata.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If model has not been trained.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Model must be trained before sampling. Call train() or load() first.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">random</span>
+
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span> <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">random_seed</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="c1"># Convert observed data to JAX array</span>
+        <span class="n">obs_jax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_jax_array</span><span class="p">(</span><span class="n">observed_data</span><span class="p">)</span>
+
+        <span class="n">samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_posterior</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">obs_jax</span><span class="p">,</span>
+            <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">NPEResult</span><span class="p">(</span>
+            <span class="n">samples</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span>
+            <span class="n">param_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">param_names</span><span class="p">,</span>
+            <span class="n">observed_data</span><span class="o">=</span><span class="n">observed_data</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;num_samples&quot;</span><span class="p">:</span> <span class="n">num_samples</span><span class="p">,</span>
+                <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="n">seed</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NPEInference.sample_batch">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.NPEInference.sample_batch">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">observed_data_batch</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sample from posterior for multiple observations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        observed_data_batch : np.ndarray</span>
+<span class="sd">            Batch of observed data, shape (n_obs, n_features).</span>
+<span class="sd">        num_samples : int</span>
+<span class="sd">            Number of samples per observation.</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            Random seed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Samples, shape (num_samples, n_obs, n_params).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_trained</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before sampling.&quot;</span><span class="p">)</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">jax.random</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">random</span>
+
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span> <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">random_seed</span>
+        <span class="n">master_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="n">all_samples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_i</span><span class="p">,</span> <span class="n">obs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">observed_data_batch</span><span class="p">):</span>
+            <span class="n">sample_key</span><span class="p">,</span> <span class="n">master_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">master_key</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_posterior</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+                <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">sample_key</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">all_samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">samples</span><span class="p">))</span>
+
+        <span class="c1"># Stack: (num_samples, n_obs, n_params)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">all_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># Functional interface for backwards compatibility</span>
+
+
+<div class="viewcode-block" id="run_npe_inference">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.run_npe_inference">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_npe_inference</span><span class="p">(</span>
+    <span class="n">data_vectors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">observed_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="n">param_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NPEConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">NPEResult</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run Neural Posterior Estimation on cosmological data.</span>
+
+<span class="sd">    This is a convenience function that trains an NPE model and optionally</span>
+<span class="sd">    samples from the posterior.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_vectors : np.ndarray</span>
+<span class="sd">        Training data vectors from simulations, shape (n_sims, n_features).</span>
+<span class="sd">    parameters : np.ndarray</span>
+<span class="sd">        Corresponding cosmological parameters, shape (n_sims, n_params).</span>
+<span class="sd">    observed_data : np.ndarray, optional</span>
+<span class="sd">        Observed data to infer parameters for. If None, only training is done.</span>
+<span class="sd">    num_samples : int, optional</span>
+<span class="sd">        Number of posterior samples to draw.</span>
+<span class="sd">    param_names : list of str, optional</span>
+<span class="sd">        Names of the parameters.</span>
+<span class="sd">    config : NPEConfig, optional</span>
+<span class="sd">        Configuration for the inference.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to NPEConfig.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    NPEResult or dict</span>
+<span class="sd">        If observed_data is provided, returns NPEResult with posterior samples.</span>
+<span class="sd">        Otherwise, returns dict with training info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create config from kwargs if not provided</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">NPEConfig</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">NPEConfig</span><span class="p">,</span> <span class="n">k</span><span class="p">)})</span>
+
+    <span class="c1"># Create and train</span>
+    <span class="n">npe</span> <span class="o">=</span> <span class="n">NPEInference</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">param_names</span><span class="o">=</span><span class="n">param_names</span><span class="p">)</span>
+    <span class="n">train_result</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data_vectors</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+    <span class="c1"># Sample if observed data provided</span>
+    <span class="k">if</span> <span class="n">observed_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">npe</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">train_result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">train_result</span></div>
+
+
+
+<div class="viewcode-block" id="train_npe_model">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.train_npe_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_npe_model</span><span class="p">(</span>
+    <span class="n">data_vectors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NPEConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NPEInference</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train a Neural Posterior Estimation model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_vectors : np.ndarray</span>
+<span class="sd">        Training data vectors.</span>
+<span class="sd">    parameters : np.ndarray</span>
+<span class="sd">        Training parameters.</span>
+<span class="sd">    config : NPEConfig, optional</span>
+<span class="sd">        Training configuration.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional arguments for NPEConfig.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    NPEInference</span>
+<span class="sd">        Trained NPE inference object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">NPEConfig</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">NPEConfig</span><span class="p">,</span> <span class="n">k</span><span class="p">)})</span>
+
+    <span class="n">npe</span> <span class="o">=</span> <span class="n">NPEInference</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+    <span class="n">npe</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data_vectors</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">npe</span></div>
+
+
+
+<div class="viewcode-block" id="sample_posterior">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.sample_posterior">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample_posterior</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">NPEInference</span><span class="p">,</span>
+    <span class="n">observed_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">num_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sample from the posterior distribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : NPEInference</span>
+<span class="sd">        Trained NPE model.</span>
+<span class="sd">    observed_data : np.ndarray</span>
+<span class="sd">        Observed data.</span>
+<span class="sd">    num_samples : int</span>
+<span class="sd">        Number of samples to draw.</span>
+<span class="sd">    seed : int, optional</span>
+<span class="sd">        Random seed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        Posterior samples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">observed_data</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">samples</span></div>
+
+
+
+<div class="viewcode-block" id="train_with_nan_retry">
+<a class="viewcode-back" href="../../../api/bar_impact.inference.npe.html#bar_impact.train_with_nan_retry">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_with_nan_retry</span><span class="p">(</span>
+    <span class="n">inference</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">checkpoint_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train NPE with automatic retry if NaN loss is encountered.</span>
+
+<span class="sd">    NPE training can sometimes fail due to poor random initialization leading to</span>
+<span class="sd">    numerical instability. This function automatically retries training with fresh</span>
+<span class="sd">    initialization if NaN loss is detected.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inference : NPE</span>
+<span class="sd">        jaxili NPE object with simulations already appended.</span>
+<span class="sd">    params : array-like</span>
+<span class="sd">        Parameter array (for reinitializing if needed), shape (n_samples, n_params).</span>
+<span class="sd">    data : array-like</span>
+<span class="sd">        Data array (for reinitializing if needed), shape (n_samples, n_features).</span>
+<span class="sd">    checkpoint_path : str</span>
+<span class="sd">        Path to save model checkpoints.</span>
+<span class="sd">    num_epochs : int, optional</span>
+<span class="sd">        Number of training epochs (default: 1000).</span>
+<span class="sd">    learning_rate : float, optional</span>
+<span class="sd">        Learning rate (default: 1e-4).</span>
+<span class="sd">    batch_size : int, optional</span>
+<span class="sd">        Training batch size (default: 40).</span>
+<span class="sd">    max_retries : int, optional</span>
+<span class="sd">        Maximum number of training attempts (default: 10).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Whether to print progress messages (default: True).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    inference : NPE</span>
+<span class="sd">        The trained inference object.</span>
+<span class="sd">    metrics : object</span>
+<span class="sd">        Training metrics from successful run.</span>
+<span class="sd">    density_estimator : object</span>
+<span class="sd">        Trained density estimator.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        If all retry attempts fail.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from jaxili.inference import NPE</span>
+<span class="sd">    &gt;&gt;&gt; import jax.numpy as jnp</span>
+<span class="sd">    &gt;&gt;&gt; from bar_impact.inference import train_with_nan_retry</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; inference = NPE()</span>
+<span class="sd">    &gt;&gt;&gt; inference = inference.append_simulations(params_jax, data_jax)</span>
+<span class="sd">    &gt;&gt;&gt; inference, metrics, estimator = train_with_nan_retry(</span>
+<span class="sd">    ...     inference, params_jax, data_jax,</span>
+<span class="sd">    ...     checkpoint_path=&quot;./checkpoints/my_model&quot;,</span>
+<span class="sd">    ...     num_epochs=1000</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function only checks training and validation losses for NaN values.</span>
+<span class="sd">    Test loss is sometimes NaN due to evaluation issues even when training</span>
+<span class="sd">    succeeds, so it does not trigger a retry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_check_jaxili_available</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;jaxili is required for NPE training. Install with: pip install jaxili&quot;</span>
+        <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">jaxili.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">NPE</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Train for full epochs</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training for </span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s2"> epochs...&quot;</span><span class="p">)</span>
+
+            <span class="n">metrics</span><span class="p">,</span> <span class="n">density_estimator</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+                <span class="n">checkpoint_path</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
+                <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+                <span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span>
+                <span class="n">training_batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Check if training or validation loss contains NaN</span>
+            <span class="c1"># Note: We only check train_loss and val_loss, NOT test_loss</span>
+            <span class="c1"># Test loss can sometimes be NaN due to evaluation issues even when training succeeded</span>
+            <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">nan_source</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Check if metrics is a dict or has attributes</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="c1"># Check training loss</span>
+                <span class="k">if</span> <span class="s2">&quot;train_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+                    <span class="n">train_loss</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;train_loss&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)):</span>
+                            <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;training loss&quot;</span>
+                    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">train_loss</span><span class="p">):</span>
+                        <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;training loss&quot;</span>
+
+                <span class="c1"># Check validation loss</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">has_nan</span> <span class="ow">and</span> <span class="s2">&quot;val_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+                    <span class="n">val_loss</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;val_loss&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val_loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)):</span>
+                            <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;validation loss&quot;</span>
+                    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val_loss</span><span class="p">):</span>
+                        <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;validation loss&quot;</span>
+
+                <span class="c1"># Warn about test loss NaN but don&#39;t trigger retry</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="s2">&quot;test_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics</span>
+                    <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;test_loss&quot;</span><span class="p">])</span>
+                    <span class="ow">and</span> <span class="n">verbose</span>
+                <span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Check training loss (indicates bad initialization)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;train_loss&quot;</span><span class="p">):</span>
+                    <span class="n">train_loss</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">train_loss</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)):</span>
+                            <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;training loss&quot;</span>
+                    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">train_loss</span><span class="p">):</span>
+                        <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;training loss&quot;</span>
+
+                <span class="c1"># Check validation loss (indicates training instability)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">has_nan</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;val_loss&quot;</span><span class="p">):</span>
+                    <span class="n">val_loss</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">val_loss</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val_loss</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)):</span>
+                            <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;validation loss&quot;</span>
+                    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">val_loss</span><span class="p">):</span>
+                        <span class="n">has_nan</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">nan_source</span> <span class="o">=</span> <span class="s2">&quot;validation loss&quot;</span>
+
+                <span class="c1"># Warn about test loss NaN but don&#39;t trigger retry</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">hasattr</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;test_loss&quot;</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">test_loss</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">verbose</span>
+                <span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="s2">&quot;⚠ Note: Test loss is NaN (evaluation issue, not affecting trained model)&quot;</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">has_nan</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;⚠ NaN detected in </span><span class="si">{</span><span class="n">nan_source</span><span class="si">}</span><span class="s2"> during attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">. Reinitializing...&quot;</span>
+                    <span class="p">)</span>
+                <span class="c1"># Reinitialize the inference object for a fresh start</span>
+                <span class="n">inference</span> <span class="o">=</span> <span class="n">NPE</span><span class="p">()</span>
+                <span class="n">inference</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">append_simulations</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✓ Training completed successfully on attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">inference</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">density_estimator</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠ Error during training attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrying...&quot;</span><span class="p">)</span>
+            <span class="c1"># Reinitialize for retry</span>
+            <span class="n">inference</span> <span class="o">=</span> <span class="n">NPE</span><span class="p">()</span>
+            <span class="n">inference</span> <span class="o">=</span> <span class="n">inference</span><span class="o">.</span><span class="n">append_simulations</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Training failed after </span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2"> attempts due to persistent NaN loss&quot;</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Andreas Tersenov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

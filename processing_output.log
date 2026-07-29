@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/mnt/home/tersenov/software/bar_impact/examples/example_l1_norm_processing.py", line 36, in <module>
+    from bar_impact.core import ConvergenceMap, SurveyMask
+ModuleNotFoundError: No module named 'bar_impact'

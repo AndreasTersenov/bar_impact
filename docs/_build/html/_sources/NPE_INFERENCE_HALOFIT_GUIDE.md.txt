@@ -1,0 +1,232 @@
+# NPE Inference with Halofit/Fiducial Data
+
+## Overview
+
+The `run_npe_inference_halofit.py` script performs Neural Posterior Estimation (NPE) inference using data processed with `l1_norm_processing_halofit.py`. It supports training on either Halofit selection or fiducial cosmology data, and can use either dataset for the fiducial observation.
+
+## Key Features
+
+- **Flexible Training Data**: Train on Halofit selection (1,299 cosmologies) or fiducial (200 permutations)
+- **Flexible Fiducial Data**: Use Halofit or fiducial data for the observed fiducial
+- **Tomographic Analysis**: Support for single or multiple redshift bins
+- **Bin Range Selection**: Select specific kappa bin ranges for analysis
+- **TARP Coverage Testing**: Assess posterior calibration quality
+- **Noise Options**: Support for noisy and noiseless datavectors
+
+## Usage Examples
+
+### 1. Train on Halofit selection, test on fiducial (single bin)
+```bash
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --fiducial-dataset fiducial \
+    --simulation-type baryonified \
+    --bin 1 \
+    --noisy \
+    --train \
+    --epochs 1000 \
+    --num-samples 3000
+```
+
+### 2. Train on fiducial, test on fiducial (tomographic)
+```bash
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset fiducial \
+    --fiducial-dataset fiducial \
+    --simulation-type baryonified \
+    --bins 1,2,3,4 \
+    --noisy \
+    --train \
+    --epochs 1000
+```
+
+### 3. Use existing model with bin range selection
+```bash
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --fiducial-dataset fiducial \
+    --simulation-type baryonified \
+    --bin 1 \
+    --bin-range 50:450 \
+    --noisy \
+    --num-samples 5000
+```
+
+### 4. Run coverage test
+```bash
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --simulation-type baryonified \
+    --bin 1 \
+    --noisy \
+    --run-coverage-test \
+    --coverage-num-sims 100 \
+    --coverage-num-samples 1000 \
+    --coverage-bootstrap \
+    --coverage-num-bootstrap 100
+```
+
+### 5. Multiple bins with separate bin ranges
+```bash
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --bins 1,2,3,4 \
+    --bin-ranges 10:490,10:490,10:490,10:490 \
+    --noisy \
+    --train
+```
+
+## Arguments
+
+### Dataset Selection
+- `--training-dataset {halofit,fiducial}`: Which dataset to use for training (default: halofit)
+- `--fiducial-dataset {halofit,fiducial}`: Which dataset to use for fiducial observation (default: fiducial)
+- `--simulation-type {baryonified,nobaryons}`: Type of simulation (default: baryonified)
+- `--fiducial-type {baryonified,nobaryons}`: Type of fiducial (default: matches simulation-type)
+
+### Bin Configuration
+- `--bin INT`: Single redshift bin to analyze (default: 1)
+- `--bins STR`: Comma-separated list of bins for tomographic inference (e.g., "1,2,3,4")
+- `--bin-range STR`: Global kappa bin range for all redshift bins (e.g., "10:490")
+- `--bin-ranges STR`: Separate kappa bin ranges per redshift bin (e.g., "10:490,20:480,10:490,10:490")
+
+### Noise Configuration
+- `--noisy`: Use noisy datavectors
+- `--noise-level FLOAT`: Noise level sigma_e (default: 0.26)
+
+### Training Parameters
+- `--train`: Train model (otherwise loads existing)
+- `--epochs INT`: Number of training epochs (default: 1000)
+- `--batch-size INT`: Training batch size (default: 40)
+- `--learning-rate FLOAT`: Learning rate (default: 1e-4)
+- `--checkpoint-dir PATH`: Checkpoint directory (default: ./checkpoints)
+
+### Sampling Parameters
+- `--num-samples INT`: Number of posterior samples (default: 3000)
+- `--random-seed INT`: Random seed for sampling (default: 1)
+
+### Coverage Testing
+- `--run-coverage-test`: Run TARP coverage test
+- `--coverage-num-sims INT`: Number of simulations for coverage (default: 100)
+- `--coverage-num-samples INT`: Posterior samples per simulation (default: 1000)
+- `--coverage-bootstrap`: Use bootstrap for uncertainties
+- `--coverage-num-bootstrap INT`: Bootstrap iterations (default: 100)
+- `--coverage-seed INT`: Random seed for coverage (default: 42)
+
+### Output
+- `--output-dir PATH`: Directory for plots (default: ./outputs/plots)
+- `--samples-dir PATH`: Directory for samples (default: ./outputs/samples)
+
+### GPU
+- `--gpu STR`: GPU index to use (default: "0")
+
+## File Naming Conventions
+
+### Input Files (Training Data)
+Format: `all_l1_norms_{dataset}_{simtype}_bin{N}[_noisy_s{noise}].npy`
+
+Examples:
+- `all_l1_norms_halofit_baryonified_bin1_noisy_s0.26.npy`
+- `all_l1_norms_fiducial_baryonified_bin2.npy`
+
+### Input Files (Parameters)
+- Halofit: `selected_params_halofit.npy` (1,299 x 6)
+- Fiducial: `cosmo_params_baryonified.npy` or `cosmo_params.npy` (200 x 6)
+
+### Output Files (Checkpoints)
+Format: `cosmoGRID_l1_norms_weights_{dataset}_{simtype}_{bins}[_noisy_s{noise}][_binrange{start}-{end}]`
+
+Examples:
+- `cosmoGRID_l1_norms_weights_halofit_baryonified_bin1_noisy_s0.26`
+- `cosmoGRID_l1_norms_weights_halofit_baryonified_bins1234_binrange10-490`
+
+### Output Files (Plots)
+Format: `posterior_{train_dataset}_{train_type}_vs_{fid_dataset}_{fid_type}_{bins}[_noisy_s{noise}][_binrange{start}-{end}].pdf`
+
+Examples:
+- `posterior_halofit_baryonified_vs_fiducial_baryonified_bin1_noisy_s0.26.pdf`
+- `posterior_fiducial_baryonified_vs_fiducial_baryonified_bins1234.pdf`
+
+### Output Files (Samples)
+Format: `posterior_samples_{train_dataset}_{train_type}_vs_{fid_dataset}_{fid_type}_{bins}[_noisy_s{noise}][_binrange{start}-{end}]_npe.npy`
+
+## Data Requirements
+
+Before running inference, you need to process the data using `l1_norm_processing_halofit.py`:
+
+```bash
+# Process Halofit selection data (all 4 bins with noise)
+python3 scripts/l1_norm_processing_halofit.py \
+    --bins 1,2,3,4 \
+    --noise-level 0.26 \
+    --save-combined \
+    --num-workers 40
+
+# Process fiducial data (all 4 bins with noise)
+python3 scripts/l1_norm_processing_halofit.py \
+    --fiducial \
+    --bins 1,2,3,4 \
+    --noise-level 0.26 \
+    --save-combined \
+    --num-workers 40
+```
+
+## Workflow Example
+
+Complete workflow for Halofit selection analysis:
+
+```bash
+# 1. Process data (if not already done)
+python3 scripts/l1_norm_processing_halofit.py \
+    --bins 1,2,3,4 \
+    --noise-level 0.26 \
+    --save-combined \
+    --num-workers 40
+
+python3 scripts/l1_norm_processing_halofit.py \
+    --fiducial \
+    --bins 1,2,3,4 \
+    --noise-level 0.26 \
+    --save-combined \
+    --num-workers 40
+
+# 2. Train NPE model on Halofit selection
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --fiducial-dataset fiducial \
+    --bins 1,2,3,4 \
+    --noisy \
+    --train \
+    --epochs 2000 \
+    --batch-size 40 \
+    --gpu 0
+
+# 3. Run coverage test
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --bins 1,2,3,4 \
+    --noisy \
+    --run-coverage-test \
+    --coverage-num-sims 200 \
+    --coverage-bootstrap \
+    --gpu 0
+
+# 4. Generate posterior samples with different bin ranges
+python3 scripts/run_npe_inference_halofit.py \
+    --training-dataset halofit \
+    --fiducial-dataset fiducial \
+    --bins 1,2,3,4 \
+    --bin-range 50:450 \
+    --noisy \
+    --num-samples 5000 \
+    --gpu 0
+```
+
+## Differences from run_npe_inference.py
+
+1. **Dataset Selection**: Can choose between halofit and fiducial for both training and observation
+2. **Parameter Files**: Uses `selected_params_halofit.npy` for Halofit training
+3. **File Naming**: Updated to match the new `_halofit` and `_fiducial` suffixes
+4. **Removed BNT Support**: Focuses on L1 norm datavectors only
+5. **Removed Mask Support**: Works with full-sky data
+6. **Removed Scale Selection**: Works with the full L1 norm vectors (kappa bins)

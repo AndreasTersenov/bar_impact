@@ -1,0 +1,1298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bar_impact.core.maps &mdash; BAR_IMPACT 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            BAR_IMPACT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#basic-installation">Basic Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#optional-dependencies">Optional Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#external-dependencies">External Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#running-tests">Running Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#loading-convergence-maps">Loading Convergence Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#creating-survey-masks">Creating Survey Masks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#adding-shape-noise">Adding Shape Noise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-power-spectra">Computing Power Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-l1-norms">Computing L1 Norms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#computing-peak-counts">Computing Peak Counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#bnt-transform">BNT Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#using-constants">Using Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#power-spectrum-analysis">Power Spectrum Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#l1-norm-analysis">L1 Norm Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#bnt-transform-workflow">BNT Transform Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#npe-inference">NPE Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/index.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows/index.html">Workflow Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html">Cross Power Spectrum Processing Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#quick-start">Quick Start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-grid-data-nobaryons-no-noise">For Grid Data (nobaryons, no noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-fiducial-data">For Fiducial Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#with-noise">With Noise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#for-baryonified-maps">For Baryonified Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#command-line-arguments">Command-Line Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#processing-options">Processing Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#noise-options">Noise Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#algorithm-parameters">Algorithm Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#execution-options">Execution Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#output-options">Output Options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#output-file-structure">Output File Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#without-aggregate-for-inference">Without <code class="docutils literal notranslate"><span class="pre">--aggregate-for-inference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#with-aggregate-for-inference">With <code class="docutils literal notranslate"><span class="pre">--aggregate-for-inference</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#complete-workflow-example">Complete Workflow Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#process-grid-and-fiducial-together">Process Grid and Fiducial Together</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#run-inference">Run Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#verification">Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#files-already-exist">Files already exist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#missing-bins-in-some-files">Missing bins in some files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#memory-issues">Memory issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#wrong-file-names">Wrong file names</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#custom-output-directory">Custom output directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#specific-bins-only">Specific bins only</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#cross-correlations-only-no-autos">Cross-correlations only (no autos)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/CROSS_POWER_SPECTRUM_WORKFLOW.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html">BNT Cross Power Spectrum Inference Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#new-feature-direct-aggregation-for-inference">New Feature: Direct Aggregation for Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#quick-start">Quick Start</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-grid-data-no-noise">For Grid Data (No Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-grid-data-with-noise">For Grid Data (With Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-fiducial-data-no-noise">For Fiducial Data (No Noise)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#for-fiducial-data-with-noise">For Fiducial Data (With Noise)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#custom-output-directory">Custom Output Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#complete-workflow-process-both-grid-and-fiducial">Complete Workflow: Process Both Grid and Fiducial</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#running-inference">Running Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#file-format">File Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#auto-power-spectra-files">Auto Power Spectra Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#cross-power-spectra-file">Cross Power Spectra File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#command-line-arguments">Command-Line Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#processing-options">Processing Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#noise-options">Noise Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#algorithm-parameters">Algorithm Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#execution-options">Execution Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#output-options">Output Options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#verifying-output-files">Verifying Output Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#no-files-to-aggregate">No files to aggregate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#wrong-output-directory">Wrong output directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#mismatched-file-counts">Mismatched file counts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#advantages-of-this-workflow">Advantages of This Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#old-vs-new-workflow">Old vs New Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#old-workflow-3-steps">Old Workflow (3 steps)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#new-workflow-1-step">New Workflow (1 step)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflows/BNT_INFERENCE_WORKFLOW.html#bnt-bin-indexing">BNT Bin Indexing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/bar_impact.html">bar_impact package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#main-features">Main Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.npix"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.__init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.__post_init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.add_shape_noise"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.add_shape_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.apply_mask"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.apply_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.bin_number"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.bin_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.bnt_bin"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.bnt_bin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.compute_cross_power_spectrum"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.compute_cross_power_spectrum()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.compute_power_spectrum"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.compute_power_spectrum()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.copy"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.cosmology_id"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.cosmology_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.from_fits"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.from_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.from_h5"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.from_h5()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.is_bnt_transformed"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.is_bnt_transformed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.is_noisy"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.is_noisy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.noise_level"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.noise_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id0"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.nside"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.permutation_id"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.permutation_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.pixel_area_arcmin2"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.pixel_area_arcmin2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.pixel_area_sr"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.pixel_area_sr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.simulation_type"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.simulation_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.to_fits"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.to_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMap.data"><code class="docutils literal notranslate"><span class="pre">ConvergenceMap.data</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.n_bins"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.n_bins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.nside"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.__init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.__post_init__"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.add_shape_noise"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.add_shape_noise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.apply_bnt_transform"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.apply_bnt_transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.compute_all_power_spectra"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.compute_all_power_spectra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.from_array"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.from_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.from_h5"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.from_h5()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id1"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.n_bins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id2"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.to_array"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.to_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConvergenceMapCollection.maps"><code class="docutils literal notranslate"><span class="pre">ConvergenceMapCollection.maps</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask"><code class="docutils literal notranslate"><span class="pre">SurveyMask</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.npix"><code class="docutils literal notranslate"><span class="pre">SurveyMask.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.__init__"><code class="docutils literal notranslate"><span class="pre">SurveyMask.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.__post_init__"><code class="docutils literal notranslate"><span class="pre">SurveyMask.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.angular_radius_deg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.angular_radius_deg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.apodization_deg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.apodization_deg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.area_sqdeg"><code class="docutils literal notranslate"><span class="pre">SurveyMask.area_sqdeg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.center_coords"><code class="docutils literal notranslate"><span class="pre">SurveyMask.center_coords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.copy"><code class="docutils literal notranslate"><span class="pre">SurveyMask.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.create_apodized_disk_mask"><code class="docutils literal notranslate"><span class="pre">SurveyMask.create_apodized_disk_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.create_disk_mask"><code class="docutils literal notranslate"><span class="pre">SurveyMask.create_disk_mask()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.f_sky"><code class="docutils literal notranslate"><span class="pre">SurveyMask.f_sky</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.from_fits"><code class="docutils literal notranslate"><span class="pre">SurveyMask.from_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.full_sky"><code class="docutils literal notranslate"><span class="pre">SurveyMask.full_sky()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.invert"><code class="docutils literal notranslate"><span class="pre">SurveyMask.invert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.is_binary"><code class="docutils literal notranslate"><span class="pre">SurveyMask.is_binary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.n_unmasked_pixels"><code class="docutils literal notranslate"><span class="pre">SurveyMask.n_unmasked_pixels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id3"><code class="docutils literal notranslate"><span class="pre">SurveyMask.npix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.nside"><code class="docutils literal notranslate"><span class="pre">SurveyMask.nside</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.to_fits"><code class="docutils literal notranslate"><span class="pre">SurveyMask.to_fits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SurveyMask.data"><code class="docutils literal notranslate"><span class="pre">SurveyMask.data</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector"><code class="docutils literal notranslate"><span class="pre">DataVector</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.n_features"><code class="docutils literal notranslate"><span class="pre">DataVector.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.__init__"><code class="docutils literal notranslate"><span class="pre">DataVector.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.__post_init__"><code class="docutils literal notranslate"><span class="pre">DataVector.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.concatenate"><code class="docutils literal notranslate"><span class="pre">DataVector.concatenate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.cosmology_params"><code class="docutils literal notranslate"><span class="pre">DataVector.cosmology_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.filter_zero_variance"><code class="docutils literal notranslate"><span class="pre">DataVector.filter_zero_variance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.flatten"><code class="docutils literal notranslate"><span class="pre">DataVector.flatten()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.from_dict"><code class="docutils literal notranslate"><span class="pre">DataVector.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.load"><code class="docutils literal notranslate"><span class="pre">DataVector.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id4"><code class="docutils literal notranslate"><span class="pre">DataVector.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.normalize"><code class="docutils literal notranslate"><span class="pre">DataVector.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.param_names"><code class="docutils literal notranslate"><span class="pre">DataVector.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.save"><code class="docutils literal notranslate"><span class="pre">DataVector.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.select_features"><code class="docutils literal notranslate"><span class="pre">DataVector.select_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.shape"><code class="docutils literal notranslate"><span class="pre">DataVector.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.to_dict"><code class="docutils literal notranslate"><span class="pre">DataVector.to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.data"><code class="docutils literal notranslate"><span class="pre">DataVector.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.statistic_type"><code class="docutils literal notranslate"><span class="pre">DataVector.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVector.metadata"><code class="docutils literal notranslate"><span class="pre">DataVector.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_simulations"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_features"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.n_params"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.__init__"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.__post_init__"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.__post_init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.filter_zero_variance"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.filter_zero_variance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.get_single"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.get_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.load"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id5"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_features</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id6"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id7"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.n_simulations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.normalize"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.param_names"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.save"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.train_test_split"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.train_test_split()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.data_vectors"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.data_vectors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.parameters"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.statistic_type"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataVectorCollection.metadata"><code class="docutils literal notranslate"><span class="pre">DataVectorCollection.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.get_bnt_matrix"><code class="docutils literal notranslate"><span class="pre">get_bnt_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor"><code class="docutils literal notranslate"><span class="pre">BaseProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.config"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.statistic_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_batch"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_batch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_collection"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BaseProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id8"><code class="docutils literal notranslate"><span class="pre">BaseProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.__init__"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.add_noise"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.add_noise</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.apply_mask"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.apply_mask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.force_overwrite"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.force_overwrite</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.galaxy_density"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.galaxy_density</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.mask_area_sqdeg"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.mask_area_sqdeg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.mask_center"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.mask_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.n_workers"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.n_workers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.noise_level"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.noise_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.output_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.random_seed"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.random_seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingConfig.verbose"><code class="docutils literal notranslate"><span class="pre">ProcessingConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.apply_bnt_transform"><code class="docutils literal notranslate"><span class="pre">apply_bnt_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.lmax"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.lmax</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.ell_range"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.ell_range</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_all_cross_spectra"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_all_cross_spectra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_cross"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_cross()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.__init__"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.bin_width"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.bin_width</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.binning"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.binning</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.ell_max"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.ell_max</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.ell_min"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.ell_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PowerSpectrumConfig.lmax"><code class="docutils literal notranslate"><span class="pre">PowerSpectrumConfig.lmax</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_power_spectrum"><code class="docutils literal notranslate"><span class="pre">compute_power_spectrum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_cross_power_spectrum"><code class="docutils literal notranslate"><span class="pre">compute_cross_power_spectrum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.nscales"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.nscales</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.nbins"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.pycs_available"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.pycs_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.get_output_shape"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.get_output_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">L1NormProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig"><code class="docutils literal notranslate"><span class="pre">L1NormConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.__init__"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.max_snr"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.max_snr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.max_snr_coarse"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.max_snr_coarse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.min_snr"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.min_snr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.min_snr_coarse"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.min_snr_coarse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.nbins"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.noise_std"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.noise_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.L1NormConfig.nscales"><code class="docutils literal notranslate"><span class="pre">L1NormConfig.nscales</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_l1_norms"><code class="docutils literal notranslate"><span class="pre">compute_l1_norms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.nscales"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.nscales</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.nbins"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.pycs_available"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.pycs_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.__init__"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.get_output_shape"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.get_output_shape()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.get_output_suffix"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.get_output_suffix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.process_single"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.process_single()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountProcessor.statistic_type"><code class="docutils literal notranslate"><span class="pre">PeakCountProcessor.statistic_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.__init__"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.max_val"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.max_val</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.min_val"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.min_val</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.nbins"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.nbins</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.noise_std"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.noise_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.PeakCountConfig.nscales"><code class="docutils literal notranslate"><span class="pre">PeakCountConfig.nscales</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_peak_counts"><code class="docutils literal notranslate"><span class="pre">compute_peak_counts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference"><code class="docutils literal notranslate"><span class="pre">NPEInference</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.config"><code class="docutils literal notranslate"><span class="pre">NPEInference.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.is_trained"><code class="docutils literal notranslate"><span class="pre">NPEInference.is_trained</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.jaxili_available"><code class="docutils literal notranslate"><span class="pre">NPEInference.jaxili_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.__init__"><code class="docutils literal notranslate"><span class="pre">NPEInference.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id9"><code class="docutils literal notranslate"><span class="pre">NPEInference.is_trained</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.load"><code class="docutils literal notranslate"><span class="pre">NPEInference.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.sample"><code class="docutils literal notranslate"><span class="pre">NPEInference.sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.sample_batch"><code class="docutils literal notranslate"><span class="pre">NPEInference.sample_batch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEInference.train"><code class="docutils literal notranslate"><span class="pre">NPEInference.train()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig"><code class="docutils literal notranslate"><span class="pre">NPEConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.__init__"><code class="docutils literal notranslate"><span class="pre">NPEConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.batch_size"><code class="docutils literal notranslate"><span class="pre">NPEConfig.batch_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.checkpoint_dir"><code class="docutils literal notranslate"><span class="pre">NPEConfig.checkpoint_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.checkpoint_name"><code class="docutils literal notranslate"><span class="pre">NPEConfig.checkpoint_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.gpu_id"><code class="docutils literal notranslate"><span class="pre">NPEConfig.gpu_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.learning_rate"><code class="docutils literal notranslate"><span class="pre">NPEConfig.learning_rate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.num_epochs"><code class="docutils literal notranslate"><span class="pre">NPEConfig.num_epochs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.random_seed"><code class="docutils literal notranslate"><span class="pre">NPEConfig.random_seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEConfig.verbose"><code class="docutils literal notranslate"><span class="pre">NPEConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult"><code class="docutils literal notranslate"><span class="pre">NPEResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.num_samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.num_params"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.__init__"><code class="docutils literal notranslate"><span class="pre">NPEResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_mean"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_mean()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_param_samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_param_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_quantiles"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_quantiles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.get_std"><code class="docutils literal notranslate"><span class="pre">NPEResult.get_std()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.load"><code class="docutils literal notranslate"><span class="pre">NPEResult.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id10"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_params</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id11"><code class="docutils literal notranslate"><span class="pre">NPEResult.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.observed_data"><code class="docutils literal notranslate"><span class="pre">NPEResult.observed_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.save"><code class="docutils literal notranslate"><span class="pre">NPEResult.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.summary"><code class="docutils literal notranslate"><span class="pre">NPEResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.samples"><code class="docutils literal notranslate"><span class="pre">NPEResult.samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.param_names"><code class="docutils literal notranslate"><span class="pre">NPEResult.param_names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.NPEResult.metadata"><code class="docutils literal notranslate"><span class="pre">NPEResult.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.run_npe_inference"><code class="docutils literal notranslate"><span class="pre">run_npe_inference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester"><code class="docutils literal notranslate"><span class="pre">CoverageTester</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.config"><code class="docutils literal notranslate"><span class="pre">CoverageTester.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.tarp_available"><code class="docutils literal notranslate"><span class="pre">CoverageTester.tarp_available</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageTester.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test_from_samples"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test_from_samples()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageTester.test_npe"><code class="docutils literal notranslate"><span class="pre">CoverageTester.test_npe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig"><code class="docutils literal notranslate"><span class="pre">CoverageConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.bootstrap"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.bootstrap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.metric"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.metric</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.normalize"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.normalize</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_bootstrap"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_bootstrap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_samples"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_samples</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.num_sims"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.num_sims</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.references"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.references</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.seed"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageConfig.verbose"><code class="docutils literal notranslate"><span class="pre">CoverageConfig.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult"><code class="docutils literal notranslate"><span class="pre">CoverageResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.is_calibrated"><code class="docutils literal notranslate"><span class="pre">CoverageResult.is_calibrated</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.__init__"><code class="docutils literal notranslate"><span class="pre">CoverageResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp_mean"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp_mean</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp_std"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp_std</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.get_deviation_from_diagonal"><code class="docutils literal notranslate"><span class="pre">CoverageResult.get_deviation_from_diagonal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#id12"><code class="docutils literal notranslate"><span class="pre">CoverageResult.is_calibrated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.load"><code class="docutils literal notranslate"><span class="pre">CoverageResult.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.save"><code class="docutils literal notranslate"><span class="pre">CoverageResult.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.summary"><code class="docutils literal notranslate"><span class="pre">CoverageResult.summary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.ecp"><code class="docutils literal notranslate"><span class="pre">CoverageResult.ecp</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.alpha"><code class="docutils literal notranslate"><span class="pre">CoverageResult.alpha</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.config"><code class="docutils literal notranslate"><span class="pre">CoverageResult.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.CoverageResult.metadata"><code class="docutils literal notranslate"><span class="pre">CoverageResult.metadata</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.compute_tarp_coverage"><code class="docutils literal notranslate"><span class="pre">compute_tarp_coverage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError"><code class="docutils literal notranslate"><span class="pre">BarImpactError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.message"><code class="docutils literal notranslate"><span class="pre">BarImpactError.message</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.context"><code class="docutils literal notranslate"><span class="pre">BarImpactError.context</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.BarImpactError.__init__"><code class="docutils literal notranslate"><span class="pre">BarImpactError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConfigurationError"><code class="docutils literal notranslate"><span class="pre">ConfigurationError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ConfigurationError.__init__"><code class="docutils literal notranslate"><span class="pre">ConfigurationError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataLoadError"><code class="docutils literal notranslate"><span class="pre">DataLoadError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.DataLoadError.__init__"><code class="docutils literal notranslate"><span class="pre">DataLoadError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingError"><code class="docutils literal notranslate"><span class="pre">ProcessingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.ProcessingError.__init__"><code class="docutils literal notranslate"><span class="pre">ProcessingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.MaskError"><code class="docutils literal notranslate"><span class="pre">MaskError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.MaskError.__init__"><code class="docutils literal notranslate"><span class="pre">MaskError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TransformError"><code class="docutils literal notranslate"><span class="pre">TransformError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TransformError.__init__"><code class="docutils literal notranslate"><span class="pre">TransformError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.InferenceError"><code class="docutils literal notranslate"><span class="pre">InferenceError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.InferenceError.__init__"><code class="docutils literal notranslate"><span class="pre">InferenceError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TrainingError"><code class="docutils literal notranslate"><span class="pre">TrainingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.TrainingError.__init__"><code class="docutils literal notranslate"><span class="pre">TrainingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SamplingError"><code class="docutils literal notranslate"><span class="pre">SamplingError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.SamplingError.__init__"><code class="docutils literal notranslate"><span class="pre">SamplingError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#bar_impact.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.analysis.html">bar_impact.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.core.html">bar_impact.core package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.inference.html">bar_impact.inference package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.processing.html">bar_impact.processing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.utils.html">bar_impact.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/bar_impact.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.cli.html">bar_impact.cli module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.constants.html">bar_impact.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/bar_impact.exceptions.html">bar_impact.exceptions module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">BAR_IMPACT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">bar_impact.core.maps</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for bar_impact.core.maps</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convergence map data structure for BAR_IMPACT.</span>
+
+<span class="sd">This module provides the ConvergenceMap class for representing and</span>
+<span class="sd">manipulating HEALPix weak lensing convergence (kappa) maps.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">healpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bar_impact.constants</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">COSMOGRID_MAP_KEY_TEMPLATE</span><span class="p">,</span>
+    <span class="n">DEFAULT_GALAXY_DENSITY</span><span class="p">,</span>
+    <span class="n">DEFAULT_LMAX</span><span class="p">,</span>
+    <span class="n">DEFAULT_SIGMA_E</span><span class="p">,</span>
+    <span class="n">get_bnt_matrix</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">bar_impact.core.masks</span><span class="w"> </span><span class="kn">import</span> <span class="n">SurveyMask</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">,</span> <span class="s2">&quot;ConvergenceMapCollection&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ConvergenceMap">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvergenceMap</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of a HEALPix weak lensing convergence map.</span>
+
+<span class="sd">    This class encapsulates a convergence (kappa) map along with its</span>
+<span class="sd">    metadata, and provides methods for common operations like adding</span>
+<span class="sd">    noise, applying masks, and computing summary statistics.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : np.ndarray</span>
+<span class="sd">        HEALPix map data array.</span>
+<span class="sd">    nside : int, optional</span>
+<span class="sd">        HEALPix resolution parameter. If not provided, will be inferred</span>
+<span class="sd">        from the data array length.</span>
+<span class="sd">    bin_number : int, optional</span>
+<span class="sd">        Tomographic redshift bin number (1-indexed).</span>
+<span class="sd">    simulation_type : str, optional</span>
+<span class="sd">        Type of simulation: &quot;baryonified&quot; or &quot;nobaryons&quot;.</span>
+<span class="sd">    cosmology_id : str, optional</span>
+<span class="sd">        Identifier for the cosmology (e.g., &quot;cosmo_0001&quot;).</span>
+<span class="sd">    permutation_id : str, optional</span>
+<span class="sd">        Identifier for the realization (e.g., &quot;perm_0001&quot;).</span>
+<span class="sd">    is_noisy : bool</span>
+<span class="sd">        Whether shape noise has been added.</span>
+<span class="sd">    noise_level : float, optional</span>
+<span class="sd">        Shape noise level (sigma_e) if noise was added.</span>
+<span class="sd">    is_bnt_transformed : bool</span>
+<span class="sd">        Whether BNT transform has been applied.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    npix : int</span>
+<span class="sd">        Number of pixels in the map.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; data = np.random.randn(12 * 512**2) * 0.01</span>
+<span class="sd">    &gt;&gt;&gt; kappa = ConvergenceMap(data, nside=512, bin_number=1)</span>
+<span class="sd">    &gt;&gt;&gt; kappa.npix</span>
+<span class="sd">    3145728</span>
+<span class="sd">    &gt;&gt;&gt; kappa.nside</span>
+<span class="sd">    512</span>
+
+<span class="sd">    &gt;&gt;&gt; # Add shape noise</span>
+<span class="sd">    &gt;&gt;&gt; kappa_noisy = kappa.add_shape_noise(sigma_e=0.26)</span>
+<span class="sd">    &gt;&gt;&gt; kappa_noisy.is_noisy</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">nside</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">bin_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">simulation_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cosmology_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">permutation_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_noisy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">noise_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_bnt_transformed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">bnt_bin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ConvergenceMap.__post_init__">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.__post_init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate and set derived attributes.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="c1"># Infer nside if not provided</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nside</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nside</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">npix2nside</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="c1"># Validate data length</span>
+        <span class="n">expected_npix</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">nside2npix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">expected_npix</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Data length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not match nside=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(expected </span><span class="si">{</span><span class="n">expected_npix</span><span class="si">}</span><span class="s2"> pixels)&quot;</span>
+            <span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">npix</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of pixels in the map.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pixel_area_sr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pixel area in steradians.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">hp</span><span class="o">.</span><span class="n">nside2pixarea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pixel_area_arcmin2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pixel area in square arcminutes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">hp</span><span class="o">.</span><span class="n">nside2pixarea</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3600</span>
+
+<div class="viewcode-block" id="ConvergenceMap.from_h5">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.from_h5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_h5</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">bin_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">key_template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">COSMOGRID_MAP_KEY_TEMPLATE</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load a convergence map from a CosmoGRID HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Path to the HDF5 file.</span>
+<span class="sd">        bin_number : int</span>
+<span class="sd">            Tomographic bin number (1-indexed).</span>
+<span class="sd">        key_template : str, optional</span>
+<span class="sd">            HDF5 key template with {bin_number} placeholder.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional keyword arguments passed to the constructor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMap</span>
+<span class="sd">            Loaded convergence map.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; kappa = ConvergenceMap.from_h5(</span>
+<span class="sd">        ...     &quot;projected_probes_maps_baryonified512.h5&quot;,</span>
+<span class="sd">        ...     bin_number=2</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">map_key</span> <span class="o">=</span> <span class="n">key_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bin_number</span><span class="o">=</span><span class="n">bin_number</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">map_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">available</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Key &#39;</span><span class="si">{</span><span class="n">map_key</span><span class="si">}</span><span class="s2">&#39; not found in </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Available keys: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">map_key</span><span class="p">])</span>
+
+        <span class="c1"># Try to infer simulation type from filename</span>
+        <span class="n">simulation_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;simulation_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">simulation_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;baryonified&quot;</span> <span class="ow">in</span> <span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">simulation_type</span> <span class="o">=</span> <span class="s2">&quot;baryonified&quot;</span>
+            <span class="k">elif</span> <span class="s2">&quot;nobaryons&quot;</span> <span class="ow">in</span> <span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">simulation_type</span> <span class="o">=</span> <span class="s2">&quot;nobaryons&quot;</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">bin_number</span><span class="o">=</span><span class="n">bin_number</span><span class="p">,</span>
+            <span class="n">simulation_type</span><span class="o">=</span><span class="n">simulation_type</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.from_fits">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.from_fits">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_fits</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">field</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load a convergence map from a FITS file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Path to the FITS file.</span>
+<span class="sd">        field : int, optional</span>
+<span class="sd">            Field index to read (default: 0).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional keyword arguments passed to the constructor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMap</span>
+<span class="sd">            Loaded convergence map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">read_map</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.copy">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a deep copy of this map.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ConvergenceMap</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">nside</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">,</span>
+            <span class="n">bin_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_number</span><span class="p">,</span>
+            <span class="n">simulation_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_type</span><span class="p">,</span>
+            <span class="n">cosmology_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmology_id</span><span class="p">,</span>
+            <span class="n">permutation_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">permutation_id</span><span class="p">,</span>
+            <span class="n">is_noisy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_noisy</span><span class="p">,</span>
+            <span class="n">noise_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_level</span><span class="p">,</span>
+            <span class="n">is_bnt_transformed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_bnt_transformed</span><span class="p">,</span>
+            <span class="n">bnt_bin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bnt_bin</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.add_shape_noise">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.add_shape_noise">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_shape_noise</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sigma_e</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_SIGMA_E</span><span class="p">,</span>
+        <span class="n">galaxy_density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_GALAXY_DENSITY</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add shape noise to the convergence map.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma_e : float, optional</span>
+<span class="sd">            Intrinsic ellipticity dispersion (default: 0.26).</span>
+<span class="sd">        galaxy_density : float, optional</span>
+<span class="sd">            Galaxy number density in arcmin^-2 (default: 6.75).</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            Random seed for reproducibility.</span>
+<span class="sd">        inplace : bool, optional</span>
+<span class="sd">            If True, modify this map in place. Otherwise return a new map.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMap</span>
+<span class="sd">            Map with added shape noise (self if inplace=True).</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The shape noise variance per pixel is:</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \\sigma_{\\rm pix}^2 = \\frac{\\sigma_e^2}{n_{\\rm gal} \\cdot A_{\\rm pix}}</span>
+
+<span class="sd">        where :math:`n_{\\rm gal}` is the galaxy density and</span>
+<span class="sd">        :math:`A_{\\rm pix}` is the pixel area.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span>
+
+        <span class="c1"># Calculate noise per pixel</span>
+        <span class="n">sigma_pix</span> <span class="o">=</span> <span class="n">sigma_e</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">galaxy_density</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixel_area_arcmin2</span><span class="p">)</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">sigma_pix</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npix</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">+=</span> <span class="n">noise</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_noisy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">noise_level</span> <span class="o">=</span> <span class="n">sigma_e</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">noise</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">is_noisy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">noise_level</span> <span class="o">=</span> <span class="n">sigma_e</span>
+            <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.apply_mask">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.apply_mask">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_mask</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mask</span><span class="p">:</span> <span class="s2">&quot;SurveyMask&quot;</span><span class="p">,</span>
+        <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply a survey mask to the map.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mask : SurveyMask</span>
+<span class="sd">            Survey mask to apply.</span>
+<span class="sd">        fill_value : float, optional</span>
+<span class="sd">            Value to use for masked pixels (default: 0.0).</span>
+<span class="sd">        inplace : bool, optional</span>
+<span class="sd">            If True, modify this map in place.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMap</span>
+<span class="sd">            Masked map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">nside</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Mask nside (</span><span class="si">{</span><span class="n">mask</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2">) does not match map nside (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.compute_power_spectrum">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.compute_power_spectrum">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_power_spectrum</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_LMAX</span><span class="p">,</span>
+        <span class="n">return_ell</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the angular power spectrum of the map.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lmax : int, optional</span>
+<span class="sd">            Maximum multipole (default: 1024).</span>
+<span class="sd">        return_ell : bool, optional</span>
+<span class="sd">            If True, also return the multipole values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cls : np.ndarray</span>
+<span class="sd">            Angular power spectrum C_ell.</span>
+<span class="sd">        ell : np.ndarray, optional</span>
+<span class="sd">            Multipole values (if return_ell=True).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">alm</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">map2alm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">)</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">alm2cl</span><span class="p">(</span><span class="n">alm</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_ell</span><span class="p">:</span>
+            <span class="n">ell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">ell</span>
+        <span class="k">return</span> <span class="bp">cls</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.compute_cross_power_spectrum">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.compute_cross_power_spectrum">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_cross_power_spectrum</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;ConvergenceMap&quot;</span><span class="p">,</span>
+        <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_LMAX</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the cross power spectrum with another map.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : ConvergenceMap</span>
+<span class="sd">            Another convergence map.</span>
+<span class="sd">        lmax : int, optional</span>
+<span class="sd">            Maximum multipole (default: 1024).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Cross power spectrum C_ell^{ab}.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nside</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">nside</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Map nsides do not match: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">alm1</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">map2alm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">)</span>
+        <span class="n">alm2</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">map2alm</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hp</span><span class="o">.</span><span class="n">alm2cl</span><span class="p">(</span><span class="n">alm1</span><span class="p">,</span> <span class="n">alm2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMap.to_fits">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMap.to_fits">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_fits</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the map to a FITS file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Output file path.</span>
+<span class="sd">        overwrite : bool, optional</span>
+<span class="sd">            Whether to overwrite existing file.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional arguments passed to healpy.write_map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hp</span><span class="o">.</span><span class="n">write_map</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ConvergenceMap(nside=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;, bin=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_noisy</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;, noisy(σ=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">noise_level</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_bnt_transformed</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;, bnt_bin=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bnt_bin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvergenceMapCollection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collection of convergence maps across multiple redshift bins.</span>
+
+<span class="sd">    This class provides methods for working with tomographic data,</span>
+<span class="sd">    including BNT transforms and cross-correlations.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    maps : List[ConvergenceMap]</span>
+<span class="sd">        List of convergence maps, one per redshift bin.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_bins : int</span>
+<span class="sd">        Number of redshift bins.</span>
+<span class="sd">    nside : int</span>
+<span class="sd">        HEALPix resolution (must be same for all maps).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; maps = [ConvergenceMap.from_h5(file, bin_number=i) for i in range(1, 5)]</span>
+<span class="sd">    &gt;&gt;&gt; collection = ConvergenceMapCollection(maps)</span>
+<span class="sd">    &gt;&gt;&gt; bnt_collection = collection.apply_bnt_transform()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">maps</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ConvergenceMap</span><span class="p">]</span>
+
+<div class="viewcode-block" id="ConvergenceMapCollection.__post_init__">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.__post_init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the collection.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Collection must contain at least one map&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check all maps have same nside</span>
+        <span class="n">nsides</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">nside</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nsides</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All maps must have same nside, got </span><span class="si">{</span><span class="n">nsides</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Sort by bin number if available</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">bin_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maps</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">bin_number</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of maps in the collection.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nside</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;HEALPix resolution parameter.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">nside</span>
+
+<div class="viewcode-block" id="ConvergenceMapCollection.from_h5">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.from_h5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_h5</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
+        <span class="n">bin_numbers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMapCollection&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load multiple bins from a CosmoGRID HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str or Path</span>
+<span class="sd">            Path to the HDF5 file.</span>
+<span class="sd">        bin_numbers : List[int], optional</span>
+<span class="sd">            List of bin numbers to load (default: [1, 2, 3, 4]).</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional arguments passed to ConvergenceMap.from_h5.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMapCollection</span>
+<span class="sd">            Collection of loaded maps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">bin_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bin_numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">maps</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ConvergenceMap</span><span class="o">.</span><span class="n">from_h5</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">bin_number</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bin_numbers</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">maps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection.to_array">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.to_array">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert to a 2D numpy array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">            Array of shape (n_bins, npix).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection.from_array">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.from_array">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_array</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">nside</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMapCollection&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create collection from a 2D array.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray</span>
+<span class="sd">            Array of shape (n_bins, npix).</span>
+<span class="sd">        nside : int, optional</span>
+<span class="sd">            HEALPix resolution parameter.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional arguments passed to ConvergenceMap constructor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMapCollection</span>
+<span class="sd">            Collection of maps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">maps</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ConvergenceMap</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">nside</span><span class="o">=</span><span class="n">nside</span><span class="p">,</span> <span class="n">bin_number</span><span class="o">=</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">maps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection.add_shape_noise">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.add_shape_noise">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_shape_noise</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sigma_e</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_SIGMA_E</span><span class="p">,</span>
+        <span class="n">galaxy_density</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_GALAXY_DENSITY</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMapCollection&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add shape noise to all maps in the collection.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma_e : float, optional</span>
+<span class="sd">            Intrinsic ellipticity dispersion.</span>
+<span class="sd">        galaxy_density : float, optional</span>
+<span class="sd">            Galaxy number density in arcmin^-2.</span>
+<span class="sd">        seed : int, optional</span>
+<span class="sd">            Base random seed. Each map uses seed+bin_number.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMapCollection</span>
+<span class="sd">            Collection with noisy maps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">noisy_maps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">):</span>
+            <span class="n">map_seed</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">seed</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="n">noisy_maps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">add_shape_noise</span><span class="p">(</span>
+                    <span class="n">sigma_e</span><span class="o">=</span><span class="n">sigma_e</span><span class="p">,</span>
+                    <span class="n">galaxy_density</span><span class="o">=</span><span class="n">galaxy_density</span><span class="p">,</span>
+                    <span class="n">seed</span><span class="o">=</span><span class="n">map_seed</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ConvergenceMapCollection</span><span class="p">(</span><span class="n">noisy_maps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection.apply_bnt_transform">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.apply_bnt_transform">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_bnt_transform</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">bnt_matrix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ConvergenceMapCollection&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply BNT transform to the map collection.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bnt_matrix : np.ndarray, optional</span>
+<span class="sd">            Custom BNT matrix. If None, uses the default 4-bin matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ConvergenceMapCollection</span>
+<span class="sd">            BNT-transformed maps.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If matrix dimensions don&#39;t match number of bins.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">get_bnt_matrix</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_bins</span><span class="p">,</span> <span class="n">custom_matrix</span><span class="o">=</span><span class="n">bnt_matrix</span><span class="p">)</span>
+
+        <span class="c1"># Stack maps and apply transform</span>
+        <span class="n">stacked</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>  <span class="c1"># (n_bins, npix)</span>
+        <span class="n">transformed</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">@</span> <span class="n">stacked</span>  <span class="c1"># (n_bins, npix)</span>
+
+        <span class="c1"># Create new maps with BNT metadata</span>
+        <span class="n">bnt_maps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">orig_map</span><span class="p">,</span> <span class="n">new_data</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">,</span> <span class="n">transformed</span><span class="p">)):</span>
+            <span class="n">new_map</span> <span class="o">=</span> <span class="n">ConvergenceMap</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">new_data</span><span class="p">,</span>
+                <span class="n">nside</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">,</span>
+                <span class="n">bin_number</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">bin_number</span><span class="p">,</span>
+                <span class="n">simulation_type</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">simulation_type</span><span class="p">,</span>
+                <span class="n">cosmology_id</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">cosmology_id</span><span class="p">,</span>
+                <span class="n">permutation_id</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">permutation_id</span><span class="p">,</span>
+                <span class="n">is_noisy</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">is_noisy</span><span class="p">,</span>
+                <span class="n">noise_level</span><span class="o">=</span><span class="n">orig_map</span><span class="o">.</span><span class="n">noise_level</span><span class="p">,</span>
+                <span class="n">is_bnt_transformed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">bnt_bin</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>  <span class="c1"># 0-indexed BNT bin</span>
+            <span class="p">)</span>
+            <span class="n">bnt_maps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_map</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ConvergenceMapCollection</span><span class="p">(</span><span class="n">bnt_maps</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ConvergenceMapCollection.compute_all_power_spectra">
+<a class="viewcode-back" href="../../../api/generated/bar_impact.core.html#bar_impact.ConvergenceMapCollection.compute_all_power_spectra">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_all_power_spectra</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">lmax</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_LMAX</span><span class="p">,</span>
+        <span class="n">include_cross</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute all auto and cross power spectra.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lmax : int, optional</span>
+<span class="sd">            Maximum multipole.</span>
+<span class="sd">        include_cross : bool, optional</span>
+<span class="sd">            Whether to include cross-spectra (default: True).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary with keys (i, j) for bin pairs and Cls as values.</span>
+<span class="sd">            Auto-spectra have i==j, cross-spectra have i&lt;j.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># First compute all alms</span>
+        <span class="n">alms</span> <span class="o">=</span> <span class="p">[</span><span class="n">hp</span><span class="o">.</span><span class="n">map2alm</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">]</span>
+
+        <span class="n">cls_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Auto-spectra</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_bins</span><span class="p">):</span>
+            <span class="n">cls_dict</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">alm2cl</span><span class="p">(</span><span class="n">alms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="c1"># Cross-spectra</span>
+        <span class="k">if</span> <span class="n">include_cross</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_bins</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_bins</span><span class="p">):</span>
+                    <span class="n">cls_dict</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">alm2cl</span><span class="p">(</span><span class="n">alms</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alms</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">cls_dict</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConvergenceMap</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;ConvergenceMapCollection(n_bins=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_bins</span><span class="si">}</span><span class="s2">, nside=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Andreas Tersenov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
