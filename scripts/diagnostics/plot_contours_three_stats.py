@@ -63,16 +63,42 @@ SIG_MAX = 0.08          # collapse guard on sigma(S8), same threshold as plot_ns
 STYLE = {"Power spectrum": "#0072B2", "Peak counts": "#D55E00", "L1 norm": "#009E73"}
 
 
-def ps_globs(A):
-    tail = (f"bins1234_l37-1020_r10_masked_{A}sqdeg_apod2.0_master_submean_"
+PS_AGG = f"{REPO}/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
+THRESHOLD = 0.3         # the baryon-safety tolerance the campaign reports against
+
+
+def required_ps_lmax(A, threshold=THRESHOLD):
+    """Largest step-40 upper cut whose mean 3-param tension is still BELOW `threshold`.
+
+    Not the same as the 0.3-sigma *crossing*. The crossing (reported by
+    plot_nsigma_vs_lmax.py as `lmax_first_grid_cut_at_or_above`) is the first cut that
+    FAILS; the cut you would actually adopt is the last one that PASSES. At 14000 deg^2
+    those are 500 and 460 respectively — using the crossing would put a 0.41-sigma bias
+    into a figure captioned "baryon-safe".
+
+    Read from the campaign table rather than hardcoded, so it tracks the data.
+    """
+    rows = [(int(r["upper_cut"]), float(r["mean"]))
+            for r in csv.DictReader(open(PS_AGG)) if int(r["area"]) == A]
+    if not rows:
+        raise SystemExit(f"[fatal] no rows for area {A} in {PS_AGG}")
+    safe = [c for c, m in sorted(rows) if m < threshold]
+    if not safe:
+        raise SystemExit(f"[fatal] no cut at {A} deg^2 keeps the PS bias below "
+                         f"{threshold} sigma — nothing is baryon-safe here")
+    return max(safe)
+
+
+def ps_globs(A, lmax):
+    tail = (f"bins1234_l37-{lmax}_r10_masked_{A}sqdeg_apod2.0_master_submean_"
             f"noisy_s0.26_run*.npy")
     base = f"{PSD}/mask_{A:05d}"
     return (f"{base}/null/posterior_samples_ps_auto_cross_nobaryons_vs_nobaryons_{tail}",
             f"{base}/biased/posterior_samples_ps_auto_cross_nobaryons_vs_baryonified_{tail}")
 
 
-def hos_globs(prefix, A):
-    tail = (f"bins1234_scales1234_noisy_s0.26_masked_{HOS_TAG[A]}sqdeg_submean_"
+def hos_globs(prefix, A, scales):
+    tail = (f"bins1234_{scales}_noisy_s0.26_masked_{HOS_TAG[A]}sqdeg_submean_"
             f"new_normalization*_npe.npy")
     return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",
             f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_baryonified_{tail}")
@@ -124,9 +150,32 @@ def main():
     ap.add_argument("--mode", default="both", choices=("both", "null", "biased"))
     ap.add_argument("--single-run", type=int, default=None,
                     help="Use only this run index instead of pooling all paired runs.")
+    ap.add_argument("--cut-mode", default="full", choices=("full", "baryon-safe"),
+                    help="full: PS to lmax=1020, HOS keep all four detail scales. "
+                         "baryon-safe: PS at the largest cut whose bias stays under "
+                         "0.3 sigma (read from the campaign table), HOS drop the finest "
+                         "wavelet scale (scales234).")
+    ap.add_argument("--ps-lmax", type=int, default=None,
+                    help="Override the PS upper cut. Use 400 to reproduce the ell-matched "
+                         "pairing of the Fisher baryon-safe figure.")
+    ap.add_argument("--hos-scales", default=None,
+                    help="Override the HOS scale tag, e.g. scales234 or scales1234.")
     ap.add_argument("--width", type=float, default=6.0, help="figure width in inches")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+
+    # The two cuts are not the same KIND of cut — the PS drops multipoles, the HOS drop a
+    # wavelet scale — so they are resolved independently and both recorded in the sidecar.
+    if args.cut_mode == "baryon-safe":
+        ps_lmax = args.ps_lmax or required_ps_lmax(args.area)
+        hos_scales = args.hos_scales or "scales234"
+        ps_cut_note = ("largest step-40 cut with mean tension < 0.3 sigma"
+                       if not args.ps_lmax else "explicit --ps-lmax")
+    else:
+        ps_lmax = args.ps_lmax or 1020
+        hos_scales = args.hos_scales or "scales1234"
+        ps_cut_note = "no upper cut (full resolution)" if not args.ps_lmax else "explicit --ps-lmax"
+    print(f"cut mode: {args.cut_mode}   PS lmax={ps_lmax} ({ps_cut_note})   HOS {hos_scales}")
 
     aa = f"{REPO}/styles/aa.mplstyle"
     if os.path.exists(aa):
@@ -136,9 +185,9 @@ def main():
 
     from getdist import MCSamples, plots
 
-    stats = [("Power spectrum", ps_globs(args.area)),
-             ("Peak counts", hos_globs("pc_", args.area)),
-             ("L1 norm", hos_globs("", args.area))]
+    stats = [("Power spectrum", ps_globs(args.area, ps_lmax)),
+             ("Peak counts", hos_globs("pc_", args.area, hos_scales)),
+             ("L1 norm", hos_globs("", args.area, hos_scales))]
 
     names = ["Om", "S8", "w0"]
     labels = [r"\Omega_\mathrm{m}", "S_8", "w_0"]
@@ -189,8 +238,11 @@ def main():
                     legend_labels=legend, legend_loc="upper right",
                     markers=TRUTH)
 
+    # The cut goes in the filename: a baryon-safe figure and a full-resolution one are
+    # different physics and must never land on the same path.
+    _cut_tag = "" if args.cut_mode == "full" else f"_bsafe_l{ps_lmax}_{hos_scales}"
     out = args.out or (f"{REPO}/outputs/plots/contours_three_stats/"
-                       f"contours_PS_peaks_L1_{args.mode}_{args.area}")
+                       f"contours_PS_peaks_L1_{args.mode}_{args.area}{_cut_tag}")
     out = os.path.splitext(out)[0]
     if args.single_run is not None:
         out += f"_run{args.single_run}"
@@ -239,9 +291,18 @@ def main():
         "collapse_guard_sigma_S8_max": SIG_MAX,
         "series": rows,
         "runs_dropped": {k: [[r, why] for r, why in v] for k, v in dropped_all.items()},
+        "cut_mode": args.cut_mode,
+        "cuts": {
+            "power_spectrum_lmax": ps_lmax,
+            "power_spectrum_lmax_chosen_by": ps_cut_note,
+            "hos_scale_tag": hos_scales,
+            "threshold_sigma": THRESHOLD,
+        },
         "conventions": {
-            "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10",
-            "peaks_l1": "wavelet scales 1-4, submean, new_normalization, noisy s=0.26",
+            "power_spectrum": (f"monopole-subtracted MASTER, lmin=37, lmax={ps_lmax}, "
+                               f"rebin=10"),
+            "peaks_l1": (f"wavelet {hos_scales}, submean, new_normalization, "
+                         f"noisy s=0.26"),
         },
         "versions": {m: ver(m) for m in ("numpy", "scipy", "getdist", "matplotlib")},
         "mplstyle": aa if os.path.exists(aa) else "matplotlib defaults",
@@ -259,6 +320,16 @@ def main():
             "numerically comparable to this figure.",
         ],
     }
+    if args.cut_mode == "baryon-safe":
+        prov["caveats"] += [
+            "The PS cut and the HOS cut are different KINDS of cut — multipoles vs a "
+            "wavelet scale — so they are not ell-matched to each other. Each is the cut "
+            "that keeps its own statistic under 0.3 sigma. Pass --ps-lmax 400 to instead "
+            "reproduce the ell-matched pairing used by the Fisher baryon-safe figure.",
+            "The PS lmax is the largest step-40 cut still BELOW 0.3 sigma, not the "
+            "crossing. The crossing is the first cut that fails (500 at 14000 deg^2); "
+            "adopting it would put a 0.41-sigma bias in a 'baryon-safe' figure.",
+        ]
     with open(out + "_provenance.json", "w") as fh:
         json.dump(prov, fh, indent=2)
 

@@ -175,17 +175,30 @@ with open(out + "_values.csv", "w", newline="") as _fh:
 
 # The threshold crossings are the paper's headline numbers, so they get their own table
 # rather than being read off the figure.
+#
+# Three different numbers, easy to confuse, so all three are written down:
+#   lmax_largest_safe_grid_cut  — the cut you would ADOPT: last grid cut still under
+#                                 threshold. This is the analysis choice.
+#   lmax_first_grid_cut_at_or_above — the crossing: first cut that FAILS. One step past
+#                                 the adoptable cut, and 0.41 sigma at 14000 deg^2.
+#   lmax_at_0.3sigma_interp     — where the curve crosses between grid points.
+# Using the crossing as the cut would put a failing bias into a "baryon-safe" figure.
 _cross = []
 with open(out + "_crossings.csv", "w", newline="") as _fh:
     _w = csv.writer(_fh)
-    _w.writerow(["footprint", "lmax_at_0.3sigma_interp", "lmax_first_grid_cut_at_or_above",
+    _w.writerow(["footprint", "lmax_largest_safe_grid_cut", "nsigma_at_largest_safe",
+                 "lmax_first_grid_cut_at_or_above", "lmax_at_0.3sigma_interp",
                  "nsigma_at_lmax_max", "lmax_max"])
     for _a, (_c, _m, _e, _n) in RESULT.items():
         _xi, _xg = crossing(_c, _m)
-        _cross.append((_a, _xi, _xg))
+        _safe = [(ci, mi) for ci, mi in zip(_c, _m) if mi < THRESHOLD]
+        _sc, _sm = (max(_safe, key=lambda t: t[0]) if _safe else (float("nan"),) * 2)
+        _cross.append((_a, _xi, _xg, _sc))
         _w.writerow([_a,
-                     f"{_xi:.1f}" if _xi == _xi else "not reached",
+                     int(_sc) if _sc == _sc else "none safe",
+                     f"{_sm:.4f}" if _sm == _sm else "n/a",
                      int(_xg) if _xg == _xg else "not reached",
+                     f"{_xi:.1f}" if _xi == _xi else "not reached",
                      f"{_m[-1]:.4f}", int(_c[-1])])
 
 
@@ -240,8 +253,11 @@ with open(out + "_provenance.json", "w") as _fh:
 
 print(f"wrote {out}.pdf / .png")
 print(f"wrote {out}_values.csv / _crossings.csv / _provenance.json")
-print(f"\n{THRESHOLD}σ crossings (ℓmax):")
-for _a, _xi, _xg in _cross:
+print(f"\n{THRESHOLD}σ threshold (ℓmax) — ADOPT the 'safe' column, not the crossing:")
+print(f"  {'footprint':>12}  {'safe':>6}  {'crossing':>8}  {'interp':>7}")
+for _a, _xi, _xg, _sc in _cross:
     _lbl = "full sky" if _a == "fullsky" else f"{_a} deg²"
-    print(f"  {_lbl:>12}: interp {_xi:7.1f}   first grid cut {_xg if _xg == _xg else '>1020':>6}"
-          if _xi == _xi else f"  {_lbl:>12}: never reaches {THRESHOLD}σ")
+    if _xi != _xi:
+        print(f"  {_lbl:>12}: never reaches {THRESHOLD}σ")
+        continue
+    print(f"  {_lbl:>12}  {int(_sc) if _sc == _sc else 'none':>6}  {int(_xg):>8}  {_xi:7.1f}")
