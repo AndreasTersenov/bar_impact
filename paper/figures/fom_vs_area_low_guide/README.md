@@ -1,11 +1,11 @@
-# FoM3 vs survey area, single panel (guide pinned to PS)
+# FoM3 vs survey area, guide dropped clear of the data
 
-Single-panel figure-of-merit version, made for the referee response. The A^+3/2 guide is PINNED to the measured PS value at 14000 deg2 (GUIDE_SCALE=1.0), so it crosses the PS series and the gap IS the slope difference. See fom_vs_area_low_guide for the variant where the line sits clear of the data.
+The variant with the A^+3/2 reference line dropped below every series (GUIDE_SCALE=0.24), so it reads purely as a slope reference rather than crossing the PS curve. This previously existed only as an orphan pdf/png with no sidecars and so could not be published; the anchor is now a documented, reproducible option. GUIDE_SCALE is COSMETIC -- it moves the line vertically and changes nothing about its slope, which is all the guide asserts.
 
-- **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats`
+- **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor`
 - **generator commit**: `9c33642`
-- **generated**: 2026-07-30T08:38:08+00:00
-- **published**: 2026-07-30T08:42:47+00:00 at repo `9c33642`
+- **generated**: 2026-07-30T08:38:13+00:00
+- **published**: 2026-07-30T08:43:25+00:00 at repo `9c33642`
 - **rows in values.csv**: 18
 
 ## Scales included

@@ -2,13 +2,13 @@
   "slug": "constraining_power_vs_area",
   "title": "Constraining power vs survey area: sigma(S8) and FoM3",
   "paper_position": 10,
-  "published_utc": "2026-07-30T07:36:02+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T08:41:11+00:00",
+  "published_at_repo_commit": "9c33642",
   "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
-      "sha256": "bb927e2e407c40f8446fe969b188596c1549575cdfd3804dabccb6d19e2301b8",
+      "sha256": "8a6e4003622874c4629aa3c5cc0b9a673a84cd0ef937c8a5752a22563a8deb91",
       "bytes": 25033
     },
     "figure.png": {
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
-      "sha256": "2436bf9870437ddf9d4308f7dde9544ae746be143a59934ee06c1f6d48c12ebd",
-      "bytes": 1784
+      "sha256": "fcb320d03fac826c3dc17cc614324c0351bb7d1af437963e187679f2203d25ee",
+      "bytes": 2340
     }
   },
   "gate": {

@@ -1,0 +1,19 @@
+statistic,area_sqdeg,fom3,fom3_err,n_seeds,errbar_kind
+Power spectrum,2000,27249.6,2217.88,5,std
+Power spectrum,5000,90515.3,7768.48,5,std
+Power spectrum,10000,229219,22565.6,5,std
+Power spectrum,14000,343758,29922.7,4,std
+Power spectrum,28000,716572,77550.9,10,std
+Power spectrum,35000,965766,155262,4,std
+Peak counts,2001,32955.7,3293.32,4,std
+Peak counts,5001,113894,25598,5,std
+Peak counts,10001,271553,62899.1,5,std
+Peak counts,14001,438292,70165.8,4,std
+Peak counts,28001,1.13301e+06,427352,3,std
+Peak counts,35001,1.80884e+06,583378,5,std
+L1 norm,2001,66902.7,11750.3,3,std
+L1 norm,5001,314717,53502.3,4,std
+L1 norm,10001,562871,172088,4,std
+L1 norm,14001,928082,31249.1,5,std
+L1 norm,28001,2.79413e+06,211398,4,std
+L1 norm,35001,3.19906e+06,477869,5,std

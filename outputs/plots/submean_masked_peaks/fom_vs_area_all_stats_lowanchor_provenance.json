@@ -1,9 +1,9 @@
 {
-  "figure": "fom_vs_area_all_stats",
-  "generated_utc": "2026-07-30T08:38:08+00:00",
+  "figure": "fom_vs_area_all_stats_lowanchor",
+  "generated_utc": "2026-07-30T08:38:13+00:00",
   "git_commit": "9c33642",
   "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
-  "guide_scale": 1.0,
+  "guide_scale": 0.24,
   "guide_note": "A^+3/2 reference line = GUIDE_SCALE x (measured PS FoM3 at 14000) x (A/14000)^1.5. GUIDE_SCALE is a COSMETIC vertical offset; only the slope of this line carries meaning.",
   "scales_included": {
     "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10",

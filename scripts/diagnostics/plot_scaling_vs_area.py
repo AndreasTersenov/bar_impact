@@ -141,6 +141,16 @@ _json.dump({
     "fitted_loglog_slopes": _slopes,
     "errbar": "std over seeds",
     "arm": "NULL only (nobaryons vs nobaryons) — constraining power, not bias",
+    "scales_included": {
+        "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10",
+        "peaks_l1": "wavelet scales1234 (four detail scales; coarse/mass-sheet excluded), "
+                    "submean, new_normalization, noisy sigma_e=0.26",
+    },
+    "presentation_todo": ("If this figure is used anywhere (paper or referee response) the "
+                          "x-axis tick labels need decluttering first — the log locator "
+                          "currently overlaps them. plot_fom_vs_area.py already solves this "
+                          "with a FixedLocator at 2k/5k/10k/20k/40k plus NullFormatter on the "
+                          "minors; port that here."),
     "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",

@@ -228,6 +228,10 @@ _prov = {
     "param_subset": [0, 1, 2],
     "param_names": ["Omega_m", "S8", "w0"],
     "lmin": 37,
+    "scales_included": {
+        "power_spectrum": ("monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies "
+                           "along the x-axis over the step-40 grid 340..1020"),
+    },
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "getdist", "tensiometer", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
     "caveats": [

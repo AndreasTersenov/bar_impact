@@ -97,6 +97,37 @@ def csv_rows(path):
         return max(0, sum(1 for _ in csv.reader(fh)) - 1)
 
 
+def scale_summary(prov):
+    """Pull the 'which scales went in' statement out of a provenance dict.
+
+    Generators express it differently — plot_nsigma_vs_lmax uses scales_included,
+    plot_contours_three_stats uses conventions plus cuts, the Fisher script uses ps_edges
+    plus hos_scales_* — so this normalises them rather than forcing every generator to be
+    rewritten. Returns a list of (label, text) pairs, empty if the figure says nothing.
+    """
+    out = []
+    for key in ("scales_included", "conventions"):
+        v = prov.get(key)
+        if isinstance(v, dict):
+            out += [(k, str(x)) for k, x in v.items()]
+        elif isinstance(v, str):
+            out.append((key, v))
+    cuts = prov.get("cuts")
+    if isinstance(cuts, dict):
+        out += [(k, str(x)) for k, x in cuts.items()]
+    if prov.get("cut") and not out:
+        out.append(("cut", str(prov["cut"])))
+    # Fisher-style declarations
+    if prov.get("ps_edges"):
+        out.append(("ps_bandpower_edges", str(prov["ps_edges"])))
+    for k in ("hos_scales_full", "hos_scales_baryon_safe", "regime"):
+        if prov.get(k) is not None:
+            out.append((k, str(prov[k])))
+    if not out and prov.get("lmin") is not None:
+        out.append(("lmin", str(prov["lmin"])))
+    return out
+
+
 def gate(stem):
     """Validate a source figure. Returns (fails, warns, info).
 
@@ -145,6 +176,14 @@ def gate(stem):
                              "to the code that made it")
             if "mplstyle" not in j:
                 warns.append("provenance is missing 'mplstyle'")
+            # A figure that does not state WHICH SCALES went into it cannot be interpreted:
+            # the same statistic at lmax=460 and lmax=1020, or at scales1234 and scales234,
+            # are different measurements. Standing rule — every figure declares its scales.
+            if not scale_summary(j):
+                warns.append("provenance does not state the SCALES included (no "
+                             "'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') "
+                             "— a figure that does not say which multipoles and wavelet "
+                             "scales went in cannot be interpreted")
             info["n_caveats"] = len(j.get("caveats", []))
         except Exception as e:
             fails.append(f"_provenance.json does not parse ({type(e).__name__})")
@@ -227,6 +266,15 @@ def cmd_publish(args):
         fh.write(f"- **generated**: {prov.get('generated_utc','?')}\n")
         fh.write(f"- **published**: {meta['published_utc']} at repo `{commit}`\n")
         fh.write(f"- **rows in values.csv**: {info.get('value_rows','?')}\n")
+        # Scales first, before caveats: it is the thing a reader needs in order to know what
+        # the figure even measures.
+        _sc = scale_summary(prov)
+        if _sc:
+            fh.write("\n## Scales included\n\n")
+            for k, v in _sc:
+                fh.write(f"- **{k}**: {v}\n")
+        if prov.get("presentation_todo"):
+            fh.write(f"\n## Presentation TODO before use\n\n{prov['presentation_todo']}\n")
         if warns:
             fh.write("\n## Known gaps\n\n" + "".join(f"- {w}\n" for w in warns))
         cav = prov.get("caveats") or []

@@ -51,7 +51,12 @@ module purge
 module load arch/a100
 PY=/lustre/fswork/projects/rech/nzu/ulx34io/envs/jaxili/bin/python
 
-AREA=14000                 # peaks/l1 footprint tag is AREA+1 (14001); the flag takes 14000
+# The higher-order footprint tag IS 14001, and --mask-area-sqdeg is used VERBATIM to build
+# both the input datavector names and the output posterior names -- the runner does not add
+# the +1 itself. Job 426843 passed 14000 here and all 20 trainings died instantly with
+# FileNotFoundError on all_l1_norms_grid_..._masked_14000sqdeg_submean_... (only the 14001
+# files exist). Pass the tag, not the nominal area.
+AREA_TAG=14001             # peaks/l1 datavector + posterior tag for the 14000 deg^2 footprint
 SCALES="1,2,3"             # -> the "scales234" file tag
 RUNS="1 2 3 4 5"
 DD=/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast
@@ -60,7 +65,7 @@ CKPT=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/checkpoints/npe_bsafe_140
 
 mkdir -p "$CKPT"
 
-echo "=== NPE baryon-safe HOS, ${AREA} deg2, scales234, submean ==="
+echo "=== NPE baryon-safe HOS, tag ${AREA_TAG} (14000 deg2 footprint), scales234, submean ==="
 echo "start : $(date -Is)"
 echo "python: $PY"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
@@ -77,7 +82,7 @@ for stat in l1 peaks; do
   for role in nobaryons baryonified; do
     # role names the FIDUCIAL (the observed data vector); the model is always nobaryons-trained.
     for r in $RUNS; do
-      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_scales234_noisy_s0.26_masked_$((AREA+1))sqdeg_submean_new_normalization_run${r}_npe.npy"
+      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_scales234_noisy_s0.26_masked_${AREA_TAG}sqdeg_submean_new_normalization_run${r}_npe.npy"
 
       # Skip only if the posterior exists AND loads: a disk-damaged .npy raises ValueError
       # (numpy reads the mangled header as pickled data), so -f alone would skip a corrupt file.
@@ -101,7 +106,7 @@ except Exception:
         --bins 1,2,3,4 \
         --scales "$SCALES" \
         --noisy --noise-level 0.26 \
-        --masked --mask-area-sqdeg "$AREA" --submean \
+        --masked --mask-area-sqdeg "$AREA_TAG" --submean \
         --new-normalization \
         --train --epochs 1000 \
         --num-samples 3000 \

@@ -2,19 +2,19 @@
   "slug": "ps_bias_vs_lmax_with_fullsky",
   "title": "PS baryon bias vs cut, 6 footprints plus full sky",
   "paper_position": 2,
-  "published_utc": "2026-07-30T07:31:34+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T08:40:36+00:00",
+  "published_at_repo_commit": "9c33642",
   "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.pdf",
-      "sha256": "82ae897aaead20f10877ad798a15849ac431feef317bef709f07aa7a5a0f27d2",
-      "bytes": 42379
+      "sha256": "7de0ff8d78d428b587107d70f45165575183c7fe8c67e57e1108c27235682d98",
+      "bytes": 38010
     },
     "figure.png": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.png",
-      "sha256": "452dd91366acd6eed9e3adfaa26566c4e413726ede8d7814c2c97b4f2da1642e",
-      "bytes": 333513
+      "sha256": "facf47dd6d7a25920530dcaf78fa42f0714a8f99e717e1c0b633876377a0f036",
+      "bytes": 306625
     },
     "values.csv": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_provenance.json",
-      "sha256": "d720928078349dd6c89d4c1309db4535e44141a0002326c73981394ea99520ea",
-      "bytes": 1867
+      "sha256": "d5c292185f2d6d8997389412fdf1dbb46d3f8748eac3fbeab1e859b07e33ea50",
+      "bytes": 2032
     },
     "crossings.csv": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_crossings.csv",

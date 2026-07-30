@@ -1,7 +1,7 @@
 {
   "figure": "nsigma_vs_lmax",
-  "generated_utc": "2026-07-29T22:09:49+00:00",
-  "git_commit": "b91af33",
+  "generated_utc": "2026-07-30T08:37:33+00:00",
+  "git_commit": "9c33642",
   "errbar": "std",
   "threshold_sigma": 0.3,
   "fullsky_panel": false,
@@ -21,6 +21,9 @@
     "w0"
   ],
   "lmin": 37,
+  "scales_included": {
+    "power_spectrum": "monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies along the x-axis over the step-40 grid 340..1020"
+  },
   "versions": {
     "numpy": "2.4.6",
     "scipy": "1.17.1",

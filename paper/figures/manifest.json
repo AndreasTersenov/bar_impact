@@ -5,19 +5,19 @@
       "slug": "ps_bias_vs_lmax",
       "title": "PS baryon bias vs upper scale cut, 6 footprints",
       "paper_position": 1,
-      "published_utc": "2026-07-30T07:31:34+00:00",
-      "published_at_repo_commit": "b900627",
+      "published_utc": "2026-07-30T08:40:11+00:00",
+      "published_at_repo_commit": "9c33642",
       "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.pdf",
-          "sha256": "07429347f718110039bc31631e8f7feb007beea8520993d44852fa5660366834",
-          "bytes": 36837
+          "sha256": "cba192d892815407bbb354f66113ec900f7dc874ec17d07830bac3324d2de093",
+          "bytes": 33820
         },
         "figure.png": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.png",
-          "sha256": "ffdb92274db9c690e61cae03e43dffe50c415f8f3d0023fad76d9ca022851d68",
-          "bytes": 278417
+          "sha256": "db0e3eed9a8a646ad7d25c1d6ba93838ae719150215dc3fb57bcc26568afa341",
+          "bytes": 262924
         },
         "values.csv": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_values.csv",
@@ -26,8 +26,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_provenance.json",
-          "sha256": "4c7ebb3b7c798b3e46cad11e6bc03260cb6f5abd89b9e3b3439b27fdd063a431",
-          "bytes": 1592
+          "sha256": "9b75c561216b6ffd05ac3ac19350ea494664d4447ee98070c87287cca6e8d340",
+          "bytes": 1757
         },
         "crossings.csv": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_crossings.csv",
@@ -49,19 +49,19 @@
       "slug": "ps_bias_vs_lmax_with_fullsky",
       "title": "PS baryon bias vs cut, 6 footprints plus full sky",
       "paper_position": 2,
-      "published_utc": "2026-07-30T07:31:34+00:00",
-      "published_at_repo_commit": "b900627",
+      "published_utc": "2026-07-30T08:40:36+00:00",
+      "published_at_repo_commit": "9c33642",
       "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.pdf",
-          "sha256": "82ae897aaead20f10877ad798a15849ac431feef317bef709f07aa7a5a0f27d2",
-          "bytes": 42379
+          "sha256": "7de0ff8d78d428b587107d70f45165575183c7fe8c67e57e1108c27235682d98",
+          "bytes": 38010
         },
         "figure.png": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.png",
-          "sha256": "452dd91366acd6eed9e3adfaa26566c4e413726ede8d7814c2c97b4f2da1642e",
-          "bytes": 333513
+          "sha256": "facf47dd6d7a25920530dcaf78fa42f0714a8f99e717e1c0b633876377a0f036",
+          "bytes": 306625
         },
         "values.csv": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_values.csv",
@@ -70,8 +70,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_provenance.json",
-          "sha256": "d720928078349dd6c89d4c1309db4535e44141a0002326c73981394ea99520ea",
-          "bytes": 1867
+          "sha256": "d5c292185f2d6d8997389412fdf1dbb46d3f8748eac3fbeab1e859b07e33ea50",
+          "bytes": 2032
         },
         "crossings.csv": {
           "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_crossings.csv",
@@ -391,13 +391,13 @@
       "slug": "constraining_power_vs_area",
       "title": "Constraining power vs survey area: sigma(S8) and FoM3",
       "paper_position": 10,
-      "published_utc": "2026-07-30T07:36:02+00:00",
-      "published_at_repo_commit": "b900627",
+      "published_utc": "2026-07-30T08:41:11+00:00",
+      "published_at_repo_commit": "9c33642",
       "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
-          "sha256": "bb927e2e407c40f8446fe969b188596c1549575cdfd3804dabccb6d19e2301b8",
+          "sha256": "8a6e4003622874c4629aa3c5cc0b9a673a84cd0ef937c8a5752a22563a8deb91",
           "bytes": 25033
         },
         "figure.png": {
@@ -412,8 +412,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
-          "sha256": "2436bf9870437ddf9d4308f7dde9544ae746be143a59934ee06c1f6d48c12ebd",
-          "bytes": 1784
+          "sha256": "fcb320d03fac826c3dc17cc614324c0351bb7d1af437963e187679f2203d25ee",
+          "bytes": 2340
         }
       },
       "gate": {
@@ -428,15 +428,15 @@
     "slug": "fom_vs_area",
     "meta": {
       "slug": "fom_vs_area",
-      "title": "FoM3 vs survey area, single panel",
+      "title": "FoM3 vs survey area, single panel (guide pinned to PS)",
       "paper_position": 11,
-      "published_utc": "2026-07-30T07:36:02+00:00",
-      "published_at_repo_commit": "b900627",
+      "published_utc": "2026-07-30T08:42:47+00:00",
+      "published_at_repo_commit": "9c33642",
       "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats.pdf",
-          "sha256": "6f54f0f9ef811c2d6de66f2e78c71f6f9633e0d366608036fa41c2fc68ea68a0",
+          "sha256": "d3ec71b86899414744c0c4ef391f4a24a1c234194b81f717e332082df20637f0",
           "bytes": 21140
         },
         "figure.png": {
@@ -451,8 +451,47 @@
         },
         "provenance.json": {
           "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_provenance.json",
-          "sha256": "eb45d92f6ee806afe46c288f3eca9b5713b529413775a28c5daad6cbb488984e",
-          "bytes": 1456
+          "sha256": "5118a8930862742ba6e47b1c921718b1eda25a6c45db83d26ba362fda1d12f9f",
+          "bytes": 1912
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "fom_vs_area_low_guide",
+    "meta": {
+      "slug": "fom_vs_area_low_guide",
+      "title": "FoM3 vs survey area, guide dropped clear of the data",
+      "paper_position": 12,
+      "published_utc": "2026-07-30T08:43:25+00:00",
+      "published_at_repo_commit": "9c33642",
+      "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor.pdf",
+          "sha256": "948e953193aa0223d4bd030b38aea3cacfcc4dcdb4cf338f8607a27684c04c07",
+          "bytes": 21304
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor.png",
+          "sha256": "211f13f79c6bd426fbc689b741203c01e864b0edc16e4d0c79ba521765a425ee",
+          "bytes": 106751
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor_values.csv",
+          "sha256": "df467c7b30c45cd79cb1001cf91cc41c70a5637ae412df2667184a957fdecff7",
+          "bytes": 781
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor_provenance.json",
+          "sha256": "564dc1bd1ab5d4a41a04062c08fdfcf0f40107ce2adc908c1f482290c66fe9f4",
+          "bytes": 1923
         }
       },
       "gate": {

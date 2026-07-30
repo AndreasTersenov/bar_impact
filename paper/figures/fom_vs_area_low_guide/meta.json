@@ -1,0 +1,36 @@
+{
+  "slug": "fom_vs_area_low_guide",
+  "title": "FoM3 vs survey area, guide dropped clear of the data",
+  "paper_position": 12,
+  "published_utc": "2026-07-30T08:43:25+00:00",
+  "published_at_repo_commit": "9c33642",
+  "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor.pdf",
+      "sha256": "948e953193aa0223d4bd030b38aea3cacfcc4dcdb4cf338f8607a27684c04c07",
+      "bytes": 21304
+    },
+    "figure.png": {
+      "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor.png",
+      "sha256": "211f13f79c6bd426fbc689b741203c01e864b0edc16e4d0c79ba521765a425ee",
+      "bytes": 106751
+    },
+    "values.csv": {
+      "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor_values.csv",
+      "sha256": "df467c7b30c45cd79cb1001cf91cc41c70a5637ae412df2667184a957fdecff7",
+      "bytes": 781
+    },
+    "provenance.json": {
+      "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor_provenance.json",
+      "sha256": "564dc1bd1ab5d4a41a04062c08fdfcf0f40107ce2adc908c1f482290c66fe9f4",
+      "bytes": 1923
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 5
+}

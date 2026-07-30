@@ -1,12 +1,16 @@
 # PS baryon bias vs cut, 6 footprints plus full sky
 
-As the masked figure with a seventh full-sky panel. NOTE the full-sky panel uses the healpy 10-ell-bin pipeline while the masked panels use NaMaster nlb=4, so the scale-cut TREND is comparable across panels but the magnitudes are not.
+As the masked figure with a seventh full-sky panel; grey heading removed. Of the two, ps_bias_vs_lmax is the one intended for the paper. NOTE the full-sky panel uses the healpy 10-ell-bin pipeline while the masked panels use NaMaster nlb=4, so the scale-cut TREND is comparable across panels but the magnitudes are not.
 
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky`
-- **generator commit**: `b91af33`
-- **generated**: 2026-07-29T22:10:38+00:00
-- **published**: 2026-07-30T07:31:34+00:00 at repo `b900627`
+- **generator commit**: `9c33642`
+- **generated**: 2026-07-30T08:37:53+00:00
+- **published**: 2026-07-30T08:40:36+00:00 at repo `9c33642`
 - **rows in values.csv**: 132
+
+## Scales included
+
+- **power_spectrum**: monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies along the x-axis over the step-40 grid 340..1020
 
 ## Caveats (from provenance)
 

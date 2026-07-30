@@ -1,12 +1,21 @@
 # Constraining power vs survey area: sigma(S8) and FoM3
 
-Null-arm constraining power versus survey area for the three statistics, with fitted log-log slopes. Panel (a) sigma(S8), panel (b) FoM3. The two grey guides are HARDCODED pre-crash anchors, not fits -- read them as slope references only. Full resolution, i.e. the regime where all three statistics are baryon-biased.
+NOT intended for the paper -- kept as reference material and a likely referee-report figure. IF IT IS USED ANYWHERE, the x-axis tick labels must be decluttered first: they currently overlap. plot_fom_vs_area.py already solves this with a FixedLocator at 2k/5k/10k/20k/40k plus NullFormatter on the minors; port that across. Also note the two grey guides are HARDCODED pre-crash anchors, not fits -- slope references only.
 
 - **source**: `outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats`
-- **generator commit**: `b900627`
-- **generated**: 2026-07-30T07:35:37+00:00
-- **published**: 2026-07-30T07:36:02+00:00 at repo `b900627`
+- **generator commit**: `9c33642`
+- **generated**: 2026-07-30T08:38:01+00:00
+- **published**: 2026-07-30T08:41:11+00:00 at repo `9c33642`
 - **rows in values.csv**: 18
+
+## Scales included
+
+- **power_spectrum**: monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10
+- **peaks_l1**: wavelet scales1234 (four detail scales; coarse/mass-sheet excluded), submean, new_normalization, noisy sigma_e=0.26
+
+## Presentation TODO before use
+
+If this figure is used anywhere (paper or referee response) the x-axis tick labels need decluttering first — the log locator currently overlaps them. plot_fom_vs_area.py already solves this with a FixedLocator at 2k/5k/10k/20k/40k plus NullFormatter on the minors; port that here.
 
 ## Caveats (from provenance)
 

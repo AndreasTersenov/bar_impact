@@ -2,19 +2,19 @@
   "slug": "ps_bias_vs_lmax",
   "title": "PS baryon bias vs upper scale cut, 6 footprints",
   "paper_position": 1,
-  "published_utc": "2026-07-30T07:31:34+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T08:40:11+00:00",
+  "published_at_repo_commit": "9c33642",
   "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.pdf",
-      "sha256": "07429347f718110039bc31631e8f7feb007beea8520993d44852fa5660366834",
-      "bytes": 36837
+      "sha256": "cba192d892815407bbb354f66113ec900f7dc874ec17d07830bac3324d2de093",
+      "bytes": 33820
     },
     "figure.png": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.png",
-      "sha256": "ffdb92274db9c690e61cae03e43dffe50c415f8f3d0023fad76d9ca022851d68",
-      "bytes": 278417
+      "sha256": "db0e3eed9a8a646ad7d25c1d6ba93838ae719150215dc3fb57bcc26568afa341",
+      "bytes": 262924
     },
     "values.csv": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_provenance.json",
-      "sha256": "4c7ebb3b7c798b3e46cad11e6bc03260cb6f5abd89b9e3b3439b27fdd063a431",
-      "bytes": 1592
+      "sha256": "9b75c561216b6ffd05ac3ac19350ea494664d4447ee98070c87287cca6e8d340",
+      "bytes": 1757
     },
     "crossings.csv": {
       "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_crossings.csv",

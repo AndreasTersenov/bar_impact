@@ -98,9 +98,17 @@ for name, A, m, c, ls, mk in SERIES:
 # at the anchor and fans away at both ends, so the gap IS the slope difference
 # (measured alpha ~ +1.3 vs the ideal +1.5) instead of an arbitrary vertical offset.
 # Anchor is read from the series, so it stays correct if the inputs change.
+#
+# GUIDE_SCALE drops the guide below the data by a documented factor. The default 1.0 is
+# the pinned version above. GUIDE_SCALE=0.24 reproduces the earlier "lowanchor" look,
+# where the line sits clear of every series and reads purely as a slope reference — that
+# variant existed only as an orphan .pdf/.png with no sidecars, so it was unpublishable;
+# it is now a reproducible option. The factor is COSMETIC: it shifts the line vertically
+# and changes nothing about the slope, which is the only thing the guide asserts.
+GUIDE_SCALE = float(os.environ.get("GUIDE_SCALE", "1.0"))
 Aref = np.array([1.7e3, 4.2e4])
-ax.plot(Aref, ps_anchor * (Aref / 14000.) ** 1.5, color="0.45", ls=":", lw=1.0,
-        zorder=0, label=r"$A^{+3/2}$ (ideal)")
+ax.plot(Aref, GUIDE_SCALE * ps_anchor * (Aref / 14000.) ** 1.5, color="0.45", ls=":",
+        lw=1.0, zorder=0, label=r"$A^{+3/2}$ (ideal)")
 
 ax.set_xscale("log")
 ax.set_yscale("log")
@@ -131,6 +139,8 @@ ax.legend(frameon=False, fontsize=7, handlelength=2.2, loc="upper left",
 
 fig.tight_layout(pad=0.3)
 out = "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats"
+if GUIDE_SCALE != 1.0:
+    out += "_lowanchor"      # never overwrite the pinned-guide version
 fig.savefig(out + ".pdf")
 fig.savefig(out + ".png", dpi=300)
 print("wrote", out + ".pdf / .png")
@@ -170,6 +180,15 @@ _json.dump({
     "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
     "git_commit": _commit,
     "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
+    "guide_scale": GUIDE_SCALE,
+    "guide_note": ("A^+3/2 reference line = GUIDE_SCALE x (measured PS FoM3 at 14000) x "
+                   "(A/14000)^1.5. GUIDE_SCALE is a COSMETIC vertical offset; only the "
+                   "slope of this line carries meaning."),
+    "scales_included": {
+        "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10",
+        "peaks_l1": "wavelet scales1234 (four detail scales; coarse/mass-sheet excluded), "
+                    "submean, new_normalization, noisy sigma_e=0.26",
+    },
     "errbar": "std over seeds",
     "arm": "NULL only (nobaryons vs nobaryons) — constraining power, not bias",
     "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
