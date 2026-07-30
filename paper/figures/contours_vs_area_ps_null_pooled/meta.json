@@ -1,5 +1,5 @@
 {
-  "slug": "contours_vs_area_ps_null",
+  "slug": "contours_vs_area_ps_null_pooled",
   "title": "PS null posteriors, all survey areas overlaid, full resolution",
   "paper_position": 20,
   "published_utc": "2026-07-30T11:14:26+00:00",
@@ -32,5 +32,8 @@
     "warnings": []
   },
   "value_rows": 21,
-  "n_caveats": 5
+  "n_caveats": 5,
+  "notes": [
+    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+  ]
 }

@@ -42,6 +42,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import datetime
 
 import numpy as np
@@ -50,6 +51,9 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(REPO, "scripts"))
+from tension.seeds import representative_seed  # noqa: E402
+
 SAMP = f"{REPO}/outputs/samples"
 PSD = f"{REPO}/outputs/baryon_tension/ps_submean_l37/posteriors"
 
@@ -160,6 +164,11 @@ def main():
                          "pairing of the Fisher baryon-safe figure.")
     ap.add_argument("--hos-scales", default=None,
                     help="Override the HOS scale tag, e.g. scales234 or scales1234.")
+    ap.add_argument("--seed-mode", default="pooled", choices=("pooled", "single"),
+                    help="pooled: stack every matched seed. single: draw the single most "
+                         "REPRESENTATIVE seed (scripts/tension/seeds.py), which is what a "
+                         "real analysis reports. --single-run overrides this with an "
+                         "explicit choice.")
     ap.add_argument("--width", type=float, default=6.0, help="figure width in inches")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
@@ -208,7 +217,12 @@ def main():
         want = (("null", 0), ("biased", 1)) if args.mode == "both" else \
                ((args.mode, 0 if args.mode == "null" else 1),)
         for role, idx in want:
-            s = np.concatenate([pairs[r][idx] for r in runs])[:, :3]
+            _per = [pairs[r][idx][:, :3] for r in runs]
+            s = np.concatenate(_per)
+            seed_choice = None
+            if args.seed_mode == "single" and args.single_run is None:
+                _i, _lbl, seed_choice = representative_seed(_per, runs)
+                s = _per[_i]
             tag = f"{label}" if args.mode != "both" else f"{label} — {role}"
             mcs.append(MCSamples(samples=s, names=names, labels=labels, label=tag))
             colors.append(STYLE[label])
@@ -222,6 +236,8 @@ def main():
             legend.append(tag)
             rows.append({"statistic": label, "role": role, "n_runs": len(runs),
                          "runs": runs, "n_samples": int(s.shape[0]),
+                         "seed_shown": (seed_choice or {}).get("chosen_run"),
+                         "seed_choice": seed_choice,
                          "mean": s.mean(0).tolist(), "std": s.std(0).tolist()})
 
     if not mcs:
@@ -241,6 +257,7 @@ def main():
     # The cut goes in the filename: a baryon-safe figure and a full-resolution one are
     # different physics and must never land on the same path.
     _cut_tag = "" if args.cut_mode == "full" else f"_bsafe_l{ps_lmax}_{hos_scales}"
+    _cut_tag += "_pooled" if args.seed_mode == "pooled" else "_single_seed"
     out = args.out or (f"{REPO}/outputs/plots/contours_three_stats/"
                        f"contours_PS_peaks_L1_{args.mode}_{args.area}{_cut_tag}")
     out = os.path.splitext(out)[0]
@@ -285,6 +302,7 @@ def main():
         "area_sqdeg": args.area,
         "hos_footprint_tag": HOS_TAG[args.area],
         "mode": args.mode,
+        "seed_mode": args.seed_mode,
         "single_run": args.single_run,
         "truth": TRUTH,
         "param_names": ["Omega_m", "S8", "w0"],

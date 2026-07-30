@@ -1,0 +1,39 @@
+{
+  "slug": "contours_vs_area_l1_biased_pooled",
+  "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution",
+  "paper_position": 25.0,
+  "published_utc": "2026-07-30T13:06:59+00:00",
+  "published_at_repo_commit": "3d0116e",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.pdf",
+      "sha256": "48cb3aeb8e1ec90fe2e2fe6f29676ad4b0ad1185d77ba64244d5233c1250173a",
+      "bytes": 172901
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.png",
+      "sha256": "9d6bee252a39fc8863f841b2d7c2de5ff903d1652904000e66c1a978e8ddd8b0",
+      "bytes": 412014
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_values.csv",
+      "sha256": "a5f9494aae383588e3bbe33ea946475b277c93ece7689eb9c74cce6e0a5f2507",
+      "bytes": 1359
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_provenance.json",
+      "sha256": "b2e6f8eaeced186a9ff2b44eb0edcc32486423bd22410ca0bbaff2da5edd0e34",
+      "bytes": 5764
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 5,
+  "notes": [
+    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+  ]
+}

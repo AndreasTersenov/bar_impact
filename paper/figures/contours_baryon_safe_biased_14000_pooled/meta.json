@@ -1,9 +1,9 @@
 {
-  "slug": "contours_baryon_safe_biased_14000",
+  "slug": "contours_baryon_safe_biased_14000_pooled",
   "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
-  "paper_position": 3,
-  "published_utc": "2026-07-30T11:13:26+00:00",
-  "published_at_repo_commit": "7cfd75b",
+  "paper_position": 3.0,
+  "published_utc": "2026-07-30T13:09:39+00:00",
+  "published_at_repo_commit": "3d0116e",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
-      "sha256": "b68606acab8d4ded0923e7e7b96ac9080c99618f76c99b17e42be33298b5bce5",
-      "bytes": 3668
+      "sha256": "840f6f9049db87538138a20b44ebbf4252ca5632fe5d270fd159dc0e088d91d0",
+      "bytes": 5644
     }
   },
   "gate": {
@@ -32,5 +32,8 @@
     "warnings": []
   },
   "value_rows": 9,
-  "n_caveats": 6
+  "n_caveats": 6,
+  "notes": [
+    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+  ]
 }

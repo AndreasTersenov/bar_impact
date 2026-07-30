@@ -273,6 +273,26 @@ def cmd_publish(args):
             fh.write("\n## Scales included\n\n")
             for k, v in _sc:
                 fh.write(f"- **{k}**: {v}\n")
+        # Figure of merit per contour, where present. Both columns are shown deliberately:
+        # the pooled value describes the drawn contour, the per-seed mean is what the
+        # FoM-vs-area figures plot, and quoting one against the other would mislead.
+        _f = prov.get("fom3")
+        if _f:
+            fh.write("\n## Figure of merit\n\n")
+            fh.write(f"{_f.get('definition','')}\n\n")
+            recs = _f.get("per_contour")
+            if recs is None and isinstance(_f.get("per_area"), dict):
+                recs = [dict(contour=k, **v) for k, v in _f["per_area"].items()]
+            if recs:
+                fh.write("| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |\n")
+                fh.write("|---|---|---|---|\n")
+                for r in recs:
+                    fh.write(f"| {r.get('contour','?')} | {r.get('n_seeds','?')} | "
+                             f"{r.get('fom3_pooled', float('nan')):.4g} | "
+                             f"{r.get('fom3_per_seed_mean', float('nan')):.4g} ± "
+                             f"{r.get('fom3_per_seed_std', float('nan')):.3g} |\n")
+            if _f.get("pooled_vs_per_seed"):
+                fh.write(f"\n{_f['pooled_vs_per_seed']}\n")
         if prov.get("presentation_todo"):
             fh.write(f"\n## Presentation TODO before use\n\n{prov['presentation_todo']}\n")
         if warns:
@@ -407,7 +427,8 @@ def main():
     p.add_argument("source_stem", help="path without extension")
     p.add_argument("--slug", required=True)
     p.add_argument("--title", default=None)
-    p.add_argument("--position", type=int, default=None, help="intended figure number in the paper")
+    p.add_argument("--position", type=float, default=None,
+                   help="intended figure number; fractional (3.5) inserts between existing ones")
     p.add_argument("--note", default=None, help="one-paragraph description for the README")
     p.add_argument("--force", action="store_true")
     p.set_defaults(func=cmd_publish)

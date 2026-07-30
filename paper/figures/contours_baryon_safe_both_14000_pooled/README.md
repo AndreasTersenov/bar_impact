@@ -1,12 +1,12 @@
-# PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2
+# Baryon-safe: null and biased overlaid, three statistics, 14000 deg2
 
-FLAGSHIP PAPER FIGURE. The baryonified observation analysed with a nobaryons-trained model, AFTER each statistic's baryon-safe scale cut: power spectrum restricted to lmax=460 (the largest step-40 cut whose 3-param Q_DM bias stays under 0.3 sigma -- 0.288 sigma; the next cut, 500, gives 0.413), and peaks and L1 with the finest wavelet scale dropped (scales234, i.e. detail scales 2-4 on submean maps). Compare contours_three_stats_biased, the same observation at full resolution, where all three are visibly pulled off truth. Omega_m and S8 now sit on the truth cross; a residual w0 offset remains, which is worth reading off values.csv rather than off the figure.
+Companion to the flagship. At the baryon-safe cuts (PS lmax=460, peaks/L1 scales234 submean) the biased contours (dashed) sit ON the null ones (filled) -- the visual form of the statement that the cut worked. Read against contours_three_stats_both, the same overlay at full resolution where the two separate clearly. MEASURED residual bias: PS 0.288 sigma, peaks 0.079, L1 0.091, all under the 0.3 tolerance (see outputs/diagnostics/hos_cut_safety_14001.json).
 
-- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234`
+- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234`
 - **generator commit**: `7cfd75b`
-- **generated**: 2026-07-30T10:55:03+00:00
-- **published**: 2026-07-30T11:13:26+00:00 at repo `7cfd75b`
-- **rows in values.csv**: 9
+- **generated**: 2026-07-30T11:53:28+00:00
+- **published**: 2026-07-30T13:10:38+00:00 at repo `3d0116e`
+- **rows in values.csv**: 18
 
 ## Scales included
 
@@ -16,6 +16,21 @@ FLAGSHIP PAPER FIGURE. The baryonified observation analysed with a nobaryons-tra
 - **power_spectrum_lmax_chosen_by**: largest step-40 cut with mean tension < 0.3 sigma
 - **hos_scale_tag**: scales234
 - **threshold_sigma**: 0.3
+
+## Figure of merit
+
+FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
+
+| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |
+|---|---|---|---|
+| Power spectrum / null | 5 | 1.415e+05 | 1.451e+05 ± 8.46e+03 |
+| Power spectrum / biased | 5 | 1.437e+05 | 1.481e+05 ± 6.96e+03 |
+| Peak counts / null | 5 | 1.471e+05 | 1.574e+05 ± 3.43e+04 |
+| Peak counts / biased | 5 | 1.515e+05 | 1.612e+05 ± 1.3e+04 |
+| L1 norm / null | 5 | 2.237e+05 | 2.61e+05 ± 7.37e+04 |
+| L1 norm / biased | 5 | 2.906e+05 | 3.13e+05 ± 5.02e+04 |
+
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

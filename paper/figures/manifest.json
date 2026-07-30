@@ -127,13 +127,13 @@
     }
   },
   {
-    "slug": "contours_baryon_safe_biased_14000",
+    "slug": "contours_baryon_safe_biased_14000_pooled",
     "meta": {
-      "slug": "contours_baryon_safe_biased_14000",
+      "slug": "contours_baryon_safe_biased_14000_pooled",
       "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
-      "paper_position": 3,
-      "published_utc": "2026-07-30T11:13:26+00:00",
-      "published_at_repo_commit": "7cfd75b",
+      "paper_position": 3.0,
+      "published_utc": "2026-07-30T13:09:39+00:00",
+      "published_at_repo_commit": "3d0116e",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
       "files": {
         "figure.pdf": {
@@ -153,8 +153,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
-          "sha256": "b68606acab8d4ded0923e7e7b96ac9080c99618f76c99b17e42be33298b5bce5",
-          "bytes": 3668
+          "sha256": "840f6f9049db87538138a20b44ebbf4252ca5632fe5d270fd159dc0e088d91d0",
+          "bytes": 5644
         }
       },
       "gate": {
@@ -162,13 +162,58 @@
         "warnings": []
       },
       "value_rows": 9,
-      "n_caveats": 6
+      "n_caveats": 6,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
     }
   },
   {
-    "slug": "contours_three_stats_null",
+    "slug": "contours_baryon_safe_both_14000_pooled",
     "meta": {
-      "slug": "contours_three_stats_null",
+      "slug": "contours_baryon_safe_both_14000_pooled",
+      "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
+      "paper_position": 3.5,
+      "published_utc": "2026-07-30T13:10:38+00:00",
+      "published_at_repo_commit": "3d0116e",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.pdf",
+          "sha256": "a657a28847262915cd92bce924f73ca55cb37325e8ebd2707e8741027e4bbc0a",
+          "bytes": 227677
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.png",
+          "sha256": "081817ad30a74ffc11c03c5ee3085ec6d39e2cc1affae5983e3d8a7d5dbdf01a",
+          "bytes": 461764
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_values.csv",
+          "sha256": "42df524cdbefd47cf6eaa0f5a6739f7d41fc0aaa9df9d76bbbdf5910774d940c",
+          "bytes": 1204
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_provenance.json",
+          "sha256": "814ec3a52986c5b221003e2360947426599b5c19ff1675d8d7ae3a03d4c675ff",
+          "bytes": 8246
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 6,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
+    }
+  },
+  {
+    "slug": "contours_three_stats_null_pooled",
+    "meta": {
+      "slug": "contours_three_stats_null_pooled",
       "title": "Null posteriors, three statistics, 14000 deg2",
       "paper_position": 4,
       "published_utc": "2026-07-30T09:18:17+00:00",
@@ -201,13 +246,16 @@
         "warnings": []
       },
       "value_rows": 9,
-      "n_caveats": 4
+      "n_caveats": 4,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
     }
   },
   {
-    "slug": "contours_three_stats_biased",
+    "slug": "contours_three_stats_biased_pooled",
     "meta": {
-      "slug": "contours_three_stats_biased",
+      "slug": "contours_three_stats_biased_pooled",
       "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
       "paper_position": 5,
       "published_utc": "2026-07-30T09:18:17+00:00",
@@ -240,13 +288,16 @@
         "warnings": []
       },
       "value_rows": 9,
-      "n_caveats": 4
+      "n_caveats": 4,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
     }
   },
   {
-    "slug": "contours_three_stats_both",
+    "slug": "contours_three_stats_both_pooled",
     "meta": {
-      "slug": "contours_three_stats_both",
+      "slug": "contours_three_stats_both_pooled",
       "title": "Null and biased overlaid, three statistics, 14000 deg2",
       "paper_position": 6,
       "published_utc": "2026-07-30T09:18:17+00:00",
@@ -279,7 +330,10 @@
         "warnings": []
       },
       "value_rows": 18,
-      "n_caveats": 4
+      "n_caveats": 4,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
     }
   },
   {
@@ -542,9 +596,9 @@
     }
   },
   {
-    "slug": "contours_vs_area_ps_null",
+    "slug": "contours_vs_area_ps_null_pooled",
     "meta": {
-      "slug": "contours_vs_area_ps_null",
+      "slug": "contours_vs_area_ps_null_pooled",
       "title": "PS null posteriors, all survey areas overlaid, full resolution",
       "paper_position": 20,
       "published_utc": "2026-07-30T11:14:26+00:00",
@@ -577,7 +631,178 @@
         "warnings": []
       },
       "value_rows": 21,
-      "n_caveats": 5
+      "n_caveats": 5,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
+    }
+  },
+  {
+    "slug": "contours_vs_area_peaks_null_pooled",
+    "meta": {
+      "slug": "contours_vs_area_peaks_null_pooled",
+      "title": "Peak-count null posteriors, all survey areas overlaid, full resolution",
+      "paper_position": 21.0,
+      "published_utc": "2026-07-30T12:04:04+00:00",
+      "published_at_repo_commit": "3d0116e",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.pdf",
+          "sha256": "bfb74d66cde4dbf227570fb401560efc95f00479ab63c1b53a9043510e33c2c5",
+          "bytes": 190730
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.png",
+          "sha256": "21486ce4660bc8f687a9ec8787f60560dcdaefa3b4baa1e0dd76f15f04e0ae2d",
+          "bytes": 411689
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_values.csv",
+          "sha256": "1efcf857bbd336dbafacff79370a8d2e58dfb47850b9dffaea215becdd2438ff",
+          "bytes": 1461
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
+          "sha256": "c003a92240f18f8799313382a2c0c019df08b47b43682740dcee41684722c187",
+          "bytes": 5548
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
+    }
+  },
+  {
+    "slug": "contours_vs_area_ps_biased_pooled",
+    "meta": {
+      "slug": "contours_vs_area_ps_biased_pooled",
+      "title": "PAPER: PS biased posteriors, all survey areas overlaid, full resolution",
+      "paper_position": 22.0,
+      "published_utc": "2026-07-30T12:41:17+00:00",
+      "published_at_repo_commit": "3d0116e",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.pdf",
+          "sha256": "013f4a2895f47e42c0949a86d3ffc957a0b81e797e08cabf5beda2986c65074b",
+          "bytes": 246689
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.png",
+          "sha256": "ad0a53b8792d03722dcf48a699faf47420b1f84d1af8beede7d9195f352b9541",
+          "bytes": 419828
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_values.csv",
+          "sha256": "c1393907cf60bc6235cf248ad7d9ebf73f2acf663da4d7d482d31218257d1e14",
+          "bytes": 1612
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_provenance.json",
+          "sha256": "590d20bed0e37d094a8bc606e2987bf9df99ce1ee4f864f7a8ff83667ad9a73a",
+          "bytes": 5429
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 21,
+      "n_caveats": 5,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
+    }
+  },
+  {
+    "slug": "contours_vs_area_l1_null_pooled",
+    "meta": {
+      "slug": "contours_vs_area_l1_null_pooled",
+      "title": "L1-norm null posteriors, all survey areas overlaid, full resolution",
+      "paper_position": 23.0,
+      "published_utc": "2026-07-30T12:42:46+00:00",
+      "published_at_repo_commit": "3d0116e",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.pdf",
+          "sha256": "a18b97e5d96b7ab4910c09430009644beabd56d14e3b8a5ab868902c0c6749bd",
+          "bytes": 183552
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.png",
+          "sha256": "dbad244024df35244d56c69d48b5ae5fc9f5fa2d700629b080f56e75f30df43f",
+          "bytes": 408612
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_values.csv",
+          "sha256": "46225b9f8fc99de638ec9f2aa47a56945c2142335643f11867603f860b271d2c",
+          "bytes": 1350
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_provenance.json",
+          "sha256": "1a14c89fdf4ac0367a918ab9912cac971f4e397295af64fe6276be98d9ae2015",
+          "bytes": 5552
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
+    }
+  },
+  {
+    "slug": "contours_vs_area_l1_biased_pooled",
+    "meta": {
+      "slug": "contours_vs_area_l1_biased_pooled",
+      "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution",
+      "paper_position": 25.0,
+      "published_utc": "2026-07-30T13:06:59+00:00",
+      "published_at_repo_commit": "3d0116e",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.pdf",
+          "sha256": "48cb3aeb8e1ec90fe2e2fe6f29676ad4b0ad1185d77ba64244d5233c1250173a",
+          "bytes": 172901
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.png",
+          "sha256": "9d6bee252a39fc8863f841b2d7c2de5ff903d1652904000e66c1a978e8ddd8b0",
+          "bytes": 412014
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_values.csv",
+          "sha256": "a5f9494aae383588e3bbe33ea946475b277c93ece7689eb9c74cce6e0a5f2507",
+          "bytes": 1359
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_provenance.json",
+          "sha256": "b2e6f8eaeced186a9ff2b44eb0edcc32486423bd22410ca0bbaff2da5edd0e34",
+          "bytes": 5764
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5,
+      "notes": [
+        "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+      ]
     }
   }
 ]

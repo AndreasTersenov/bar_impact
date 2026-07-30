@@ -1,0 +1,248 @@
+{
+  "figure": "contours_vs_area_l1_null_l37-1020",
+  "generated_utc": "2026-07-30T12:41:18+00:00",
+  "git_commit": "3d0116e",
+  "statistic": "L1 norm",
+  "role": "null",
+  "role_meaning": "null = nobaryons data vs nobaryons-trained model (constraining power)",
+  "areas_drawn": [
+    2000,
+    5000,
+    10000,
+    14000,
+    28000,
+    35000
+  ],
+  "cut": "FULL map resolution \u2014 no scale cut applied (PS lmax=1020, HOS scales1234)",
+  "scales_included": {
+    "peaks_l1": "wavelet scales1234 \u2014 all four detail scales, coarse/mass-sheet excluded \u2014 submean (footprint-mean-subtracted) maps, new_normalization, noisy sigma_e=0.26"
+  },
+  "truth": {
+    "Om": 0.26,
+    "S8": 0.84,
+    "w0": -1.0
+  },
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "collapse_guard_sigma_S8_max": 0.08,
+  "colour_encoding": "sequential single-hue ramp on the statistic's own base hue; light = small area, dark = large. Area is ordered, so a categorical or rainbow palette would misrepresent it.",
+  "series": [
+    {
+      "area": 2000,
+      "n_seeds": 6,
+      "runs": [
+        1,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "n_samples": 18000,
+      "mean": [
+        0.2591155469417572,
+        0.8444724678993225,
+        -1.010974645614624
+      ],
+      "std": [
+        0.02088817209005356,
+        0.029759839177131653,
+        0.10372641682624817
+      ]
+    },
+    {
+      "area": 5000,
+      "n_seeds": 9,
+      "runs": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 27000,
+      "mean": [
+        0.2568173408508301,
+        0.8435035347938538,
+        -1.0278575420379639
+      ],
+      "std": [
+        0.014923089183866978,
+        0.019397910684347153,
+        0.08200764656066895
+      ]
+    },
+    {
+      "area": 10000,
+      "n_seeds": 9,
+      "runs": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 27000,
+      "mean": [
+        0.2544778287410736,
+        0.8473072648048401,
+        -1.0296056270599365
+      ],
+      "std": [
+        0.012396327219903469,
+        0.015286927111446857,
+        0.0682610347867012
+      ]
+    },
+    {
+      "area": 14000,
+      "n_seeds": 7,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "n_samples": 21000,
+      "mean": [
+        0.25698167085647583,
+        0.8420229554176331,
+        -1.021794080734253
+      ],
+      "std": [
+        0.011415365152060986,
+        0.012970452196896076,
+        0.06966985017061234
+      ]
+    },
+    {
+      "area": 28000,
+      "n_seeds": 8,
+      "runs": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 24000,
+      "mean": [
+        0.2565338611602783,
+        0.8431393504142761,
+        -1.0181629657745361
+      ],
+      "std": [
+        0.007985887117683887,
+        0.00987240206450224,
+        0.04655185341835022
+      ]
+    },
+    {
+      "area": 35000,
+      "n_seeds": 9,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 27000,
+      "mean": [
+        0.2558528184890747,
+        0.8448393940925598,
+        -1.022347092628479
+      ],
+      "std": [
+        0.007913827896118164,
+        0.009195906110107899,
+        0.04678903520107269
+      ]
+    }
+  ],
+  "runs_dropped": {
+    "2000": [
+      [
+        2,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "5000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "10000": [
+      [
+        3,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "14000": [
+      [
+        10,
+        "unreadable (ValueError)"
+      ],
+      [
+        8,
+        "unreadable (ValueError)"
+      ],
+      [
+        9,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "28000": [
+      [
+        4,
+        "unreadable (ValueError)"
+      ],
+      [
+        6,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "35000": [
+      [
+        7,
+        "collapsed sigma_S8=0.404"
+      ]
+    ]
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "FULL RESOLUTION \u2014 no scale cut. For the power spectrum and, at large areas, the higher-order statistics, this is the regime where the baryon bias is significant; the 'biased' role therefore shows a posterior that is NOT baryon-safe by design.",
+    "Contours pool all readable, non-collapsed seeds for the given role, so their width includes NPE seed-to-seed training scatter, not the posterior width of one seed. n_seeds per area is in the values CSV and varies with disk damage.",
+    "Seeds are NOT matched between roles here (each role pools its own readable set), because these are single-role figures. Use plot_contours_three_stats.py, which pairs runs, for any null-to-biased comparison.",
+    "Higher-order products are the SUBMEAN (footprint-mean-subtracted) ones with the corrected mask treatment. The pre-submean products spuriously tighten the masked posteriors; the glob requires '_submean_' so a missing file surfaces as missing rather than being silently substituted.",
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data unaffected."
+  ]
+}

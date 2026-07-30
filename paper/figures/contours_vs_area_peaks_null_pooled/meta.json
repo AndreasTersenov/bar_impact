@@ -1,0 +1,39 @@
+{
+  "slug": "contours_vs_area_peaks_null_pooled",
+  "title": "Peak-count null posteriors, all survey areas overlaid, full resolution",
+  "paper_position": 21.0,
+  "published_utc": "2026-07-30T12:04:04+00:00",
+  "published_at_repo_commit": "3d0116e",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.pdf",
+      "sha256": "bfb74d66cde4dbf227570fb401560efc95f00479ab63c1b53a9043510e33c2c5",
+      "bytes": 190730
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.png",
+      "sha256": "21486ce4660bc8f687a9ec8787f60560dcdaefa3b4baa1e0dd76f15f04e0ae2d",
+      "bytes": 411689
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_values.csv",
+      "sha256": "1efcf857bbd336dbafacff79370a8d2e58dfb47850b9dffaea215becdd2438ff",
+      "bytes": 1461
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
+      "sha256": "c003a92240f18f8799313382a2c0c019df08b47b43682740dcee41684722c187",
+      "bytes": 5548
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 5,
+  "notes": [
+    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+  ]
+}

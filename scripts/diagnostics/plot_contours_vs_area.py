@@ -43,6 +43,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 import numpy as np
 import matplotlib
@@ -51,6 +52,9 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, to_rgb
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(REPO, "scripts"))
+from tension.seeds import representative_seed  # noqa: E402
+
 SAMP = f"{REPO}/outputs/samples"
 PSD = f"{REPO}/outputs/baryon_tension/ps_submean_l37/posteriors"
 PSD_FS = f"{REPO}/outputs/baryon_tension/ps_fullsky_l37/posteriors/fullsky"
@@ -146,11 +150,92 @@ def load(pattern):
         keep.append(a[:, :3])
         runs.append(r)
     if not keep:
-        return None, [], dropped
-    return np.concatenate(keep), sorted(runs), dropped
+        return None, [], dropped, []
+
+    # CENTRE-outlier guard. The sigma(S8) collapse guard above catches a seed whose posterior
+    # is too WIDE; it cannot catch one whose posterior is the right width in the wrong PLACE.
+    # Real case: peaks/biased at 28000 deg^2 run 8 returned w0 = -0.053 (essentially the prior
+    # edge) while every other seed sat near -1.25, with a perfectly normal sigma(S8) = 0.013.
+    # Pooling it inflated the covariance determinant ~200x, which showed up as a pooled/per-seed
+    # FoM ratio of x14 where every other contour sits at ~1.1. plot_nsigma_vs_area.py's dual
+    # mis-fit QA tests per-parameter WIDTH anomalies, so it would miss this too.
+    keep, runs, dropped = _drop_centre_outliers(keep, runs, dropped)
+    if not keep:
+        return None, [], dropped, []
+    # Per-seed FoM_3 alongside the pooled samples. Pooling folds NPE seed-to-seed training
+    # scatter into the covariance, which LOWERS the FoM, so the pooled value describes the
+    # drawn contour while the per-seed mean is what plot_fom_vs_area.py plots. Both are
+    # recorded; comparing one against the other across figures would be an error.
+    per_seed = [fom3(a) for a in keep]
+    order = np.argsort(runs)
+    keep = [keep[i] for i in order]
+    runs = [runs[i] for i in order]
+    per_seed = [per_seed[i] for i in order]
+    return np.concatenate(keep), runs, dropped, per_seed, keep
 
 
-def build(stat, role, include_fullsky, width):
+CENTRE_MADZ = 5.0       # robust-z on the per-seed posterior centre, per parameter
+CENTRE_REL = 1.0        # ...AND the offset must exceed this many posterior widths
+
+
+def _drop_centre_outliers(keep, runs, dropped, madz=CENTRE_MADZ, rel=CENTRE_REL):
+    """Drop a seed whose posterior CENTRE is a robust outlier in any of (Om, S8, w0).
+
+    TWO conditions, both required, mirroring the dual-condition design of
+    plot_nsigma_vs_area.py's QA:
+
+      1. the centre is a robust outlier      |c - median| > madz * MAD
+      2. AND the offset actually matters     |c - median| > rel * (typical posterior sigma)
+
+    Condition 2 is not optional. Median/MAD alone is scale-free, so when the surviving seeds
+    happen to cluster very tightly the MAD collapses and a physically trivial offset scores as
+    a huge z. Measured here: at 35000 deg^2 the good seeds sit within w0 = -1.267 +/- 0.001, so
+    seeds at -1.2435 and -1.2306 -- off by 0.024 and 0.037, i.e. 0.26 and 0.41 of the w0
+    posterior width -- came out at 8 and 12 MAD and would have been discarded as outliers.
+    They are ordinary scatter. Requiring a full posterior width as well keeps them and still
+    removes the real failures by a wide margin (run 8 at 28000: w0 = -0.053, 25.6 posterior
+    widths off; run 10 at 35000: 7.2 widths off).
+
+    The threshold is set at 1.0 width deliberately conservatively, to discard only the
+    unambiguous. Borderline cases exist and are NOT silently cut: at 35000 deg^2, biased peaks,
+    runs 6 and 7 sit 0.5 and 0.8 widths from the median. They look anomalous only because the
+    other seven seeds agree on w0 to within 0.002 while the posterior width is 0.09 -- a
+    suspiciously tight cluster that may itself mean those seeds are not as independent as
+    assumed. Deciding whether 6 and 7 are bad fits or the cluster is too tight is a judgement
+    about the data, not a threshold choice, so both are kept and the fact is recorded here.
+
+    Needs >= 4 seeds for a usable median; below that nothing is called an outlier.
+    """
+    if len(keep) < 4:
+        return keep, runs, dropped
+    cent = np.array([a.mean(0) for a in keep])                 # (nseed, 3)
+    width = np.median(np.array([a.std(0) for a in keep]), 0)   # typical posterior sigma
+    med = np.median(cent, 0)
+    dev = np.abs(cent - med)
+    mad = 1.4826 * np.median(dev, 0) + 1e-12
+    bad = (dev > madz * mad) & (dev > rel * width)             # BOTH conditions
+    ok = ~bad.any(1)
+    if ok.all():
+        return keep, runs, dropped
+    for i, good in enumerate(ok):
+        if not good:
+            j = int(np.argmax(dev[i] / np.maximum(width, 1e-12)))
+            pname = ("Om", "S8", "w0")[j]
+            dropped.append((runs[i],
+                            f"centre outlier: {pname}={cent[i][j]:.4f} vs median {med[j]:.4f}"
+                            f" ({dev[i][j] / width[j]:.1f} posterior widths, "
+                            f"{dev[i][j] / mad[j]:.0f} MAD)"))
+    return ([a for a, g in zip(keep, ok) if g],
+            [r for r, g in zip(runs, ok) if g], dropped)
+
+
+def fom3(samples):
+    """FoM_3 = 1/sqrt(det C_3) over (Omega_m, S8, w0) — same definition as plot_fom_vs_area.py."""
+    c = np.cov(np.asarray(samples)[:, :3], rowvar=False)
+    return float(1.0 / np.sqrt(np.linalg.det(c)))
+
+
+def build(stat, role, include_fullsky, width, seed_mode):
     from getdist import MCSamples, plots
 
     gl = globber(stat)
@@ -160,9 +245,14 @@ def build(stat, role, include_fullsky, width):
     mcs, colors, legend, rows, dropped_all = [], [], [], [], {}
     ramp = area_ramp(STAT[stat]["hue"], len(areas))
     for col, area in zip(ramp, areas):
-        s, runs, dropped = load(gl(area, role))
+        pooled, runs, dropped, per_seed_fom, per_seed_arrays = load(gl(area, role))
+        s = pooled
+        seed_choice = None
+        if pooled is not None and seed_mode == "single":
+            i, run_lbl, seed_choice = representative_seed(per_seed_arrays, runs)
+            s = per_seed_arrays[i]
         dropped_all[str(area)] = dropped
-        if s is None:
+        if pooled is None:
             print(f"  [missing] {stat} {role} {area}: no usable posterior "
                   f"({gl(area, role)})")
             continue
@@ -172,8 +262,15 @@ def build(stat, role, include_fullsky, width):
         legend.append(lbl)
         rows.append({"area": area, "n_seeds": len(runs), "runs": runs,
                      "n_samples": int(s.shape[0]),
-                     "mean": s.mean(0).tolist(), "std": s.std(0).tolist()})
-        print(f"  {str(area):>8}: {len(runs)} seed(s) {runs}"
+                     "mean": s.mean(0).tolist(), "std": s.std(0).tolist(),
+                     "fom3_pooled": fom3(pooled),
+                     "seed_shown": (seed_choice or {}).get("chosen_run"),
+                     "seed_choice": seed_choice,
+                     "fom3_per_seed_mean": float(np.mean(per_seed_fom)),
+                     "fom3_per_seed_std": float(np.std(per_seed_fom))})
+        print(f"  {str(area):>8}: {len(runs)} seed(s) {runs}   "
+              f"FoM3 pooled {rows[-1]['fom3_pooled']:.4g} / per-seed "
+              f"{rows[-1]['fom3_per_seed_mean']:.4g}"
               + (f"   dropped {len(dropped)}" if dropped else ""))
 
     if not mcs:
@@ -190,8 +287,9 @@ def build(stat, role, include_fullsky, width):
                     legend_labels=legend, legend_loc="upper right", markers=TRUTH)
 
     tag = "" if not include_fullsky else "_with_fullsky"
+    mode_tag = "_pooled" if seed_mode == "pooled" else "_single_seed"
     out = (f"{REPO}/outputs/plots/contours_vs_area/"
-           f"contours_vs_area_{stat}_{role}_l37-{LMAX}{tag}")
+           f"contours_vs_area_{stat}_{role}_l37-{LMAX}{tag}{mode_tag}")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     g.export(out + ".pdf")
     g.export(out + ".png")
@@ -205,11 +303,14 @@ def build(stat, role, include_fullsky, width):
     with open(out + "_values.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["statistic", "role", "area_sqdeg", "parameter", "mean", "std", "truth",
-                    "n_seeds", "n_samples", "runs"])
+                    "n_seeds", "n_samples", "fom3_pooled", "fom3_per_seed_mean",
+                    "fom3_per_seed_std", "runs"])
         for r in rows:
             for i, p in enumerate(names):
                 w.writerow([STAT[stat]["label"], role, r["area"], p, f"{r['mean'][i]:.6f}",
                             f"{r['std'][i]:.6f}", TRUTH[p], r["n_seeds"], r["n_samples"],
+                            f"{r['fom3_pooled']:.6g}", f"{r['fom3_per_seed_mean']:.6g}",
+                            f"{r['fom3_per_seed_std']:.6g}",
                             " ".join(map(str, r["runs"]))])
 
     def ver(m):
@@ -231,6 +332,7 @@ def build(stat, role, include_fullsky, width):
         "git_commit": commit,
         "statistic": STAT[stat]["label"],
         "role": role,
+        "seed_mode": seed_mode,
         "role_meaning": ("null = nobaryons data vs nobaryons-trained model (constraining power)"
                          if role == "null" else
                          "biased = baryonified data vs nobaryons-trained model (bias, uncorrected)"),
@@ -240,6 +342,19 @@ def build(stat, role, include_fullsky, width):
         "truth": TRUTH,
         "param_names": ["Omega_m", "S8", "w0"],
         "collapse_guard_sigma_S8_max": SIG_MAX,
+        "fom3": {
+            "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+            "pooled_vs_per_seed": (
+                "fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN "
+                "contour represents; pooling across NPE training seeds folds training scatter "
+                "into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what "
+                "plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled "
+                "value against a per-seed one across figures."),
+            "per_area": {str(r["area"]): {"fom3_pooled": r["fom3_pooled"],
+                                          "fom3_per_seed_mean": r["fom3_per_seed_mean"],
+                                          "fom3_per_seed_std": r["fom3_per_seed_std"],
+                                          "n_seeds": r["n_seeds"]} for r in rows},
+        },
         "colour_encoding": ("sequential single-hue ramp on the statistic's own base hue; "
                             "light = small area, dark = large. Area is ordered, so a "
                             "categorical or rainbow palette would misrepresent it."),
@@ -275,6 +390,10 @@ def main():
     ap.add_argument("--statistic", default="all", choices=("all", "ps", "peaks", "l1"))
     ap.add_argument("--role", default="null", choices=("null", "biased"))
     ap.add_argument("--include-fullsky", action="store_true")
+    ap.add_argument("--seed-mode", default="pooled", choices=("pooled", "single"),
+                    help="pooled: stack every surviving seed (contour includes training "
+                         "scatter). single: draw the single most REPRESENTATIVE seed, which "
+                         "is what a real analysis reports. See scripts/tension/seeds.py.")
     ap.add_argument("--width", type=float, default=6.0)
     args = ap.parse_args()
 
@@ -287,7 +406,7 @@ def main():
     stats = ["ps", "peaks", "l1"] if args.statistic == "all" else [args.statistic]
     for s in stats:
         print(f"\n=== {STAT[s]['label']} — {args.role} — full resolution ===")
-        build(s, args.role, args.include_fullsky, args.width)
+        build(s, args.role, args.include_fullsky, args.width, args.seed_mode)
 
 
 if __name__ == "__main__":

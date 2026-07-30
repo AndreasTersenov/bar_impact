@@ -68,14 +68,32 @@ AREA_TAG=14001             # peaks/l1 datavector + posterior tag for the 14000 d
 #   idx 1,2,3    detail scales -> tag "scales234"   (the baryon-safe set)
 #   idx 4        COARSE / mass-sheet scale, normally excluded
 #   idx 1,2,3,4  detail + coarse -> tag "scales2345"
-# Override both together, e.g.
-#   sbatch --export=ALL,SCALES=1,2,3,4,SCALES_TAG=scales2345 scripts/jz/npe_hos_baryonsafe_14000.slurm
+# Override both together. Set them in the CALLING SHELL, never via --export=ALL,VAR=...:
+#
+#   SCALES="1,2,3,4" SCALES_TAG=scales2345 sbatch scripts/jz/npe_hos_baryonsafe_14000.slurm
+#
+# sbatch --export uses COMMAS to separate variables, so --export=ALL,SCALES=1,2,3,4 silently
+# becomes SCALES=1 plus three junk names. That happened (job 436470): it trained 20 models on
+# a single wavelet scale, wrote them as "scales2", and wasted 40 GPU-minutes. --export=ALL is
+# the default, so simply exporting from the caller works.
 SCALES="${SCALES:-1,2,3}"
 SCALES_TAG="${SCALES_TAG:-scales234}"
 RUNS="1 2 3 4 5"
 DD=/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast
 SAMPLES=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples
 CKPT=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/checkpoints/npe_bsafe_14000
+
+# PRE-FLIGHT: the filename tag is idx+1 per index, so derive it and refuse to run if it
+# disagrees with SCALES_TAG. This is what catches a mangled SCALES before 20 trainings go into
+# the wrong filename -- the failure mode above was invisible until the very end of the job.
+expected_tag="scales$(echo "$SCALES" | tr ',' '\n' | awk '{printf "%d", $1+1}')"
+if [ "$expected_tag" != "$SCALES_TAG" ]; then
+  echo "[fatal] SCALES='$SCALES' implies tag '$expected_tag' but SCALES_TAG='$SCALES_TAG'."
+  echo "        The two must agree. If SCALES looks truncated, you passed it through"
+  echo "        'sbatch --export=ALL,SCALES=...' -- commas separate variables there."
+  exit 1
+fi
+echo "[pre-flight] SCALES='$SCALES' -> tag '$expected_tag' == SCALES_TAG. OK."
 
 mkdir -p "$CKPT"
 

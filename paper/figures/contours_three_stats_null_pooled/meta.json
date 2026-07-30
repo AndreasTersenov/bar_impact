@@ -1,5 +1,5 @@
 {
-  "slug": "contours_three_stats_null",
+  "slug": "contours_three_stats_null_pooled",
   "title": "Null posteriors, three statistics, 14000 deg2",
   "paper_position": 4,
   "published_utc": "2026-07-30T09:18:17+00:00",
@@ -32,5 +32,8 @@
     "warnings": []
   },
   "value_rows": 9,
-  "n_caveats": 4
+  "n_caveats": 4,
+  "notes": [
+    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
+  ]
 }

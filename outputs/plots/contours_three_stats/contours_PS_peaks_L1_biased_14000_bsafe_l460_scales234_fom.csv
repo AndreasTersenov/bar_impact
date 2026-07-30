@@ -1,0 +1,4 @@
+contour,n_seeds,fom3_pooled,fom3_per_seed_mean,fom3_per_seed_std,sigma_Om_pooled,sigma_S8_pooled,sigma_w0_pooled,runs
+Power spectrum / biased,5,143694,148094,6958.59,0.0171989,0.0307202,0.0880708,1 2 3 4 5
+Peak counts / biased,5,151503,161161,12964.6,0.0143825,0.0235489,0.0977318,1 2 3 4 5
+L1 norm / biased,5,290593,313036,50203.6,0.0134,0.017026,0.0919651,1 2 3 4 5
