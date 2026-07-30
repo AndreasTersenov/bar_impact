@@ -1,0 +1,22 @@
+{
+  "figure": "fom_vs_area_all_stats",
+  "generated_utc": "2026-07-30T07:35:40+00:00",
+  "git_commit": "b900627",
+  "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
+  "errbar": "std over seeds",
+  "arm": "NULL only (nobaryons vs nobaryons) \u2014 constraining power, not bias",
+  "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
+  "versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, the data points are unaffected.",
+    "Damaged posteriors are skipped (see [skip] lines in the run log), so n_seeds differs from the original campaign and each point averages a different subset.",
+    "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and L1 are capped at 5 seeds even where 10 posteriors exist. Widening it would change the plotted values; n_seeds records what was actually used.",
+    "The A^+3/2 guide is anchored on the MEASURED PS value at 14000 deg^2, read from the series rather than hardcoded, so it stays correct if the inputs change.",
+    "FULL RESOLUTION \u2014 the regime where all three statistics are baryon-BIASED. This is constraining power available in principle, not at a baryon-safe cut."
+  ]
+}

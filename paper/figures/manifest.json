@@ -1,0 +1,466 @@
+[
+  {
+    "slug": "ps_bias_vs_lmax",
+    "meta": {
+      "slug": "ps_bias_vs_lmax",
+      "title": "PS baryon bias vs upper scale cut, 6 footprints",
+      "paper_position": 1,
+      "published_utc": "2026-07-30T07:31:34+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.pdf",
+          "sha256": "07429347f718110039bc31631e8f7feb007beea8520993d44852fa5660366834",
+          "bytes": 36837
+        },
+        "figure.png": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax.png",
+          "sha256": "ffdb92274db9c690e61cae03e43dffe50c415f8f3d0023fad76d9ca022851d68",
+          "bytes": 278417
+        },
+        "values.csv": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_values.csv",
+          "sha256": "d5d0ee9b0fc249c32582c9c19bcba2fbf6d103a2a72acb5fb22f3c63c66e4ff5",
+          "bytes": 3814
+        },
+        "provenance.json": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_provenance.json",
+          "sha256": "4c7ebb3b7c798b3e46cad11e6bc03260cb6f5abd89b9e3b3439b27fdd063a431",
+          "bytes": 1592
+        },
+        "crossings.csv": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_crossings.csv",
+          "sha256": "1a53501929f63c80dd37fa411d9e10f0b0359fcee50fd964985ea4d7a1800df8",
+          "bytes": 383
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 108,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "ps_bias_vs_lmax_with_fullsky",
+    "meta": {
+      "slug": "ps_bias_vs_lmax_with_fullsky",
+      "title": "PS baryon bias vs cut, 6 footprints plus full sky",
+      "paper_position": 2,
+      "published_utc": "2026-07-30T07:31:34+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.pdf",
+          "sha256": "82ae897aaead20f10877ad798a15849ac431feef317bef709f07aa7a5a0f27d2",
+          "bytes": 42379
+        },
+        "figure.png": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky.png",
+          "sha256": "452dd91366acd6eed9e3adfaa26566c4e413726ede8d7814c2c97b4f2da1642e",
+          "bytes": 333513
+        },
+        "values.csv": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_values.csv",
+          "sha256": "76dfe4b69d5b0c235769edd0739f31ee252d36e92024975af618e86364b4db9d",
+          "bytes": 4703
+        },
+        "provenance.json": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_provenance.json",
+          "sha256": "d720928078349dd6c89d4c1309db4535e44141a0002326c73981394ea99520ea",
+          "bytes": 1867
+        },
+        "crossings.csv": {
+          "from": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky_crossings.csv",
+          "sha256": "2276f964539a5901f452fad3a3635ca7d9fb695ee47fbd39e67a4220f4116272",
+          "bytes": 425
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 132,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "bias_vs_area_three_stats",
+    "meta": {
+      "slug": "bias_vs_area_three_stats",
+      "title": "Baryon bias vs survey area, three statistics, full resolution",
+      "paper_position": 3,
+      "published_utc": "2026-07-30T07:31:34+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
+          "sha256": "5c89f3952865aa092dc6b9fefffed3b9bb8cccacf5e0c7324323e42e98cf81df",
+          "bytes": 20953
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
+          "sha256": "7486fc33f09584bed9a60aa767265e8cb1135d59bdd6a232b2238095ccf28701",
+          "bytes": 94130
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
+          "sha256": "61d115f5775ab4de4c8f147c1ed78e147b8f7be5f4c08c1d6056d93482b3aa2c",
+          "bytes": 822
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
+          "sha256": "d3ae9965018a0dc5445fd6fd86d873bf24acf289aa07c2a54835602e27717b2c",
+          "bytes": 857
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 2
+    }
+  },
+  {
+    "slug": "contours_three_stats_null",
+    "meta": {
+      "slug": "contours_three_stats_null",
+      "title": "Null posteriors, three statistics, 14000 deg2",
+      "paper_position": 4,
+      "published_utc": "2026-07-30T07:31:51+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
+          "sha256": "881c6a1ee226798b762bd934cad1c4b54b3176010d8c2788c765f08e93307ede",
+          "bytes": 182389
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.png",
+          "sha256": "d77806952447c6af2eeb8d942538f212ab8fc9d8660fe67086ac75aca09edc23",
+          "bytes": 312178
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_values.csv",
+          "sha256": "021fc5d287bf9330fefe17a850c799a8d9ac1f5ccdc5e3345490d23a3cd89cd1",
+          "bytes": 631
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
+          "sha256": "92ed771fddfc47b17097595a549c46aec3780ed3e8f647e1919a2f0eae043866",
+          "bytes": 3318
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "contours_three_stats_biased",
+    "meta": {
+      "slug": "contours_three_stats_biased",
+      "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
+      "paper_position": 5,
+      "published_utc": "2026-07-30T07:31:51+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
+          "sha256": "46be60956c0fb30a826308d87cb7af405e98ab87263be7e079360f6bd76746f4",
+          "bytes": 181468
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.png",
+          "sha256": "7322762090e8288ac1128c6e9d84750540e0cc8d1d4a6bc82bd489b7f18d048c",
+          "bytes": 297418
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_values.csv",
+          "sha256": "2cd9846e12081643110c27eae37d704931e5d847d334d88c2a338100e8cb4b86",
+          "bytes": 649
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
+          "sha256": "29a5b10bd000ebd45ac45d16d20eba26fc3be2d2f21a20c8940c7bc8106d80ec",
+          "bytes": 3329
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "contours_three_stats_both",
+    "meta": {
+      "slug": "contours_three_stats_both",
+      "title": "Null and biased overlaid, three statistics, 14000 deg2",
+      "paper_position": 6,
+      "published_utc": "2026-07-30T07:31:51+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
+          "sha256": "4959958dae7597df3dddb0380df995ce2bdc90563194c7dc07e352f6d5582e92",
+          "bytes": 275786
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
+          "sha256": "2f991b6efa8a3f565c2da92003116310d4040fe132bf7dcbb793ce166cff2164",
+          "bytes": 484389
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
+          "sha256": "2562d32f8d87a71b91cb3e1db88d71e933a24b9385b3e32eee98264a97f8b893",
+          "bytes": 1210
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
+          "sha256": "fb5ec25679145d1fd47237bc6e1bb9d4b1d6705ca4bae38d558b62773fa4b483",
+          "bytes": 4561
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "bnt_bin1_vs_cut_optimal",
+    "meta": {
+      "slug": "bnt_bin1_vs_cut_optimal",
+      "title": "BNT bin-1 vs non-BNT, optimal binning (rebin 40)",
+      "paper_position": 7,
+      "published_utc": "2026-07-30T07:31:51+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal.pdf",
+          "sha256": "dc8cd9b0b4eeb350fb118c9abd7d1abe175420727a07f670e15a48bca8899b70",
+          "bytes": 46307
+        },
+        "figure.png": {
+          "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal.png",
+          "sha256": "842cfecac07983ec7ca6f76739b46c095fb88409f3fd42a9c85ac65722c05fa4",
+          "bytes": 214741
+        },
+        "values.csv": {
+          "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_values.csv",
+          "sha256": "37dda13907da4770a60599a1612f9bcc8722513bbd67d97f0540b666ec0bb4be",
+          "bytes": 10920
+        },
+        "provenance.json": {
+          "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_provenance.json",
+          "sha256": "ac66dd2773095899ddebf3df93ff4763b81e0efefd64cf4b1eb2d3caadda7947",
+          "bytes": 2057
+        },
+        "crossings.csv": {
+          "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_crossings.csv",
+          "sha256": "8a4d28967f48c937ba202e87f5cc083514a008a0367a4d6305bdba812602f1dd",
+          "bytes": 159
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance is missing 'mplstyle'"
+        ]
+      },
+      "value_rows": 216,
+      "n_caveats": 3
+    }
+  },
+  {
+    "slug": "fisher_constraining_power_baryon_safe",
+    "meta": {
+      "slug": "fisher_constraining_power_baryon_safe",
+      "title": "Fisher 68% contours, baryon-safe regime (full sky)",
+      "paper_position": 8,
+      "published_utc": "2026-07-30T07:32:09+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe.pdf",
+          "sha256": "54d71c5d67a4f8b9c2ae037f7702aec1a9f663d5281dab54ef7808c7f0e29a16",
+          "bytes": 28451
+        },
+        "figure.png": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe.png",
+          "sha256": "4830fc64e88777dcd3ac9f68ab2f9bbf8dcf79708945f0c24a52fbebed99e0a7",
+          "bytes": 193922
+        },
+        "values.csv": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_values.csv",
+          "sha256": "1c03dd58a73588a9c08d16af715a252064a931a1d90c350ab063815703d71a66",
+          "bytes": 612
+        },
+        "provenance.json": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_provenance.json",
+          "sha256": "971cbdecfa59e024023c10a29885fde91dd91f34a8c7b281451ce46fb8257b18",
+          "bytes": 1994
+        },
+        "covariance.csv": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_covariance.csv",
+          "sha256": "68f834bd186e2a6dfa0602bad662a0aa8a793583b2c8e1c465548cea1bcf98e1",
+          "bytes": 846
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
+          "provenance is missing 'mplstyle'"
+        ]
+      },
+      "value_rows": 4,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "fisher_constraining_power_full",
+    "meta": {
+      "slug": "fisher_constraining_power_full",
+      "title": "Fisher 68% contours, full-resolution regime (full sky)",
+      "paper_position": 9,
+      "published_utc": "2026-07-30T07:32:09+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/diagnostics/constraining_power/fisher_contours",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours.pdf",
+          "sha256": "4f3f066a6949816fe6a51cb814efbc99aab5695715dc475d5214fd9393b8f2ba",
+          "bytes": 26981
+        },
+        "figure.png": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours.png",
+          "sha256": "ac5afeedd61d379fd5d8e6205fd733b919ba0d5c1ddc50d148702f760b239df9",
+          "bytes": 193290
+        },
+        "values.csv": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_values.csv",
+          "sha256": "707a4fbc3c3f121c5c50ad7c8ab0e82f6ff9de2115eb9c95b428b56dbf548b19",
+          "bytes": 628
+        },
+        "provenance.json": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_provenance.json",
+          "sha256": "54acd59a3e1420cd4af2bb35b86ed7cb937adfeaefa032f09574295d0debba95",
+          "bytes": 1983
+        },
+        "covariance.csv": {
+          "from": "outputs/diagnostics/constraining_power/fisher_contours_covariance.csv",
+          "sha256": "56421af558db8e834cce444bc685f8c0a7f179fd72d8b3da5cc14f88668c8d42",
+          "bytes": 880
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
+          "provenance is missing 'mplstyle'"
+        ]
+      },
+      "value_rows": 4,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "constraining_power_vs_area",
+    "meta": {
+      "slug": "constraining_power_vs_area",
+      "title": "Constraining power vs survey area: sigma(S8) and FoM3",
+      "paper_position": 10,
+      "published_utc": "2026-07-30T07:36:02+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
+          "sha256": "bb927e2e407c40f8446fe969b188596c1549575cdfd3804dabccb6d19e2301b8",
+          "bytes": 25033
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.png",
+          "sha256": "e4c6d4c22adaafe2ce69fa9d57244be1d1dc9e60ad4fb44f943edd135f0f9b14",
+          "bytes": 227279
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_values.csv",
+          "sha256": "b3aa783d02b55bd9cb0fbe809285226a02b9dcc2f1ab3e3ec876270170fb5d01",
+          "bytes": 1189
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
+          "sha256": "2436bf9870437ddf9d4308f7dde9544ae746be143a59934ee06c1f6d48c12ebd",
+          "bytes": 1784
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "fom_vs_area",
+    "meta": {
+      "slug": "fom_vs_area",
+      "title": "FoM3 vs survey area, single panel",
+      "paper_position": 11,
+      "published_utc": "2026-07-30T07:36:02+00:00",
+      "published_at_repo_commit": "b900627",
+      "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats.pdf",
+          "sha256": "6f54f0f9ef811c2d6de66f2e78c71f6f9633e0d366608036fa41c2fc68ea68a0",
+          "bytes": 21140
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats.png",
+          "sha256": "723fd162b94971b6270efc6df61a332939cd13ed0f26e7f9e8b710d8644e497d",
+          "bytes": 111335
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_values.csv",
+          "sha256": "df467c7b30c45cd79cb1001cf91cc41c70a5637ae412df2667184a957fdecff7",
+          "bytes": 781
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_provenance.json",
+          "sha256": "eb45d92f6ee806afe46c288f3eca9b5713b529413775a28c5daad6cbb488984e",
+          "bytes": 1456
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  }
+]

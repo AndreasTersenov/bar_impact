@@ -135,6 +135,62 @@ fig.savefig(out + ".pdf")
 fig.savefig(out + ".png", dpi=300)
 print("wrote", out + ".pdf / .png")
 
+# ---- provenance -----------------------------------------------------------
+# Standing rule (docs/HANDOFF_JZ_PAPER_FIGURES.md section 0). n_seeds is the critical
+# column: disk damage means each point averages a different subset of runs than it did
+# pre-crash, AND hf() enumerates only runs 1-5 by construction, so a point can be capped
+# at 5 even at footprints where 10 posteriors exist. Both must be legible from the CSV.
+import csv as _csv, json as _json, subprocess as _sub, datetime as _dt
+
+with open(out + "_values.csv", "w", newline="") as _fh:
+    _w = _csv.writer(_fh)
+    _w.writerow(["statistic", "area_sqdeg", "fom3", "fom3_err", "n_seeds", "errbar_kind"])
+    for _name, _A, _m, _c, _ls, _mk in SERIES:
+        for _a, _x in zip(_A, _m):
+            _w.writerow([_name, int(_a), f"{_x[0]:.6g}", f"{_x[1]:.6g}", int(_x[2]), "std"])
+
+
+def _ver(mod):
+    try:
+        return __import__(mod).__version__
+    except Exception:
+        return "unavailable"
+
+
+try:
+    _commit = _sub.check_output(["git", "rev-parse", "--short", "HEAD"],
+                                cwd=os.path.dirname(os.path.dirname(
+                                    os.path.dirname(os.path.abspath(__file__)))),
+                                stderr=_sub.DEVNULL, text=True).strip()
+except Exception:
+    _commit = "unknown"
+
+_json.dump({
+    "figure": os.path.basename(out),
+    "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
+    "git_commit": _commit,
+    "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
+    "errbar": "std over seeds",
+    "arm": "NULL only (nobaryons vs nobaryons) — constraining power, not bias",
+    "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
+    "versions": {m: _ver(m) for m in ("numpy", "scipy", "matplotlib")},
+    "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
+    "caveats": [
+        "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
+        "pre-crash figures are expected, the data points are unaffected.",
+        "Damaged posteriors are skipped (see [skip] lines in the run log), so n_seeds "
+        "differs from the original campaign and each point averages a different subset.",
+        "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks "
+        "and L1 are capped at 5 seeds even where 10 posteriors exist. Widening it would "
+        "change the plotted values; n_seeds records what was actually used.",
+        "The A^+3/2 guide is anchored on the MEASURED PS value at 14000 deg^2, read from the "
+        "series rather than hardcoded, so it stays correct if the inputs change.",
+        "FULL RESOLUTION — the regime where all three statistics are baryon-BIASED. This is "
+        "constraining power available in principle, not at a baryon-safe cut.",
+    ],
+}, open(out + "_provenance.json", "w"), indent=2)
+print("wrote", out + "_values.csv / _provenance.json")
+
 print(f"\n  {'statistic':16s}" + "".join(f"{a:>11d}" for a in PS))
 for name, A, m, c, ls, mk in SERIES:
     print(f"  {name:16s}" + "".join(f"{x[0]:>11.3g}" for x in m))

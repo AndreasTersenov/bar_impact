@@ -1,0 +1,43 @@
+{
+  "slug": "bnt_bin1_vs_cut_optimal",
+  "title": "BNT bin-1 vs non-BNT, optimal binning (rebin 40)",
+  "paper_position": 7,
+  "published_utc": "2026-07-30T07:31:51+00:00",
+  "published_at_repo_commit": "b900627",
+  "source_stem": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal.pdf",
+      "sha256": "dc8cd9b0b4eeb350fb118c9abd7d1abe175420727a07f670e15a48bca8899b70",
+      "bytes": 46307
+    },
+    "figure.png": {
+      "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal.png",
+      "sha256": "842cfecac07983ec7ca6f76739b46c095fb88409f3fd42a9c85ac65722c05fa4",
+      "bytes": 214741
+    },
+    "values.csv": {
+      "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_values.csv",
+      "sha256": "37dda13907da4770a60599a1612f9bcc8722513bbd67d97f0540b666ec0bb4be",
+      "bytes": 10920
+    },
+    "provenance.json": {
+      "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_provenance.json",
+      "sha256": "ac66dd2773095899ddebf3df93ff4763b81e0efefd64cf4b1eb2d3caadda7947",
+      "bytes": 2057
+    },
+    "crossings.csv": {
+      "from": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal_crossings.csv",
+      "sha256": "8a4d28967f48c937ba202e87f5cc083514a008a0367a4d6305bdba812602f1dd",
+      "bytes": 159
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "provenance is missing 'mplstyle'"
+    ]
+  },
+  "value_rows": 216,
+  "n_caveats": 3
+}

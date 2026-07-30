@@ -1,0 +1,54 @@
+{
+  "figure": "nsigma_vs_lmax_bnt_bin1_allareas_optimal",
+  "generated_utc": "2026-07-29T16:58:19+00:00",
+  "git_commit": "701fba8",
+  "errbar": "std",
+  "threshold_sigma": 0.3,
+  "n_seeds_bnt": [
+    3
+  ],
+  "n_seeds_nonbnt": [
+    5
+  ],
+  "source_tables": {
+    "bnt": "outputs/baryon_tension/bnt_ps_bin1_submean_l37/tables_r40/tension_3param_agg.csv",
+    "non_bnt": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
+  },
+  "derivation": "aggregated campaign tables (NOT recomputed from posteriors)",
+  "estimator": "tensiometer gaussian_tension.Q_DM -> chi2.cdf -> from_confidence_to_sigma",
+  "param_subset": [
+    0,
+    1,
+    2
+  ],
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "lmin": 37,
+  "rebin_note": "rebin 40",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "3.0.5",
+    "matplotlib": "3.11.1"
+  },
+  "caveats": [
+    "Crossings are the lowest grid cut with mean >= threshold (no interpolation), matching how this campaign has always reported them.",
+    "At-cut comparison is best-vs-best: BNT at rebin=40 vs non-BNT at rebin=10 (different binning) \u2014 see docs/PLAN_bnt_optimal_binning.md Caveats.",
+    "rebin=40 means 3-run means (overnight budget), noisier than the 5-run default-binning variant, and coarser cut resolution (visible staircase)."
+  ],
+  "extracted_pct_annotation": {
+    "values": {
+      "2000": 87,
+      "5000": 85,
+      "10000": 82,
+      "14000": 76,
+      "28000": 93,
+      "35000": 93
+    },
+    "source": "docs/PLAN_bnt_optimal_binning.md, FINAL RESULTS (2026-06-25) \u2014 BNT/non-BNT tension at lmax=1020 with both at rebin=40",
+    "reproducible_from_repo": false,
+    "note": "The non-BNT-at-rebin-40 tension these percentages divide by was never saved as a table; the shipped non-BNT campaign is rebin=10. Dividing the r40 BNT table by ps_submean_l37 yields 57/65/65/76/99/99, which is the best-vs-best comparison, NOT this same-binning lossless check. Treat the annotation as a quoted historical result."
+  }
+}

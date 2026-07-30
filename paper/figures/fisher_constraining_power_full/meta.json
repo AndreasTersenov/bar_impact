@@ -1,0 +1,45 @@
+{
+  "slug": "fisher_constraining_power_full",
+  "title": "Fisher 68% contours, full-resolution regime (full sky)",
+  "paper_position": 9,
+  "published_utc": "2026-07-30T07:32:09+00:00",
+  "published_at_repo_commit": "b900627",
+  "source_stem": "outputs/diagnostics/constraining_power/fisher_contours",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/diagnostics/constraining_power/fisher_contours.pdf",
+      "sha256": "4f3f066a6949816fe6a51cb814efbc99aab5695715dc475d5214fd9393b8f2ba",
+      "bytes": 26981
+    },
+    "figure.png": {
+      "from": "outputs/diagnostics/constraining_power/fisher_contours.png",
+      "sha256": "ac5afeedd61d379fd5d8e6205fd733b919ba0d5c1ddc50d148702f760b239df9",
+      "bytes": 193290
+    },
+    "values.csv": {
+      "from": "outputs/diagnostics/constraining_power/fisher_contours_values.csv",
+      "sha256": "707a4fbc3c3f121c5c50ad7c8ab0e82f6ff9de2115eb9c95b428b56dbf548b19",
+      "bytes": 628
+    },
+    "provenance.json": {
+      "from": "outputs/diagnostics/constraining_power/fisher_contours_provenance.json",
+      "sha256": "54acd59a3e1420cd4af2bb35b86ed7cb937adfeaefa032f09574295d0debba95",
+      "bytes": 1983
+    },
+    "covariance.csv": {
+      "from": "outputs/diagnostics/constraining_power/fisher_contours_covariance.csv",
+      "sha256": "56421af558db8e834cce444bc685f8c0a7f179fd72d8b3da5cc14f88668c8d42",
+      "bytes": 880
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
+      "provenance is missing 'mplstyle'"
+    ]
+  },
+  "value_rows": 4,
+  "n_caveats": 5
+}

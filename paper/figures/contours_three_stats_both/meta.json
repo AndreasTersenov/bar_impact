@@ -1,0 +1,36 @@
+{
+  "slug": "contours_three_stats_both",
+  "title": "Null and biased overlaid, three statistics, 14000 deg2",
+  "paper_position": 6,
+  "published_utc": "2026-07-30T07:31:51+00:00",
+  "published_at_repo_commit": "b900627",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
+      "sha256": "4959958dae7597df3dddb0380df995ce2bdc90563194c7dc07e352f6d5582e92",
+      "bytes": 275786
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
+      "sha256": "2f991b6efa8a3f565c2da92003116310d4040fe132bf7dcbb793ce166cff2164",
+      "bytes": 484389
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
+      "sha256": "2562d32f8d87a71b91cb3e1db88d71e933a24b9385b3e32eee98264a97f8b893",
+      "bytes": 1210
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
+      "sha256": "fb5ec25679145d1fd47237bc6e1bb9d4b1d6705ca4bae38d558b62773fa4b483",
+      "bytes": 4561
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 4
+}

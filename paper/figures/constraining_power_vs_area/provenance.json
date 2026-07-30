@@ -1,0 +1,39 @@
+{
+  "figure": "scaling_vs_area_all_stats",
+  "generated_utc": "2026-07-30T07:35:37+00:00",
+  "git_commit": "b900627",
+  "panels": {
+    "a": "sigma(S8) vs area",
+    "b": "FoM_3 vs area"
+  },
+  "fitted_loglog_slopes": {
+    "Power spectrum": {
+      "sigma_S8_loglog_slope": -0.4572672615251765,
+      "fom3_loglog_slope": 1.2398607099066752
+    },
+    "Peak counts": {
+      "sigma_S8_loglog_slope": -0.38526212366540713,
+      "fom3_loglog_slope": 1.3734688011360021
+    },
+    "L1 norm": {
+      "sigma_S8_loglog_slope": -0.41860393411120317,
+      "fom3_loglog_slope": 1.3399013810263307
+    }
+  },
+  "errbar": "std over seeds",
+  "arm": "NULL only (nobaryons vs nobaryons) \u2014 constraining power, not bias",
+  "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
+  "versions": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, the data points are unaffected.",
+    "Damaged posteriors are skipped, so n_seeds differs from the original campaign and each point averages a different subset.",
+    "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and L1 are capped at 5 seeds even where 10 posteriors exist. n_seeds records what was used.",
+    "The two reference guides are HARDCODED anchors (0.0135 and 1.05e5 at 14000 deg^2) chosen pre-crash; unlike plot_fom_vs_area.py they are NOT read from the series, so they may no longer sit on the data. They are guides to the SLOPE, not fits.",
+    "FULL RESOLUTION \u2014 the regime where all three statistics are baryon-BIASED."
+  ]
+}
