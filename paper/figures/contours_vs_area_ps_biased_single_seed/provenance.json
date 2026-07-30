@@ -1,0 +1,564 @@
+{
+  "figure": "contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
+  "generated_utc": "2026-07-30T15:29:27+00:00",
+  "git_commit": "d8384e9",
+  "statistic": "Power spectrum",
+  "role": "biased",
+  "seed_mode": "single",
+  "role_meaning": "biased = baryonified data vs nobaryons-trained model (bias, uncorrected)",
+  "areas_drawn": [
+    2000,
+    5000,
+    10000,
+    14000,
+    28000,
+    35000,
+    "fullsky"
+  ],
+  "cut": "FULL map resolution \u2014 no scale cut applied (PS lmax=1020, HOS scales1234)",
+  "scales_included": {
+    "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10"
+  },
+  "truth": {
+    "Om": 0.26,
+    "S8": 0.84,
+    "w0": -1.0
+  },
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "collapse_guard_sigma_S8_max": 0.08,
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.",
+    "per_area": {
+      "2000": {
+        "fom3_pooled": 26734.21211768813,
+        "fom3_per_seed_mean": 27222.131516436162,
+        "fom3_per_seed_std": 1417.0972077586453,
+        "n_seeds": 5
+      },
+      "5000": {
+        "fom3_pooled": 79716.28218481218,
+        "fom3_per_seed_mean": 86203.10012226431,
+        "fom3_per_seed_std": 7058.802956827975,
+        "n_seeds": 5
+      },
+      "10000": {
+        "fom3_pooled": 199666.21728066655,
+        "fom3_per_seed_mean": 209657.30036491217,
+        "fom3_per_seed_std": 5360.351829445229,
+        "n_seeds": 3
+      },
+      "14000": {
+        "fom3_pooled": 244856.27592449015,
+        "fom3_per_seed_mean": 259190.61459525506,
+        "fom3_per_seed_std": 30656.62537988405,
+        "n_seeds": 5
+      },
+      "28000": {
+        "fom3_pooled": 344344.6922015473,
+        "fom3_per_seed_mean": 436742.918045888,
+        "fom3_per_seed_std": 52253.11018356921,
+        "n_seeds": 9
+      },
+      "35000": {
+        "fom3_pooled": 506655.59329067304,
+        "fom3_per_seed_mean": 614062.3393180645,
+        "fom3_per_seed_std": 56388.84063795773,
+        "n_seeds": 3
+      },
+      "fullsky": {
+        "fom3_pooled": 464694.7753805063,
+        "fom3_per_seed_mean": 648949.8861349315,
+        "fom3_per_seed_std": 135037.931897966,
+        "n_seeds": 5
+      }
+    }
+  },
+  "colour_encoding": "sequential single-hue ramp on the statistic's own base hue; light = small area, dark = large. Area is ordered, so a categorical or rainbow palette would misrepresent it.",
+  "series": [
+    {
+      "area": 2000,
+      "n_seeds": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.2357650101184845,
+        0.8578752279281616,
+        -1.1210601329803467
+      ],
+      "std": [
+        0.03353780508041382,
+        0.06249144673347473,
+        0.11112415045499802
+      ],
+      "fom3_pooled": 26734.21211768813,
+      "seed_shown": 5,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 5,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.0943112000823021,
+            "log_width_ratio": 0.06034981086850166,
+            "score": 0.15466101467609406
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.053433310240507126,
+            "log_width_ratio": 0.024112235754728317,
+            "score": 0.07754554599523544
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.0634380578994751,
+            "log_width_ratio": 0.0398482047021389,
+            "score": 0.1032862663269043
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.13151291012763977,
+            "log_width_ratio": 0.017566045746207237,
+            "score": 0.14907895028591156
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.06004295125603676,
+            "log_width_ratio": 0.0160125270485878,
+            "score": 0.07605548202991486
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 27222.131516436162,
+      "fom3_per_seed_std": 1417.0972077586453
+    },
+    {
+      "area": 5000,
+      "n_seeds": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.23640596866607666,
+        0.8519001603126526,
+        -1.159703016281128
+      ],
+      "std": [
+        0.020717866718769073,
+        0.037348173558712006,
+        0.09722151607275009
+      ],
+      "fom3_pooled": 79716.28218481218,
+      "seed_shown": 1,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 1,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.061882998794317245,
+            "log_width_ratio": 0.07003141939640045,
+            "score": 0.131914421916008
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.08159109205007553,
+            "log_width_ratio": 0.07162416726350784,
+            "score": 0.15321525931358337
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.053532980382442474,
+            "log_width_ratio": 0.12012404948472977,
+            "score": 0.17365702986717224
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.18377363681793213,
+            "log_width_ratio": 0.023161809891462326,
+            "score": 0.20693545043468475
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.10744437575340271,
+            "log_width_ratio": 0.08073894679546356,
+            "score": 0.18818332254886627
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 86203.10012226431,
+      "fom3_per_seed_std": 7058.802956827975
+    },
+    {
+      "area": 10000,
+      "n_seeds": 3,
+      "runs": [
+        2,
+        3,
+        4
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.2372397929430008,
+        0.8489936590194702,
+        -1.177512288093567
+      ],
+      "std": [
+        0.016233297064900398,
+        0.029768895357847214,
+        0.075062096118927
+      ],
+      "fom3_pooled": 199666.21728066655,
+      "seed_shown": 3,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 3,
+        "per_seed": [
+          {
+            "run": 2,
+            "centre_offset_widths": 0.34834837913513184,
+            "log_width_ratio": 0.10744396597146988,
+            "score": 0.4557923376560211
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.02251325733959675,
+            "log_width_ratio": 0.0033003853168338537,
+            "score": 0.025813642889261246
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.07866110652685165,
+            "log_width_ratio": 0.014563215896487236,
+            "score": 0.09322432428598404
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 209657.30036491217,
+      "fom3_per_seed_std": 5360.351829445229
+    },
+    {
+      "area": 14000,
+      "n_seeds": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.23915015161037445,
+        0.8431521058082581,
+        -1.1919413805007935
+      ],
+      "std": [
+        0.01404569298028946,
+        0.02447972446680069,
+        0.07566520571708679
+      ],
+      "fom3_pooled": 244856.27592449015,
+      "seed_shown": 2,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 2,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.11429673433303833,
+            "log_width_ratio": 0.07877447456121445,
+            "score": 0.19307121634483337
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.018546761944890022,
+            "log_width_ratio": 0.030178645625710487,
+            "score": 0.04872540757060051
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.0558377206325531,
+            "log_width_ratio": 0.025791920721530914,
+            "score": 0.08162964135408401
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.12539805471897125,
+            "log_width_ratio": 0.00799583736807108,
+            "score": 0.13339389860630035
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.12782242894172668,
+            "log_width_ratio": 0.12800779938697815,
+            "score": 0.25583022832870483
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 259190.61459525506,
+      "fom3_per_seed_std": 30656.62537988405
+    },
+    {
+      "area": 28000,
+      "n_seeds": 9,
+      "runs": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.24100399017333984,
+        0.841544508934021,
+        -1.1825374364852905
+      ],
+      "std": [
+        0.011941973119974136,
+        0.022390808910131454,
+        0.07667654007673264
+      ],
+      "fom3_pooled": 344344.6922015473,
+      "seed_shown": 3,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 3,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.4382329285144806,
+            "log_width_ratio": 0.0340924970805645,
+            "score": 0.4723254144191742
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.4780576229095459,
+            "log_width_ratio": 0.1275741308927536,
+            "score": 0.6056317687034607
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.08299955725669861,
+            "log_width_ratio": 0.09663958847522736,
+            "score": 0.17963914573192596
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.38235384225845337,
+            "log_width_ratio": 0.09179428964853287,
+            "score": 0.47414812445640564
+          },
+          {
+            "run": 6,
+            "centre_offset_widths": 0.39155733585357666,
+            "log_width_ratio": 0.1165241226553917,
+            "score": 0.5080814361572266
+          },
+          {
+            "run": 7,
+            "centre_offset_widths": 0.29497966170310974,
+            "log_width_ratio": 0.06895178556442261,
+            "score": 0.36393144726753235
+          },
+          {
+            "run": 8,
+            "centre_offset_widths": 0.12245249003171921,
+            "log_width_ratio": 0.1024998277425766,
+            "score": 0.2249523103237152
+          },
+          {
+            "run": 9,
+            "centre_offset_widths": 0.31504881381988525,
+            "log_width_ratio": 0.07914271205663681,
+            "score": 0.39419153332710266
+          },
+          {
+            "run": 10,
+            "centre_offset_widths": 0.08560534566640854,
+            "log_width_ratio": 0.14781805872917175,
+            "score": 0.2334234118461609
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 436742.918045888,
+      "fom3_per_seed_std": 52253.11018356921
+    },
+    {
+      "area": 35000,
+      "n_seeds": 3,
+      "runs": [
+        2,
+        3,
+        4
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.24215131998062134,
+        0.8413684368133545,
+        -1.1847786903381348
+      ],
+      "std": [
+        0.011160960420966148,
+        0.020823704078793526,
+        0.0625065416097641
+      ],
+      "fom3_pooled": 506655.59329067304,
+      "seed_shown": 3,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 3,
+        "per_seed": [
+          {
+            "run": 2,
+            "centre_offset_widths": 0.10731235146522522,
+            "log_width_ratio": 0.16854828596115112,
+            "score": 0.27586063742637634
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.06893173605203629,
+            "log_width_ratio": 0.08947231620550156,
+            "score": 0.15840405225753784
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.5839144587516785,
+            "log_width_ratio": 0.01649305410683155,
+            "score": 0.6004075407981873
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 614062.3393180645,
+      "fom3_per_seed_std": 56388.84063795773
+    },
+    {
+      "area": "fullsky",
+      "n_seeds": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.24195481836795807,
+        0.8384080529212952,
+        -1.185272455215454
+      ],
+      "std": [
+        0.008233174681663513,
+        0.015724267810583115,
+        0.05980581417679787
+      ],
+      "fom3_pooled": 464694.7753805063,
+      "seed_shown": 2,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 2,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.7608168721199036,
+            "log_width_ratio": 0.10714104771614075,
+            "score": 0.8679579496383667
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.1819220930337906,
+            "log_width_ratio": 0.03358064591884613,
+            "score": 0.21550273895263672
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.396428644657135,
+            "log_width_ratio": 0.21764740347862244,
+            "score": 0.6140760183334351
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.957895040512085,
+            "log_width_ratio": 0.03962556645274162,
+            "score": 0.9975206255912781
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.18301929533481598,
+            "log_width_ratio": 0.04527369886636734,
+            "score": 0.22829300165176392
+          }
+        ]
+      },
+      "fom3_per_seed_mean": 648949.8861349315,
+      "fom3_per_seed_std": 135037.931897966
+    }
+  ],
+  "runs_dropped": {
+    "2000": [],
+    "5000": [],
+    "10000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ],
+      [
+        5,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "14000": [],
+    "28000": [
+      [
+        4,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "35000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ],
+      [
+        5,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "fullsky": []
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "FULL RESOLUTION \u2014 no scale cut. For the power spectrum and, at large areas, the higher-order statistics, this is the regime where the baryon bias is significant; the 'biased' role therefore shows a posterior that is NOT baryon-safe by design.",
+    "Contours pool all readable, non-collapsed seeds for the given role, so their width includes NPE seed-to-seed training scatter, not the posterior width of one seed. n_seeds per area is in the values CSV and varies with disk damage.",
+    "Seeds are NOT matched between roles here (each role pools its own readable set), because these are single-role figures. Use plot_contours_three_stats.py, which pairs runs, for any null-to-biased comparison.",
+    "Higher-order products are the SUBMEAN (footprint-mean-subtracted) ones with the corrected mask treatment. The pre-submean products spuriously tighten the masked posteriors; the glob requires '_submean_' so a missing file surfaces as missing rather than being silently substituted.",
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data unaffected."
+  ]
+}

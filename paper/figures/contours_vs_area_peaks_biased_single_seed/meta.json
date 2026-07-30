@@ -1,0 +1,36 @@
+{
+  "slug": "contours_vs_area_peaks_biased_single_seed",
+  "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid (single seed)",
+  "paper_position": 24.1,
+  "published_utc": "2026-07-30T16:21:56+00:00",
+  "published_at_repo_commit": "d8384e9",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.pdf",
+      "sha256": "518fcf505d5b28424415471dfd099e0cd06aad7250d79357a0b1503149754fe7",
+      "bytes": 194802
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.png",
+      "sha256": "d7501888651b5857198e6d86f491000026951a0bc455a029dd48311dbef076d2",
+      "bytes": 392623
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_values.csv",
+      "sha256": "f360a298a99f80c03a099f1033387f193673b559822648179402c85d3bf68a7c",
+      "bytes": 1927
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_provenance.json",
+      "sha256": "2f545c7dd9e252d8d3bd12ecf72b352e674d3f13f9599a6deff92486d60c5b91",
+      "bytes": 19359
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 5
+}

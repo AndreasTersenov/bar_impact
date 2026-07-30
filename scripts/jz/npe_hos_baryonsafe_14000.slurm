@@ -79,6 +79,25 @@ AREA_TAG=14001             # peaks/l1 datavector + posterior tag for the 14000 d
 SCALES="${SCALES:-1,2,3}"
 SCALES_TAG="${SCALES_TAG:-scales234}"
 RUNS="1 2 3 4 5"
+
+# FOOTPRINT: "masked" (uses AREA_TAG) or "fullsky". STATS: which statistics to train.
+#   FOOTPRINT=fullsky STATS=l1 SCALES="1,2,3" SCALES_TAG=scales234 sbatch <this>
+# peaks has NO full-sky submean grid: peak_counts_processing.py gates its submean branch on
+# apply_mask (line ~142, submean_suffix = "_submean" if (apply_mask and submean)), so a
+# full-sky peaks run silently produces an untagged, un-mean-subtracted product. l1 does have
+# the full-sky branch. So FOOTPRINT=fullsky must be run with STATS=l1 until that is fixed.
+FOOTPRINT="${FOOTPRINT:-masked}"
+STATS="${STATS:-l1 peaks}"
+
+if [ "$FOOTPRINT" = "fullsky" ]; then
+  MASK_ARGS=""
+  OUT_TAG="fullsky_submean"
+  GRID_TAG=""
+else
+  MASK_ARGS="--masked --mask-area-sqdeg $AREA_TAG"
+  OUT_TAG="masked_${AREA_TAG}sqdeg_submean"
+  GRID_TAG="_masked_${AREA_TAG}sqdeg"
+fi
 DD=/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast
 SAMPLES=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples
 CKPT=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/checkpoints/npe_bsafe_14000
@@ -95,9 +114,30 @@ if [ "$expected_tag" != "$SCALES_TAG" ]; then
 fi
 echo "[pre-flight] SCALES='$SCALES' -> tag '$expected_tag' == SCALES_TAG. OK."
 
+# PRE-FLIGHT 2: the training INPUT must exist. Job 426843 trained nothing because
+# --mask-area-sqdeg is used verbatim to build input names and 14000 was passed where the
+# datavectors are tagged 14001 -- 20 launches, all dying on FileNotFoundError. One stat call
+# up front turns that into an immediate, legible failure.
+for stat in $STATS; do
+  case "$stat" in
+    l1)    inpref="all_l1_norms" ;;
+    peaks) inpref="all_peak_counts" ;;
+    *)     echo "[fatal] unknown statistic '$stat' in STATS"; exit 1 ;;
+  esac
+  probe="${DD}/grid/${inpref}_grid_nobaryons_bin1${GRID_TAG}_submean_noisy_s0.26_new_normalization.npy"
+  if [ ! -f "$probe" ]; then
+    echo "[fatal] missing training input for '$stat' on footprint '$FOOTPRINT':"
+    echo "        $probe"
+    [ "$FOOTPRINT" = "fullsky" ] && [ "$stat" = "peaks" ] && \
+      echo "        (expected: peak_counts_processing.py has no full-sky submean branch)"
+    exit 1
+  fi
+  echo "[pre-flight] $stat input present: $(basename "$probe")"
+done
+
 mkdir -p "$CKPT"
 
-echo "=== NPE HOS, tag ${AREA_TAG} (14000 deg2 footprint), ${SCALES_TAG} (idx ${SCALES}), submean ==="
+echo "=== NPE HOS [${STATS}], footprint ${FOOTPRINT} (${OUT_TAG}), ${SCALES_TAG} (idx ${SCALES}) ==="
 echo "start : $(date -Is)"
 echo "python: $PY"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
@@ -105,7 +145,7 @@ echo
 
 done_n=0; skip_n=0; fail_n=0
 
-for stat in l1 peaks; do
+for stat in $STATS; do
   case "$stat" in
     l1)    SCRIPT=scripts/run_npe_inference.py            ; TAG=""     ;;
     peaks) SCRIPT=scripts/run_npe_peak_counts_inference.py; TAG="pc_"  ;;
@@ -114,7 +154,7 @@ for stat in l1 peaks; do
   for role in nobaryons baryonified; do
     # role names the FIDUCIAL (the observed data vector); the model is always nobaryons-trained.
     for r in $RUNS; do
-      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_${SCALES_TAG}_noisy_s0.26_masked_${AREA_TAG}sqdeg_submean_new_normalization_run${r}_npe.npy"
+      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_${SCALES_TAG}_noisy_s0.26_${OUT_TAG}_new_normalization_run${r}_npe.npy"
 
       # Skip only if the posterior exists AND loads: a disk-damaged .npy raises ValueError
       # (numpy reads the mangled header as pickled data), so -f alone would skip a corrupt file.
@@ -138,7 +178,7 @@ except Exception:
         --bins 1,2,3,4 \
         --scales "$SCALES" \
         --noisy --noise-level 0.26 \
-        --masked --mask-area-sqdeg "$AREA_TAG" --submean \
+        $MASK_ARGS --submean \
         --new-normalization \
         --train --epochs 1000 \
         --num-samples 3000 \

@@ -68,6 +68,8 @@ STYLE = {"Power spectrum": "#0072B2", "Peak counts": "#D55E00", "L1 norm": "#009
 
 
 PS_AGG = f"{REPO}/outputs/baryon_tension/ps_submean_l37/tables/tension_3param_agg.csv"
+PS_AGG_FS = f"{REPO}/outputs/baryon_tension/ps_fullsky_l37/tables/tension_3param_agg.csv"
+PSD_FS = f"{REPO}/outputs/baryon_tension/ps_fullsky_l37/posteriors/fullsky"
 THRESHOLD = 0.3         # the baryon-safety tolerance the campaign reports against
 
 
@@ -82,8 +84,12 @@ def required_ps_lmax(A, threshold=THRESHOLD):
 
     Read from the campaign table rather than hardcoded, so it tracks the data.
     """
-    rows = [(int(r["upper_cut"]), float(r["mean"]))
-            for r in csv.DictReader(open(PS_AGG)) if int(r["area"]) == A]
+    if A == "fullsky":
+        rows = [(int(r["upper_cut"]), float(r["mean"]))
+                for r in csv.DictReader(open(PS_AGG_FS)) if r["area"] == "fullsky"]
+    else:
+        rows = [(int(r["upper_cut"]), float(r["mean"]))
+                for r in csv.DictReader(open(PS_AGG)) if int(r["area"]) == A]
     if not rows:
         raise SystemExit(f"[fatal] no rows for area {A} in {PS_AGG}")
     safe = [c for c, m in sorted(rows) if m < threshold]
@@ -94,6 +100,14 @@ def required_ps_lmax(A, threshold=THRESHOLD):
 
 
 def ps_globs(A, lmax):
+    if A == "fullsky":
+        # Full sky carries no _submean_ and no _master_ tag: submean subtracts a FOOTPRINT
+        # mean, which exists only under a mask, and the full-sky leg uses the healpy per-ell
+        # pipeline rather than MASTER decoupling. So the full-sky contour is NOT
+        # magnitude-comparable to a masked one -- only the scale-cut behaviour is.
+        t = f"bins1234_l37-{lmax}_r10_noisy_s0.26_run*_npe.npy"
+        return (f"{PSD_FS}/null/posterior_samples_ps_auto_cross_nobaryons_vs_nobaryons_{t}",
+                f"{PSD_FS}/biased/posterior_samples_ps_auto_cross_nobaryons_vs_baryonified_{t}")
     tail = (f"bins1234_l37-{lmax}_r10_masked_{A}sqdeg_apod2.0_master_submean_"
             f"noisy_s0.26_run*.npy")
     base = f"{PSD}/mask_{A:05d}"
@@ -102,6 +116,10 @@ def ps_globs(A, lmax):
 
 
 def hos_globs(prefix, A, scales):
+    if A == "fullsky":
+        tail = f"bins1234_{scales}_noisy_s0.26_fullsky_submean_new_normalization*_npe.npy"
+        return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",
+                f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_baryonified_{tail}")
     tail = (f"bins1234_{scales}_noisy_s0.26_masked_{HOS_TAG[A]}sqdeg_submean_"
             f"new_normalization*_npe.npy")
     return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",
@@ -150,7 +168,9 @@ def load_pairs(null_glob, biased_glob):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--area", type=int, default=14000, choices=sorted(HOS_TAG))
+    ap.add_argument("--area", default="14000",
+                    choices=[str(a) for a in sorted(HOS_TAG)] + ["fullsky"],
+                    help="masked footprint in deg^2, or 'fullsky'")
     ap.add_argument("--mode", default="both", choices=("both", "null", "biased"))
     ap.add_argument("--single-run", type=int, default=None,
                     help="Use only this run index instead of pooling all paired runs.")
@@ -175,6 +195,7 @@ def main():
 
     # The two cuts are not the same KIND of cut — the PS drops multipoles, the HOS drop a
     # wavelet scale — so they are resolved independently and both recorded in the sidecar.
+    args.area = "fullsky" if args.area == "fullsky" else int(args.area)
     if args.cut_mode == "baryon-safe":
         ps_lmax = args.ps_lmax or required_ps_lmax(args.area)
         hos_scales = args.hos_scales or "scales234"
@@ -300,7 +321,7 @@ def main():
         "generated_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "git_commit": commit,
         "area_sqdeg": args.area,
-        "hos_footprint_tag": HOS_TAG[args.area],
+        "hos_footprint_tag": (HOS_TAG[args.area] if args.area != "fullsky" else "fullsky"),
         "mode": args.mode,
         "seed_mode": args.seed_mode,
         "single_run": args.single_run,
