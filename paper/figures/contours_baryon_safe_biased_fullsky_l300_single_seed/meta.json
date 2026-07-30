@@ -1,0 +1,36 @@
+{
+  "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
+  "title": "Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed)",
+  "paper_position": 13.1,
+  "published_utc": "2026-07-30T22:36:15+00:00",
+  "published_at_repo_commit": "2cb7a65",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.pdf",
+      "sha256": "a0e4172cdf0078bf458f590fc0cd78b6972c64cd97ae979c894c6609b0a0084e",
+      "bytes": 157002
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.png",
+      "sha256": "eacfbfd85a0385fcc31cc71769c0593c55b3f62a31ccddddbfaddbe237fbcb91",
+      "bytes": 302116
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_values.csv",
+      "sha256": "0315b4c2dc784fdd0cacf2ba7b33d34ee61aef3c9a1b39fbf33bb613a991c426",
+      "bytes": 625
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_provenance.json",
+      "sha256": "0c9c3b608bd098408818052413e9d3759597c5f34e8abec7a8a2685712d0cc1b",
+      "bytes": 7024
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 9,
+  "n_caveats": 6
+}

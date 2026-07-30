@@ -1,0 +1,36 @@
+{
+  "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
+  "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed)",
+  "paper_position": 3.3,
+  "published_utc": "2026-07-30T22:51:29+00:00",
+  "published_at_repo_commit": "2cb7a65",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.pdf",
+      "sha256": "2df2858f055c9f230e7c71b192fde2da8fa7be342e7bae4709c04aac3820d42c",
+      "bytes": 158375
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.png",
+      "sha256": "ceef24d98f6abe0373c91e0274b9dd4fa9f58befd7804f9bf89c39304bf409f1",
+      "bytes": 308095
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_values.csv",
+      "sha256": "cf9fd23bdd2d1aa48a3c6ec5d38245eaa9d34e80eb0ea14fab55e48e27c72952",
+      "bytes": 637
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_provenance.json",
+      "sha256": "0f694fd02f74d7c3cffe5f8e6be48fdca87c388cd77349eabfc0ed0b0139c8af",
+      "bytes": 7357
+    }
+  },
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 9,
+  "n_caveats": 6
+}

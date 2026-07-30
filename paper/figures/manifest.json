@@ -208,6 +208,84 @@
     }
   },
   {
+    "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
+      "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)",
+      "paper_position": 3.2,
+      "published_utc": "2026-07-30T22:51:29+00:00",
+      "published_at_repo_commit": "2cb7a65",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.pdf",
+          "sha256": "a35b1669775b4cd28606f36e3e84c3582cc894efcb074112a2747603e37031a4",
+          "bytes": 152855
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.png",
+          "sha256": "e2fd052b3c707a472cac3ea7c645629f8b75d2f6135d28d60ed1d19918716a6c",
+          "bytes": 305446
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_values.csv",
+          "sha256": "c39d2be542ccd4f29967a1398ccbadc3f69747bc2810d57363bc4a9df7017b51",
+          "bytes": 646
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_provenance.json",
+          "sha256": "978cf4fe5b70fd85adec5d5855983afd9ca4b6d557defeae8c6693823a0d6f1e",
+          "bytes": 3861
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
+      "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed)",
+      "paper_position": 3.3,
+      "published_utc": "2026-07-30T22:51:29+00:00",
+      "published_at_repo_commit": "2cb7a65",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.pdf",
+          "sha256": "2df2858f055c9f230e7c71b192fde2da8fa7be342e7bae4709c04aac3820d42c",
+          "bytes": 158375
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.png",
+          "sha256": "ceef24d98f6abe0373c91e0274b9dd4fa9f58befd7804f9bf89c39304bf409f1",
+          "bytes": 308095
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_values.csv",
+          "sha256": "cf9fd23bdd2d1aa48a3c6ec5d38245eaa9d34e80eb0ea14fab55e48e27c72952",
+          "bytes": 637
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_provenance.json",
+          "sha256": "0f694fd02f74d7c3cffe5f8e6be48fdca87c388cd77349eabfc0ed0b0139c8af",
+          "bytes": 7357
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
     "slug": "contours_baryon_safe_both_14000_pooled",
     "meta": {
       "slug": "contours_baryon_safe_both_14000_pooled",
@@ -674,6 +752,45 @@
     }
   },
   {
+    "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
+      "title": "Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed)",
+      "paper_position": 13.1,
+      "published_utc": "2026-07-30T22:36:15+00:00",
+      "published_at_repo_commit": "2cb7a65",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.pdf",
+          "sha256": "a0e4172cdf0078bf458f590fc0cd78b6972c64cd97ae979c894c6609b0a0084e",
+          "bytes": 157002
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.png",
+          "sha256": "eacfbfd85a0385fcc31cc71769c0593c55b3f62a31ccddddbfaddbe237fbcb91",
+          "bytes": 302116
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_values.csv",
+          "sha256": "0315b4c2dc784fdd0cacf2ba7b33d34ee61aef3c9a1b39fbf33bb613a991c426",
+          "bytes": 625
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_provenance.json",
+          "sha256": "0c9c3b608bd098408818052413e9d3759597c5f34e8abec7a8a2685712d0cc1b",
+          "bytes": 7024
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
     "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
     "meta": {
       "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
@@ -702,6 +819,45 @@
           "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_provenance.json",
           "sha256": "4b185b0f02bbebfcfea95d1b3dd894cf6074bf73c4d77f3a9c4295aa2612d28c",
           "bytes": 3837
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
+      "title": "Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed)",
+      "paper_position": 14.1,
+      "published_utc": "2026-07-30T22:35:53+00:00",
+      "published_at_repo_commit": "2cb7a65",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.pdf",
+          "sha256": "26d2c68a7c08bfe601bdc8ea578249d4397dafa2ab4b0a7e9f42dd5dba4086a4",
+          "bytes": 156002
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.png",
+          "sha256": "895e2b9096d6370df39c21d5b87228d4eed60590ee087788b4710534bbd02679",
+          "bytes": 315673
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_values.csv",
+          "sha256": "8b960ca41ef8715510f4778559e207bd0256371eabf96bd347e2260c9eb7a241",
+          "bytes": 637
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_provenance.json",
+          "sha256": "14609d30f992359eebf488e797b02b3f3be2f7b3007d7626e607c7c8a56a2c6c",
+          "bytes": 7288
         }
       },
       "gate": {

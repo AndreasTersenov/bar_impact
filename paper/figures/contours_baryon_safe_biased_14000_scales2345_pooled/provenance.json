@@ -1,0 +1,129 @@
+{
+  "figure": "contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
+  "generated_utc": "2026-07-30T22:42:28+00:00",
+  "git_commit": "2cb7a65",
+  "area_sqdeg": 14000,
+  "hos_footprint_tag": 14001,
+  "mode": "biased",
+  "seed_mode": "pooled",
+  "single_run": null,
+  "truth": {
+    "Om": 0.26,
+    "S8": 0.84,
+    "w0": -1.0
+  },
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "collapse_guard_sigma_S8_max": 0.08,
+  "series": [
+    {
+      "statistic": "Power spectrum",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 15000,
+      "seed_shown": null,
+      "seed_choice": null,
+      "mean": [
+        0.2553247809410095,
+        0.8316203951835632,
+        -1.1055439710617065
+      ],
+      "std": [
+        0.017198285087943077,
+        0.030719218775629997,
+        0.08806785196065903
+      ]
+    },
+    {
+      "statistic": "Peak counts",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 15000,
+      "seed_shown": null,
+      "seed_choice": null,
+      "mean": [
+        0.2600313493596417,
+        0.8343272936590421,
+        -1.0704846719249608
+      ],
+      "std": [
+        0.015192258560277588,
+        0.02473919044810374,
+        0.1062903780996268
+      ]
+    },
+    {
+      "statistic": "L1 norm",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 15000,
+      "seed_shown": null,
+      "seed_choice": null,
+      "mean": [
+        0.25427448749542236,
+        0.8388475179672241,
+        -1.0711181163787842
+      ],
+      "std": [
+        0.012984982691705227,
+        0.016294313594698906,
+        0.09335964918136597
+      ]
+    }
+  ],
+  "runs_dropped": {
+    "Power spectrum": [],
+    "Peak counts": [],
+    "L1 norm": []
+  },
+  "cut_mode": "baryon-safe",
+  "cuts": {
+    "power_spectrum_lmax": 460,
+    "power_spectrum_lmax_chosen_by": "largest step-40 cut with mean tension < 0.3 sigma",
+    "hos_scale_tag": "scales2345",
+    "threshold_sigma": 0.3
+  },
+  "conventions": {
+    "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=460, rebin=10",
+    "peaks_l1": "wavelet scales2345, submean, new_normalization, noisy s=0.26"
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "Runs are used only as null/biased PAIRS; a run unreadable on either side is dropped from both, so the null-to-biased offset is like-for-like. See runs_dropped for what the disk failure removed.",
+    "Contours pool all surviving NPE training seeds, so their width includes the seed-to-seed training scatter, not just the posterior width of one seed. --single-run gives the single-seed version.",
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
+    "The surviving pre-crash contours_PS_peaks_L1_baryons_unbiased.pdf (Sept 2025) predates the lmin 100->37 recovery and the submean correction, so it is NOT numerically comparable to this figure.",
+    "The PS cut and the HOS cut are different KINDS of cut \u2014 multipoles vs a wavelet scale \u2014 so they are not ell-matched to each other. Each is the cut that keeps its own statistic under 0.3 sigma. Pass --ps-lmax 400 to instead reproduce the ell-matched pairing used by the Fisher baryon-safe figure.",
+    "The PS lmax is the largest step-40 cut still BELOW 0.3 sigma, not the crossing. The crossing is the first cut that fails (500 at 14000 deg^2); adopting it would put a 0.41-sigma bias in a 'baryon-safe' figure."
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "figure": "contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
+  "generated_utc": "2026-07-30T22:25:20+00:00",
+  "git_commit": "2cb7a65",
+  "area_sqdeg": "fullsky",
+  "hos_footprint_tag": "fullsky",
+  "mode": "biased",
+  "seed_mode": "single",
+  "single_run": null,
+  "truth": {
+    "Om": 0.26,
+    "S8": 0.84,
+    "w0": -1.0
+  },
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "collapse_guard_sigma_S8_max": 0.08,
+  "series": [
+    {
+      "statistic": "Power spectrum",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "seed_shown": 3,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 3,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.4116706848144531,
+            "log_width_ratio": 0.04945484548807144,
+            "score": 0.46112552285194397
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.303261399269104,
+            "log_width_ratio": 0.03174808248877525,
+            "score": 0.33500948548316956
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.0,
+            "log_width_ratio": 0.021990662440657616,
+            "score": 0.021990662440657616
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.23809854686260223,
+            "log_width_ratio": 0.05295715481042862,
+            "score": 0.29105570912361145
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.24290582537651062,
+            "log_width_ratio": 0.09233226627111435,
+            "score": 0.33523809909820557
+          }
+        ]
+      },
+      "mean": [
+        0.2583051025867462,
+        0.8318666815757751,
+        -1.0894372463226318
+      ],
+      "std": [
+        0.01042931154370308,
+        0.019101502373814583,
+        0.06436705589294434
+      ]
+    },
+    {
+      "statistic": "Peak counts",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "seed_shown": 2,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 2,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.19458433594587699,
+            "log_width_ratio": 0.15987378487051496,
+            "score": 0.35445812081639194
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.0,
+            "log_width_ratio": 0.003510794368324165,
+            "score": 0.003510794368324165
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.06871698030124608,
+            "log_width_ratio": 0.1869343929608948,
+            "score": 0.2556513732621409
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.2393574322554571,
+            "log_width_ratio": 0.06956347614190983,
+            "score": 0.30892090839736697
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.39622773569009,
+            "log_width_ratio": 0.13448126453864356,
+            "score": 0.5307090002287336
+          }
+        ]
+      },
+      "mean": [
+        0.25654020448310016,
+        0.8357186411975123,
+        -1.0748335689003246
+      ],
+      "std": [
+        0.01017681238656231,
+        0.01527808449445083,
+        0.07378471729449297
+      ]
+    },
+    {
+      "statistic": "L1 norm",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 3000,
+      "seed_shown": 4,
+      "seed_choice": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": 4,
+        "per_seed": [
+          {
+            "run": 1,
+            "centre_offset_widths": 0.18773676455020905,
+            "log_width_ratio": 0.0,
+            "score": 0.18773676455020905
+          },
+          {
+            "run": 2,
+            "centre_offset_widths": 0.29977405071258545,
+            "log_width_ratio": 0.10111743956804276,
+            "score": 0.4008914828300476
+          },
+          {
+            "run": 3,
+            "centre_offset_widths": 0.13545836508274078,
+            "log_width_ratio": 0.09136579930782318,
+            "score": 0.22682416439056396
+          },
+          {
+            "run": 4,
+            "centre_offset_widths": 0.014109501615166664,
+            "log_width_ratio": 0.11993655562400818,
+            "score": 0.1340460628271103
+          },
+          {
+            "run": 5,
+            "centre_offset_widths": 0.18634115159511566,
+            "log_width_ratio": 0.14073963463306427,
+            "score": 0.32708078622817993
+          }
+        ]
+      },
+      "mean": [
+        0.25707194209098816,
+        0.8342610001564026,
+        -1.0582972764968872
+      ],
+      "std": [
+        0.009622596204280853,
+        0.011869135312736034,
+        0.07040271908044815
+      ]
+    }
+  ],
+  "runs_dropped": {
+    "Power spectrum": [],
+    "Peak counts": [],
+    "L1 norm": []
+  },
+  "cut_mode": "baryon-safe",
+  "cuts": {
+    "power_spectrum_lmax": 340,
+    "power_spectrum_lmax_chosen_by": "explicit --ps-lmax",
+    "hos_scale_tag": "scales234",
+    "threshold_sigma": 0.3
+  },
+  "conventions": {
+    "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=340, rebin=10",
+    "peaks_l1": "wavelet scales234, submean, new_normalization, noisy s=0.26"
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "caveats": [
+    "Runs are used only as null/biased PAIRS; a run unreadable on either side is dropped from both, so the null-to-biased offset is like-for-like. See runs_dropped for what the disk failure removed.",
+    "Contours pool all surviving NPE training seeds, so their width includes the seed-to-seed training scatter, not just the posterior width of one seed. --single-run gives the single-seed version.",
+    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
+    "The surviving pre-crash contours_PS_peaks_L1_baryons_unbiased.pdf (Sept 2025) predates the lmin 100->37 recovery and the submean correction, so it is NOT numerically comparable to this figure.",
+    "The PS cut and the HOS cut are different KINDS of cut \u2014 multipoles vs a wavelet scale \u2014 so they are not ell-matched to each other. Each is the cut that keeps its own statistic under 0.3 sigma. Pass --ps-lmax 400 to instead reproduce the ell-matched pairing used by the Fisher baryon-safe figure.",
+    "The PS lmax is the largest step-40 cut still BELOW 0.3 sigma, not the crossing. The crossing is the first cut that fails (500 at 14000 deg^2); adopting it would put a 0.41-sigma bias in a 'baryon-safe' figure."
+  ]
+}
