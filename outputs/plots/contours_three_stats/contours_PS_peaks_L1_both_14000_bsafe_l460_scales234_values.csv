@@ -1,0 +1,19 @@
+statistic,role,parameter,mean,std,truth,n_runs_pooled,n_samples,runs
+Power spectrum,null,Om,0.250017,0.017416,0.26,5,15000,1 2 3 4 5
+Power spectrum,null,S8,0.855720,0.032782,0.84,5,15000,1 2 3 4 5
+Power spectrum,null,w0,-1.022742,0.082330,-1.0,5,15000,1 2 3 4 5
+Power spectrum,biased,Om,0.255325,0.017198,0.26,5,15000,1 2 3 4 5
+Power spectrum,biased,S8,0.831620,0.030719,0.84,5,15000,1 2 3 4 5
+Power spectrum,biased,w0,-1.105544,0.088068,-1.0,5,15000,1 2 3 4 5
+Peak counts,null,Om,0.255975,0.014282,0.26,5,15000,1 2 3 4 5
+Peak counts,null,S8,0.848372,0.023074,0.84,5,15000,1 2 3 4 5
+Peak counts,null,w0,-1.024981,0.101800,-1.0,5,15000,1 2 3 4 5
+Peak counts,biased,Om,0.258384,0.014382,0.26,5,15000,1 2 3 4 5
+Peak counts,biased,S8,0.834469,0.023548,0.84,5,15000,1 2 3 4 5
+Peak counts,biased,w0,-1.061916,0.097728,-1.0,5,15000,1 2 3 4 5
+L1 norm,null,Om,0.256601,0.013976,0.26,5,15000,1 2 3 4 5
+L1 norm,null,S8,0.845328,0.018097,0.84,5,15000,1 2 3 4 5
+L1 norm,null,w0,-1.019296,0.100292,-1.0,5,15000,1 2 3 4 5
+L1 norm,biased,Om,0.257387,0.013400,0.26,5,15000,1 2 3 4 5
+L1 norm,biased,S8,0.836392,0.017025,0.84,5,15000,1 2 3 4 5
+L1 norm,biased,w0,-1.049645,0.091962,-1.0,5,15000,1 2 3 4 5

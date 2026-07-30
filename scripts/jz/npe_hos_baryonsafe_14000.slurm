@@ -10,8 +10,8 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --hint=nomultithread
 #SBATCH --time=01:00:00
-#SBATCH --output=logs/npe_bsafe_%j.out
-#SBATCH --error=logs/npe_bsafe_%j.out
+#SBATCH --output=logs/npe_hos_%j.out
+#SBATCH --error=logs/npe_hos_%j.out
 #
 # NPE at the BARYON-SAFE scale cut for the higher-order statistics, 14000 deg^2, submean.
 #
@@ -62,7 +62,16 @@ PY=/lustre/fswork/projects/rech/nzu/ulx34io/envs/jaxili/bin/python
 # FileNotFoundError on all_l1_norms_grid_..._masked_14000sqdeg_submean_... (only the 14001
 # files exist). Pass the tag, not the nominal area.
 AREA_TAG=14001             # peaks/l1 datavector + posterior tag for the 14000 deg^2 footprint
-SCALES="1,2,3"             # -> the "scales234" file tag
+
+# Which wavelet scales. --scales is 0-BASED indices; the filename tag is 1-based (idx+1).
+#   idx 0        finest/highest-ell detail scale -- the baryon-contaminated one, dropped here
+#   idx 1,2,3    detail scales -> tag "scales234"   (the baryon-safe set)
+#   idx 4        COARSE / mass-sheet scale, normally excluded
+#   idx 1,2,3,4  detail + coarse -> tag "scales2345"
+# Override both together, e.g.
+#   sbatch --export=ALL,SCALES=1,2,3,4,SCALES_TAG=scales2345 scripts/jz/npe_hos_baryonsafe_14000.slurm
+SCALES="${SCALES:-1,2,3}"
+SCALES_TAG="${SCALES_TAG:-scales234}"
 RUNS="1 2 3 4 5"
 DD=/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast
 SAMPLES=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples
@@ -70,7 +79,7 @@ CKPT=/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/checkpoints/npe_bsafe_140
 
 mkdir -p "$CKPT"
 
-echo "=== NPE baryon-safe HOS, tag ${AREA_TAG} (14000 deg2 footprint), scales234, submean ==="
+echo "=== NPE HOS, tag ${AREA_TAG} (14000 deg2 footprint), ${SCALES_TAG} (idx ${SCALES}), submean ==="
 echo "start : $(date -Is)"
 echo "python: $PY"
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
@@ -87,7 +96,7 @@ for stat in l1 peaks; do
   for role in nobaryons baryonified; do
     # role names the FIDUCIAL (the observed data vector); the model is always nobaryons-trained.
     for r in $RUNS; do
-      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_scales234_noisy_s0.26_masked_${AREA_TAG}sqdeg_submean_new_normalization_run${r}_npe.npy"
+      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_${SCALES_TAG}_noisy_s0.26_masked_${AREA_TAG}sqdeg_submean_new_normalization_run${r}_npe.npy"
 
       # Skip only if the posterior exists AND loads: a disk-damaged .npy raises ValueError
       # (numpy reads the mangled header as pickled data), so -f alone would skip a corrupt file.

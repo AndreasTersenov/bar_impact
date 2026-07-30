@@ -127,6 +127,45 @@
     }
   },
   {
+    "slug": "contours_baryon_safe_biased_14000",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000",
+      "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
+      "paper_position": 3,
+      "published_utc": "2026-07-30T11:13:26+00:00",
+      "published_at_repo_commit": "7cfd75b",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.pdf",
+          "sha256": "b63ee5ef39cee930048cd6b42d86cedf8de9938d737502c0ac7830fdd7956672",
+          "bytes": 152602
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.png",
+          "sha256": "e5818eca805b23fa4a5c942fe0c7be3608fc5e383b2084c616565516a40db7c2",
+          "bytes": 302821
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_values.csv",
+          "sha256": "fd93fc73a1da2a74eb7c7b381a41e0c1a52df4c79740f1073cca11dea5b265c1",
+          "bytes": 646
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
+          "sha256": "b68606acab8d4ded0923e7e7b96ac9080c99618f76c99b17e42be33298b5bce5",
+          "bytes": 3668
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
     "slug": "contours_three_stats_null",
     "meta": {
       "slug": "contours_three_stats_null",
@@ -499,6 +538,45 @@
         "warnings": []
       },
       "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_ps_null",
+    "meta": {
+      "slug": "contours_vs_area_ps_null",
+      "title": "PS null posteriors, all survey areas overlaid, full resolution",
+      "paper_position": 20,
+      "published_utc": "2026-07-30T11:14:26+00:00",
+      "published_at_repo_commit": "7cfd75b",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.pdf",
+          "sha256": "695bcb90b49e31fc3310f5cbab896f142106f6b7a172351edd688ab3378c6ce0",
+          "bytes": 239006
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.png",
+          "sha256": "a9661ad7963e5716aa552406590fa549121a5d8a33d645978df0fa671b37e84c",
+          "bytes": 430326
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_values.csv",
+          "sha256": "777045012f018e72aed363c504e676408c05d03fb2c4dbf86c2be0756c13e7ab",
+          "bytes": 1597
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_provenance.json",
+          "sha256": "0941bb328465fe1cf8ca2d3abfd837bcd69b7689b9a8d48cadaef84514a0ec20",
+          "bytes": 5272
+        }
+      },
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 21,
       "n_caveats": 5
     }
   }
