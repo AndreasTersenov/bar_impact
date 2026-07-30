@@ -9,7 +9,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --hint=nomultithread
-#SBATCH --time=20:00:00
+#SBATCH --time=01:00:00
 #SBATCH --output=logs/npe_bsafe_%j.out
 #SBATCH --error=logs/npe_bsafe_%j.out
 #
@@ -36,7 +36,10 @@
 # they are now ported here. Without that port this job would quietly emit collapsed seeds.
 #
 # 20 trainings = 2 statistics x 2 roles x 5 seeds. Checkpointed per run; reruns skip work
-# that already produced a posterior, so requeueing after the 20 h wall clock is safe.
+# that already produced a posterior, so requeueing after the wall clock is safe. Sized from
+# evidence: 76 past NPE runs on one GPU give a median 1.7 min/training (p90 2.8, max 11.3),
+# so 20 trainings is ~35 min. An earlier 20 h request bought a 34 h queue wait on a full
+# partition for a 35 min job -- keep the walltime honest; the skip logic makes a short one safe.
 #
 # Submit from the repo root:  sbatch scripts/jz/npe_hos_baryonsafe_14000.slurm
 
