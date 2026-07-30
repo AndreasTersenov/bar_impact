@@ -117,9 +117,32 @@ def ps_globs(A, lmax):
 
 def hos_globs(prefix, A, scales):
     if A == "fullsky":
-        tail = f"bins1234_{scales}_noisy_s0.26_fullsky_submean_new_normalization*_npe.npy"
-        return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",
-                f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_baryonified_{tail}")
+        def pair(tail):
+            return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",
+                    f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_baryonified_{tail}")
+        sub = pair(f"bins1234_{scales}_noisy_s0.26_fullsky_submean_new_normalization*_npe.npy")
+        if glob.glob(sub[0]) and glob.glob(sub[1]):
+            return sub
+        # GUARDED fallback to the non-submean full-sky product. Legitimate ONLY for a
+        # detail-only scale set, and there it is exact rather than approximate: full-sky
+        # "submean" is a monopole subtraction, and a starlet detail coefficient is a
+        # difference of successively smoothed maps (w_j = c_{j-1} - c_j), so a constant
+        # cancels identically -- only the coarse scale retains it. A set containing the
+        # coarse scale (a "5" in the tag) is NOT invariant, so refuse rather than substitute.
+        # Peak counts need this because peak_counts_processing.py has no full-sky submean
+        # branch, so no submean full-sky peak datavector exists.
+        if "5" in scales.replace("scales", ""):
+            raise SystemExit(
+                f"[fatal] no full-sky submean posteriors for {scales!r}, and that scale set "
+                f"includes the COARSE scale, which the monopole does affect. Refusing to "
+                f"substitute the non-submean product. Give peak_counts_processing.py a "
+                f"full-sky submean branch and reprocess, or use a detail-only scale set.")
+        alt = pair(f"bins1234_{scales}_noisy_s0.26_new_normalization*_npe.npy")
+        if glob.glob(alt[0]) and glob.glob(alt[1]):
+            print(f"  [note] {scales}: using the NON-submean full-sky product "
+                  f"(detail-only scales are monopole-invariant by construction)")
+            return alt
+        return sub
     tail = (f"bins1234_{scales}_noisy_s0.26_masked_{HOS_TAG[A]}sqdeg_submean_"
             f"new_normalization*_npe.npy")
     return (f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_nobaryons_{tail}",

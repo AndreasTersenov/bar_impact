@@ -89,9 +89,25 @@ RUNS="1 2 3 4 5"
 FOOTPRINT="${FOOTPRINT:-masked}"
 STATS="${STATS:-l1 peaks}"
 
+# SUBMEAN=0 trains on the NON-submean product. Only legitimate for DETAIL-ONLY scale sets
+# on the FULL SKY, and there it is exact rather than approximate: full-sky "submean" is a
+# monopole subtraction, and a starlet detail coefficient is a difference of successively
+# smoothed maps, w_j = c_{j-1} - c_j, so a constant cancels identically and only the coarse
+# scale c_J retains it. Hence scales234 (detail only) is monopole-invariant BY CONSTRUCTION.
+# Do NOT use this for a scale set that includes the coarse scale (e.g. scales2345), where the
+# monopole genuinely matters, nor for masked runs, where submean subtracts a FOOTPRINT mean
+# rather than a constant and is a real correction.
+#
+# This exists because peak_counts_processing.py has no full-sky submean branch (its submean
+# block sits inside `if apply_mask:`), so no full-sky submean peak-count datavector was ever
+# produced. Making one means reprocessing ~69,000 maps; the invariance above makes that
+# unnecessary for detail-only cuts.
+SUBMEAN="${SUBMEAN:-1}"
+if [ "$SUBMEAN" = "1" ]; then SUBMEAN_ARG="--submean"; else SUBMEAN_ARG=""; fi
+
 if [ "$FOOTPRINT" = "fullsky" ]; then
   MASK_ARGS=""
-  OUT_TAG="fullsky_submean"
+  if [ "$SUBMEAN" = "1" ]; then OUT_TAG="fullsky_submean"; else OUT_TAG=""; fi
   GRID_TAG=""
 else
   MASK_ARGS="--masked --mask-area-sqdeg $AREA_TAG"
@@ -124,7 +140,8 @@ for stat in $STATS; do
     peaks) inpref="all_peak_counts" ;;
     *)     echo "[fatal] unknown statistic '$stat' in STATS"; exit 1 ;;
   esac
-  probe="${DD}/grid/${inpref}_grid_nobaryons_bin1${GRID_TAG}_submean_noisy_s0.26_new_normalization.npy"
+  if [ "$SUBMEAN" = "1" ]; then sm="_submean"; else sm=""; fi
+  probe="${DD}/grid/${inpref}_grid_nobaryons_bin1${GRID_TAG}${sm}_noisy_s0.26_new_normalization.npy"
   if [ ! -f "$probe" ]; then
     echo "[fatal] missing training input for '$stat' on footprint '$FOOTPRINT':"
     echo "        $probe"
@@ -154,7 +171,7 @@ for stat in $STATS; do
   for role in nobaryons baryonified; do
     # role names the FIDUCIAL (the observed data vector); the model is always nobaryons-trained.
     for r in $RUNS; do
-      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_${SCALES_TAG}_noisy_s0.26_${OUT_TAG}_new_normalization_run${r}_npe.npy"
+      out="${SAMPLES}/posterior_samples_${TAG}nobaryons_vs_${role}_bins1234_${SCALES_TAG}_noisy_s0.26${OUT_TAG:+_}${OUT_TAG}_new_normalization_run${r}_npe.npy"
 
       # Skip only if the posterior exists AND loads: a disk-damaged .npy raises ValueError
       # (numpy reads the mangled header as pickled data), so -f alone would skip a corrupt file.
@@ -178,7 +195,7 @@ except Exception:
         --bins 1,2,3,4 \
         --scales "$SCALES" \
         --noisy --noise-level 0.26 \
-        $MASK_ARGS --submean \
+        $MASK_ARGS $SUBMEAN_ARG \
         --new-normalization \
         --train --epochs 1000 \
         --num-samples 3000 \

@@ -1,0 +1,7 @@
+statistic,role,parameter,mean,std,truth,n_runs_pooled,n_samples,runs
+Power spectrum,biased,Om,0.257604,0.010890,0.26,5,15000,1 2 3 4 5
+Power spectrum,biased,S8,0.831225,0.019835,0.84,5,15000,1 2 3 4 5
+Power spectrum,biased,w0,-1.087911,0.065315,-1.0,5,15000,1 2 3 4 5
+L1 norm,biased,Om,0.257576,0.009430,0.26,5,15000,1 2 3 4 5
+L1 norm,biased,S8,0.834702,0.012172,0.84,5,15000,1 2 3 4 5
+L1 norm,biased,w0,-1.059904,0.063041,-1.0,5,15000,1 2 3 4 5
