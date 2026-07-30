@@ -2,6 +2,9 @@ statistic,role,parameter,mean,std,truth,n_runs_pooled,n_samples,runs
 Power spectrum,biased,Om,0.257071,0.011620,0.26,3,9000,2 3 4
 Power spectrum,biased,S8,0.835224,0.023199,0.84,3,9000,2 3 4
 Power spectrum,biased,w0,-1.067654,0.067659,-1.0,3,9000,2 3 4
+Peak counts,biased,Om,0.256230,0.010382,0.26,5,15000,1 2 3 4 5
+Peak counts,biased,S8,0.836808,0.015391,0.84,5,15000,1 2 3 4 5
+Peak counts,biased,w0,-1.070839,0.076309,-1.0,5,15000,1 2 3 4 5
 L1 norm,biased,Om,0.257576,0.009430,0.26,5,15000,1 2 3 4 5
 L1 norm,biased,S8,0.834702,0.012172,0.84,5,15000,1 2 3 4 5
 L1 norm,biased,w0,-1.059904,0.063041,-1.0,5,15000,1 2 3 4 5

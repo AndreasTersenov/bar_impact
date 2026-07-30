@@ -1,36 +1,36 @@
 {
   "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
-  "title": "Full sky: baryon-safe contours, biased, PS + L1 (PS lmax=300)",
+  "title": "Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)",
   "paper_position": 13.0,
-  "published_utc": "2026-07-30T16:50:17+00:00",
-  "published_at_repo_commit": "4e251f3",
+  "published_utc": "2026-07-30T22:04:02+00:00",
+  "published_at_repo_commit": "bc8ebd2",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.pdf",
-      "sha256": "188553b56070ed871140260e107cd9a8a5aae40e574f07d395d0e6c00a598d9c",
-      "bytes": 111451
+      "sha256": "732cd81027e60ddc6188b97bd78ebeae40972ad821cf88d0637ed1834e0a38a2",
+      "bytes": 152317
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.png",
-      "sha256": "48e73a808bbe171118b2f4d9f32644479efb7cc8fc7b1d80b25777e41b444fd0",
-      "bytes": 240386
+      "sha256": "cf073ca8b85326b966ab47ed8ddad0df756aff222707b58c8a825080896cb832",
+      "bytes": 307645
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_values.csv",
-      "sha256": "29e0f596fad47d80f17a060ddb50bdd49a58b241be98ded85a29c0246f5c3a5d",
-      "bytes": 438
+      "sha256": "db54585f8f03fafb92f6be03c0f586e20ba3c594fcb11fa283549801512cdbaa",
+      "bytes": 631
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_provenance.json",
-      "sha256": "4bbfa1f6cb685033b0b1b773c071097f34938e8a12d0cfab902ec54384e8d0ad",
-      "bytes": 3502
+      "sha256": "95a9659241bd40e7777dc002a69e678e001837177b2c5cd7733693b4217802a9",
+      "bytes": 3971
     }
   },
   "gate": {
     "passed": true,
     "warnings": []
   },
-  "value_rows": 6,
+  "value_rows": 9,
   "n_caveats": 6
 }

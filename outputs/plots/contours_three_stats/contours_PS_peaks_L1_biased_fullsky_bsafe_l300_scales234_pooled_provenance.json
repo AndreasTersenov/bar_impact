@@ -1,7 +1,7 @@
 {
   "figure": "contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
-  "generated_utc": "2026-07-30T16:25:15+00:00",
-  "git_commit": "d8384e9",
+  "generated_utc": "2026-07-30T22:03:31+00:00",
+  "git_commit": "bc8ebd2",
   "area_sqdeg": "fullsky",
   "hos_footprint_tag": "fullsky",
   "mode": "biased",
@@ -40,6 +40,31 @@
         0.011620172299444675,
         0.023198559880256653,
         0.0676589161157608
+      ]
+    },
+    {
+      "statistic": "Peak counts",
+      "role": "biased",
+      "n_runs": 5,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "n_samples": 15000,
+      "seed_shown": null,
+      "seed_choice": null,
+      "mean": [
+        0.25622982819402224,
+        0.8368079651323412,
+        -1.0708385811431944
+      ],
+      "std": [
+        0.010382350576434964,
+        0.015390955335573367,
+        0.07630899811775571
       ]
     },
     {
