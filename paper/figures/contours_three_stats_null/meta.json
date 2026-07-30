@@ -2,13 +2,13 @@
   "slug": "contours_three_stats_null",
   "title": "Null posteriors, three statistics, 14000 deg2",
   "paper_position": 4,
-  "published_utc": "2026-07-30T07:31:51+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T09:18:17+00:00",
+  "published_at_repo_commit": "7620563",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
-      "sha256": "881c6a1ee226798b762bd934cad1c4b54b3176010d8c2788c765f08e93307ede",
+      "sha256": "dc250dd15815d5a394f63dd7fb8099c6431dd3adc16f21a5fa1b2e4d0ba8c39f",
       "bytes": 182389
     },
     "figure.png": {
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
-      "sha256": "92ed771fddfc47b17097595a549c46aec3780ed3e8f647e1919a2f0eae043866",
-      "bytes": 3318
+      "sha256": "fbf34458e174990ba04de397e4863a7e529ed84d9010d096621df3b3e1d1f0b2",
+      "bytes": 3523
     }
   },
   "gate": {

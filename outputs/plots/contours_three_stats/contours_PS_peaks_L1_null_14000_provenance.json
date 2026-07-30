@@ -1,7 +1,7 @@
 {
   "figure": "contours_PS_peaks_L1_null_14000",
-  "generated_utc": "2026-07-29T17:52:16+00:00",
-  "git_commit": "62ebb46",
+  "generated_utc": "2026-07-30T09:08:02+00:00",
+  "git_commit": "7620563",
   "area_sqdeg": 14000,
   "hos_footprint_tag": 14001,
   "mode": "null",
@@ -124,9 +124,16 @@
       ]
     ]
   },
+  "cut_mode": "full",
+  "cuts": {
+    "power_spectrum_lmax": 1020,
+    "power_spectrum_lmax_chosen_by": "no upper cut (full resolution)",
+    "hos_scale_tag": "scales1234",
+    "threshold_sigma": 0.3
+  },
   "conventions": {
     "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10",
-    "peaks_l1": "wavelet scales 1-4, submean, new_normalization, noisy s=0.26"
+    "peaks_l1": "wavelet scales1234, submean, new_normalization, noisy s=0.26"
   },
   "versions": {
     "numpy": "1.26.4",

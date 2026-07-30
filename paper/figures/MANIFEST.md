@@ -11,9 +11,9 @@ integrity and source drift with `verify`.
 | 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `9c33642` | 108 | - |
 | 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `9c33642` | 132 | - |
 | 3 | [`bias_vs_area_three_stats`](bias_vs_area_three_stats/) | Baryon bias vs survey area, three statistics, full resolution | `def9087` | 18 | - |
-| 4 | [`contours_three_stats_null`](contours_three_stats_null/) | Null posteriors, three statistics, 14000 deg2 | `62ebb46` | 9 | - |
-| 5 | [`contours_three_stats_biased`](contours_three_stats_biased/) | Baryon-biased posteriors, three statistics, 14000 deg2 | `62ebb46` | 9 | - |
-| 6 | [`contours_three_stats_both`](contours_three_stats_both/) | Null and biased overlaid, three statistics, 14000 deg2 | `8ab6450` | 18 | - |
+| 4 | [`contours_three_stats_null`](contours_three_stats_null/) | Null posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
+| 5 | [`contours_three_stats_biased`](contours_three_stats_biased/) | Baryon-biased posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
+| 6 | [`contours_three_stats_both`](contours_three_stats_both/) | Null and biased overlaid, three statistics, 14000 deg2 | `9c33642` | 18 | - |
 | 7 | [`bnt_bin1_vs_cut_optimal`](bnt_bin1_vs_cut_optimal/) | BNT bin-1 vs non-BNT, optimal binning (rebin 40) | `701fba8` | 216 | **1** |
 | 8 | [`fisher_constraining_power_baryon_safe`](fisher_constraining_power_baryon_safe/) | Fisher 68% contours, baryon-safe regime (full sky) | `unknown` | 4 | **3** |
 | 9 | [`fisher_constraining_power_full`](fisher_constraining_power_full/) | Fisher 68% contours, full-resolution regime (full sky) | `unknown` | 4 | **3** |

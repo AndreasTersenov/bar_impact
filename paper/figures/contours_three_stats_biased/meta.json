@@ -2,13 +2,13 @@
   "slug": "contours_three_stats_biased",
   "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
   "paper_position": 5,
-  "published_utc": "2026-07-30T07:31:51+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T09:18:17+00:00",
+  "published_at_repo_commit": "7620563",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
-      "sha256": "46be60956c0fb30a826308d87cb7af405e98ab87263be7e079360f6bd76746f4",
+      "sha256": "9ec9b8e0e0e1e00edae6eeb577028357150edf8bc8aa251738484260c25ba318",
       "bytes": 181468
     },
     "figure.png": {
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
-      "sha256": "29a5b10bd000ebd45ac45d16d20eba26fc3be2d2f21a20c8940c7bc8106d80ec",
-      "bytes": 3329
+      "sha256": "612ed974cb66fd7b420ba1ac3d602b498fa891e2f6c70fd4b1dc00d1a7fd57af",
+      "bytes": 3534
     }
   },
   "gate": {

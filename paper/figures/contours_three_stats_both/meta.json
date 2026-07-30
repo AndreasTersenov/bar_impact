@@ -2,13 +2,13 @@
   "slug": "contours_three_stats_both",
   "title": "Null and biased overlaid, three statistics, 14000 deg2",
   "paper_position": 6,
-  "published_utc": "2026-07-30T07:31:51+00:00",
-  "published_at_repo_commit": "b900627",
+  "published_utc": "2026-07-30T09:18:17+00:00",
+  "published_at_repo_commit": "7620563",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
-      "sha256": "4959958dae7597df3dddb0380df995ce2bdc90563194c7dc07e352f6d5582e92",
+      "sha256": "21ae237b4dd8d6c8cee384daa1c8c18ef1c9264fe45f78fcb85a4a83ab776826",
       "bytes": 275786
     },
     "figure.png": {
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
-      "sha256": "fb5ec25679145d1fd47237bc6e1bb9d4b1d6705ca4bae38d558b62773fa4b483",
-      "bytes": 4561
+      "sha256": "b46b9139fb481751219bd2e155a3ba36a9235d1e12464989ac65e9943013f210",
+      "bytes": 4766
     }
   },
   "gate": {

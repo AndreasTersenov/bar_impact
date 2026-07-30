@@ -36,10 +36,15 @@
 # they are now ported here. Without that port this job would quietly emit collapsed seeds.
 #
 # 20 trainings = 2 statistics x 2 roles x 5 seeds. Checkpointed per run; reruns skip work
-# that already produced a posterior, so requeueing after the wall clock is safe. Sized from
-# evidence: 76 past NPE runs on one GPU give a median 1.7 min/training (p90 2.8, max 11.3),
-# so 20 trainings is ~35 min. An earlier 20 h request bought a 34 h queue wait on a full
-# partition for a 35 min job -- keep the walltime honest; the skip logic makes a short one safe.
+# that already produced a posterior, so requeueing after the wall clock is safe.
+#
+# WALLTIME. A 20 h request bought a 34 h queue wait on a full A100 partition, so keep it
+# short. But the first sizing was too optimistic: log-timestamp spacing from an old sweep
+# suggested ~1.7 min/training, while a measured run here is ~8 min (1000 epochs at ~2.4
+# it/s plus setup), i.e. ~2.7 h for all 20. Submit 1 h to get scheduled quickly and chain a
+# 3 h follow-up with --dependency=afterany:<first>; the skip logic means the second job only
+# does what the first did not reach. Do NOT size this from filename spacing again -- read
+# the epoch rate out of a live log.
 #
 # Submit from the repo root:  sbatch scripts/jz/npe_hos_baryonsafe_14000.slurm
 

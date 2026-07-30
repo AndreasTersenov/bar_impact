@@ -1,12 +1,21 @@
 # Baryon-biased posteriors, three statistics, 14000 deg2
 
-The same posteriors with baryonified data fed to the nobaryons-trained model. The offset from the truth cross IS the baryon bias. Runs are used only as matched null/biased PAIRS, so the offset is like-for-like and not partly a change of which seeds contribute.
+The same posteriors with baryonified data fed to the nobaryons-trained model; the offset from the truth cross IS the baryon bias. FULL RESOLUTION. Runs are used only as matched null/biased PAIRS, so the offset is like-for-like and not partly a change of which seeds contribute.
 
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000`
-- **generator commit**: `62ebb46`
-- **generated**: 2026-07-29T18:01:20+00:00
-- **published**: 2026-07-30T07:31:51+00:00 at repo `b900627`
+- **generator commit**: `7620563`
+- **generated**: 2026-07-30T09:17:57+00:00
+- **published**: 2026-07-30T09:18:17+00:00 at repo `7620563`
 - **rows in values.csv**: 9
+
+## Scales included
+
+- **power_spectrum**: monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10
+- **peaks_l1**: wavelet scales1234, submean, new_normalization, noisy s=0.26
+- **power_spectrum_lmax**: 1020
+- **power_spectrum_lmax_chosen_by**: no upper cut (full resolution)
+- **hos_scale_tag**: scales1234
+- **threshold_sigma**: 0.3
 
 ## Caveats (from provenance)
 
