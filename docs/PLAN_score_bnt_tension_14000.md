@@ -223,3 +223,70 @@ keeps more). Figures:
   (240 feat) hybrid is fine.
 - **Rebin = 20 for production** (validated, fast); rebin-10 cross-checked → same tension
   (binning-independent), so 20 is sufficient.
+
+---
+
+# ADDENDUM 2026-07-31 — the flagship moves to a MATCHED cut, and the number becomes 1.47x
+
+**Supersedes the DE-BIASING FoM CONTROL section above for the headline claim.** That section pairs
+BNT@460 against non-BNT@580 — each arm at the cut it needs to be unbiased. That is a real question,
+but it mixes two analyses, and it is not the cleanest statement of what BNT buys. The flagship is now
+the **matched** comparison, both arms at ℓmax=460:
+
+| | σ(Ωm, S8, w0) | FoM3 | features | baryon tension |
+|---|---|---|---|---|
+| BNT bin-1 @460 (bins 2-4 full) | 0.01597, 0.02759, 0.08665 | 1.637e5 | 92/120 | 0.30 ± 0.09σ |
+| non-BNT cut-all @460 | 0.01871, 0.03403, 0.08795 | 1.098e5 | 50/120 | 0.17 ± 0.03σ |
+
+**BNT/non-BNT = 1.47×** (pooled 1.467; seed-averaged covariance 1.470; single representative seed
+1.507). Both calibrated (SBC rank-std 0.28–0.29 vs the ideal 0.289), both on-truth, and — the point
+of matching — **both comfortably unbiased at this cut**, so the comparison is fair.
+
+Figures: `paper/figures/bnt_flagship_matched_c460_{pooled,single_seed}/`.
+
+## Why 1.47 and not the 1.43 implied by the older posteriors
+
+The production posteriors at cut460 have a disk-damaged non-BNT seed (`null_run44`), so that arm ran
+on 4 of 5. Regenerating both arms through the rebuilt pipeline (job 488769, hybrid covariance, 5/5
+seeds) gives 1.470. The 3% shift is that one restored seed. **Quote 1.47.**
+
+## Three ratios, three different questions — do not conflate them
+
+| comparison | ratio | question it answers |
+|---|---|---|
+| MOPED-BNT / MOPED-nonBNT, matched @460 | **1.47×** | **FLAGSHIP: what does BNT buy at equal cut?** |
+| MOPED-BNT / raw-BNT | 3.62× | how much does compression rescue the ill-conditioned vector? |
+| MOPED-BNT / raw-nonBNT | 1.20× | what does this pipeline buy over standard analysis? |
+
+The last is what a referee asks for and is the most modest. Quoting 1.47 as "the practical gain" would
+overstate it.
+
+## The raw control, at matched cuts (new, and it inverts the conclusion)
+
+`outputs/score_raw_control/` — same cut, same rebin, same seeds, flow fed the z-scored data vector
+instead of the 6 MOPED summaries:
+
+| | r(Ωm,S8) | det(R) | FoM3 |
+|---|---|---|---|
+| MOPED BNT | −0.909 | 0.024 | 1.668e5 |
+| MOPED non-BNT | −0.931 | 0.024 | 1.154e5 |
+| **raw BNT** | **−0.025** | **0.995** | 4.605e4 |
+| raw non-BNT | −0.947 | 0.021 | 1.390e5 |
+
+Raw NPE on the BNT vector returns **essentially uncorrelated parameters** where the physical lensing
+degeneracy is ≈ −0.9. Its marginals are fine — tighter than MOPED's, in fact — so the failure is in
+the *degeneracy structure*, and it inflates the 3-param volume 3.6×. **SBC and TARP cannot see this**:
+both test marginal rank uniformity per parameter, and this posterior is calibrated and on-truth.
+
+Consequence: **BNT/non-BNT is 1.47× under MOPED and 0.33× under raw.** The sign of the conclusion
+flips on the compression, which is the most likely explanation for the contradictory BNT results that
+made this thread hard.
+
+## Rebinning: measured, and it does NOT cost realizable information
+
+`outputs/diagnostics/score_rebin_ladder_fom.csv` — MOPED at rebin 20/10/5/2/1, both arms, matched
+@460, NPE trained and calibrated at every rung. Fisher predicts 2.1–2.6× going to native; the trained
+posteriors deliver **+3% (BNT, peak at r5)** and **+11% (non-BNT, peak at r2)**, and native is
+*worse* than r20 for BNT. NPE/Fisher falls 0.53 → 0.24 as binning refines: the analytic covariance
+promises more and more, and the posterior declines to deliver. **rebin=20 is vindicated** — chosen
+originally so n_feat < n_perm, it also sits within a few percent of the best realizable information.

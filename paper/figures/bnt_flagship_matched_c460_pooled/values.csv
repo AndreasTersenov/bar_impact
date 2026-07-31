@@ -1,0 +1,3 @@
+label,dir,tag,seed_mode,seed_drawn,n_seeds,sigma_Om,sigma_S8,sigma_w0,r_Om_S8,r_Om_w0,r_S8_w0,det_R,fom3_drawn,fom3_seed_avg_cov
+BNT bin-1 cut (bins 2–4 full),outputs/score_flagship_c460/bnt_r20_c460,bnt,pooled,5 seeds pooled,5,0.015981,0.027614,0.086764,-0.908697,0.130208,0.262507,0.026285,1.610904e+05,1.637099e+05
+non-BNT cut-all,outputs/score_flagship_c460/nonbnt_r20_c460,nonbnt,pooled,5 seeds pooled,5,0.018709,0.034034,0.087952,-0.930736,0.059715,0.271241,0.026443,1.098084e+05,1.113602e+05

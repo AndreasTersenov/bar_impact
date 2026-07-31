@@ -1,0 +1,148 @@
+{
+  "figure": "bnt_flagship_matched_c460_14000_single_seed",
+  "generator": "scripts/plot_posterior_overlay.py",
+  "command": "scripts/plot_posterior_overlay.py --series BNT bin-1 cut (bins 2\u20134 full)=outputs/score_flagship_c460/bnt_r20_c460:bnt --series non-BNT cut-all=outputs/score_flagship_c460/nonbnt_r20_c460:nonbnt --colors C0,0.45 --seed-mode single --title BNT vs non-BNT at matched $\\ell_{\\max}=460$ \u2014 14000 deg$^2$, MOPED-compressed --subtitle baryon tension: BNT 0.30$\\pm$0.09$\\sigma$, non-BNT 0.17$\\pm$0.03$\\sigma$ \u2014 both unbiased | rebin 20, hybrid covariance, 5 seeds each | dotted = truth --out plots/bnt_flagship_matched_c460_14000_single_seed",
+  "git_commit": "f52188579b6301dc484c779c1440a95a41f1139a",
+  "generated_utc": "2026-07-31T20:59:48Z",
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "getdist default (no custom style sheet)",
+  "area_deg2": 14000,
+  "rebin": 20,
+  "lmin": 37,
+  "statistic": "tomographic auto+cross angular power spectra",
+  "scales_included": "both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024",
+  "seed_mode": "single",
+  "series": [
+    {
+      "label": "BNT bin-1 cut (bins 2\u20134 full)",
+      "dir": "outputs/score_flagship_c460/bnt_r20_c460",
+      "n_seeds": 5,
+      "seed_drawn": "seed 41",
+      "seed_selection": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": "41",
+        "per_seed": [
+          {
+            "run": "41",
+            "centre_offset_widths": 0.033135317265987396,
+            "log_width_ratio": 0.009075692854821682,
+            "score": 0.04221101105213165
+          },
+          {
+            "run": "42",
+            "centre_offset_widths": 0.0402950718998909,
+            "log_width_ratio": 0.026816297322511673,
+            "score": 0.06711137294769287
+          },
+          {
+            "run": "43",
+            "centre_offset_widths": 0.11103019118309021,
+            "log_width_ratio": 0.042115673422813416,
+            "score": 0.15314586460590363
+          },
+          {
+            "run": "44",
+            "centre_offset_widths": 0.0981360524892807,
+            "log_width_ratio": 0.01939440704882145,
+            "score": 0.117530457675457
+          },
+          {
+            "run": "45",
+            "centre_offset_widths": 0.05490417033433914,
+            "log_width_ratio": 0.08229062706232071,
+            "score": 0.13719479739665985
+          }
+        ],
+        "mode": "single"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.015772929929479554,
+        0.02722947728712175,
+        0.08512966731391786
+      ],
+      "corr_Om_S8": -0.9060885917686448,
+      "det_corr": 0.0253266222978645,
+      "fom3_drawn": 171861.55958419116,
+      "fom3_seed_avg_cov": 163709.87228157293
+    },
+    {
+      "label": "non-BNT cut-all",
+      "dir": "outputs/score_flagship_c460/nonbnt_r20_c460",
+      "n_seeds": 5,
+      "seed_drawn": "seed 41",
+      "seed_selection": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": "41",
+        "per_seed": [
+          {
+            "run": "41",
+            "centre_offset_widths": 0.02084451913833618,
+            "log_width_ratio": 0.00756932282820344,
+            "score": 0.028413841500878334
+          },
+          {
+            "run": "42",
+            "centre_offset_widths": 0.07526009529829025,
+            "log_width_ratio": 0.019085604697465897,
+            "score": 0.09434570372104645
+          },
+          {
+            "run": "43",
+            "centre_offset_widths": 0.10786467790603638,
+            "log_width_ratio": 0.027827013283967972,
+            "score": 0.13569168746471405
+          },
+          {
+            "run": "44",
+            "centre_offset_widths": 0.04096726328134537,
+            "log_width_ratio": 0.02399139478802681,
+            "score": 0.06495866179466248
+          },
+          {
+            "run": "45",
+            "centre_offset_widths": 0.013826162554323673,
+            "log_width_ratio": 0.041239894926548004,
+            "score": 0.0550660565495491
+          }
+        ],
+        "mode": "single"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.018551312258626593,
+        0.03400194147876009,
+        0.08900977736257243
+      ],
+      "corr_Om_S8": -0.9287565124577142,
+      "det_corr": 0.024405645801654708,
+      "fom3_drawn": 114008.90698255794,
+      "fom3_seed_avg_cov": 111360.17625964027
+    }
+  ],
+  "posterior": "sigma/correlations/fom3_drawn describe exactly the samples plotted; fom3_seed_avg_cov is the seed-averaged-covariance value, which removes between-seed mean scatter and is the better constraining-power estimator",
+  "caveats": [
+    "Both series are calibrated and on-truth (SBC rank-std 0.28-0.29 vs the ideal 0.289; null means within 0.3 sigma of truth), so the FoM difference is a real difference in information, not one posterior being broken.",
+    "The decisive quantity is r(Omega_m, S8). Weak lensing carries a physical degeneracy near -0.9; raw NPE on the ill-conditioned BNT vector returns -0.03, i.e. it loses the degeneracy structure entirely while keeping plausible (even tighter) marginals. That inflates the 3-param volume without widening any 1-D projection.",
+    "SBC and TARP CANNOT see that failure: both test marginal rank uniformity per parameter, so a posterior with correct marginals and missing correlations passes both.",
+    "MOPED is not free where it is not needed: on the well-conditioned non-BNT vector raw NPE is ~20% tighter than MOPED, presumably non-Gaussian information the Gaussian-optimal compression discards."
+  ]
+}

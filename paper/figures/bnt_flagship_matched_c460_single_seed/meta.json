@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_flagship_matched_c460_single_seed",
+  "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
+  "paper_position": 6.1,
+  "published_utc": "2026-07-31T21:00:25+00:00",
+  "published_at_repo_commit": "f521885",
+  "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/bnt_flagship_matched_c460_14000_single_seed.pdf",
+      "sha256": "94ae746d9d7e88c7348ad40277122170005a0dbe0021eb6eed06434038dc75dc",
+      "bytes": 138206
+    },
+    "figure.png": {
+      "from": "plots/bnt_flagship_matched_c460_14000_single_seed.png",
+      "sha256": "fef1583233f6baa23136395ad0e830e62af59c18076b7a1ca3242bda7aafec44",
+      "bytes": 100529
+    },
+    "values.csv": {
+      "from": "plots/bnt_flagship_matched_c460_14000_single_seed_values.csv",
+      "sha256": "49eac9a16693379d9af964d53e0e541b9c18600474e2bb6749181b5bc197f8aa",
+      "bytes": 487
+    },
+    "provenance.json": {
+      "from": "plots/bnt_flagship_matched_c460_14000_single_seed_provenance.json",
+      "sha256": "8dc49036f7387143c583a06ceffea3761a5eb175d181eda7fd038c14779beecb",
+      "bytes": 6004
+    }
+  },
+  "note": "Single-seed companion to the flagship. Each arm shows its most representative NDE seed, chosen by scripts/tension/seeds.py against the MEDIAN across seeds on both centre and width (worst-parameter, so a seed representative in Omega_m and S8 but a width off in w0 does not qualify). This is the object a real survey reports: one trained density estimator and its own posterior, rather than a pooled stack whose width carries seed-to-seed training scatter. The ratio here is 1.507x against the pooled figure's 1.467x; both arms happen to select run 41, and the difference is seed selection rather than physics. QUOTE THE POOLED FIGURE (1.47x) for the headline - it averages the training scatter out instead of inheriting one draw of it. The per-seed scores behind the choice are recorded under seed_selection in provenance.json so the pick is auditable.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 2,
+  "n_caveats": 4
+}

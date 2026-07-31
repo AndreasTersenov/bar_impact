@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_flagship_matched_c460_pooled",
+  "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
+  "paper_position": 6.0,
+  "published_utc": "2026-07-31T20:59:52+00:00",
+  "published_at_repo_commit": "f521885",
+  "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
+      "sha256": "75d9293c0d8ca2ee10eb882db95ea6b3bee027aa4f4de40de7d0044dfb16b3bf",
+      "bytes": 133552
+    },
+    "figure.png": {
+      "from": "plots/bnt_flagship_matched_c460_14000_pooled.png",
+      "sha256": "44b2cdf253a85b7c8d15864d6ff43ad73a9e24dd91771adaa2df0e0428a83ce5",
+      "bytes": 99183
+    },
+    "values.csv": {
+      "from": "plots/bnt_flagship_matched_c460_14000_pooled_values.csv",
+      "sha256": "37c9966ea41608eda3d707f2340e0119331841310d44f3effbc4529117b5b4ab",
+      "bytes": 501
+    },
+    "provenance.json": {
+      "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
+      "sha256": "ef965bfb01d3dce4239dd47935265d7a279041e2a1d054c0871e5e328522adb4",
+      "bytes": 3636
+    }
+  },
+  "note": "THE FLAGSHIP CONSTRAINING-POWER RESULT. Both arms score/MOPED-compressed at the SAME scale cut (lmax=460, rebin=20, hybrid covariance, 5 NDE seeds each), so the only difference between them is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024 (92 of 120 columns), non-BNT cuts every bin (50 of 120). BNT gives 1.47x the 3-parameter FoM. Both posteriors are calibrated (SBC rank-std 0.28-0.29 against the ideal 0.289) and on-truth (null means within 0.3 sigma), and both are unbiased at this cut (baryon tension 0.30+/-0.09 sigma for BNT, 0.17+/-0.03 for non-BNT), which is what makes the matched comparison fair. Read this as constraining power at fixed cut, NOT as baryon mitigation: BNT bin-1 actually crosses 0.3 sigma at a LOWER lmax (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better - it retains more information at equal unbiasedness. The 1.47x is also conditional on the compression: under raw NPE the same comparison inverts to 0.33x, because a flow fed the ill-conditioned BNT vector loses the Omega_m-S8 degeneracy entirely (r=-0.03 against the physical -0.9) while passing every standard calibration check.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 2,
+  "n_caveats": 4
+}
