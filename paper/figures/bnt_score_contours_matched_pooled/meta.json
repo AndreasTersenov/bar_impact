@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_score_contours_matched_pooled",
+  "title": "BNT vs non-BNT at a MATCHED scale cut (MOPED, pooled)",
+  "paper_position": 6.2,
+  "published_utc": "2026-07-31T13:01:15+00:00",
+  "published_at_repo_commit": "69586a2",
+  "source_stem": "plots/score_contours_matched_580_14000_pooled",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/score_contours_matched_580_14000_pooled.pdf",
+      "sha256": "29c17d316cca175e89400113d77686398e6837f683efdcbd18f45928519658c8",
+      "bytes": 170219
+    },
+    "figure.png": {
+      "from": "plots/score_contours_matched_580_14000_pooled.png",
+      "sha256": "c0983329b85cc7290a42c42da24281bccf662da84d183f8faa41a6ba2c1b137f",
+      "bytes": 122380
+    },
+    "values.csv": {
+      "from": "plots/score_contours_matched_580_14000_pooled_values.csv",
+      "sha256": "433b6a2c2c1e4b3993ebaa870fa4a28fa2aee3fc3d881a31ae73f5bd5ab668ed",
+      "bytes": 472
+    },
+    "provenance.json": {
+      "from": "plots/score_contours_matched_580_14000_pooled_provenance.json",
+      "sha256": "802a3e8bfb32097cd3bb6ff4b3c9121c2c66c680c638eb2b01026e679be54d58",
+      "bytes": 3756
+    }
+  },
+  "note": "Both arms at the same lmax 580, with BNT bin-1 at lmax 460 overlaid dashed as a reference. Answers 'at identical scales, what does cutting in the BNT basis buy?' Realized FoM3 ratio 1.298x, close to the 1.270x of the de-biasing pairing, so the BNT advantage is not an artifact of how the cuts are paired. The dashed reference carries the sharper result: moving BNT's own cut from 460 to 580 buys only 1.02x in FoM while the baryon tension rises 0.30 -> 0.37 sigma, because BNT cuts only bin 1 and so gains one band in just 4 of 10 spectra (92 -> 96 columns). Cut bin 1 conservatively; it is nearly free. BNT at 580 is above the 0.3 sigma nominal and is tolerated only on its error bar (mean minus sigma = 0.291).",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 3,
+  "n_caveats": 5
+}

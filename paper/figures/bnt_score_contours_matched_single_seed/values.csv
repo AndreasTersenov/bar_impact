@@ -1,0 +1,4 @@
+config,ell_max,seed_mode,seed_label,n_seeds,sigma_Om,sigma_S8,sigma_w0,fom3_drawn,fom3_seed_avg_cov,tension_mean,tension_std,n_features
+BNT_bin1,580,single,seed 45,4,0.015507,0.026889,0.081613,1.742107e+05,1.686545e+05,0.36677,0.07579,96
+nonBNT_cutall,580,single,seed 45,5,0.017518,0.031921,0.082451,1.326088e+05,1.284291e+05,0.28254,0.03071,60
+BNT_bin1_ref,460,single,seed 43,5,0.016199,0.026754,0.084040,1.606085e+05,1.645731e+05,0.30447,0.09126,92

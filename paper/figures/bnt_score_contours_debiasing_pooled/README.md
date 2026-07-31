@@ -1,0 +1,24 @@
+# BNT vs non-BNT at their de-biasing cuts (MOPED, pooled)
+
+Score/MOPED-compressed null posteriors, each arm at the cut IT needs to be unbiased: BNT bin-1 at lmax 460 (bins 2-4 kept full, 92 of 120 columns) against non-BNT cut-all at lmax 580 (60 of 120). Pooled over surviving NDE seeds. Realized 3-param FoM3 ratio 1.270x against a Fisher floor of 1.46x, so the calibrated pipeline realizes about 88 percent of the information advantage BNT carries. This is a constraining-power result, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better than cutting every bin.
+
+- **source**: `plots/score_contours_debiased_580_14000_pooled`
+- **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
+- **generated**: 2026-07-31T12:45:02Z
+- **published**: 2026-07-31T13:01:04+00:00 at repo `69586a2`
+- **rows in values.csv**: 2
+
+## Scales included
+
+- **scales_included**: BNT: bin-1 to ell<=460, bins 2-4 to ell<=1024; non-BNT: all bins to ell<=580
+- **BNT_bin1**: [460, 1024, 1024, 1024]
+- **nonBNT_cutall**: [580, 580, 580, 580]
+
+## Caveats (from provenance)
+
+- The analytic covariance behind the MOPED weights comes from the INTACT rebinned cache cov_rebinned_full_14000.npz, not from gaussian_cov_native_14000.npy: every native covariance and NaMaster workspace in cache_gaussian_cov/ was destroyed by the RAID0 failure (3 MiB stripe signature, ~20% zeroed). The substitution is exact at rebin=20 because a cut keeps whole leading bands and BNT commutes with the ell-rebin.
+- Scale cuts are quantised to 80 in ell by the rebin=20 floor division, so ell_max=580 selects the same columns as its degenerate partner (540 or 620); the effective ell_max of the retained vector is lower than the label suggests. Quote the lower member of a pair.
+- This is a CONSTRAINING-POWER comparison, not baryon mitigation. BNT bin-1 crosses 0.3 sigma at a LOWER ell_max (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better; its advantage is retaining more of the vector at equal unbiasedness.
+- fom3_drawn describes exactly the samples plotted; fom3_seed_avg_cov removes between-seed mean scatter. They differ by 0.7-1.8% here.
+
+*Do not edit these files. Regenerate at the source and re-publish, so the figure and its numbers can never disagree.*

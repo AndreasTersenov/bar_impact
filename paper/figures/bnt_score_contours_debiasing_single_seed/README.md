@@ -1,0 +1,24 @@
+# BNT vs non-BNT at their de-biasing cuts (MOPED, single seed)
+
+As the pooled version, but each arm shows its single most representative NDE seed (chosen by scripts/tension/seeds.py against the median, on both centre and width) rather than all seeds concatenated. This is the object a real survey reports: one trained density estimator, its own posterior. Ratio 1.211x here versus 1.270x pooled; the difference is seed selection, not physics, because the two arms draw their representatives independently. Prefer the pooled figure when quoting a ratio.
+
+- **source**: `plots/score_contours_debiased_580_14000_single_seed`
+- **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
+- **generated**: 2026-07-31T13:00:41Z
+- **published**: 2026-07-31T13:01:04+00:00 at repo `69586a2`
+- **rows in values.csv**: 2
+
+## Scales included
+
+- **scales_included**: BNT: bin-1 to ell<=460, bins 2-4 to ell<=1024; non-BNT: all bins to ell<=580
+- **BNT_bin1**: [460, 1024, 1024, 1024]
+- **nonBNT_cutall**: [580, 580, 580, 580]
+
+## Caveats (from provenance)
+
+- The analytic covariance behind the MOPED weights comes from the INTACT rebinned cache cov_rebinned_full_14000.npz, not from gaussian_cov_native_14000.npy: every native covariance and NaMaster workspace in cache_gaussian_cov/ was destroyed by the RAID0 failure (3 MiB stripe signature, ~20% zeroed). The substitution is exact at rebin=20 because a cut keeps whole leading bands and BNT commutes with the ell-rebin.
+- Scale cuts are quantised to 80 in ell by the rebin=20 floor division, so ell_max=580 selects the same columns as its degenerate partner (540 or 620); the effective ell_max of the retained vector is lower than the label suggests. Quote the lower member of a pair.
+- This is a CONSTRAINING-POWER comparison, not baryon mitigation. BNT bin-1 crosses 0.3 sigma at a LOWER ell_max (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better; its advantage is retaining more of the vector at equal unbiasedness.
+- fom3_drawn describes exactly the samples plotted; fom3_seed_avg_cov removes between-seed mean scatter. They differ by 0.7-1.8% here.
+
+*Do not edit these files. Regenerate at the source and re-publish, so the figure and its numbers can never disagree.*

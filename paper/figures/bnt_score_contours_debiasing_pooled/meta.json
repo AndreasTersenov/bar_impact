@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_score_contours_debiasing_pooled",
+  "title": "BNT vs non-BNT at their de-biasing cuts (MOPED, pooled)",
+  "paper_position": 6.0,
+  "published_utc": "2026-07-31T13:01:04+00:00",
+  "published_at_repo_commit": "69586a2",
+  "source_stem": "plots/score_contours_debiased_580_14000_pooled",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/score_contours_debiased_580_14000_pooled.pdf",
+      "sha256": "114e8cf9e66754131b63e4fce506b9d0a73955dc2e8a56dc219cc79447f51369",
+      "bytes": 135499
+    },
+    "figure.png": {
+      "from": "plots/score_contours_debiased_580_14000_pooled.png",
+      "sha256": "1009489a22a5137ef48a31798eb5a84d4ef65463d1b4c42fe112d475953980dd",
+      "bytes": 99016
+    },
+    "values.csv": {
+      "from": "plots/score_contours_debiased_580_14000_pooled_values.csv",
+      "sha256": "5da3a6df37f5825537ac298e96ec8825963e54997ee45c11ab037b3d55609f55",
+      "bytes": 359
+    },
+    "provenance.json": {
+      "from": "plots/score_contours_debiased_580_14000_pooled_provenance.json",
+      "sha256": "54ed72ce903ea66fa3bfba13aadf4374733ebce21b26afcc688d88100e2fc46f",
+      "bytes": 3436
+    }
+  },
+  "note": "Score/MOPED-compressed null posteriors, each arm at the cut IT needs to be unbiased: BNT bin-1 at lmax 460 (bins 2-4 kept full, 92 of 120 columns) against non-BNT cut-all at lmax 580 (60 of 120). Pooled over surviving NDE seeds. Realized 3-param FoM3 ratio 1.270x against a Fisher floor of 1.46x, so the calibrated pipeline realizes about 88 percent of the information advantage BNT carries. This is a constraining-power result, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better than cutting every bin.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 2,
+  "n_caveats": 4
+}

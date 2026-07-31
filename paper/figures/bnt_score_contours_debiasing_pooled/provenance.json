@@ -1,0 +1,87 @@
+{
+  "figure": "score_contours_debiased_580_14000_pooled",
+  "generator": "scripts/plot_score_contours_debiased.py",
+  "command": "scripts/plot_score_contours_debiased.py --bnt-cut 460 --nonbnt-cut 580 --no-fisher --seed-mode pooled",
+  "git_commit": "69586a219370d9a4bc00ed639396c383590f7375",
+  "generated_utc": "2026-07-31T12:45:02Z",
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "getdist default (no custom style sheet)",
+  "area_deg2": 14000,
+  "statistic": "tomographic auto+cross angular power spectra",
+  "compression": "score / MOPED, quasi-MLE form theta_hat = FID + (x-x_fid) @ C^-1 J F^-1",
+  "covariance": "hybrid = analytic Gaussian + top-3 SSC/cNG eigenmodes",
+  "jacobian": "local order-2 at the fiducial, bandwidth 0.75",
+  "rebin": 20,
+  "lmin": 37,
+  "cuts": {
+    "BNT_bin1": [
+      460,
+      1024,
+      1024,
+      1024
+    ],
+    "nonBNT_cutall": [
+      580,
+      580,
+      580,
+      580
+    ]
+  },
+  "scales_included": "BNT: bin-1 to ell<=460, bins 2-4 to ell<=1024; non-BNT: all bins to ell<=580",
+  "cut_pairing": "de-biasing",
+  "n_features": {
+    "BNT_bin1": 92,
+    "nonBNT_cutall": 60,
+    "full_vector": 120
+  },
+  "seed_mode": "pooled",
+  "posterior": "all surviving NDE seeds concatenated",
+  "seed_selection": {
+    "BNT": {
+      "seed_mode": "pooled"
+    },
+    "nonBNT": {
+      "seed_mode": "pooled"
+    }
+  },
+  "seeds_healthy": {
+    "BNT": 5,
+    "nonBNT": 5
+  },
+  "seeds_skipped_disk_damage": {
+    "BNT": [],
+    "nonBNT": []
+  },
+  "fom3_realized": {
+    "convention": "fom3_drawn is 1/sqrt(det Cov) of exactly the samples plotted; fom3_seed_avg_cov removes between-seed mean scatter. They differ by 0.7-1.8% here, so conclusions are insensitive to the choice.",
+    "BNT": 162071.63349823136,
+    "nonBNT": 127593.70739583777,
+    "ratio": 1.27021650836927,
+    "BNT_seed_avg_cov": 164573.13249889188,
+    "nonBNT_seed_avg_cov": 128429.05652480487,
+    "ratio_seed_avg_cov": 1.2814322315535045
+  },
+  "fom3_fisher_floor": "not computed for this figure (--no-fisher)",
+  "tension_3param_QDM": {
+    "BNT": [
+      0.30447,
+      0.09126
+    ],
+    "nonBNT": [
+      0.28254,
+      0.03071
+    ],
+    "source": "tension_3param_agg.csv (5 seeds, TARP/SBC OK per cut)"
+  },
+  "caveats": [
+    "The analytic covariance behind the MOPED weights comes from the INTACT rebinned cache cov_rebinned_full_14000.npz, not from gaussian_cov_native_14000.npy: every native covariance and NaMaster workspace in cache_gaussian_cov/ was destroyed by the RAID0 failure (3 MiB stripe signature, ~20% zeroed). The substitution is exact at rebin=20 because a cut keeps whole leading bands and BNT commutes with the ell-rebin.",
+    "Scale cuts are quantised to 80 in ell by the rebin=20 floor division, so ell_max=580 selects the same columns as its degenerate partner (540 or 620); the effective ell_max of the retained vector is lower than the label suggests. Quote the lower member of a pair.",
+    "This is a CONSTRAINING-POWER comparison, not baryon mitigation. BNT bin-1 crosses 0.3 sigma at a LOWER ell_max (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better; its advantage is retaining more of the vector at equal unbiasedness.",
+    "fom3_drawn describes exactly the samples plotted; fom3_seed_avg_cov removes between-seed mean scatter. They differ by 0.7-1.8% here."
+  ]
+}

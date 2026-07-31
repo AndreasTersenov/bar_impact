@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_score_contours_matched_single_seed",
+  "title": "BNT vs non-BNT at a MATCHED scale cut (MOPED, single seed)",
+  "paper_position": 6.3,
+  "published_utc": "2026-07-31T13:01:16+00:00",
+  "published_at_repo_commit": "69586a2",
+  "source_stem": "plots/score_contours_matched_580_14000_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/score_contours_matched_580_14000_single_seed.pdf",
+      "sha256": "be5442f7532207603d468e04c0517e5e727f5dfdd9fb658e6bcc978d9c7bed73",
+      "bytes": 166686
+    },
+    "figure.png": {
+      "from": "plots/score_contours_matched_580_14000_single_seed.png",
+      "sha256": "7c44151fb35ca2c46f9789eba10bc33a52cb69879be45be92814eff09ca3d8c8",
+      "bytes": 121336
+    },
+    "values.csv": {
+      "from": "plots/score_contours_matched_580_14000_single_seed_values.csv",
+      "sha256": "515fe420ec35e2cd6cd263741b8cd7b0edae26f1b85614e3e00e3ac363146054",
+      "bytes": 451
+    },
+    "provenance.json": {
+      "from": "plots/score_contours_matched_580_14000_single_seed_provenance.json",
+      "sha256": "cbcd77874546635bf20d6b9b42cf4b85b007897b3d6081984c4494c1b57e940d",
+      "bytes": 6955
+    }
+  },
+  "note": "Single-seed companion to the matched-cut figure; each arm shows its most representative NDE seed. Ratio 1.314x. Note the 460-to-580 reference reads 1.085x here against 1.022x pooled: that inflation is compounded seed selection (the representative at 460 sits low in its ensemble, the one at 580 high), not physics. Quote the pooled value for that comparison.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 3,
+  "n_caveats": 5
+}

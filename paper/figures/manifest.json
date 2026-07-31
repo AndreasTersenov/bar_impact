@@ -412,6 +412,46 @@
     }
   },
   {
+    "slug": "bnt_score_contours_debiasing_pooled",
+    "meta": {
+      "slug": "bnt_score_contours_debiasing_pooled",
+      "title": "BNT vs non-BNT at their de-biasing cuts (MOPED, pooled)",
+      "paper_position": 6.0,
+      "published_utc": "2026-07-31T13:01:04+00:00",
+      "published_at_repo_commit": "69586a2",
+      "source_stem": "plots/score_contours_debiased_580_14000_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/score_contours_debiased_580_14000_pooled.pdf",
+          "sha256": "114e8cf9e66754131b63e4fce506b9d0a73955dc2e8a56dc219cc79447f51369",
+          "bytes": 135499
+        },
+        "figure.png": {
+          "from": "plots/score_contours_debiased_580_14000_pooled.png",
+          "sha256": "1009489a22a5137ef48a31798eb5a84d4ef65463d1b4c42fe112d475953980dd",
+          "bytes": 99016
+        },
+        "values.csv": {
+          "from": "plots/score_contours_debiased_580_14000_pooled_values.csv",
+          "sha256": "5da3a6df37f5825537ac298e96ec8825963e54997ee45c11ab037b3d55609f55",
+          "bytes": 359
+        },
+        "provenance.json": {
+          "from": "plots/score_contours_debiased_580_14000_pooled_provenance.json",
+          "sha256": "54ed72ce903ea66fa3bfba13aadf4374733ebce21b26afcc688d88100e2fc46f",
+          "bytes": 3436
+        }
+      },
+      "note": "Score/MOPED-compressed null posteriors, each arm at the cut IT needs to be unbiased: BNT bin-1 at lmax 460 (bins 2-4 kept full, 92 of 120 columns) against non-BNT cut-all at lmax 580 (60 of 120). Pooled over surviving NDE seeds. Realized 3-param FoM3 ratio 1.270x against a Fisher floor of 1.46x, so the calibrated pipeline realizes about 88 percent of the information advantage BNT carries. This is a constraining-power result, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax (460) than non-BNT cut-all (620), so cutting only bin 1 does not control baryons better than cutting every bin.",
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 2,
+      "n_caveats": 4
+    }
+  },
+  {
     "slug": "contours_three_stats_both_pooled",
     "meta": {
       "slug": "contours_three_stats_both_pooled",
@@ -449,6 +489,126 @@
       },
       "value_rows": 18,
       "n_caveats": 4
+    }
+  },
+  {
+    "slug": "bnt_score_contours_debiasing_single_seed",
+    "meta": {
+      "slug": "bnt_score_contours_debiasing_single_seed",
+      "title": "BNT vs non-BNT at their de-biasing cuts (MOPED, single seed)",
+      "paper_position": 6.1,
+      "published_utc": "2026-07-31T13:01:04+00:00",
+      "published_at_repo_commit": "69586a2",
+      "source_stem": "plots/score_contours_debiased_580_14000_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/score_contours_debiased_580_14000_single_seed.pdf",
+          "sha256": "5dfc2bb59073d3cd44c2d873a12e46d3cc57ea4bc824a908e8346bb7e242ab54",
+          "bytes": 134699
+        },
+        "figure.png": {
+          "from": "plots/score_contours_debiased_580_14000_single_seed.png",
+          "sha256": "812f495dc542e0129bff11e4c8a7c882f07225cdccff1df2e8c58b919aca4309",
+          "bytes": 97246
+        },
+        "values.csv": {
+          "from": "plots/score_contours_debiased_580_14000_single_seed_values.csv",
+          "sha256": "e3876fb8b1d870263558bd474784b639d550c86d0c5bcd59ebb1240860414d83",
+          "bytes": 345
+        },
+        "provenance.json": {
+          "from": "plots/score_contours_debiased_580_14000_single_seed_provenance.json",
+          "sha256": "d47022a77b2b4658734d33d4da0bbd8b847b77d6fd512acd150ecb724f42c155",
+          "bytes": 5704
+        }
+      },
+      "note": "As the pooled version, but each arm shows its single most representative NDE seed (chosen by scripts/tension/seeds.py against the median, on both centre and width) rather than all seeds concatenated. This is the object a real survey reports: one trained density estimator, its own posterior. Ratio 1.211x here versus 1.270x pooled; the difference is seed selection, not physics, because the two arms draw their representatives independently. Prefer the pooled figure when quoting a ratio.",
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 2,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "bnt_score_contours_matched_pooled",
+    "meta": {
+      "slug": "bnt_score_contours_matched_pooled",
+      "title": "BNT vs non-BNT at a MATCHED scale cut (MOPED, pooled)",
+      "paper_position": 6.2,
+      "published_utc": "2026-07-31T13:01:15+00:00",
+      "published_at_repo_commit": "69586a2",
+      "source_stem": "plots/score_contours_matched_580_14000_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/score_contours_matched_580_14000_pooled.pdf",
+          "sha256": "29c17d316cca175e89400113d77686398e6837f683efdcbd18f45928519658c8",
+          "bytes": 170219
+        },
+        "figure.png": {
+          "from": "plots/score_contours_matched_580_14000_pooled.png",
+          "sha256": "c0983329b85cc7290a42c42da24281bccf662da84d183f8faa41a6ba2c1b137f",
+          "bytes": 122380
+        },
+        "values.csv": {
+          "from": "plots/score_contours_matched_580_14000_pooled_values.csv",
+          "sha256": "433b6a2c2c1e4b3993ebaa870fa4a28fa2aee3fc3d881a31ae73f5bd5ab668ed",
+          "bytes": 472
+        },
+        "provenance.json": {
+          "from": "plots/score_contours_matched_580_14000_pooled_provenance.json",
+          "sha256": "802a3e8bfb32097cd3bb6ff4b3c9121c2c66c680c638eb2b01026e679be54d58",
+          "bytes": 3756
+        }
+      },
+      "note": "Both arms at the same lmax 580, with BNT bin-1 at lmax 460 overlaid dashed as a reference. Answers 'at identical scales, what does cutting in the BNT basis buy?' Realized FoM3 ratio 1.298x, close to the 1.270x of the de-biasing pairing, so the BNT advantage is not an artifact of how the cuts are paired. The dashed reference carries the sharper result: moving BNT's own cut from 460 to 580 buys only 1.02x in FoM while the baryon tension rises 0.30 -> 0.37 sigma, because BNT cuts only bin 1 and so gains one band in just 4 of 10 spectra (92 -> 96 columns). Cut bin 1 conservatively; it is nearly free. BNT at 580 is above the 0.3 sigma nominal and is tolerated only on its error bar (mean minus sigma = 0.291).",
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 3,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "bnt_score_contours_matched_single_seed",
+    "meta": {
+      "slug": "bnt_score_contours_matched_single_seed",
+      "title": "BNT vs non-BNT at a MATCHED scale cut (MOPED, single seed)",
+      "paper_position": 6.3,
+      "published_utc": "2026-07-31T13:01:16+00:00",
+      "published_at_repo_commit": "69586a2",
+      "source_stem": "plots/score_contours_matched_580_14000_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/score_contours_matched_580_14000_single_seed.pdf",
+          "sha256": "be5442f7532207603d468e04c0517e5e727f5dfdd9fb658e6bcc978d9c7bed73",
+          "bytes": 166686
+        },
+        "figure.png": {
+          "from": "plots/score_contours_matched_580_14000_single_seed.png",
+          "sha256": "7c44151fb35ca2c46f9789eba10bc33a52cb69879be45be92814eff09ca3d8c8",
+          "bytes": 121336
+        },
+        "values.csv": {
+          "from": "plots/score_contours_matched_580_14000_single_seed_values.csv",
+          "sha256": "515fe420ec35e2cd6cd263741b8cd7b0edae26f1b85614e3e00e3ac363146054",
+          "bytes": 451
+        },
+        "provenance.json": {
+          "from": "plots/score_contours_matched_580_14000_single_seed_provenance.json",
+          "sha256": "cbcd77874546635bf20d6b9b42cf4b85b007897b3d6081984c4494c1b57e940d",
+          "bytes": 6955
+        }
+      },
+      "note": "Single-seed companion to the matched-cut figure; each arm shows its most representative NDE seed. Ratio 1.314x. Note the 460-to-580 reference reads 1.085x here against 1.022x pooled: that inflation is compounded seed selection (the representative at 460 sits low in its ensemble, the one at 580 high), not physics. Quote the pooled value for that comparison.",
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 3,
+      "n_caveats": 5
     }
   },
   {
