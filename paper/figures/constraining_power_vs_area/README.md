@@ -1,11 +1,9 @@
 # Constraining power vs survey area: sigma(S8) and FoM3
 
-NOT intended for the paper -- kept as reference material and a likely referee-report figure. IF IT IS USED ANYWHERE, the x-axis tick labels must be decluttered first: they currently overlap. plot_fom_vs_area.py already solves this with a FixedLocator at 2k/5k/10k/20k/40k plus NullFormatter on the minors; port that across. Also note the two grey guides are HARDCODED pre-crash anchors, not fits -- slope references only.
-
 - **source**: `outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats`
 - **generator commit**: `9c33642`
 - **generated**: 2026-07-30T08:38:01+00:00
-- **published**: 2026-07-30T08:41:11+00:00 at repo `9c33642`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 18
 
 ## Scales included

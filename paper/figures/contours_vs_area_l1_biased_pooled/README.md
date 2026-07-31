@@ -1,16 +1,29 @@
 # PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution
 
-PAPER FIGURE. L1-norm posteriors for the baryonified observation, six masked footprints overlaid, at full map resolution with ALL FOUR detail wavelet scales (scales1234, coarse/mass-sheet excluded) on submean maps -- i.e. BEFORE any scale cut, so the baryon bias is present. Sequential light-to-dark ramp encodes survey area.
-
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020`
 - **generator commit**: `3d0116e`
 - **generated**: 2026-07-30T13:03:26+00:00
-- **published**: 2026-07-30T13:06:59+00:00 at repo `3d0116e`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 18
 
 ## Scales included
 
 - **peaks_l1**: wavelet scales1234 — all four detail scales, coarse/mass-sheet excluded — submean (footprint-mean-subtracted) maps, new_normalization, noisy sigma_e=0.26
+
+## Figure of merit
+
+FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
+
+| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |
+|---|---|---|---|
+| 2000 | 6 | 3.996e+04 | 5.803e+04 ± 2.38e+04 |
+| 5000 | 9 | 2.548e+05 | 2.767e+05 ± 2.85e+04 |
+| 10000 | 8 | 4.891e+05 | 5.737e+05 ± 7.97e+04 |
+| 14000 | 5 | 7.338e+05 | 7.961e+05 ± 7.1e+04 |
+| 28000 | 7 | 1.897e+06 | 2.174e+06 ± 4.01e+05 |
+| 35000 | 9 | 1.916e+06 | 2.668e+06 ± 3.15e+05 |
+
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

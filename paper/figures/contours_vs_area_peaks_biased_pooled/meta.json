@@ -1,0 +1,37 @@
+{
+  "slug": "contours_vs_area_peaks_biased_pooled",
+  "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid, full resolution",
+  "paper_position": 24.0,
+  "published_utc": "2026-07-31T06:29:30+00:00",
+  "published_at_repo_commit": "29261c9",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.pdf",
+      "sha256": "32a97ecbeaae5d5bd83d23d30554914402c48719adf51f4ebda19b2322626427",
+      "bytes": 180807
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.png",
+      "sha256": "04ba5b7a132850bed3969e19ff82d2c0e61ee08979a4224536aa02559ede2ca3",
+      "bytes": 408109
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_values.csv",
+      "sha256": "74292ac5790c1396ebf8a88baa873243c8edf56bc0230b849e556f74d49c0ce9",
+      "bytes": 1945
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_provenance.json",
+      "sha256": "d67605511ccef5b6a045a14c6a7c4dee3517425a2bdd5d51309a7a2b8a0ffcea",
+      "bytes": 10201
+    }
+  },
+  "note": "PAPER FIGURE. Peak-count posteriors for the baryonified observation, six masked footprints overlaid at full map resolution (scales1234 on submean maps) -- BEFORE any scale cut, so the baryon bias is present and grows with area. Regenerated WITH the centre-outlier guard: run 8 at 28000 deg2 returned w0 = -0.053 against a median of -1.25 with a perfectly normal sigma(S8), and run 10 at 35000 gave -0.935. Neither is catchable by the collapse guard or by the width-based QA, and pooling them inflated the covariance determinant ~200x -- visible as a pooled/per-seed FoM ratio of x14 where every other contour sits near 1.1. Both are dropped and recorded in runs_dropped. NOTE the source file predates the _pooled naming convention, so its stem carries no suffix.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 18,
+  "n_caveats": 5
+}

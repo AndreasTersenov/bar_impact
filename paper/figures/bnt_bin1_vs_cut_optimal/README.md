@@ -1,12 +1,14 @@
 # BNT bin-1 vs non-BNT, optimal binning (rebin 40)
 
-BNT bin-1-only cut against the standard non-BNT cut-all, with BNT at its optimal rebinning. THIS is the honest BNT figure: PLAN_bnt_optimal_binning.md records that the earlier rebin=10 version substantially OVERSTATED BNT's baryon mitigation, because raw NPE under-extracted and so inflated the BNT contours, hiding the bias. The per-panel percent-extracted annotation is a quoted historical result and is NOT reproducible from this repo -- see provenance.json.
-
 - **source**: `outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal`
 - **generator commit**: `701fba8`
 - **generated**: 2026-07-29T16:58:19+00:00
-- **published**: 2026-07-30T07:31:51+00:00 at repo `b900627`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 216
+
+## Scales included
+
+- **lmin**: 37
 
 ## Known gaps
 

@@ -1,11 +1,9 @@
 # PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed)
 
-Single-seed counterpart of contours_vs_area_l1_biased_pooled: the most REPRESENTATIVE seed per area rather than all seeds stacked (scripts/tension/seeds.py; per-seed scores in provenance.json). Full map resolution, no scale cut, so the baryon bias is present and grows with area. Sequential light-to-dark ramp encodes survey area.
-
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed`
 - **generator commit**: `d8384e9`
 - **generated**: 2026-07-30T16:05:33+00:00
-- **published**: 2026-07-30T16:22:18+00:00 at repo `d8384e9`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 18
 
 ## Scales included
@@ -25,7 +23,7 @@ FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
 | 28000 | 7 | 1.897e+06 | 2.174e+06 ± 4.01e+05 |
 | 35000 | 9 | 1.916e+06 | 2.668e+06 ± 3.15e+05 |
 
-fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

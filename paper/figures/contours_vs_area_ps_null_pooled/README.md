@@ -1,16 +1,30 @@
 # PS null posteriors, all survey areas overlaid, full resolution
 
-Power-spectrum null (nobaryons) posteriors for all six masked footprints plus full sky, overlaid, at full map resolution ell=37-1020. Sequential light-to-dark ramp encodes survey area, which is an ordered quantity. CAVEAT: the full-sky contour comes from the healpy per-ell pipeline with no submean and no MASTER decoupling -- submean subtracts a FOOTPRINT mean, which exists only under a mask -- so it is not magnitude-comparable to the masked contours.
-
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky`
 - **generator commit**: `7cfd75b`
 - **generated**: 2026-07-30T10:55:03+00:00
-- **published**: 2026-07-30T11:14:26+00:00 at repo `7cfd75b`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 21
 
 ## Scales included
 
 - **power_spectrum**: monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10
+
+## Figure of merit
+
+FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
+
+| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |
+|---|---|---|---|
+| 2000 | 5 | 2.632e+04 | 2.725e+04 ± 2.22e+03 |
+| 5000 | 5 | 8.76e+04 | 9.052e+04 ± 7.77e+03 |
+| 10000 | 5 | 2.179e+05 | 2.292e+05 ± 2.26e+04 |
+| 14000 | 4 | 3.09e+05 | 3.438e+05 ± 2.99e+04 |
+| 28000 | 10 | 6.495e+05 | 7.166e+05 ± 7.76e+04 |
+| 35000 | 4 | 8.741e+05 | 9.658e+05 ± 1.55e+05 |
+| fullsky | 5 | 1.104e+06 | 1.391e+06 ± 3.79e+05 |
+
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

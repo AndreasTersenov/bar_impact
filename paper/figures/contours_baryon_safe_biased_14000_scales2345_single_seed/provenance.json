@@ -230,5 +230,62 @@
     "The surviving pre-crash contours_PS_peaks_L1_baryons_unbiased.pdf (Sept 2025) predates the lmin 100->37 recovery and the submean correction, so it is NOT numerically comparable to this figure.",
     "The PS cut and the HOS cut are different KINDS of cut \u2014 multipoles vs a wavelet scale \u2014 so they are not ell-matched to each other. Each is the cut that keeps its own statistic under 0.3 sigma. Pass --ps-lmax 400 to instead reproduce the ell-matched pairing used by the Fisher baryon-safe figure.",
     "The PS lmax is the largest step-40 cut still BELOW 0.3 sigma, not the crossing. The crossing is the first cut that fails (500 at 14000 deg^2); adopting it would put a 0.41-sigma bias in a 'baryon-safe' figure."
-  ]
+  ],
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.",
+    "per_contour": [
+      {
+        "contour": "Power spectrum / biased",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "fom3_pooled": 143694.22505144335,
+        "fom3_per_seed_mean": 148093.67963250633,
+        "fom3_per_seed_std": 6958.590189088531,
+        "sigma_Om_pooled": 0.01719886371066721,
+        "sigma_S8_pooled": 0.03072023343077125,
+        "sigma_w0_pooled": 0.08807081463585555
+      },
+      {
+        "contour": "Peak counts / biased",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "fom3_pooled": 101938.47848613867,
+        "fom3_per_seed_mean": 107864.70917564398,
+        "fom3_per_seed_std": 15683.22443566612,
+        "sigma_Om_pooled": 0.015192764994218105,
+        "sigma_S8_pooled": 0.02474001512901962,
+        "sigma_w0_pooled": 0.1062939212893906
+      },
+      {
+        "contour": "L1 norm / biased",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "fom3_pooled": 314871.8275777057,
+        "fom3_per_seed_mean": 334374.7479635583,
+        "fom3_per_seed_std": 21761.343544484942,
+        "sigma_Om_pooled": 0.01298541525763903,
+        "sigma_S8_pooled": 0.016294857663011305,
+        "sigma_w0_pooled": 0.09336275845441841
+      }
+    ]
+  }
 }

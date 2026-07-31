@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_l1_biased_single_seed",
   "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed)",
   "paper_position": 25.1,
-  "published_utc": "2026-07-30T16:22:18+00:00",
-  "published_at_repo_commit": "d8384e9",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
@@ -23,10 +23,11 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_provenance.json",
-      "sha256": "582ea82c95f9f6cdda2f5e41f3c53eb028fb29e28f806ac8e7fb25a8ebf569b6",
-      "bytes": 18271
+      "sha256": "b656a3d8b9bc788895716535e800db4f16e93465aeda0d27a17bc1be8cbf3556",
+      "bytes": 20103
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
   "title": "Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)",
   "paper_position": 13.0,
-  "published_utc": "2026-07-30T22:04:02+00:00",
-  "published_at_repo_commit": "bc8ebd2",
+  "published_utc": "2026-07-31T06:28:28+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
   "files": {
     "figure.pdf": {
@@ -27,6 +27,7 @@
       "bytes": 3971
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

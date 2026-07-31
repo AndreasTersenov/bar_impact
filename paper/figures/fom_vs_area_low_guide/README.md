@@ -1,11 +1,9 @@
 # FoM3 vs survey area, guide dropped clear of the data
 
-The variant with the A^+3/2 reference line dropped below every series (GUIDE_SCALE=0.24), so it reads purely as a slope reference rather than crossing the PS curve. This previously existed only as an orphan pdf/png with no sidecars and so could not be published; the anchor is now a documented, reproducible option. GUIDE_SCALE is COSMETIC -- it moves the line vertically and changes nothing about its slope, which is all the guide asserts.
-
 - **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor`
 - **generator commit**: `9c33642`
 - **generated**: 2026-07-30T08:38:13+00:00
-- **published**: 2026-07-30T08:43:25+00:00 at repo `9c33642`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 18
 
 ## Scales included

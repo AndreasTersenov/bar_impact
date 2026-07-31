@@ -1,11 +1,9 @@
 # PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2
 
-FLAGSHIP PAPER FIGURE. The baryonified observation analysed with a nobaryons-trained model, AFTER each statistic's baryon-safe scale cut: power spectrum restricted to lmax=460 (the largest step-40 cut whose 3-param Q_DM bias stays under 0.3 sigma -- 0.288 sigma; the next cut, 500, gives 0.413), and peaks and L1 with the finest wavelet scale dropped (scales234, i.e. detail scales 2-4 on submean maps). Compare contours_three_stats_biased, the same observation at full resolution, where all three are visibly pulled off truth. Omega_m and S8 now sit on the truth cross; a residual w0 offset remains, which is worth reading off values.csv rather than off the figure.
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234`
 - **generator commit**: `7cfd75b`
 - **generated**: 2026-07-30T10:55:03+00:00
-- **published**: 2026-07-30T13:09:39+00:00 at repo `3d0116e`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 9
 
 ## Scales included

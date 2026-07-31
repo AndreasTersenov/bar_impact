@@ -1,11 +1,9 @@
 # ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)
 
-ROBUSTNESS CHECK, not a headline figure. PS at lmax=460; peaks and L1 at scales2345, i.e. the baryon-safe detail scales PLUS the coarse/mass-sheet scale normally excluded. Adding the coarse scale does NOT reintroduce bias -- it reduces it (peaks 0.079+/-0.047 -> 0.034+/-0.004; L1 0.091+/-0.073 -> 0.082+/-0.027) and collapses the seed scatter by ~10x for peaks and ~3x for L1, making these the most stable bias measurements in the set. But it COSTS constraining power: FoM3 falls 0.67x for peaks (1.52e5 -> 1.02e5) and rises only 1.08x for L1 (2.91e5 -> 3.15e5). The coarse scale carries little cosmological information, so for peaks it dilutes the data vector. There is therefore no case for scales2345 on constraining-power grounds; its value is showing that the baryon-safety conclusion does not depend on excluding the mass-sheet scale.
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled`
 - **generator commit**: `2cb7a65`
 - **generated**: 2026-07-30T22:42:28+00:00
-- **published**: 2026-07-30T22:51:29+00:00 at repo `2cb7a65`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 9
 
 ## Scales included
@@ -16,6 +14,18 @@ ROBUSTNESS CHECK, not a headline figure. PS at lmax=460; peaks and L1 at scales2
 - **power_spectrum_lmax_chosen_by**: largest step-40 cut with mean tension < 0.3 sigma
 - **hos_scale_tag**: scales2345
 - **threshold_sigma**: 0.3
+
+## Figure of merit
+
+FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
+
+| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |
+|---|---|---|---|
+| Power spectrum / biased | 5 | 1.437e+05 | 1.481e+05 ± 6.96e+03 |
+| Peak counts / biased | 5 | 1.019e+05 | 1.079e+05 ± 1.57e+04 |
+| L1 norm / biased | 5 | 3.149e+05 | 3.344e+05 ± 2.18e+04 |
+
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

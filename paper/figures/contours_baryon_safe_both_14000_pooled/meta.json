@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_both_14000_pooled",
   "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
   "paper_position": 3.5,
-  "published_utc": "2026-07-30T13:10:38+00:00",
-  "published_at_repo_commit": "3d0116e",
+  "published_utc": "2026-07-31T06:28:28+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {
@@ -27,13 +27,11 @@
       "bytes": 8246
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []
   },
   "value_rows": 18,
-  "n_caveats": 6,
-  "notes": [
-    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
-  ]
+  "n_caveats": 6
 }

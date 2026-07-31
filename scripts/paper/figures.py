@@ -250,6 +250,7 @@ def cmd_publish(args):
         "published_at_repo_commit": commit,
         "source_stem": os.path.relpath(abs_stem, REPO),
         "files": copied,
+        "note": args.note,
         "gate": {"passed": True, "warnings": warns},
         "value_rows": info.get("value_rows"),
         "n_caveats": info.get("n_caveats"),
@@ -369,6 +370,42 @@ def cmd_manifest(args):
     return 0
 
 
+def cmd_republish(args):
+    """Re-publish every figure from the source recorded in its meta.json.
+
+    Needed because the sidecars in outputs/ get enriched after a figure is published --
+    the FoM backfill is the usual cause -- which `verify` correctly reports as source
+    drift. Re-copying from the recorded source clears the drift and picks up the richer
+    sidecars, and because title/position/note are read back from meta.json the published
+    identity is preserved rather than silently rewritten.
+
+    Skips a figure whose source has vanished: better to leave the published copy (which is
+    then the only copy) than to fail the whole sweep.
+    """
+    entries = load_all()
+    done = skipped = failed = 0
+    for slug, m in entries:
+        if m is None or not m.get("source_stem"):
+            print(f"  skip {slug}: no source recorded")
+            skipped += 1
+            continue
+        stem = os.path.join(REPO, m["source_stem"])
+        if not os.path.exists(stem + ".pdf"):
+            print(f"  skip {slug}: source gone ({m['source_stem']})")
+            skipped += 1
+            continue
+        ns = argparse.Namespace(
+            source_stem=stem, slug=slug, title=m.get("title"),
+            position=m.get("paper_position"), note=m.get("note"), force=True)
+        rc = cmd_publish(ns)
+        if rc:
+            failed += 1
+        else:
+            done += 1
+    print(f"\nrepublished {done}, skipped {skipped}, failed {failed}")
+    return 1 if failed else 0
+
+
 def cmd_verify(args):
     entries = load_all()
     bad = 0
@@ -434,6 +471,8 @@ def main():
     p.set_defaults(func=cmd_publish)
 
     for name, fn, helptext in (("manifest", cmd_manifest, "rebuild MANIFEST.md + manifest.json"),
+                               ("republish", cmd_republish,
+                                "re-copy every figure from its recorded source (clears drift)"),
                                ("verify", cmd_verify, "re-gate everything, detect drift"),
                                ("list", cmd_list, "short status table")):
         q = sub.add_parser(name, help=helptext)

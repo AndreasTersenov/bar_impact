@@ -1,6 +1,13 @@
 # PAPER FIGURE MAP — what exists, what it's worth, what's missing
 
-**Built 2026-07-30** by an 8-agent survey (4 parallel inventories → cross-join → 2 opportunity
+**Built 2026-07-30** by an 8-agent survey; **section 3 rewritten 2026-07-31** after the
+full-sky and scale-cut work produced measured answers to several of its open questions.
+
+Sections 1-2 are the original survey of `outputs/`/`plots/` and still describe that tree
+accurately. Section 3 is the current state of the science. Section 4 covers the curated
+`paper/figures/` set, which did not exist when the survey ran.
+
+Original survey line: (4 parallel inventories → cross-join → 2 opportunity
 lenses → completeness critic; 409 tool calls). Every claim below that carries a number was
 re-verified directly afterwards; the ones that were checked are marked ✔.
 
@@ -210,53 +217,147 @@ Separately, `ps_submean_l37/figures/` exists and is **empty** inside a campaign 
 | Per-scale fractional difference (L1 and peak counts) | SUPPORTING | STALE | **no** | DONE | pre-correction (non-submean) HOS grids |
 ---
 
-## 3. Results the paper could still have
+## 3. Results since the survey — what got answered
 
-Two independent lenses were run: data-driven (start from the inventory) and adversarial-referee.
-They converged on one thing above all — **every existing figure shows bias *removal*, none shows the
-information *sacrificed* to achieve it.**
+The survey (2026-07-30) listed results the paper *could* have. Several have since been
+produced and measured, and the answers were not all what the survey assumed. This section
+supersedes the original "opportunities" list for those items.
 
-### 3.1 Available now, data verified present (minutes to hours, no GPU)
+### 3.1 The scale cuts, measured rather than assumed
 
-| priority | result | question it answers |
-|---|---|---|
-| HIGH | **Cost of baryon safety**: σ and FoM₃ vs ℓmax, and FoM vs area at each footprint's *own* adopted cut | What does baryon safety cost, and does constraining power still improve with area once you may only use safe scales? |
-| HIGH | **Null-on-truth accuracy** vs ℓmax per footprint | Does the nobaryons null actually sit on truth? If the null is itself biased, a difference-of-means tension compares two biased estimates. |
-| HIGH | **Re-derive the tension table from surviving posteriors**, and restore the destroyed 6-param family | Are the adopted cuts stable under the post-damage subset, and does the cut depend on a 3- vs 6-parameter tolerance? |
-| HIGH | **Per-parameter bias decomposition**, replacing the 3-param scalar | *Which* parameter does feedback bias, in what direction, by how much? |
-| HIGH | **Step-20 refined curve at 14000** (the fine grid exists only there) | How much headroom does the adopted cut actually have? |
-| MEDIUM | **Tolerance sensitivity**: the adopted ladder at 0.2σ / 0.3σ / 0.5σ | Would the headline table survive a referee who prefers a different tolerance — and where does 0.3 come from? |
-| MEDIUM | **ℓmax_safe(A) scaling law** | Can a future survey read the cut off a formula instead of a table? |
-| MEDIUM | **PS vs HOS degeneracy directions** in the corrected convention on real footprints | Is the opposite-sign Ωm–w₀ degeneracy real off the full-sky Fisher forecast? |
+The PS cut was always measured. The wavelet cut ("drop the finest scale") was carried as a
+recollection until it was checked against the corrected submean posteriors:
 
-### 3.2 Needs compute
+| footprint | statistic | cut | 3-param Q_DM bias |
+|---|---|---|---|
+| 14000 deg² | PS | ℓmax **460** | 0.288 |
+| 14000 deg² | peaks | `scales234` | **0.079 ± 0.047** |
+| 14000 deg² | L1 | `scales234` | **0.091 ± 0.073** |
+| full sky | PS | ℓmax **300** | 0.206 ± 0.043 |
+| full sky | PS | ℓmax **340** | 0.358 ± 0.099 |
+| full sky | peaks | `scales234` | 0.344 ± 0.183 |
+| full sky | L1 | `scales234` | 0.379 ± 0.151 |
 
-| priority | result | blocker |
-|---|---|---|
-| HIGH | **TARP/SBC calibration** of the corrected posteriors | No flow checkpoints survive for any corrected config (0 of 45 checkpoint dirs match submean/l37) → retrain. **Cannot be faked from the saved sample files** — they are 3000×6 draws at one fixed observation and cannot produce an ECP curve. |
-| HIGH | **Baryon-model dependence** | Everything rests on ONE baryonification prescription. Needs new sims. If true suppression is 2× this one, every cut in the table is too permissive — and no sentence currently protects that reading. |
-| MEDIUM | **Joint PS + HOS posterior** at the reference footprint | No joint posterior exists; training inputs do. Must share one noise realisation and mask or the gain is overstated by construction. |
-| MEDIUM | **Non-Gaussian tension estimator** vs Gaussian Q_DM | `estimators.py` already has the dispatch hook. Caveat: non-Gaussian shift estimators need ≫3000 samples in 3D and return overconfident numbers when under-sampled. |
-| MEDIUM | **Fisher-vs-NPE reconciliation** (Fisher says BNT buys 0.45–0.48 in area, NPE says 0.79) | Currently asserted, not measured. Analytic-Gaussian legs blocked: all 6 `gaussian_cov_native_*.npy` stripe-damaged, all 12 NaMaster workspaces damaged, pymaster env not built. |
-| LOW | **Mask/apodization robustness** | Needs the pymaster env at pinned namaster 2.5.2; workspaces are version-specific. |
+Uncut, both higher-order statistics sit at ~3.6σ at 14000 and L1 reaches ~6.5σ at full sky.
+Machinery: `scripts/diagnostics/check_hos_cut_is_safe.py`, verdicts in
+`outputs/diagnostics/hos_cut_safety_14001.json`.
 
-### 3.3 Two calibration cautions
+**The asymmetry that drove the full-sky work.** At 14000 the PS cut is tunable in steps of 40
+in ℓ and spends essentially its whole 0.3σ budget, while the wavelet cut is *quantised* — only
+whole scales can be dropped — and overshoots to ~0.08σ. The higher-order statistics are
+therefore handicapped, discarding information they did not need to. Bias grows with area, so
+at full sky the same fixed cut stops being an overkill and becomes marginal, while the PS must
+retreat from 460 to 300.
 
-- The score campaign's calibration is graded against **0.15**, while the **0.05/0.10** rule was the
-  one used to gate VMIM. Adopting the looser threshold silently because it passes would be a real
-  problem; if the strict rule is the standard, the score figure needs the deep-ensemble treatment.
-- The quoted nσ has **no distribution over data realisations** (the observation is the 200-perm
-  mean), so 0.3σ is a deterministic bias measure, not a detection significance. Bootstrapping perms
-  against a fixed flow would produce a scatter too small by construction.
+**Consequence for captions.** At full sky with ℓmax=340 all three statistics sit *above* the
+nominal 0.3σ and are justified by their error bars (mean − σ < 0.3). That figure shows
+**matched, marginally tolerated bias**, not "strictly baryon-safe" in the 14000 deg² sense.
+Do not let a caption imply the stricter reading.
 
----
+### 3.2 The constraining-power result
+
+At full sky, all three at matched bias (PS ℓmax=340):
+
+| | bias | FoM₃ | vs PS |
+|---|---|---|---|
+| PS ℓmax=340 | 0.358 ± 0.099 | 4.53×10⁵ | — |
+| peaks `scales234` | 0.344 ± 0.183 | 4.65×10⁵ | **1.03×** |
+| L1 `scales234` | 0.379 ± 0.151 | 1.06×10⁶ | **2.33×** |
+
+**The claim is L1-specific, not a generic higher-order one.** Peak counts gain essentially
+nothing over the power spectrum at full sky — they beat it on Ωm and S₈ but lose on w₀, which
+cancels in the determinant. At 14000 deg² peaks *do* edge past the PS (1.52×10⁵ vs 1.44×10⁵),
+so the peaks story differs between footprints and quoting one without the other misleads.
+
+**Cost of baryon safety at 14000 deg²** (full resolution → safe cut): PS retains 58%, peaks
+38%, L1 39%. The wavelet statistics pay more for safety while sitting further below tolerance
+— the quantisation penalty again.
+
+**Coarse scale (`scales2345`, robustness only).** Adding the mass-sheet scale does not
+reintroduce bias, it reduces it (peaks 0.079→0.034, L1 0.091→0.082) and collapses the seed
+scatter ~10× for peaks. But it costs peaks a third of their FoM (0.67×) and buys L1 8%. No
+case for it on constraining-power grounds; its value is showing the safety conclusion does not
+depend on excluding the mass-sheet scale.
+
+### 3.3 Two traps found by measuring rather than assuming
+
+**A centre-outlier class the existing QA cannot see.** Every contour has a pooled/per-seed
+FoM₃ ratio near 1.1 except peaks/biased at 28000 (×14.2) and 35000 (×9.2). Cause: one seed
+each — run 8 at 28000 returned w₀ = −0.053 against a median of −1.25, run 10 at 35000 gave
+−0.935 — both with entirely normal σ(S8). The collapse guard tests width, and
+`plot_nsigma_vs_area.py`'s dual mis-fit QA tests per-parameter *widths*, so neither catches a
+posterior of the right width in the wrong place. `plot_contours_vs_area.py` now applies a
+centre guard requiring BOTH a robust MAD-z and an offset of a full posterior width; a MAD-only
+version over-cut immediately, because where seeds agree tightly the MAD collapses and trivial
+offsets score as huge z.
+
+**The pooled/per-seed FoM ratio is a useful detector.** Near 1.1 it is pure geometry; far above
+it means a broken seed. That is what surfaced both bad runs.
+
+### 3.4 Pooled vs single seed
+
+Pooling widens contours by only **1–5% in σ** — measured, after I first overstated it. The FoM
+ratio looks larger (up to 1.27) because FoM₃ goes as det<sup>−1/2</sup> over three parameters,
+so a 5% width change is ~1.16 in FoM. Both variants are published, suffixed `_pooled` and
+`_single_seed`; the representative seed is chosen by `scripts/tension/seeds.py`.
+
+### 3.5 The full-sky peaks blocker, and why it dissolved
+
+`peak_counts_processing.py` gates its submean branch on `apply_mask`, so no full-sky submean
+peak-count datavector exists and making one appeared to need ~69,000 spherical starlet
+transforms reprocessed from the raw maps (which ARE available at
+`/lustre/fsmisc/dataset/CosmoGridV1`).
+
+It was unnecessary. Full-sky "submean" is a **monopole subtraction**, and a starlet detail
+coefficient is a difference of successively smoothed maps, `w_j = c_{j-1} − c_j`, so a constant
+cancels **identically** — only the coarse scale retains it. Detail-only sets like `scales234`
+are monopole-invariant by construction, so the existing non-submean product is exact.
+
+I initially concluded the opposite from a measurement showing 0.6–2.1% detail-scale
+differences. That was confounded: `l1_norm_processing.py:46` seeds the RNG from `os.urandom`,
+so every processing run draws a different shape-noise realisation and the two products came
+from separate runs. **Any comparison between two separately-processed datavectors is comparing
+noise realisations too.**
+
+The `SUBMEAN=0` switch and the plotting fallback are guarded, not silent: the fallback fires
+only on the full sky, only for a detail-only tag, prints a note, and **raises** on a
+coarse-inclusive set rather than substituting.
+
+### 3.6 Still open
+
+- **TARP/SBC calibration** — unchanged and still the largest referee exposure. No flow
+  checkpoints survive for any corrected config, and it cannot be computed from the saved
+  sample files (3000×6 draws at one fixed observation cannot produce an ECP curve). Retrain.
+- **Baryon-model dependence** — one baryonification prescription throughout. Needs new sims.
+- **Full-sky peaks are non-submean** — exact for detail scales, but the noise realisation
+  differs from the L1 and PS contours in the same figure. One caption line.
+- **`docs/PAPER_NOTES.md` §0, §2 and §4** still carry the crossing-as-cut error and the
+  pre-correction BNT framing (§1.1 above).
+- **The 2.22σ vs 1.43σ headline conflict** (§1.1) is unresolved and is a scientific decision.
 
 ## 4. Provenance status
 
-**7 of 63** figure concepts have sidecars. **48 of 53** generators never write them, and the
-notebook-generated figures cannot until the notebooks are text-recovered.
+**30 of 30 published figures pass `verify`** — every one has a valid vector PDF, a non-empty
+`values.csv`, a parseable `provenance.json`, a declared scale set, and (for contour figures) a
+`fom.csv` carrying both pooled and per-seed FoM₃.
 
-The 7 compliant figures are also **not one reproducible build**: sidecar `git_commit` values are
-`b91af33`, `701fba8`, `8ab6450`, `def9087` and — for the four Fisher figures — literally `unknown`,
-spanning numpy 1.26.4 (jaxili) and 2.4.6 (aname). The Fisher sidecars also lack `mplstyle` and their
-CSVs lack `n_seeds`.
+That is the curated set in `paper/figures/`, not the repo at large: of the **63 figure concepts**
+in the original survey only a handful were compliant, and the wider `outputs/`/`plots/` tree is
+unchanged — 9,550 files, 1,907 destroyed, no sidecars. `paper/README.md` explains the split.
+
+Warnings still recorded (visible in `MANIFEST.md`): both Fisher figures carry 3 each including
+an `unknown` git commit from a SLURM run, `bnt_bin1_vs_cut_optimal` and `bias_vs_area_three_stats`
+carry 1 each.
+
+Maintenance is now three commands:
+
+```bash
+PY=/lustre/fswork/projects/rech/nzu/ulx34io/envs/aname/bin/python
+$PY scripts/paper/figures.py republish   # re-copy from recorded sources; clears drift
+$PY scripts/paper/figures.py manifest    # rebuild the index
+$PY scripts/paper/figures.py verify      # re-gate everything
+```
+
+`republish` exists because enriching a sidecar in `outputs/` (the FoM backfill is the usual
+cause) makes `verify` report source drift, correctly. It re-reads title, position and note from
+each `meta.json`, so the published identity survives the sweep.

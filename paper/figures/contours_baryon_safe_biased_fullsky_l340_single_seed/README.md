@@ -1,11 +1,9 @@
 # Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed)
 
-Single-seed counterpart of contours_baryon_safe_biased_fullsky_l340_pooled: draws the most REPRESENTATIVE seed per statistic instead of stacking all of them (scripts/tension/seeds.py; per-seed scores in provenance.json). Seeds drawn at lmax=340: PS run 3, peaks run 2, L1 run 4 -- each 3-100x more typical than the worst seed in its ensemble. Measured difference from pooled is 1-5% in sigma, so the two look near-identical; the single-seed contour is marginally tighter because it does not carry the seed-to-seed training scatter. Same peaks caveat: non-submean full-sky product, exact for detail-only scales.
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed`
 - **generator commit**: `2cb7a65`
 - **generated**: 2026-07-30T22:25:20+00:00
-- **published**: 2026-07-30T22:35:53+00:00 at repo `2cb7a65`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 9
 
 ## Scales included

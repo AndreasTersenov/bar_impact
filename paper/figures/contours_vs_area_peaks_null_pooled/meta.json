@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_peaks_null_pooled",
   "title": "Peak-count null posteriors, all survey areas overlaid, full resolution",
   "paper_position": 21.0,
-  "published_utc": "2026-07-30T12:04:04+00:00",
-  "published_at_repo_commit": "3d0116e",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
   "files": {
     "figure.pdf": {
@@ -23,17 +23,15 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
-      "sha256": "c003a92240f18f8799313382a2c0c019df08b47b43682740dcee41684722c187",
-      "bytes": 5548
+      "sha256": "3833adf07d6660996ddbfc884f67804173aea7b48fae7695cb033e6a9de70bf9",
+      "bytes": 9107
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []
   },
   "value_rows": 18,
-  "n_caveats": 5,
-  "notes": [
-    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
-  ]
+  "n_caveats": 5
 }

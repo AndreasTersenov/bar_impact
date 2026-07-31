@@ -1,12 +1,17 @@
 # Fisher 68% contours, baryon-safe regime (full sky)
 
-FISHER FORECAST, NOT NPE, and FULL SKY not the masked paper footprint -- do not read these as posteriors. PS at lmax=400 against L1 and peaks with the finest wavelet scale dropped. Recovered after the disk failure destroyed both the pdf and the png; the regeneration reproduces the surviving pre-crash FoM table to 7.3e-13, i.e. floating-point roundoff. The Jacobian is a linear response fit and is the dominant approximation: it can over- OR under-state a probe's sensitivity, so the HOS figure of merit is not a bound on the NPE.
-
 - **source**: `outputs/diagnostics/constraining_power/fisher_contours_baryon_safe`
 - **generator commit**: `unknown`
 - **generated**: 2026-07-29T21:47:30+00:00
-- **published**: 2026-07-30T07:32:09+00:00 at repo `b900627`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 4
+
+## Scales included
+
+- **ps_bandpower_edges**: [37, 68, 100, 140, 200, 280, 400, 560, 760, 1024]
+- **hos_scales_full**: [0, 1, 2, 3]
+- **hos_scales_baryon_safe**: [1, 2, 3]
+- **regime**: baryon-safe: PS lmax=400, HOS drop the finest wavelet scale (scales234)
 
 ## Known gaps
 

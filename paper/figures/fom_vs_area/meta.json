@@ -2,8 +2,8 @@
   "slug": "fom_vs_area",
   "title": "FoM3 vs survey area, single panel (guide pinned to PS)",
   "paper_position": 11,
-  "published_utc": "2026-07-30T08:42:47+00:00",
-  "published_at_repo_commit": "9c33642",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats",
   "files": {
     "figure.pdf": {
@@ -27,6 +27,7 @@
       "bytes": 1912
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

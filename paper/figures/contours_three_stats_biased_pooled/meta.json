@@ -2,8 +2,8 @@
   "slug": "contours_three_stats_biased_pooled",
   "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
   "paper_position": 5,
-  "published_utc": "2026-07-30T09:18:17+00:00",
-  "published_at_repo_commit": "7620563",
+  "published_utc": "2026-07-31T06:28:28+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
   "files": {
     "figure.pdf": {
@@ -23,17 +23,15 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
-      "sha256": "612ed974cb66fd7b420ba1ac3d602b498fa891e2f6c70fd4b1dc00d1a7fd57af",
-      "bytes": 3534
+      "sha256": "6aaeba9f87bec0f418775964f783535af1ef16c88739a10838c27de1790fe3a4",
+      "bytes": 5514
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []
   },
   "value_rows": 9,
-  "n_caveats": 4,
-  "notes": [
-    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
-  ]
+  "n_caveats": 4
 }

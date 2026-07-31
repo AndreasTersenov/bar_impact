@@ -1,11 +1,9 @@
 # PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed)
 
-Single-seed counterpart of contours_baryon_safe_biased_14000_pooled. Draws the most REPRESENTATIVE seed per statistic rather than stacking all of them -- the object a real analysis reports, since a survey trains one density estimator and quotes its posterior. Seed chosen by minimising [max centre offset in posterior widths] + [max |ln width ratio|] against the MEDIAN across seeds; the per-seed scores are in provenance.json under series[].seed_choice. Measured difference from pooled: 1-5% in sigma, so the two are visually near-identical here.
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed`
 - **generator commit**: `d8384e9`
 - **generated**: 2026-07-30T15:08:15+00:00
-- **published**: 2026-07-30T16:19:49+00:00 at repo `d8384e9`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 9
 
 ## Scales included
@@ -16,6 +14,18 @@ Single-seed counterpart of contours_baryon_safe_biased_14000_pooled. Draws the m
 - **power_spectrum_lmax_chosen_by**: largest step-40 cut with mean tension < 0.3 sigma
 - **hos_scale_tag**: scales234
 - **threshold_sigma**: 0.3
+
+## Figure of merit
+
+FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
+
+| contour | n seeds | FoM₃ pooled | FoM₃ per-seed mean ± std |
+|---|---|---|---|
+| Power spectrum / biased | 5 | 1.437e+05 | 1.481e+05 ± 6.96e+03 |
+| Peak counts / biased | 5 | 1.515e+05 | 1.612e+05 ± 1.3e+04 |
+| L1 norm / biased | 5 | 2.906e+05 | 3.13e+05 ± 5.02e+04 |
+
+fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.
 
 ## Caveats (from provenance)
 

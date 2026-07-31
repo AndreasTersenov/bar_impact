@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_l1_null_pooled",
   "title": "L1-norm null posteriors, all survey areas overlaid, full resolution",
   "paper_position": 23.0,
-  "published_utc": "2026-07-30T12:42:46+00:00",
-  "published_at_repo_commit": "3d0116e",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
   "files": {
     "figure.pdf": {
@@ -23,17 +23,15 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_provenance.json",
-      "sha256": "1a14c89fdf4ac0367a918ab9912cac971f4e397295af64fe6276be98d9ae2015",
-      "bytes": 5552
+      "sha256": "aa8db37a6207ab767b46716a0f49132825a77bf37063583f16affe8bb9d33746",
+      "bytes": 9060
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []
   },
   "value_rows": 18,
-  "n_caveats": 5,
-  "notes": [
-    "Renamed to carry the explicit _pooled suffix: the contour is every surviving seed's samples stacked, not one seed. The _single_seed counterpart draws the most representative seed instead (scripts/tension/seeds.py). Measured difference in contour width: 1-5% in sigma."
-  ]
+  "n_caveats": 5
 }

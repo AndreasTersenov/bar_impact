@@ -147,5 +147,62 @@
     "Contours pool all surviving NPE training seeds, so their width includes the seed-to-seed training scatter, not just the posterior width of one seed. --single-run gives the single-seed version.",
     "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
     "The surviving pre-crash contours_PS_peaks_L1_baryons_unbiased.pdf (Sept 2025) predates the lmin 100->37 recovery and the submean correction, so it is NOT numerically comparable to this figure."
-  ]
+  ],
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.",
+    "per_contour": [
+      {
+        "contour": "Power spectrum / null",
+        "n_seeds": 4,
+        "runs": [
+          1,
+          3,
+          4,
+          5
+        ],
+        "fom3_pooled": 308994.7879226589,
+        "fom3_per_seed_mean": 343758.3882348611,
+        "fom3_per_seed_std": 29922.721076055026,
+        "sigma_Om_pooled": 0.013528936061830508,
+        "sigma_S8_pooled": 0.02409823307573402,
+        "sigma_w0_pooled": 0.07769818064439289
+      },
+      {
+        "contour": "Peak counts / null",
+        "n_seeds": 7,
+        "runs": [
+          2,
+          4,
+          5,
+          6,
+          7,
+          9,
+          10
+        ],
+        "fom3_pooled": 380231.19280580495,
+        "fom3_per_seed_mean": 443855.9075303041,
+        "fom3_per_seed_std": 91040.70679604892,
+        "sigma_Om_pooled": 0.012500896864365731,
+        "sigma_S8_pooled": 0.01791922930897705,
+        "sigma_w0_pooled": 0.05958879099710566
+      },
+      {
+        "contour": "L1 norm / null",
+        "n_seeds": 4,
+        "runs": [
+          2,
+          4,
+          6,
+          7
+        ],
+        "fom3_pooled": 830946.9100699496,
+        "fom3_per_seed_mean": 891857.4491619951,
+        "fom3_per_seed_std": 91608.80996458883,
+        "sigma_Om_pooled": 0.011530691384379614,
+        "sigma_S8_pooled": 0.013152835540040151,
+        "sigma_w0_pooled": 0.0697433360708128
+      }
+    ]
+  }
 }

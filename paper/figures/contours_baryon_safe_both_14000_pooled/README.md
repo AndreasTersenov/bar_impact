@@ -1,11 +1,9 @@
 # Baryon-safe: null and biased overlaid, three statistics, 14000 deg2
 
-Companion to the flagship. At the baryon-safe cuts (PS lmax=460, peaks/L1 scales234 submean) the biased contours (dashed) sit ON the null ones (filled) -- the visual form of the statement that the cut worked. Read against contours_three_stats_both, the same overlay at full resolution where the two separate clearly. MEASURED residual bias: PS 0.288 sigma, peaks 0.079, L1 0.091, all under the 0.3 tolerance (see outputs/diagnostics/hos_cut_safety_14001.json).
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234`
 - **generator commit**: `7cfd75b`
 - **generated**: 2026-07-30T11:53:28+00:00
-- **published**: 2026-07-30T13:10:38+00:00 at repo `3d0116e`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 18
 
 ## Scales included

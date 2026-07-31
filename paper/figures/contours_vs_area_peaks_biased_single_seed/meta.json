@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_peaks_biased_single_seed",
   "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid (single seed)",
   "paper_position": 24.1,
-  "published_utc": "2026-07-30T16:21:56+00:00",
-  "published_at_repo_commit": "d8384e9",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
@@ -23,10 +23,11 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_provenance.json",
-      "sha256": "2f545c7dd9e252d8d3bd12ecf72b352e674d3f13f9599a6deff92486d60c5b91",
-      "bytes": 19359
+      "sha256": "8dafb2887d381bacb2b66ce5910b04e4df7c3da6be4e25e973f6900d1140f0bf",
+      "bytes": 21250
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

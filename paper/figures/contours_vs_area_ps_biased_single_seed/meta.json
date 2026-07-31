@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_ps_biased_single_seed",
   "title": "PAPER: PS biased posteriors, all survey areas overlaid (single seed)",
   "paper_position": 22.1,
-  "published_utc": "2026-07-30T16:21:30+00:00",
-  "published_at_repo_commit": "d8384e9",
+  "published_utc": "2026-07-31T06:28:29+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
   "files": {
     "figure.pdf": {
@@ -23,10 +23,11 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_provenance.json",
-      "sha256": "25e1d90c81f8ba3ecf3367f08b6e6f5c7ba6e21898bb022d41b222808bf274bf",
-      "bytes": 16729
+      "sha256": "43f0b248ed20851f87edf9ccdaf8730cb73e34bf5157848fac5b4cad6b32ec13",
+      "bytes": 18633
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

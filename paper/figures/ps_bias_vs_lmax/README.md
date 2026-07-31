@@ -1,11 +1,9 @@
 # PS baryon bias vs upper scale cut, 6 footprints
 
-PAPER FIGURE. Gaussian Q_DM tension (Om, S8, w0) between the nobaryons null and baryonified biased posteriors, versus the power-spectrum upper multipole cut, one panel per masked footprint. The 0.3-sigma line is the baryon-safety tolerance; the dotted vertical marks the crossing. crossings.csv gives BOTH the adoptable cut (last cut still below tolerance) and the crossing (first cut that fails) -- they differ by one grid step and only the former is the cut to use. The diagnostic grey heading was removed for the paper.
-
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax`
 - **generator commit**: `9c33642`
 - **generated**: 2026-07-30T08:37:33+00:00
-- **published**: 2026-07-30T08:40:11+00:00 at repo `9c33642`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 108
 
 ## Scales included

@@ -243,5 +243,135 @@
     "Seeds are NOT matched between roles here (each role pools its own readable set), because these are single-role figures. Use plot_contours_three_stats.py, which pairs runs, for any null-to-biased comparison.",
     "Higher-order products are the SUBMEAN (footprint-mean-subtracted) ones with the corrected mask treatment. The pre-submean products spuriously tighten the masked posteriors; the glob requires '_submean_' so a missing file surfaces as missing rather than being silently substituted.",
     "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data unaffected."
-  ]
+  ],
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.",
+    "per_contour": [
+      {
+        "contour": "2000",
+        "n_seeds": 6,
+        "runs": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "fom3_pooled": 31781.137513753143,
+        "fom3_per_seed_mean": 33269.71567698951,
+        "fom3_per_seed_std": 3563.979449779106,
+        "sigma_Om_pooled": 0.02358233251207464,
+        "sigma_S8_pooled": 0.03649956095244703,
+        "sigma_w0_pooled": 0.11468384109057059
+      },
+      {
+        "contour": "5000",
+        "n_seeds": 10,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "fom3_pooled": 93287.65329570016,
+        "fom3_per_seed_mean": 100977.37069014016,
+        "fom3_per_seed_std": 22596.539218919017,
+        "sigma_Om_pooled": 0.01826678269850691,
+        "sigma_S8_pooled": 0.02693277128113663,
+        "sigma_w0_pooled": 0.08535116796480266
+      },
+      {
+        "contour": "10000",
+        "n_seeds": 10,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "fom3_pooled": 256734.93894728055,
+        "fom3_per_seed_mean": 284157.20374719246,
+        "fom3_per_seed_std": 48865.895715657796,
+        "sigma_Om_pooled": 0.014094472579326769,
+        "sigma_S8_pooled": 0.02019910666405035,
+        "sigma_w0_pooled": 0.06776000161597022
+      },
+      {
+        "contour": "14000",
+        "n_seeds": 9,
+        "runs": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "fom3_pooled": 380074.0030936551,
+        "fom3_per_seed_mean": 436108.3199337121,
+        "fom3_per_seed_std": 83501.55315212488,
+        "sigma_Om_pooled": 0.012519367496439768,
+        "sigma_S8_pooled": 0.018052866666207392,
+        "sigma_w0_pooled": 0.05981102243586032
+      },
+      {
+        "contour": "28000",
+        "n_seeds": 8,
+        "runs": [
+          1,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "fom3_pooled": 1011814.5113347684,
+        "fom3_per_seed_mean": 1200653.539762067,
+        "fom3_per_seed_std": 376148.98067617,
+        "sigma_Om_pooled": 0.009310397181219402,
+        "sigma_S8_pooled": 0.013211256550461925,
+        "sigma_w0_pooled": 0.047278166324673083
+      },
+      {
+        "contour": "35000",
+        "n_seeds": 9,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          9,
+          10
+        ],
+        "fom3_pooled": 1460789.3256315356,
+        "fom3_per_seed_mean": 1723107.6267432058,
+        "fom3_per_seed_std": 534003.6434954099,
+        "sigma_Om_pooled": 0.008251688945846786,
+        "sigma_S8_pooled": 0.012141199997542101,
+        "sigma_w0_pooled": 0.0406705573357275
+      }
+    ]
+  }
 }

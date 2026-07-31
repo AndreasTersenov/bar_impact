@@ -1,11 +1,9 @@
 # Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)
 
-FULL SKY, conservative variant: the PS is held to lmax=300, the last cut STRICTLY under 0.3 sigma (0.206+/-0.043), while peaks and L1 sit at 0.344 and 0.379. Now includes all three statistics. This asymmetry is the reason the l340 variant exists -- holding the PS to a strict cut while accepting the wavelet statistics at borderline bias handicaps the power spectrum, and the l340 figure is the matched comparison. Same peaks caveat as l340: non-submean full-sky product, exact for detail-only scales, different noise realisation.
-
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled`
 - **generator commit**: `bc8ebd2`
 - **generated**: 2026-07-30T22:03:31+00:00
-- **published**: 2026-07-30T22:04:02+00:00 at repo `bc8ebd2`
+- **published**: 2026-07-31T06:28:28+00:00 at repo `29261c9`
 - **rows in values.csv**: 9
 
 ## Scales included

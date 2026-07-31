@@ -32,51 +32,128 @@
   "collapse_guard_sigma_S8_max": 0.08,
   "fom3": {
     "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
-    "pooled_vs_per_seed": "fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.",
-    "per_area": {
-      "2000": {
+    "pooled_vs_per_seed": "fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.",
+    "per_contour": [
+      {
+        "contour": "2000",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "fom3_pooled": 26734.21211768813,
         "fom3_per_seed_mean": 27222.131516436162,
         "fom3_per_seed_std": 1417.0972077586453,
-        "n_seeds": 5
+        "sigma_Om_pooled": 0.033143225838871436,
+        "sigma_S8_pooled": 0.061931291357532246,
+        "sigma_w0_pooled": 0.11187010651612168
       },
-      "5000": {
+      {
+        "contour": "5000",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "fom3_pooled": 79716.28218481218,
         "fom3_per_seed_mean": 86203.10012226431,
         "fom3_per_seed_std": 7058.802956827975,
-        "n_seeds": 5
+        "sigma_Om_pooled": 0.02184649176588514,
+        "sigma_S8_pooled": 0.04094010086381109,
+        "sigma_w0_pooled": 0.09299519550609113
       },
-      "10000": {
+      {
+        "contour": "10000",
+        "n_seeds": 3,
+        "runs": [
+          2,
+          3,
+          4
+        ],
         "fom3_pooled": 199666.21728066655,
         "fom3_per_seed_mean": 209657.30036491217,
         "fom3_per_seed_std": 5360.351829445229,
-        "n_seeds": 3
+        "sigma_Om_pooled": 0.01616601884120028,
+        "sigma_S8_pooled": 0.02934928858322552,
+        "sigma_w0_pooled": 0.07741908952003339
       },
-      "14000": {
+      {
+        "contour": "14000",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "fom3_pooled": 244856.27592449015,
         "fom3_per_seed_mean": 259190.61459525506,
         "fom3_per_seed_std": 30656.62537988405,
-        "n_seeds": 5
+        "sigma_Om_pooled": 0.0141987660365696,
+        "sigma_S8_pooled": 0.025504566817801978,
+        "sigma_w0_pooled": 0.07674155031795649
       },
-      "28000": {
+      {
+        "contour": "28000",
+        "n_seeds": 9,
+        "runs": [
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
         "fom3_pooled": 344344.6922015473,
         "fom3_per_seed_mean": 436742.918045888,
         "fom3_per_seed_std": 52253.11018356921,
-        "n_seeds": 9
+        "sigma_Om_pooled": 0.01204555025601284,
+        "sigma_S8_pooled": 0.022064956284490782,
+        "sigma_w0_pooled": 0.07216802605219758
       },
-      "35000": {
+      {
+        "contour": "35000",
+        "n_seeds": 3,
+        "runs": [
+          2,
+          3,
+          4
+        ],
         "fom3_pooled": 506655.59329067304,
         "fom3_per_seed_mean": 614062.3393180645,
         "fom3_per_seed_std": 56388.84063795773,
-        "n_seeds": 3
+        "sigma_Om_pooled": 0.010323194430063838,
+        "sigma_S8_pooled": 0.019807299374699123,
+        "sigma_w0_pooled": 0.0654479467229718
       },
-      "fullsky": {
+      {
+        "contour": "fullsky",
+        "n_seeds": 5,
+        "runs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "fom3_pooled": 464694.7753805063,
         "fom3_per_seed_mean": 648949.8861349315,
         "fom3_per_seed_std": 135037.931897966,
-        "n_seeds": 5
+        "sigma_Om_pooled": 0.00895486865742549,
+        "sigma_S8_pooled": 0.017222907739772347,
+        "sigma_w0_pooled": 0.06530346922777644
       }
-    }
+    ]
   },
   "colour_encoding": "sequential single-hue ramp on the statistic's own base hue; light = small area, dark = large. Area is ordered, so a categorical or rainbow palette would misrepresent it.",
   "series": [

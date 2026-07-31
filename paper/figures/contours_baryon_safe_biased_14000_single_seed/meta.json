@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_14000_single_seed",
   "title": "PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed)",
   "paper_position": 3.1,
-  "published_utc": "2026-07-30T16:19:49+00:00",
-  "published_at_repo_commit": "d8384e9",
+  "published_utc": "2026-07-31T06:28:28+00:00",
+  "published_at_repo_commit": "29261c9",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
   "files": {
     "figure.pdf": {
@@ -23,10 +23,11 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_provenance.json",
-      "sha256": "76161bfabeae3dc51d7edf2ca075e9d5556af90e2bddd896f2c1b79f2443951e",
-      "bytes": 7357
+      "sha256": "eb971b27eef05b983d6dd104b1fe8bd762edea844ccc0d6116dc8439b98e22ec",
+      "bytes": 9333
     }
   },
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

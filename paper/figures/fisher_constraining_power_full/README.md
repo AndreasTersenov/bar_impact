@@ -1,12 +1,17 @@
 # Fisher 68% contours, full-resolution regime (full sky)
 
-The full-resolution companion to the baryon-safe Fisher figure: PS to lmax=1024 against the higher-order statistics keeping all four detail scales. Same caveats -- Fisher, full sky, linear Jacobian.
-
 - **source**: `outputs/diagnostics/constraining_power/fisher_contours`
 - **generator commit**: `unknown`
 - **generated**: 2026-07-29T21:47:29+00:00
-- **published**: 2026-07-30T07:32:09+00:00 at repo `b900627`
+- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
 - **rows in values.csv**: 4
+
+## Scales included
+
+- **ps_bandpower_edges**: [37, 68, 100, 140, 200, 280, 400, 560, 760, 1024]
+- **hos_scales_full**: [0, 1, 2, 3]
+- **hos_scales_baryon_safe**: [1, 2, 3]
+- **regime**: full-ell: PS to lmax=1024, HOS keep all four scales (scales1234)
 
 ## Known gaps
 
