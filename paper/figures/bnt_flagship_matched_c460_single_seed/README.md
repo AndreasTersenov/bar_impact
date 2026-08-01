@@ -3,9 +3,9 @@
 Single-seed companion to the flagship. Each arm shows its most representative NDE seed, chosen by scripts/tension/seeds.py against the MEDIAN across seeds on both centre and width (worst-parameter, so a seed representative in Omega_m and S8 but a width off in w0 does not qualify). This is the object a real survey reports: one trained density estimator and its own posterior, rather than a pooled stack whose width carries seed-to-seed training scatter. The ratio here is 1.507x against the pooled figure's 1.467x; both arms happen to select run 41, and the difference is seed selection rather than physics. QUOTE THE POOLED FIGURE (1.47x) for the headline - it averages the training scatter out instead of inheriting one draw of it. The per-seed scores behind the choice are recorded under seed_selection in provenance.json so the pick is auditable.
 
 - **source**: `plots/bnt_flagship_matched_c460_14000_single_seed`
-- **generator commit**: `f52188579b6301dc484c779c1440a95a41f1139a`
-- **generated**: 2026-07-31T20:59:48Z
-- **published**: 2026-07-31T21:00:25+00:00 at repo `f521885`
+- **generator commit**: `5a917568072f4c604bc2203292973bf2f3ba509a`
+- **generated**: 2026-08-01T12:20:55Z
+- **published**: 2026-08-01T12:21:26+00:00 at repo `5a91756`
 - **rows in values.csv**: 2
 
 ## Scales included

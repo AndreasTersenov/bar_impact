@@ -2,8 +2,8 @@
   "slug": "bnt_score_contours_matched_pooled",
   "title": "BNT vs non-BNT at a MATCHED scale cut (MOPED, pooled)",
   "paper_position": 6.2,
-  "published_utc": "2026-07-31T13:01:15+00:00",
-  "published_at_repo_commit": "69586a2",
+  "published_utc": "2026-08-01T12:21:26+00:00",
+  "published_at_repo_commit": "5a91756",
   "source_stem": "plots/score_contours_matched_580_14000_pooled",
   "files": {
     "figure.pdf": {

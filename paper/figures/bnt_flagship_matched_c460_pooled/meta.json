@@ -2,13 +2,13 @@
   "slug": "bnt_flagship_matched_c460_pooled",
   "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
   "paper_position": 6.0,
-  "published_utc": "2026-07-31T20:59:52+00:00",
-  "published_at_repo_commit": "f521885",
+  "published_utc": "2026-08-01T12:21:26+00:00",
+  "published_at_repo_commit": "5a91756",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
-      "sha256": "75d9293c0d8ca2ee10eb882db95ea6b3bee027aa4f4de40de7d0044dfb16b3bf",
+      "sha256": "27b4d55397e8df03a646cbd2af04d8c35ce2033c8869a3fdd17c70a84bdebebb",
       "bytes": 133552
     },
     "figure.png": {
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
-      "sha256": "ef965bfb01d3dce4239dd47935265d7a279041e2a1d054c0871e5e328522adb4",
+      "sha256": "bb1975615eaf8e5121eb5a7c2d2b85e0886f87363071f681123583aa4c913f20",
       "bytes": 3636
     }
   },

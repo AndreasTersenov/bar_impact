@@ -15,11 +15,16 @@ Last updated: 2026-06-25.
   restores peak scaling to match L1 and the Fisher. → §1.
 - **Baryon-bias tension vs scale cut:** the ℓmax at which the null↔biased tension crosses 0.3σ scales with
   survey area (≈ℓ900 at 2000 deg² → ≈ℓ380 at 35000 deg²), on monopole-subtracted PS from ℓ=37. → §2.
-- **BNT localizes the baryon bias to tomographic bin 1**, and a bin-1 scale cut suffices over a
-  footprint-dependent range. Reliability caveat: raw NPE inflates BNT contours, so flat BNT nulls are
-  inference-limited, not information loss (BNT is lossless) — re-derived with score compression. → §4.
-- **Proper sim-based Fisher:** BNT gives ≈**2.5× FoM₃** ("true information") over non-BNT; realized NPE
-  advantage is currently ≈1.5×, gap under investigation. → §5.
+- **BNT localizes the baryon bias to tomographic bin 1, so the scale cut can be targeted at that bin
+  alone** — retaining 92 of 120 bandpowers against 50 for a uniform cut at the same ℓmax, and giving
+  **1.47× the 3-param FoM** (19% tighter σ(S₈)) at 14000 deg², matched ℓmax=460, both arms calibrated
+  and unbiased. Real but not dramatic. This is *information retention*, **not** better baryon control —
+  BNT actually crosses 0.3σ at a lower ℓmax than a uniform cut. Requires MOPED compression: fed the
+  ill-conditioned BNT vector raw, a flow loses the Ωm–S₈ degeneracy entirely (r = −0.03 vs −0.9) and
+  the comparison inverts to 0.33×. → §4.
+- **Proper sim-based Fisher:** at the same matched cut the information-level BNT gain is **2.10×**; the
+  calibrated NPE realizes **1.47×**. The shortfall is density estimation, not physics — and it comes
+  from both ends (BNT realizes 0.81 of its Fisher; non-BNT lands 1.16× tighter than its own). → §5.
 
 ---
 
@@ -75,24 +80,68 @@ full-ℓ / ×3.8 baryon-safe), but HOS magnitude is linearization-limited → NP
 
 ## 4. BNT (nulling tomographic cross-correlations)
 
-**Status 🔄.**
+**Status ✅ settled 2026-07-31.** Flagship figures:
+`paper/figures/bnt_flagship_matched_c460_{pooled,single_seed}/`. Full record and the numbers below:
+`PLAN_score_bnt_tension_14000.md` (ADDENDUM 2026-07-31).
+
+**The story, in one paragraph.** BNT isolates the baryon sensitivity into essentially a single
+tomographic bin. For the power spectrum that means the scale cut can be *targeted* — applied to bin 1
+alone, leaving bins 2–4 at full range — so less information is discarded than a uniform cut at the
+same ℓmax. That yields tighter contours: real, but not dramatic. Extracting it requires compressing
+the data vector first, because the BNT vector is **ill-conditioned** (the nulling is built from
+near-cancellations), and a normalizing flow fed it raw fails. The fair comparison is therefore both
+arms at the **same ℓmax, same rebinning, same compression**, differing only in the basis.
+
 - **BNT on the (masked) power spectra:** C̃ = M C Mᵀ on the produced PS grids is exact (oracle 1e-11;
   masked-MASTER commutation — a gap the BNT literature leaves open). → `BNT_on_spectra.md`, memory
   `bnt-on-spectra-validated.md`.
-- **Baryon bias localizes to BNT bin 1.** Extended to all 6 masked areas + full sky; the bin-1 cut value
-  scales with area (unneeded ≤5000, helps 10–14k, insufficient ≥28000).
-  → `HANDOFF_bnt_bin1_other_areas_PROGRESS.md`, memory `bnt-bin1-tension-all-areas.md`.
-- **Reliability finding (important):** raw NPE **inflates BNT contours** (masked 1.2–1.6×, full-sky
-  2.3–4.8×), so the flat BNT nulls are **inference-limited, not information loss** (BNT is lossless) →
-  must re-derive nσ with score/MOPED-compressed NPE.
-- **Score/MOPED compression:** MLE-form NPE works + is calibrated, recovers the Fisher per-param σ;
-  realized BNT advantage ≈**1.5× FoM₃** (σS8 ratio 0.83), short of the Fisher 2.5×. Twist: BNT NPE ==
-  Fisher; the gap is non-BNT NPE being *tighter* than its Fisher. → memory `bnt-npe-score-chase.md`,
-  `NOTES_bnt_compression_for_paper.md`.
-- **Active (2026-06-25):** fold score compression into the BNT bin-1 tension-vs-cut plot (start 14000) so
-  the BNT tension reflects properly-extracted contours. → `HANDOFF_score_tension_foldin.md`,
-  `PLAN_score_bnt_tension_14000.md`, `PLAN_bnt_optimal_binning.md`.
-- Compression method plans: `PLAN_bnt_neural_compression.md` (VMIM-MLP), `PLAN_bnt_npe_whitening.md`.
+- **Baryon bias localizes to BNT bin 1** — the premise, and it holds. Extended to all 6 masked areas +
+  full sky; the bin-1 cut value scales with area. (Source doc is 100% NUL; memory
+  `bnt-bin1-tension-all-areas.md` survives.)
+- **FLAGSHIP — matched cut, 14000 deg², rebin 20, MOPED, 5 NDE seeds each:**
+
+  | | σ(Ωm, S8, w0) | features | FoM₃ | baryon tension |
+  |---|---|---|---|---|
+  | BNT bin-1 @460 (bins 2–4 full) | 0.01597, 0.02759, 0.08665 | 92/120 | 1.637e5 | 0.30 ± 0.09σ |
+  | non-BNT cut-all @460 | 0.01871, 0.03403, 0.08795 | 50/120 | 1.098e5 | 0.17 ± 0.03σ |
+
+  **BNT/non-BNT = 1.47×** (19% tighter σ(S₈), 13% on Ωm). Both calibrated (SBC 0.28–0.29 vs the ideal
+  0.289), both on-truth, **both unbiased at this cut** — which is what makes matching fair.
+
+- **The gain is information-level; our estimator realizes part of it.** Fisher gives 2.10× at the same
+  matched cut against the NPE's 1.47×. The shortfall is density estimation, not physics. It comes from
+  both ends: BNT realizes 0.81 of its own Fisher, while non-BNT lands 1.16× *tighter* than its Fisher
+  (non-Gaussian information the Gaussian bound cannot see, or a slightly conservative hybrid C — SBC
+  says it is not over-confidence).
+
+- **NOT a baryon-mitigation result — corrected 2026-07-31.** Earlier framing had BNT controlling
+  baryons better. It does not: BNT bin-1 crosses 0.3σ at ℓmax **460** while non-BNT cut-all crosses at
+  **620**, and at matched 460 BNT sits at 0.30σ against non-BNT's 0.17σ. The targeted cut trades
+  slightly more residual bias for substantially more retained information, and wins on that trade. The
+  old raw-NPE figure suggested otherwise because it under-extracted BNT (see below).
+
+- **Compression is required, and the control proves it.** Same cut/rebin/seeds, flow fed the z-scored
+  data vector instead of the 6 MOPED summaries: raw NPE on BNT returns r(Ωm,S₈) = **−0.03** where the
+  physical lensing degeneracy is ≈ **−0.9**. Its *marginals* are fine — tighter than MOPED's — so the
+  failure is in the **degeneracy structure**, inflating the 3-param volume 3.6×. **SBC and TARP cannot
+  see this** (both test marginal rank uniformity per parameter, and the posterior is calibrated and
+  on-truth). Consequence: BNT/non-BNT is **1.47× under MOPED and 0.33× under raw** — the sign of the
+  conclusion flips on the compression, which likely explains the contradictory historical BNT results.
+
+- **Binning is a side issue, measured.** MOPED at rebin 20/10/5/2/1 (matched @460, NPE trained and
+  calibrated at every rung): Fisher predicts 2.1–2.6× going to native, the posteriors deliver +3%
+  (BNT) and +11% (non-BNT), and native is *worse* than r20 for BNT. rebin=20 is production.
+  → `outputs/diagnostics/score_rebin_ladder_fom.csv`.
+
+- **Three ratios, three questions — do not conflate:** 1.47× (BNT at equal cut — flagship);
+  3.62× (compression rescuing the ill-conditioned vector); 1.20× (this pipeline vs standard raw
+  analysis — what a referee asks for, and the most modest).
+
+- **Retraction carried forward:** the shipped rebin=10 BNT figure overstated BNT's baryon mitigation;
+  the honest version is rebin=40 (`nsigma_vs_lmax_bnt_bin1_allareas_optimal`). Its per-panel
+  "% extracted" annotation is not reproducible from this repo. → `PLAN_bnt_optimal_binning.md`.
+- Compression method plans: `PLAN_bnt_neural_compression.md` (VMIM-MLP), `PLAN_bnt_npe_whitening.md`;
+  VMIM v2 (learned compressor) agrees with MOPED near the adopted cut and is the robustness check.
 
 ## 5. Fisher forecasts (proper)
 

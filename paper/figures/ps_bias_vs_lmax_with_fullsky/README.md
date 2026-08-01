@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky`
 - **generator commit**: `9c33642`
 - **generated**: 2026-07-30T08:37:53+00:00
-- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
+- **published**: 2026-08-01T12:21:28+00:00 at repo `5a91756`
 - **rows in values.csv**: 132
 
 ## Scales included

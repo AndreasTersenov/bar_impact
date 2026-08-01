@@ -3,7 +3,7 @@
 - **source**: `outputs/diagnostics/constraining_power/fisher_contours`
 - **generator commit**: `unknown`
 - **generated**: 2026-07-29T21:47:29+00:00
-- **published**: 2026-07-31T06:28:29+00:00 at repo `29261c9`
+- **published**: 2026-08-01T12:21:27+00:00 at repo `5a91756`
 - **rows in values.csv**: 4
 
 ## Scales included

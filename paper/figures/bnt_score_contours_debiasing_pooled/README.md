@@ -5,7 +5,7 @@ Score/MOPED-compressed null posteriors, each arm at the cut IT needs to be unbia
 - **source**: `plots/score_contours_debiased_580_14000_pooled`
 - **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
 - **generated**: 2026-07-31T12:45:02Z
-- **published**: 2026-07-31T13:01:04+00:00 at repo `69586a2`
+- **published**: 2026-08-01T12:21:26+00:00 at repo `5a91756`
 - **rows in values.csv**: 2
 
 ## Scales included

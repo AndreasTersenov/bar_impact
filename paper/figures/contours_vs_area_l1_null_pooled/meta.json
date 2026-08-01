@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_l1_null_pooled",
   "title": "L1-norm null posteriors, all survey areas overlaid, full resolution",
   "paper_position": 23.0,
-  "published_utc": "2026-07-31T06:28:29+00:00",
-  "published_at_repo_commit": "29261c9",
+  "published_utc": "2026-08-01T12:21:27+00:00",
+  "published_at_repo_commit": "5a91756",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
   "files": {
     "figure.pdf": {

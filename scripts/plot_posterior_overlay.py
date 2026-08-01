@@ -113,14 +113,19 @@ def main():
         print(f"\nFoM3 ratio  {series[0]['label']} / {series[1]['label']} = {r:.3f}x")
 
     cols = a.colors.split(",")
-    mcs = [MCSamples(samples=s["samples"], names=NAMES, labels=LABELS, label=s["label"])
-           for s in series]
+    # getdist draws roots in order, so later ones land ON TOP. Draw the LARGEST contour first
+    # (lowest FoM3) so the tightest posterior is never hidden underneath a looser one. The legend
+    # and all reported numbers keep the user's --series order; only the z-order changes.
+    order = sorted(range(len(series)), key=lambda i: series[i]["fom"], reverse=True)
+    mcs = [MCSamples(samples=series[i]["samples"], names=NAMES, labels=LABELS,
+                     label=series[i]["label"]) for i in order]
+    draw_cols = [cols[i] for i in order]
     g = plots.get_subplot_plotter(width_inch=7.5)
     g.settings.legend_fontsize = 12
     g.settings.axes_labelsize = 15
     g.settings.axes_fontsize = 11
-    g.triangle_plot(mcs, filled=True, contour_colors=cols[:len(mcs)],
-                    legend_labels=[s["label"] for s in series], legend_loc="upper right")
+    g.triangle_plot(mcs, filled=True, contour_colors=draw_cols,
+                    legend_labels=[series[i]["label"] for i in order], legend_loc="upper right")
     for i in range(3):
         for j in range(i + 1):
             ax = g.subplots[i, j]

@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
   "title": "Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed)",
   "paper_position": 14.1,
-  "published_utc": "2026-07-31T06:28:28+00:00",
-  "published_at_repo_commit": "29261c9",
+  "published_utc": "2026-08-01T12:21:27+00:00",
+  "published_at_repo_commit": "5a91756",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
   "files": {
     "figure.pdf": {

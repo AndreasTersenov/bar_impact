@@ -5,7 +5,7 @@ Single-seed companion to the matched-cut figure; each arm shows its most represe
 - **source**: `plots/score_contours_matched_580_14000_single_seed`
 - **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
 - **generated**: 2026-07-31T12:54:32Z
-- **published**: 2026-07-31T13:01:16+00:00 at repo `69586a2`
+- **published**: 2026-08-01T12:21:27+00:00 at repo `5a91756`
 - **rows in values.csv**: 3
 
 ## Scales included

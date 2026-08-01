@@ -5,7 +5,7 @@ Both arms at the same lmax 580, with BNT bin-1 at lmax 460 overlaid dashed as a 
 - **source**: `plots/score_contours_matched_580_14000_pooled`
 - **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
 - **generated**: 2026-07-31T12:39:06Z
-- **published**: 2026-07-31T13:01:15+00:00 at repo `69586a2`
+- **published**: 2026-08-01T12:21:26+00:00 at repo `5a91756`
 - **rows in values.csv**: 3
 
 ## Scales included
