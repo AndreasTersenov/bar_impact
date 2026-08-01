@@ -1,5 +1,11 @@
 # HANDOFF — score-compressed BNT bin-1 tension-vs-cut (start at 14000 deg²)
 
+> **SUPERSEDED (2026-08-01).** This document predates the settled BNT scale-cut result and repeats
+> the **retracted** claim that the BNT data vector is ill-conditioned. Measured, it is *better*
+> conditioned than non-BNT (correlation cond 8.3e2 vs 4.4e3), and the raw score is 1.2e4, not the
+> "~1e8" quoted here. The real cause of the raw-flow failure is **information dilution**. Read
+> `NOTES_bnt_compression_for_paper.md` §1 and `HANDOFF_BNT_SETTLED.md` instead; kept for history.
+
 **Read this first, then `docs/NOTES_bnt_compression_for_paper.md` for the conceptual frame.**
 This continues a long investigation (2026-06-24/25). Fresh-session handoff.
 

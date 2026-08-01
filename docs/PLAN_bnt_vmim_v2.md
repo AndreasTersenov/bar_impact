@@ -1,5 +1,11 @@
 # PLAN — VMIM neural compression for the BNT power spectra, v2 (corrected)
 
+> **SUPERSEDED (2026-08-01).** This document predates the settled BNT scale-cut result and repeats
+> the **retracted** claim that the BNT data vector is ill-conditioned. Measured, it is *better*
+> conditioned than non-BNT (correlation cond 8.3e2 vs 4.4e3), and the raw score is 1.2e4, not the
+> "~1e8" quoted here. The real cause of the raw-flow failure is **information dilution**. Read
+> `NOTES_bnt_compression_for_paper.md` §1 and `HANDOFF_BNT_SETTLED.md` instead; kept for history.
+
 Status: proposed, awaiting sign-off. Author: fresh session 2026-06-29. Supersedes the first VMIM
 attempt (`outputs/baryon_tension/vmim/ENSEMBLE_RESULT.md` = oracle FAIL). Reads on top of
 `docs/HANDOFF_bnt_vmim_reimplement.md`, `cnn_sbi/NEURAL_SUMMARIZATION_RECIPE.md`,

@@ -1,5 +1,11 @@
 # HANDOFF — re-implement VMIM neural compression for the BNT power spectra (correctly)
 
+> **SUPERSEDED (2026-08-01).** This document predates the settled BNT scale-cut result and repeats
+> the **retracted** claim that the BNT data vector is ill-conditioned. Measured, it is *better*
+> conditioned than non-BNT (correlation cond 8.3e2 vs 4.4e3), and the raw score is 1.2e4, not the
+> "~1e8" quoted here. The real cause of the raw-flow failure is **information dilution**. Read
+> `NOTES_bnt_compression_for_paper.md` §1 and `HANDOFF_BNT_SETTLED.md` instead; kept for history.
+
 **Read this first, then `/home/tersenov/software/cnn_sbi/NEURAL_SUMMARIZATION_RECIPE.md` (the validated
 recipe from AT's other project), then `docs/NOTES_bnt_compression_for_paper.md` (why the BNT vector is
 hard).** Fresh-session handoff, 2026-06-26.

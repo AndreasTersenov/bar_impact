@@ -1,5 +1,11 @@
 # PLAN — optimal BNT data-vector presentation per footprint, then remake the σ-vs-cut figure
 
+> **SUPERSEDED (2026-08-01).** This document predates the settled BNT scale-cut result and repeats
+> the **retracted** claim that the BNT data vector is ill-conditioned. Measured, it is *better*
+> conditioned than non-BNT (correlation cond 8.3e2 vs 4.4e3), and the raw score is 1.2e4, not the
+> "~1e8" quoted here. The real cause of the raw-flow failure is **information dilution**. Read
+> `NOTES_bnt_compression_for_paper.md` §1 and `HANDOFF_BNT_SETTLED.md` instead; kept for history.
+
 **Owner:** overnight autonomous run on **GPU 2**, while you sleep.
 **Origin:** the full-sky BNT contours are "trash" (bloated 2.3–4.8× vs non-BNT) because the raw
 NDE under-extracts the high-dimensional, ill-conditioned BNT data vector. Coarsening the ℓ-binning
