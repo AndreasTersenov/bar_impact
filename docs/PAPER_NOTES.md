@@ -163,7 +163,7 @@ therefore both arms at the **same ℓmax, same rebinning, same compression**, di
   → `outputs/diagnostics/score_rebin_ladder_fom.csv`.
 
 - **Three ratios, three questions — do not conflate:** 1.47× (BNT at equal cut — flagship);
-  3.62× (compression rescuing the ill-conditioned vector); 1.20× (this pipeline vs standard raw
+  3.62× (compression rescuing the raw BNT vector); 1.20× (this pipeline vs standard raw
   analysis — what a referee asks for, and the most modest).
 
 - **Retraction carried forward:** the shipped rebin=10 BNT figure overstated BNT's baryon mitigation;
