@@ -1,9 +1,9 @@
 {
   "slug": "bnt_score_contours_debiasing_single_seed",
-  "title": "BNT vs non-BNT at their de-biasing cuts (MOPED, single seed)",
-  "paper_position": 6.1,
-  "published_utc": "2026-08-01T12:21:26+00:00",
-  "published_at_repo_commit": "5a91756",
+  "title": "bnt score contours debiasing single seed",
+  "paper_position": 6.5,
+  "published_utc": "2026-08-01T18:42:47+00:00",
+  "published_at_repo_commit": "1f3f0a4",
   "source_stem": "plots/score_contours_debiased_580_14000_single_seed",
   "files": {
     "figure.pdf": {
@@ -27,7 +27,7 @@
       "bytes": 5704
     }
   },
-  "note": "As the pooled version, but each arm shows its single most representative NDE seed (chosen by scripts/tension/seeds.py against the median, on both centre and width) rather than all seeds concatenated. This is the object a real survey reports: one trained density estimator, its own posterior. Ratio 1.211x here versus 1.270x pooled; the difference is seed selection, not physics, because the two arms draw their representatives independently. Prefer the pooled figure when quoting a ratio.",
+  "note": null,
   "gate": {
     "passed": true,
     "warnings": []

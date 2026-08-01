@@ -46,11 +46,14 @@ COVK="${COVK:-analytic}"      # the only covariance valid at every rung; keeps t
 MODE="${MODE:-moped}"         # moped | raw. raw feeds the flow the z-scored data vector itself
                               # (no compression) and is the CONTROL for the compression claim.
 SEEDS="${SEEDS:-41,42,43,44,45}"
+EMBED_DIM="${EMBED_DIM:-0}"   # >0 inserts a learned embedding net in the NDE (use with MODE=raw)
+EMBED_HIDDEN="${EMBED_HIDDEN:-256,256}"
 ROOT="${ROOT:-outputs/score_rebin_ladder}"
 
 PY=/lustre/fswork/projects/rech/nzu/ulx34io/envs/jaxili/bin/python
 export FISHER_AREA=14000
 export PYTHONNOUSERSITE=1
+export ANAW_CLIP="${ANAW_CLIP:-5}"   # ana_whiten clip; 0 disables (the documented bias suspect)
 mkdir -p "$ROOT"
 
 echo "=== score rebin ladder  mode=$MODE cut=$CUT covk=$COVK seeds=$SEEDS  $(date) ==="
@@ -83,6 +86,7 @@ for RB in $REBINS; do
         --out "$OD/nde" --tag "$ARM" --seeds "$SEEDS" \
         --total-steps 20000 --save-every 1500 --patience 15 --num-samples 3000 \
         --save-per-seed --tarp-points 400 --tarp-draws 200 \
+        --embed-dim "$EMBED_DIM" --embed-hidden "$EMBED_HIDDEN" \
         --gpu 0 --mem-fraction 0.9 > "$OD/log_nde.txt" 2>&1 \
       || { echo "[warn] NDE failed for $ARM r$RB — see $OD/log_nde.txt"; continue; }
     grep -E "NULL|BIASED|theta_tr" "$OD/log_nde.txt" | sed 's/^/      /'

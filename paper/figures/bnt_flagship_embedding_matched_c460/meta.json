@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_flagship_embedding_matched_c460",
+  "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
+  "paper_position": 6.0,
+  "published_utc": "2026-08-01T18:42:19+00:00",
+  "published_at_repo_commit": "1f3f0a4",
+  "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/bnt_vs_nonbnt_embedding_14000.pdf",
+      "sha256": "0a37e4e5a3ab0c65834da16fec6045e8d7abffb4278e700c6d34ee752cbbba1e",
+      "bytes": 136964
+    },
+    "figure.png": {
+      "from": "plots/bnt_vs_nonbnt_embedding_14000.png",
+      "sha256": "854bc8190d4c9166a62c06a551fad6f06715e92507968e1c2ff751b96bf83ef6",
+      "bytes": 99530
+    },
+    "values.csv": {
+      "from": "plots/bnt_vs_nonbnt_embedding_14000_values.csv",
+      "sha256": "d155ff528038e2dbc80704277bb267c1cd9ece128359ca8efd0320ede6086819",
+      "bytes": 500
+    },
+    "provenance.json": {
+      "from": "plots/bnt_vs_nonbnt_embedding_14000_provenance.json",
+      "sha256": "2553b03a71963bd63db9309fc85555f7b8e16ae86d079ca9816b647385937289",
+      "bytes": 3594
+    }
+  },
+  "note": "THE PAPER FIGURE for the BNT constraining-power result. Both arms at the SAME scale cut (lmax=460, rebin=20), both fed the FULL data vector (92 features BNT, 50 non-BNT) noise-whitened by the analytic covariance, with a 16-dimensional embedding network inside the normalizing flow trained jointly under the NPE loss. No separate compression stage. The only difference between the two contours is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024, non-BNT cuts every bin. BNT/non-BNT FoM3 = 1.41x; per parameter sigma(Om) 1.15x, sigma(S8) 1.24x, sigma(w0) 1.04x, so the gain is concentrated where lensing constrains and is negligible in w0. Both posteriors pass TARP (max|ecp-alpha| 0.05, 0.05) and SBC (rank-std 0.29-0.30 against the ideal 0.289). INDEPENDENT CORROBORATION: the MOPED analysis of the same configuration gives 1.47x (see bnt_flagship_matched_c460_pooled). MOPED assumes Gaussianity and needs the analytic covariance and local Jacobian; the embedding needs none of them, so the two share essentially no failure modes and agree to 4 percent. Read as constraining power at fixed cut, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax than non-BNT cut-all. Bias at this cut: non-BNT safe at 0.17 sigma, BNT marginally at the 0.3 threshold and tolerated on its error bar.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 2,
+  "n_caveats": 4
+}

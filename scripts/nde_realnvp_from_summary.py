@@ -41,6 +41,14 @@ def parse_args():
     p.add_argument("--save-per-seed", action="store_true",
                    help="also save per-seed null/biased arrays (for tension scatter, not just pooled)")
     p.add_argument("--no-tarp", action="store_true", help="skip the TARP/SBC bundle (faster sweeps)")
+    p.add_argument("--embed-dim", type=int, default=0,
+                   help="0 = plain flow (conditioner sees y directly). >0 = insert a learned "
+                        "EMBEDDING NETWORK mapping y -> this many features, trained jointly with the "
+                        "flow under the same NPE loss. Use with --mode raw upstream to hand the flow "
+                        "the full data vector and let it learn its own summary.")
+    p.add_argument("--embed-hidden", default="256,256", help="embedding MLP hidden widths")
+    p.add_argument("--split-rows", action="store_true",
+                   help="ABLATION: use the old leaky row-wise early-stopping split")
     return p.parse_args()
 
 
@@ -65,13 +73,39 @@ def main():
     y_fid_biased = z["y_fid_biased"].astype(np.float32) if "y_fid_biased" in z.files else None
     dim = y_tr.shape[1]
     seeds = [int(s) for s in a.seeds.split(",") if s.strip()]
-    print(f"[nde] {a.tag} theta_tr={theta_tr.shape} y_tr={y_tr.shape} dim={dim} seeds={seeds}", flush=True)
+    emb = (f" embedding={a.embed_hidden}->{a.embed_dim}" if a.embed_dim > 0 else " (no embedding)")
+    print(f"[nde] {a.tag} theta_tr={theta_tr.shape} y_tr={y_tr.shape} dim={dim} seeds={seeds}{emb}",
+          flush=True)
 
-    # internal 90/10 split for train_flow early stopping (deterministic seed 0), like the reference
+    # Internal 90/10 split for train_flow EARLY STOPPING.
+    #
+    # BY COSMOLOGY, not by row. Each cosmology contributes ~7 realizations, so a random row split
+    # puts realizations of the SAME cosmology on both sides: the validation loss then keeps falling
+    # as the network memorizes cosmologies it has already seen, and early stopping never fires. The
+    # damage scales with parameter count, so it is mild for a 6-dim MOPED summary (flow only) and
+    # severe once an embedding network is added — which is exactly the pattern observed (embed32 was
+    # worse than embed16, and both drifted off-truth). This is the same leakage the VMIM v2 work
+    # fixed for the COMPRESSOR; it was never applied to the flow's own split.
     n = len(theta_tr)
-    pidx = np.random.RandomState(0).permutation(n)
-    nval = max(1, n // 10)
-    vi, ti = pidx[:nval], pidx[nval:]
+    if a.split_rows:
+        pidx = np.random.RandomState(0).permutation(n)
+        nval = max(1, n // 10)
+        vi, ti = pidx[:nval], pidx[nval:]
+        print("[nde] WARNING: --split-rows reproduces the LEAKY row-wise split (ablation only)",
+              flush=True)
+    else:
+        keys = np.round(theta_tr, 8)
+        uniq, inv = np.unique(keys, axis=0, return_inverse=True)
+        rng = np.random.RandomState(0)
+        perm = rng.permutation(len(uniq))
+        nval_cos = max(1, len(uniq) // 10)
+        val_cos = np.zeros(len(uniq), bool); val_cos[perm[:nval_cos]] = True
+        is_val = val_cos[inv]
+        vi, ti = np.where(is_val)[0], np.where(~is_val)[0]
+        shared = len(set(map(tuple, keys[vi])) & set(map(tuple, keys[ti])))
+        print(f"[nde] early-stop split BY COSMOLOGY: {len(uniq)} cosmologies -> {nval_cos} val "
+              f"(train rows {ti.size}, val rows {vi.size}, leakage={shared})", flush=True)
+        assert shared == 0, "cosmology leakage in the early-stopping split"
     dtr = {"theta": theta_tr[ti], "x": y_tr[ti]}
     dva = {"theta": theta_tr[vi], "x": y_tr[vi]}
 
@@ -79,7 +113,12 @@ def main():
     samplers = []
     for sd in seeds:
         np.random.seed(sd)
-        nfp, nfs = N.build_flow(6, n_layers=a.nde_layers, hidden=a.nde_hidden)
+        if a.embed_dim > 0:
+            eh = tuple(int(v) for v in a.embed_hidden.split(",") if v.strip())
+            nfp, nfs = N.build_flow_embedded(6, n_layers=a.nde_layers, hidden=a.nde_hidden,
+                                             embed_dim=a.embed_dim, embed_hidden=eh)
+        else:
+            nfp, nfs = N.build_flow(6, n_layers=a.nde_layers, hidden=a.nde_hidden)
         params = N.train_flow(jax.random.PRNGKey(sd), nfp, dtr, dva, n_cosmo=6, summary_dim=dim,
                               total_steps=a.total_steps, batch_size=a.batch_size,
                               save_every=a.save_every, save_dir=out / f"ckpt_s{sd}",

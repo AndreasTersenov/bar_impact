@@ -1,0 +1,80 @@
+{
+  "figure": "bnt_vs_nonbnt_embedding_14000",
+  "generator": "scripts/plot_posterior_overlay.py",
+  "command": "scripts/plot_posterior_overlay.py --series BNT bin-1 cut (bins 2\u20134 full)=outputs/score_embed_anaw16/bnt_r20_c460:bnt --series non-BNT cut-all=outputs/score_embed_anaw16/nonbnt_r20_c460:nonbnt --colors C0,0.45 --seed-mode pooled --title BNT vs non-BNT at matched $\\ell_{\\max}=460$ \u2014 best extractor (embedding net, no MOPED) --subtitle identical setup both arms: raw 92/50-feature vector, noise-whitened, embed16 inside the flow | TARP+SBC pass both | dotted = truth --out plots/bnt_vs_nonbnt_embedding_14000",
+  "git_commit": "1f3f0a4431fe998ff31c87f901e9490b5604ffab",
+  "generated_utc": "2026-08-01T17:41:54Z",
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "getdist default (no custom style sheet)",
+  "area_deg2": 14000,
+  "rebin": 20,
+  "lmin": 37,
+  "statistic": "tomographic auto+cross angular power spectra",
+  "scales_included": "both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024",
+  "seed_mode": "pooled",
+  "series": [
+    {
+      "label": "BNT bin-1 cut (bins 2\u20134 full)",
+      "dir": "outputs/score_embed_anaw16/bnt_r20_c460",
+      "n_seeds": 5,
+      "seed_drawn": "5 seeds pooled",
+      "seed_selection": {
+        "mode": "pooled"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.01390715583992647,
+        0.024255891840112474,
+        0.07507000222841403
+      ],
+      "corr_Om_S8": -0.9156439296640896,
+      "det_corr": 0.026191219118405634,
+      "fom3_drawn": 244005.79775900152,
+      "fom3_seed_avg_cov": 254332.88946977587
+    },
+    {
+      "label": "non-BNT cut-all",
+      "dir": "outputs/score_embed_anaw16/nonbnt_r20_c460",
+      "n_seeds": 5,
+      "seed_drawn": "5 seeds pooled",
+      "seed_selection": {
+        "mode": "pooled"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.016068558269118183,
+        0.03007775522687937,
+        0.07800148780275097
+      ],
+      "corr_Om_S8": -0.9378940656322219,
+      "det_corr": 0.023370262759250738,
+      "fom3_drawn": 173517.38064655403,
+      "fom3_seed_avg_cov": 179679.6815566398
+    }
+  ],
+  "posterior": "sigma/correlations/fom3_drawn describe exactly the samples plotted; fom3_seed_avg_cov is the seed-averaged-covariance value, which removes between-seed mean scatter and is the better constraining-power estimator",
+  "caveats": [
+    "Both series are calibrated and on-truth (SBC rank-std 0.28-0.29 vs the ideal 0.289; null means within 0.3 sigma of truth), so the FoM difference is a real difference in information, not one posterior being broken.",
+    "The decisive quantity is r(Omega_m, S8). Weak lensing carries a physical degeneracy near -0.9; raw NPE on the ill-conditioned BNT vector returns -0.03, i.e. it loses the degeneracy structure entirely while keeping plausible (even tighter) marginals. That inflates the 3-param volume without widening any 1-D projection.",
+    "SBC and TARP CANNOT see that failure: both test marginal rank uniformity per parameter, so a posterior with correct marginals and missing correlations passes both.",
+    "MOPED is not free where it is not needed: on the well-conditioned non-BNT vector raw NPE is ~20% tighter than MOPED, presumably non-Gaussian information the Gaussian-optimal compression discards."
+  ]
+}

@@ -1,11 +1,11 @@
-# FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)
+# CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)
 
-Single-seed companion to the flagship; see that figure for the full setup and the bias caveat (BNT sits marginally AT the 0.3 sigma threshold at this cut, tolerated on its error bar). Each arm shows its most representative NDE seed, chosen by scripts/tension/seeds.py against the MEDIAN across seeds on both centre and width. This is the object a real survey reports: one trained density estimator and its own posterior, rather than a pooled stack whose width carries seed-to-seed training scatter. Ratio 1.507x here against the pooled figure's 1.467x; both arms happen to select run 41, and the difference is seed selection rather than physics. QUOTE THE POOLED FIGURE (1.47x) for the headline. Per-seed scores behind the choice are in provenance.json under seed_selection.
+Single-seed companion to the MOPED cross-check at position 6.1; see the embedding flagship at position 6 for the paper result. Each arm shows its most representative NDE seed (scripts/tension/seeds.py, median-referenced on centre and width; both select run 41). Ratio 1.507x against the pooled 1.467x - the difference is seed selection, not physics, since the two arms draw representatives independently. Quote pooled numbers.
 
 - **source**: `plots/bnt_flagship_matched_c460_14000_single_seed`
 - **generator commit**: `64c032ddee8516c384194122e13fcbdec7296e36`
 - **generated**: 2026-08-01T14:26:46Z
-- **published**: 2026-08-01T14:27:55+00:00 at repo `64c032d`
+- **published**: 2026-08-01T18:42:31+00:00 at repo `1f3f0a4`
 - **rows in values.csv**: 2
 
 ## Scales included

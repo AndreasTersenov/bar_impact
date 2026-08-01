@@ -82,8 +82,9 @@ full-ℓ / ×3.8 baryon-safe), but HOS magnitude is linearization-limited → NP
 
 ## 4. BNT (nulling tomographic cross-correlations)
 
-**Status ✅ settled 2026-07-31.** Flagship figures:
-`paper/figures/bnt_flagship_matched_c460_{pooled,single_seed}/`. Full record and the numbers below:
+**Status ✅ settled 2026-08-01.** PAPER FIGURE:
+`paper/figures/bnt_flagship_embedding_matched_c460/` (embedding network, no MOPED — **1.41×**).
+MOPED cross-check at `bnt_flagship_matched_c460_{pooled,single_seed}/` (**1.47×**). Full record and the numbers below:
 `PLAN_score_bnt_tension_14000.md` (ADDENDUM 2026-07-31).
 
 **The story, in one paragraph.** BNT isolates the baryon sensitivity into essentially a single
@@ -110,7 +111,9 @@ therefore both arms at the **same ℓmax, same rebinning, same compression**, di
   | BNT bin-1 @460 (bins 2–4 full) | 0.01597, 0.02759, 0.08665 | 92/120 | 1.637e5 | 0.30 ± 0.09σ |
   | non-BNT cut-all @460 | 0.01871, 0.03403, 0.08795 | 50/120 | 1.098e5 | 0.17 ± 0.03σ |
 
-  **BNT/non-BNT = 1.47×** (19% tighter σ(S₈), 13% on Ωm). Both calibrated (SBC 0.28–0.29 vs the ideal
+  **BNT/non-BNT = 1.47× (MOPED) and 1.41× (embedding network)** — see the corroboration bullet
+  below. Per parameter under the embedding: σ(Ωm) 1.15×, σ(S₈) 1.24×, σ(w₀) **1.04×** — the gain is
+  concentrated where lensing constrains and is negligible in w₀. Both calibrated (SBC 0.28–0.29 vs the ideal
   0.289) and on-truth. **Bias at this cut is asymmetric and must be stated honestly:** non-BNT is
   comfortably safe (0.17σ), BNT sits *marginally at* the 0.3 threshold (0.304 ± 0.091) and is
   tolerated on its error bar (mean − σ = 0.21), not comfortably below it. BNT's own adopted cut is
@@ -136,6 +139,36 @@ therefore both arms at the **same ℓmax, same rebinning, same compression**, di
   see this** (both test marginal rank uniformity per parameter, and the posterior is calibrated and
   on-truth). Consequence: BNT/non-BNT is **1.47× under MOPED and 0.33× under raw** — the sign of the
   conclusion flips on the compression, which likely explains the contradictory historical BNT results.
+
+- **TWO INDEPENDENT EXTRACTORS AGREE — this is the corroboration the result rests on.** MOPED
+  assumes Gaussianity and needs the analytic covariance and the local Jacobian; an embedding network
+  trained jointly inside the flow needs none of them. They share essentially no failure modes:
+
+  | extractor | BNT | non-BNT | ratio | BNT r(Ωm,S₈) |
+  |---|---|---|---|---|
+  | MOPED | 1.637e5 | 1.114e5 | **1.470** | −0.909 |
+  | embedding (16-dim, noise-whitened input) | 2.543e5 | 1.797e5 | **1.415** | −0.919 |
+  | embedding on z-scored input | 1.556e5 | 1.516e5 | 1.026 | −0.884 (det R 0.109) |
+  | raw plain flow | 4.61e4 | 1.390e5 | 0.331 | −0.025 |
+
+  The ratio is **1.41–1.47× whenever BNT is properly extracted**, and collapses only when it is not —
+  so the ratio doubles as a diagnostic that the extraction worked. **The preprocessing is what
+  decides it:** z-scoring the raw features leaves the noise correlated and inflates noise-dominated
+  features to the scale of signal-carrying ones; whitening by the analytic C⁻¹ᐟ² first makes the
+  noise isotropic so the ~6 signal directions stand out. Same data, same cut, same flow.
+
+  Caveat carried, not hidden: the embedding contours are tighter in BOTH arms and sit 1.25–1.36×
+  **above** the Gaussian Fisher, with a w₀ offset that grows with the FoM (−0.027 MOPED → −0.044
+  embedding). Whether that is real non-Gaussian information or fiducial-local over-confidence is
+  unresolved. It is **common mode** (w₀ offset −0.0435 BNT vs −0.0436 non-BNT) and cancels exactly in
+  the ratio, so it does not touch the headline.
+
+- **TARP AND SBC CANNOT ADJUDICATE THIS — a methods point worth stating.** Every configuration above
+  passes both, including the raw plain flow that returns r(Ωm,S₈) = −0.03 where the physical
+  degeneracy is −0.9 (TARP dev 0.115, SBC 0.285/0.282/0.290). The best TARP score in the whole set
+  (0.0325) belongs to an embedding run with the doubled w₀ offset. Both tests average coverage over
+  the prior and test marginal rank uniformity per parameter, so neither sees the joint degeneracy
+  structure nor local behaviour at the single fiducial where every FoM is measured.
 
 - **WHY the flow fails — measured, with the alternatives excluded** (`why_compression_is_needed.py`,
   `outputs/diagnostics/why_compression_is_needed.csv`). The paper needs this, and the standard

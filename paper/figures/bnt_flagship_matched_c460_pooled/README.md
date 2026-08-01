@@ -1,11 +1,11 @@
-# FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)
+# CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)
 
-THE FLAGSHIP CONSTRAINING-POWER RESULT. Both arms score/MOPED-compressed at the SAME scale cut (lmax=460, rebin=20, hybrid covariance, 5 NDE seeds each), so the only difference is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024 (92 of 120 bandpowers), non-BNT cuts every bin (50 of 120). BNT gives 1.47x the 3-parameter FoM (19 percent tighter sigma(S8), 13 percent on Omega_m). Both posteriors are calibrated (SBC rank-std 0.28-0.29 vs the ideal 0.289) and on-truth. BIAS AT THIS CUT: non-BNT is comfortably safe at 0.17+/-0.03 sigma; BNT sits at 0.30+/-0.09 sigma, i.e. MARGINALLY AT the 0.3 nominal threshold and tolerated on its error bar (mean minus sigma = 0.21), not comfortably below it - BNT's own adopted cut is 420. lmax=460 is chosen because it is the adopted cut of the main PS analysis (ps_submean_l37). Read this as constraining power at fixed cut, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax than non-BNT cut-all, so cutting only bin 1 does not control baryons better - it retains more information at comparable bias. The 1.47x is conditional on the compression: under raw NPE the comparison inverts to 0.33x.
+MOPED cross-check of the embedding-network flagship (position 6). Same cut, same rebinning, same 5-seed protocol, but the flow is fed 6 score/MOPED summaries instead of the whitened data vector. Gives 1.47x against the embedding's 1.41x. The two methods share no assumptions - MOPED requires Gaussianity, the analytic covariance and the local Jacobian; the embedding requires none - so their agreement to 4 percent is a genuine corroboration rather than a repeat. Both recover the physical Omega_m-S8 degeneracy (r = -0.909/-0.931 here, -0.919/-0.938 for the embedding). The embedding contours are tighter in both arms; that extra tightness sits 1.25-1.36x above the Gaussian Fisher bound and is accompanied by a w0 offset that scales with it, but it is COMMON MODE across the two arms (w0 offset -0.0435 BNT vs -0.0436 non-BNT) and cancels in the ratio. Bias caveat as in the flagship: BNT sits marginally at the 0.3 sigma threshold at this cut, tolerated on its error bar; its own adopted cut is 420.
 
 - **source**: `plots/bnt_flagship_matched_c460_14000_pooled`
 - **generator commit**: `64c032ddee8516c384194122e13fcbdec7296e36`
 - **generated**: 2026-08-01T14:21:07Z
-- **published**: 2026-08-01T14:27:54+00:00 at repo `64c032d`
+- **published**: 2026-08-01T18:42:20+00:00 at repo `1f3f0a4`
 - **rows in values.csv**: 2
 
 ## Scales included

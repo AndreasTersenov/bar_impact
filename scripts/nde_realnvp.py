@@ -53,6 +53,52 @@ def build_flow(n_cosmo_params: int, n_layers: int, hidden: int):
     return nf_logp, nf_sample
 
 
+def build_flow_embedded(n_cosmo_params: int, n_layers: int, hidden: int,
+                        embed_dim: int = 16, embed_hidden=(256, 256)):
+    """Conditional RealNVP with a learned EMBEDDING NETWORK on the conditioning input.
+
+    WHY THIS EXISTS. Fed the rebin=20 BNT data vector raw, the plain flow above fails: it returns
+    r(Omega_m, S8) = -0.03 where the physical lensing degeneracy is -0.9, inflating the 3-param
+    volume 3.6x, while passing SBC and TARP (which test marginal coverage only). Measured cause is
+    information DILUTION — nulling cancels the dominant common mode, so the signal that the standard
+    basis concentrates in a few high-S/N bandpowers is spread across ~90 individually weak ones
+    (top-10% of features carry 64% of the S8 Fisher in the standard basis, 5% after BNT). The flow's
+    conditioner has to learn ~90 relative weights from a finite sim suite, and does not.
+
+    Two known remedies: compress first (MOPED), or bin coarsely enough to re-concentrate the signal
+    (raw BNT at rebin 40 recovers r = -0.93 and matches MOPED's FoM). Both have costs — MOPED is
+    Gaussian-optimal and measurably lossy where the flow can already cope (on non-BNT, raw NPE beats
+    MOPED 1.39e5 vs 1.11e5), and coarse binning starves the standard vector (non-BNT drops to 20
+    features at rebin 40).
+
+    An embedding network is the third option and the most natural one: give the density estimator a
+    dedicated feature extractor and train it JOINTLY with the flow under the same NPE loss. It needs
+    no covariance, so it is not restricted to Gaussian-optimal projections, and it is part of the
+    density estimator rather than a separate analysis stage that has to be justified on its own.
+
+    The embedding is a plain MLP; nothing here is BNT-specific. Set embed_dim >= n_cosmo_params —
+    there is no reason to bottleneck below the number of parameters being inferred.
+    """
+    bijector_fn = partial(AffineCoupling, layers=[hidden] * 2, activation=jax.nn.silu)
+    NF_factory = partial(ConditionalRealNVP, n_layers=n_layers, bijector_fn=bijector_fn)
+
+    class NF(hk.Module):
+        def __call__(self, y):
+            h = hk.nets.MLP(list(embed_hidden) + [embed_dim],
+                            activation=jax.nn.silu, name="embedding")(y)
+            return NF_factory(n_cosmo_params)(h)
+
+    @hk.transform
+    def nf_log_prob(theta, y):
+        return NF()(y).log_prob(theta).squeeze()
+
+    @hk.transform
+    def nf_sample(y, n_samples):
+        return NF()(y).sample(n_samples, seed=hk.next_rng_key())
+
+    return hk.without_apply_rng(nf_log_prob), nf_sample
+
+
 def make_update_fn(nf_logp, optimizer):
     """JIT-compiled training update step."""
     def loss_fn(params, theta_batch, y_batch):

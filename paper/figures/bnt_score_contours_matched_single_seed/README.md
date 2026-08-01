@@ -1,11 +1,9 @@
-# BNT vs non-BNT at a MATCHED scale cut (MOPED, single seed)
-
-Single-seed companion to the matched-cut figure; each arm shows its most representative NDE seed. Ratio 1.314x. Note the 460-to-580 reference reads 1.085x here against 1.022x pooled: that inflation is compounded seed selection (the representative at 460 sits low in its ensemble, the one at 580 high), not physics. Quote the pooled value for that comparison.
+# bnt score contours matched single seed
 
 - **source**: `plots/score_contours_matched_580_14000_single_seed`
 - **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
 - **generated**: 2026-07-31T12:54:32Z
-- **published**: 2026-08-01T12:21:27+00:00 at repo `5a91756`
+- **published**: 2026-08-01T18:42:47+00:00 at repo `1f3f0a4`
 - **rows in values.csv**: 3
 
 ## Scales included

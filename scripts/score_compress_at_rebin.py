@@ -48,13 +48,18 @@ def parse_args():
     p.add_argument("--bnt", action="store_true")
     p.add_argument("--covk", default="analytic", choices=["analytic", "hybrid", "sample"],
                    help="analytic is the only one valid at fine rebin; hybrid only for r20/r10")
-    p.add_argument("--mode", default="moped", choices=["moped", "raw"],
+    p.add_argument("--mode", default="moped", choices=["moped", "raw", "whiten", "ana_whiten"],
                    help="moped = 6 quasi-MLE score summaries. raw = the z-scored data vector itself, "
                         "so the flow must find the JtC^-1 projection on its own. The raw arm is the "
                         "CONTROL for the whole compression argument: the claim is that a flow "
                         "under-learns that projection on the ill-conditioned BNT vector and returns "
                         "a too-wide, off-truth posterior. Both arms must be run at the SAME cut for "
-                        "the comparison to mean anything.")
+                        "the comparison to mean anything. whiten = full-rank noise-whitening "
+                        "C^-1/2 (x - mu): keeps ALL features but makes the noise isotropic, so the "
+                        "input is perfectly conditioned with no dynamic range and no correlations. "
+                        "It is NOT a compression. If BNT still fails under whitening, then "
+                        "conditioning / dynamic range / sign changes are excluded as explanations "
+                        "and only information dilution remains.")
     p.add_argument("--out", required=True)
     p.add_argument("--val-frac", type=float, default=0.1,
                    help="fraction of COSMOLOGIES held out for TARP/SBC (unseen by the NDE)")
@@ -139,6 +144,57 @@ def main():
         y = y.copy(); y[:, H0_IDX] /= 100.0
         y_fid = y_fid.copy(); y_fid[H0_IDX] /= 100.0
         y_fid_biased = y_fid_biased.copy(); y_fid_biased[H0_IDX] /= 100.0
+    elif a.mode == "ana_whiten":
+        # THE VALIDATED PREPROCESSING for a learned extractor on this data (vmim_compress.fit_preproc,
+        # VMIM v2 P2e/P2f). Whiten by the regularized ANALYTIC covariance so the NOISE is isotropic,
+        # then normalize each whitened feature to unit std and clip.
+        #
+        # Why this and not --mode raw's z-score: z-scoring the RAW features equalizes their variance
+        # across the grid WITHOUT decorrelating the noise, so on a diluted vector the many
+        # noise-dominated features are inflated to the same scale as the few signal-carrying ones —
+        # burying exactly what the embedding has to find. Whitening first makes the noise unit and
+        # isotropic, so the parameter-responsive directions stand out (their std exceeds 1) and the
+        # network only has to locate ~6 signal directions.
+        #
+        # Why the per-feature normalization matters: after C^-1/2 the signal directions carry std up
+        # to ~4.6, so an ABSOLUTE clip (correct for a unit-variance z-score) lops the signal and
+        # biases S8 by ~1 sigma — this was the entire difference between VMIM P2c/d (biased) and
+        # P2e (on-truth). Normalizing per feature first is the equivalent, better-behaved form.
+        cov = d["C"]
+        ev, V = np.linalg.eigh(cov)
+        evf = np.maximum(ev, 1e-4 * ev.max())
+        Wh = (V / np.sqrt(evf)) @ V.T                    # symmetric, eigenvalue-floored C^-1/2
+        mu = x.mean(0)
+        sw = ((x - mu) @ Wh).std(0)
+        sw[sw < 1e-12] = 1.0
+        CLIP = float(os.environ.get("ANAW_CLIP", "5"))   # 0 or negative disables clipping
+
+        def _ap(A):
+            Z = ((np.atleast_2d(A) - mu) @ Wh) / sw
+            return np.clip(Z, -CLIP, CLIP) if CLIP > 0 else Z
+
+        y = _ap(x)
+        y_fid = _ap(x_fid)[0]
+        y_fid_biased = _ap(x_fid_biased)[0]
+        print(f"[compress] ANA_WHITEN: {nfeat} features, cond raw={ev.max()/max(ev.min(),1e-300):.2e} "
+              f"floored={evf.max()/evf.min():.2e}, whitened std range "
+              f"[{sw.min():.2f}, {sw.max():.2f}], clip={'+/-%g'%CLIP if CLIP>0 else 'NONE'}", flush=True)
+    elif a.mode == "whiten":
+        # WHITENING control. C^-1/2 makes the NOISE isotropic: the whitened input has identity noise
+        # covariance, so it is perfectly conditioned, has unit dynamic range and no correlations, and
+        # sign information is centred away. Crucially it is full-rank — no dimension is removed, so
+        # the flow must STILL find the projection itself. This separates "the input was badly scaled"
+        # from "the information is spread too thin to learn the projection from finite sims".
+        ev, V = np.linalg.eigh(d["C"])
+        ev = np.maximum(ev, 1e-12 * ev.max())
+        Wh = V @ np.diag(ev ** -0.5) @ V.T
+        mu = x.mean(0)
+        y = (x - mu) @ Wh
+        y_fid = (x_fid - mu) @ Wh
+        y_fid_biased = (x_fid_biased - mu) @ Wh
+        sdy = y.std(0)
+        print(f"[compress] WHITEN mode: full-rank C^-1/2, {nfeat} features kept (NOT a compression); "
+              f"whitened std range [{sdy.min():.3f}, {sdy.max():.3f}]", flush=True)
     else:
         # RAW control: hand the flow the data vector itself, z-scored on the TRAIN statistics only.
         # No projection is supplied, so the flow must learn JtC^-1 from the simulations — which is
