@@ -140,6 +140,32 @@ therefore both arms at the **same ℓmax, same rebinning, same compression**, di
   on-truth). Consequence: BNT/non-BNT is **1.47× under MOPED and 0.33× under raw** — the sign of the
   conclusion flips on the compression, which likely explains the contradictory historical BNT results.
 
+- **REPORTING CONVENTION: mean of per-seed FoM₃.** Each NDE seed is one independent analysis, so the
+  mean over seeds is what a single analysis achieves. Pooling folds between-seed *training* scatter
+  into the contour width (a property of our procedure, not the data); the seed-averaged covariance is
+  defensible but mixes in a nonlinearity since FoM = det^(−1/2). **At the cut the choice does not
+  matter** — 1.405 / 1.415 / 1.406 (embedding) and 1.470 / 1.470 / 1.467 (MOPED) across per-seed-mean
+  / seed-avg-cov / pooled. It matters only uncut, where one arm is noisier (see the oracle below).
+
+- **THE LOSSLESS-IDENTITY ORACLE — no scale cut, the two bases must agree, and they do.**
+  `paper/figures/bnt_lossless_identity_nocut/`. At ℓmax=1024 (120 features both arms, same embedding
+  setup) the per-seed-mean FoM₃ is **4.326e5 (BNT) vs 4.420e5 (standard), ratio 0.979**. Verified
+  analytically at the summary level by the score work (gate 2, 1e-13); this is the first end-to-end
+  confirmation through trained posteriors. Convention spread uncut is 0.87–1.14 and is seed scatter,
+  not physics: the standard arm has 19% per-seed spread against BNT's 7%, so pooling fattens it.
+
+- **THE RESULT DECOMPOSED — BNT does not add information, it loses less when you cut** (per-seed
+  mean, embedding throughout):
+
+  | | uncut | cut @460 | **cost of the cut** |
+  |---|---|---|---|
+  | BNT bin-1 | 4.326e5 | 2.565e5 | **1.69×** |
+  | non-BNT cut-all | 4.420e5 | 1.826e5 | **2.42×** |
+
+  Ratio of costs **2.42/1.69 = 1.435**, against the directly measured cut ratio of **1.405** — the
+  advantage computed from the uncut baseline matches the advantage measured at the cut, via two
+  different routes through the same posteriors, to 2%.
+
 - **TWO INDEPENDENT EXTRACTORS AGREE — this is the corroboration the result rests on.** MOPED
   assumes Gaussianity and needs the analytic covariance and the local Jacobian; an embedding network
   trained jointly inside the flow needs none of them. They share essentially no failure modes:
