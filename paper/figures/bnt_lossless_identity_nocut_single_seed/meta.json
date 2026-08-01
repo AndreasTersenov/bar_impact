@@ -1,0 +1,37 @@
+{
+  "slug": "bnt_lossless_identity_nocut_single_seed",
+  "title": "VALIDATION: no scale cut, lossless identity (single seed)",
+  "paper_position": 6.35,
+  "published_utc": "2026-08-01T19:23:22+00:00",
+  "published_at_repo_commit": "80956a4",
+  "source_stem": "plots/bnt_lossless_identity_nocut_14000_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "plots/bnt_lossless_identity_nocut_14000_single_seed.pdf",
+      "sha256": "3de9cdb31d190249360b65036959a394850284197ebc5d4c593ede5b52cefd10",
+      "bytes": 139429
+    },
+    "figure.png": {
+      "from": "plots/bnt_lossless_identity_nocut_14000_single_seed.png",
+      "sha256": "d45517792579f03f8eb2d695cfcaff638937bb9c1c55e6fcf80cfa234a071c07",
+      "bytes": 98266
+    },
+    "values.csv": {
+      "from": "plots/bnt_lossless_identity_nocut_14000_single_seed_values.csv",
+      "sha256": "575266dd715a30873c1ab92c545fdf80dd6b4f1cf52ded3bbecead4fda144770",
+      "bytes": 462
+    },
+    "provenance.json": {
+      "from": "plots/bnt_lossless_identity_nocut_14000_single_seed_provenance.json",
+      "sha256": "b8aa88543e789ad2828a29662e2ba98676cb63c7c1fe55fef5af2a195a872960",
+      "bytes": 5948
+    }
+  },
+  "note": "Single-seed companion to the no-cut oracle at position 6.3. Each arm shows its most representative NDE seed (BNT run 45, standard run 41), chosen independently per arm. Ratio 0.866x. This is the LEAST stable of the four seed conventions precisely because it compounds two independent selections - here the standard basis happened to draw a tight seed (5.32e5 against its 4.15e5 seed-average). Across all four conventions the no-cut ratio spans 0.87 to 1.14, centred on unity, which quantifies the seed-level training scatter (~5 percent per parameter). Do NOT quote this figure's ratio as the oracle result; use the per-seed mean 0.979 from position 6.3. Shown because the contour SHAPES are what the oracle is really about, and they coincide here as clearly as in the pooled version.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 2,
+  "n_caveats": 4
+}

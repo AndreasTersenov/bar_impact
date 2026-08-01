@@ -1,0 +1,148 @@
+{
+  "figure": "bnt_lossless_identity_nocut_14000_single_seed",
+  "generator": "scripts/plot_posterior_overlay.py",
+  "command": "scripts/plot_posterior_overlay.py --series BNT basis=outputs/score_embed_nocut/bnt_r20_c1024:bnt --series standard basis=outputs/score_embed_nocut/nonbnt_r20_c1024:nonbnt --colors C0,0.45 --seed-mode single --title Lossless-identity oracle: NO scale cut, $\\ell_{\\max}=1024$ both arms (single seed) --subtitle BNT is an invertible linear map, so uncut the two bases carry IDENTICAL information \u2014 the contours must coincide | representative seed per arm | dotted = truth --out plots/bnt_lossless_identity_nocut_14000_single_seed",
+  "git_commit": "80956a42f88866b110521653cd1338b0b0f13f28",
+  "generated_utc": "2026-08-01T19:12:23Z",
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "getdist default (no custom style sheet)",
+  "area_deg2": 14000,
+  "rebin": 20,
+  "lmin": 37,
+  "statistic": "tomographic auto+cross angular power spectra",
+  "scales_included": "both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024",
+  "seed_mode": "single",
+  "series": [
+    {
+      "label": "BNT basis",
+      "dir": "outputs/score_embed_nocut/bnt_r20_c1024",
+      "n_seeds": 5,
+      "seed_drawn": "seed 45",
+      "seed_selection": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": "45",
+        "per_seed": [
+          {
+            "run": "41",
+            "centre_offset_widths": 0.17290402948856354,
+            "log_width_ratio": 0.03915109485387802,
+            "score": 0.21205511689186096
+          },
+          {
+            "run": "42",
+            "centre_offset_widths": 0.11412911117076874,
+            "log_width_ratio": 0.04454123601317406,
+            "score": 0.1586703509092331
+          },
+          {
+            "run": "43",
+            "centre_offset_widths": 0.13718923926353455,
+            "log_width_ratio": 0.06529087573289871,
+            "score": 0.20248010754585266
+          },
+          {
+            "run": "44",
+            "centre_offset_widths": 0.1937790811061859,
+            "log_width_ratio": 0.020450102165341377,
+            "score": 0.21422918140888214
+          },
+          {
+            "run": "45",
+            "centre_offset_widths": 0.10101818293333054,
+            "log_width_ratio": 0.03325565531849861,
+            "score": 0.13427384197711945
+          }
+        ],
+        "mode": "single"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.0117151169107587,
+        0.020016733185204798,
+        0.06218100105019323
+      ],
+      "corr_Om_S8": -0.9325820885863254,
+      "det_corr": 0.02216000255978432,
+      "fom3_drawn": 460699.3082994359,
+      "fom3_seed_avg_cov": 427822.99206698674
+    },
+    {
+      "label": "standard basis",
+      "dir": "outputs/score_embed_nocut/nonbnt_r20_c1024",
+      "n_seeds": 5,
+      "seed_drawn": "seed 41",
+      "seed_selection": {
+        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
+        "chosen_run": "41",
+        "per_seed": [
+          {
+            "run": "41",
+            "centre_offset_widths": 0.12802410125732422,
+            "log_width_ratio": 0.01444990187883377,
+            "score": 0.1424739956855774
+          },
+          {
+            "run": "42",
+            "centre_offset_widths": 0.10757782310247421,
+            "log_width_ratio": 0.043456122279167175,
+            "score": 0.1510339379310608
+          },
+          {
+            "run": "43",
+            "centre_offset_widths": 0.23449331521987915,
+            "log_width_ratio": 0.05387211591005325,
+            "score": 0.2883654236793518
+          },
+          {
+            "run": "44",
+            "centre_offset_widths": 0.14531180262565613,
+            "log_width_ratio": 0.05059966444969177,
+            "score": 0.1959114670753479
+          },
+          {
+            "run": "45",
+            "centre_offset_widths": 0.1769898682832718,
+            "log_width_ratio": 0.018667254596948624,
+            "score": 0.19565711915493011
+          }
+        ],
+        "mode": "single"
+      },
+      "runs": [
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ],
+      "skipped_disk_damage": [],
+      "sigma3": [
+        0.011029647176990936,
+        0.01898599845351214,
+        0.060635126204771336
+      ],
+      "corr_Om_S8": -0.926312591323816,
+      "det_corr": 0.021898498736355305,
+      "fom3_drawn": 532198.2982562185,
+      "fom3_seed_avg_cov": 414834.40413727454
+    }
+  ],
+  "posterior": "sigma/correlations/fom3_drawn describe exactly the samples plotted; fom3_seed_avg_cov is the seed-averaged-covariance value, which removes between-seed mean scatter and is the better constraining-power estimator",
+  "caveats": [
+    "Both series are calibrated and on-truth (SBC rank-std 0.28-0.29 vs the ideal 0.289; null means within 0.3 sigma of truth), so the FoM difference is a real difference in information, not one posterior being broken.",
+    "The decisive quantity is r(Omega_m, S8). Weak lensing carries a physical degeneracy near -0.9; raw NPE on the ill-conditioned BNT vector returns -0.03, i.e. it loses the degeneracy structure entirely while keeping plausible (even tighter) marginals. That inflates the 3-param volume without widening any 1-D projection.",
+    "SBC and TARP CANNOT see that failure: both test marginal rank uniformity per parameter, so a posterior with correct marginals and missing correlations passes both.",
+    "MOPED is not free where it is not needed: on the well-conditioned non-BNT vector raw NPE is ~20% tighter than MOPED, presumably non-Gaussian information the Gaussian-optimal compression discards."
+  ]
+}
