@@ -18,11 +18,12 @@ Last updated: 2026-06-25.
 - **BNT localizes the baryon bias to tomographic bin 1, so the scale cut can be targeted at that bin
   alone** — retaining 92 of 120 bandpowers against 50 for a uniform cut at the same ℓmax, and giving
   **1.47× the 3-param FoM** (19% tighter σ(S₈)) at 14000 deg², matched ℓmax=460, both arms calibrated
-  and calibrated (BNT marginally at the 0.3σ threshold, tolerated on its error bar; non-BNT safe at
+  and on-truth (BNT marginally at the 0.3σ threshold and tolerated on its error bar; non-BNT safe at
   0.17σ). Real but not dramatic. This is *information retention*, **not** better baryon control —
   BNT actually crosses 0.3σ at a lower ℓmax than a uniform cut. Requires MOPED compression: fed the
-  ill-conditioned BNT vector raw, a flow loses the Ωm–S₈ degeneracy entirely (r = −0.03 vs −0.9) and
-  the comparison inverts to 0.33×. → §4.
+  raw BNT vector, a flow loses the Ωm–S₈ degeneracy entirely (r = −0.03 vs −0.9) and the comparison
+  inverts to 0.33× — because nulling dilutes the information across many weak modes, NOT because the
+  vector is ill-conditioned (measured: it is better conditioned than non-BNT). → §4.
 - **Proper sim-based Fisher:** at the same matched cut the information-level BNT gain is **2.10×**; the
   calibrated NPE realizes **1.47×**. The shortfall is density estimation, not physics — and it comes
   from both ends (BNT realizes 0.81 of its Fisher; non-BNT lands 1.16× tighter than its own). → §5.
@@ -89,9 +90,12 @@ full-ℓ / ×3.8 baryon-safe), but HOS magnitude is linearization-limited → NP
 tomographic bin. For the power spectrum that means the scale cut can be *targeted* — applied to bin 1
 alone, leaving bins 2–4 at full range — so less information is discarded than a uniform cut at the
 same ℓmax. That yields tighter contours: real, but not dramatic. Extracting it requires compressing
-the data vector first, because the BNT vector is **ill-conditioned** (the nulling is built from
-near-cancellations), and a normalizing flow fed it raw fails. The fair comparison is therefore both
-arms at the **same ℓmax, same rebinning, same compression**, differing only in the basis.
+the data vector first: nulling removes the dominant common mode and leaves differences, so the
+information that the standard basis concentrates in a few high-S/N bandpowers is **diluted across
+many individually weak modes**, and a normalizing flow fed the raw vector cannot learn the required
+relative weighting from a finite simulation suite. (It is *not* ill-conditioning — measured, the BNT
+vector is better conditioned than the standard one; see the table below.) The fair comparison is
+therefore both arms at the **same ℓmax, same rebinning, same compression**, differing only in basis.
 
 - **BNT on the (masked) power spectra:** C̃ = M C Mᵀ on the produced PS grids is exact (oracle 1e-11;
   masked-MASTER commutation — a gap the BNT literature leaves open). → `BNT_on_spectra.md`, memory
