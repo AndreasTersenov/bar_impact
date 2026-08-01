@@ -67,7 +67,7 @@ makes the noise isotropic so the ~6 signal directions stand out. Same data, same
 
 | explanation | verdict |
 |---|---|
-| ill-conditioning | **WRONG.** BNT correlation-matrix cond **8.3e2** vs non-BNT **4.4e3** — BNT is *better* conditioned. (`NOTES_bnt_compression_for_paper.md` quotes ~1e8 for the raw score; measured 1.2e4. **Do not repeat that claim.**) |
+| ill-conditioning | **WRONG.** BNT correlation-matrix cond **8.3e2** vs non-BNT **4.4e3** — BNT is *better* conditioned. The raw score measures **1.2e4**, not the "~1e8" older drafts asserted. **Do not repeat that claim** — it is retracted in `NOTES_bnt_compression_for_paper.md` §5, and the six superseded docs that still contain it carry a banner. |
 | dynamic range / sign changes | real (24×, 29/92 negative) but **irrelevant** — z-scoring removes both |
 | dimension (92 vs 50) | **EXCLUDED** — raw non-BNT at **100 features** (rebin 10) keeps r = −0.946 and *improves* |
 | **information dilution** | **SUPPORTED — this is it** |
@@ -179,10 +179,10 @@ silently finds an empty namespace package.
 
 | item | status |
 |---|---|
-| **~500 MB of `outputs/score_*` posteriors are NOT archived** | Twelve directories holding every trained posterior behind every number above. Gitignored by design. **Archive to `$STORE` with tar** (`scripts/jz/archive_science_to_store.slurm`, `--partition=archive`, 100k inode quota → tar not rsync). This session began by recovering from losing exactly this kind of file. |
+| ~~`outputs/score_*` posteriors are NOT archived~~ | **DONE 2026-08-01** (job 519233). All **17** directories (not twelve) — 18,798 files, 1.5 GB — tarred to `$STORE/titan_recovery/bar_impact_posteriors/`, one tarball per experiment. Member counts verified against the source, and one posterior restore-tested byte-identical. Cost **52 inodes** where a raw copy would have cost 18,798 against a team quota with ~18k free. Re-run `scripts/jz/archive_score_outputs_to_store.slurm` after new runs (it skips anything already checksummed). |
 | **The embedding exceeds the Gaussian Fisher by 1.25–1.36×** | With a w₀ offset that grows with the FoM (−0.027 MOPED → −0.044 embedding). Real non-Gaussian information or fiducial-local over-confidence — unresolved. **Common mode** (−0.0435 BNT vs −0.0436 non-BNT), so it cancels in the ratio and does not touch the headline. Decisive test available: the fiducial "observation" is the MEAN of 200 permutations while every training row is a single realization; evaluate at a single realization instead and see whether the posterior widens to the Fisher. One run. |
 | **A pre-existing w₀ offset of ≈ −0.025 in every method**, MOPED included | Wider contours were masking it. Not baryon-related (these are null/nobaryons posteriors). |
-| **`NOTES_bnt_compression_for_paper.md` contradicts the settled story** | It is the paper-facing methods doc and still leads with ill-conditioning + a "~1e8" condition number that measures 1.2e4. `PAPER_NOTES` §4 now says otherwise. **Reconcile before drafting methods.** |
+| ~~`NOTES_bnt_compression_for_paper.md` contradicts the settled story~~ | **DONE 2026-08-01.** Rewritten around information dilution: the three excluded alternatives, the three remedies (compress / coarsen / embed) and why the paper uses the embedding, the two controls, and an explicit retraction list. The dilution CSV it cites was regenerated — it had never been persisted. Six superseded planning docs that still repeat the ill-conditioning claim now carry a banner pointing here. |
 | **Five of six areas still have a destroyed analytic covariance** | Only 14000 regenerated. |
 | **TARP/SBC for the corrected NPE posteriors of the OTHER (non-BNT-thread) configs** | Unchanged from before; still the largest referee exposure outside this thread. |
 | **Baryon-model dependence** | One baryonification prescription throughout. Needs new sims. |

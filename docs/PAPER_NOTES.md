@@ -202,7 +202,7 @@ therefore both arms at the **same ℓmax, same rebinning, same compression**, di
 
   | explanation | verdict |
   |---|---|
-  | ill-conditioning | **WRONG.** BNT correlation-matrix cond **8.3e2** vs non-BNT **4.4e3** — BNT is *better* conditioned on what a z-scored flow sees. (`NOTES_bnt_compression_for_paper.md` quotes ~1e8 for the raw score; measured 1.2e4.) Do not repeat this claim. |
+  | ill-conditioning | **WRONG.** BNT correlation-matrix cond **8.3e2** vs non-BNT **4.4e3** — BNT is *better* conditioned on what a z-scored flow sees. The raw score measures **1.2e4**, not the "~1e8" older drafts asserted. Do not repeat this claim; it is retracted in `NOTES_bnt_compression_for_paper.md` §5. |
   | dynamic range / sign changes | real (24× range, 29/92 negative) but **irrelevant** — z-scoring removes both before the flow sees anything |
   | dimension (92 vs 50) | **EXCLUDED** by control: raw non-BNT at rebin 10 = **100 features** keeps r = −0.946 (vs −0.947 at 50) and *improves* FoM₃ 1.39e5 → 1.58e5 |
   | **information dilution** | **SUPPORTED — this is the explanation** |
