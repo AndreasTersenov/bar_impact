@@ -18,10 +18,10 @@ integrity and source drift with `verify`.
 | 3.5 | [`contours_baryon_safe_both_14000_pooled`](contours_baryon_safe_both_14000_pooled/) | Baryon-safe: null and biased overlaid, three statistics, 14000 deg2 | `7cfd75b` | 18 | - |
 | 4 | [`contours_three_stats_null_pooled`](contours_three_stats_null_pooled/) | Null posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
 | 5 | [`contours_three_stats_biased_pooled`](contours_three_stats_biased_pooled/) | Baryon-biased posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
-| 6.0 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `5a917568072f4c604bc2203292973bf2f3ba509a` | 2 | - |
+| 6.0 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
 | 6.0 | [`bnt_score_contours_debiasing_pooled`](bnt_score_contours_debiasing_pooled/) | BNT vs non-BNT at their de-biasing cuts (MOPED, pooled) | `69586a219370d9a4bc00ed639396c383590f7375` | 2 | - |
 | 6 | [`contours_three_stats_both_pooled`](contours_three_stats_both_pooled/) | Null and biased overlaid, three statistics, 14000 deg2 | `9c33642` | 18 | - |
-| 6.1 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `5a917568072f4c604bc2203292973bf2f3ba509a` | 2 | - |
+| 6.1 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
 | 6.1 | [`bnt_score_contours_debiasing_single_seed`](bnt_score_contours_debiasing_single_seed/) | BNT vs non-BNT at their de-biasing cuts (MOPED, single seed) | `69586a219370d9a4bc00ed639396c383590f7375` | 2 | - |
 | 6.2 | [`bnt_score_contours_matched_pooled`](bnt_score_contours_matched_pooled/) | BNT vs non-BNT at a MATCHED scale cut (MOPED, pooled) | `69586a219370d9a4bc00ed639396c383590f7375` | 3 | - |
 | 6.3 | [`bnt_score_contours_matched_single_seed`](bnt_score_contours_matched_single_seed/) | BNT vs non-BNT at a MATCHED scale cut (MOPED, single seed) | `69586a219370d9a4bc00ed639396c383590f7375` | 3 | - |

@@ -1,11 +1,11 @@
 # FLAGSHIP: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)
 
-Single-seed companion to the flagship. Each arm shows its most representative NDE seed, chosen by scripts/tension/seeds.py against the MEDIAN across seeds on both centre and width (worst-parameter, so a seed representative in Omega_m and S8 but a width off in w0 does not qualify). This is the object a real survey reports: one trained density estimator and its own posterior, rather than a pooled stack whose width carries seed-to-seed training scatter. The ratio here is 1.507x against the pooled figure's 1.467x; both arms happen to select run 41, and the difference is seed selection rather than physics. QUOTE THE POOLED FIGURE (1.47x) for the headline - it averages the training scatter out instead of inheriting one draw of it. The per-seed scores behind the choice are recorded under seed_selection in provenance.json so the pick is auditable.
+Single-seed companion to the flagship; see that figure for the full setup and the bias caveat (BNT sits marginally AT the 0.3 sigma threshold at this cut, tolerated on its error bar). Each arm shows its most representative NDE seed, chosen by scripts/tension/seeds.py against the MEDIAN across seeds on both centre and width. This is the object a real survey reports: one trained density estimator and its own posterior, rather than a pooled stack whose width carries seed-to-seed training scatter. Ratio 1.507x here against the pooled figure's 1.467x; both arms happen to select run 41, and the difference is seed selection rather than physics. QUOTE THE POOLED FIGURE (1.47x) for the headline. Per-seed scores behind the choice are in provenance.json under seed_selection.
 
 - **source**: `plots/bnt_flagship_matched_c460_14000_single_seed`
-- **generator commit**: `5a917568072f4c604bc2203292973bf2f3ba509a`
-- **generated**: 2026-08-01T12:20:55Z
-- **published**: 2026-08-01T12:21:26+00:00 at repo `5a91756`
+- **generator commit**: `64c032ddee8516c384194122e13fcbdec7296e36`
+- **generated**: 2026-08-01T14:26:46Z
+- **published**: 2026-08-01T14:27:55+00:00 at repo `64c032d`
 - **rows in values.csv**: 2
 
 ## Scales included

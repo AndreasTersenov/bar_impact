@@ -18,7 +18,8 @@ Last updated: 2026-06-25.
 - **BNT localizes the baryon bias to tomographic bin 1, so the scale cut can be targeted at that bin
   alone** — retaining 92 of 120 bandpowers against 50 for a uniform cut at the same ℓmax, and giving
   **1.47× the 3-param FoM** (19% tighter σ(S₈)) at 14000 deg², matched ℓmax=460, both arms calibrated
-  and unbiased. Real but not dramatic. This is *information retention*, **not** better baryon control —
+  and calibrated (BNT marginally at the 0.3σ threshold, tolerated on its error bar; non-BNT safe at
+  0.17σ). Real but not dramatic. This is *information retention*, **not** better baryon control —
   BNT actually crosses 0.3σ at a lower ℓmax than a uniform cut. Requires MOPED compression: fed the
   ill-conditioned BNT vector raw, a flow loses the Ωm–S₈ degeneracy entirely (r = −0.03 vs −0.9) and
   the comparison inverts to 0.33×. → §4.
@@ -106,7 +107,11 @@ arms at the **same ℓmax, same rebinning, same compression**, differing only in
   | non-BNT cut-all @460 | 0.01871, 0.03403, 0.08795 | 50/120 | 1.098e5 | 0.17 ± 0.03σ |
 
   **BNT/non-BNT = 1.47×** (19% tighter σ(S₈), 13% on Ωm). Both calibrated (SBC 0.28–0.29 vs the ideal
-  0.289), both on-truth, **both unbiased at this cut** — which is what makes matching fair.
+  0.289) and on-truth. **Bias at this cut is asymmetric and must be stated honestly:** non-BNT is
+  comfortably safe (0.17σ), BNT sits *marginally at* the 0.3 threshold (0.304 ± 0.091) and is
+  tolerated on its error bar (mean − σ = 0.21), not comfortably below it. BNT's own adopted cut is
+  **420**. ℓmax=460 is chosen because it is the adopted cut of the main PS analysis
+  (`ps_submean_l37`: 460 → 0.288σ, 500 → 0.413σ).
 
 - **The gain is information-level; our estimator realizes part of it.** Fisher gives 2.10× at the same
   matched cut against the NPE's 1.47×. The shortfall is density estimation, not physics. It comes from
@@ -127,6 +132,26 @@ arms at the **same ℓmax, same rebinning, same compression**, differing only in
   see this** (both test marginal rank uniformity per parameter, and the posterior is calibrated and
   on-truth). Consequence: BNT/non-BNT is **1.47× under MOPED and 0.33× under raw** — the sign of the
   conclusion flips on the compression, which likely explains the contradictory historical BNT results.
+
+- **WHY the flow fails — measured, with the alternatives excluded** (`why_compression_is_needed.py`,
+  `outputs/diagnostics/why_compression_is_needed.csv`). The paper needs this, and the standard
+  explanation is wrong:
+
+  | explanation | verdict |
+  |---|---|
+  | ill-conditioning | **WRONG.** BNT correlation-matrix cond **8.3e2** vs non-BNT **4.4e3** — BNT is *better* conditioned on what a z-scored flow sees. (`NOTES_bnt_compression_for_paper.md` quotes ~1e8 for the raw score; measured 1.2e4.) Do not repeat this claim. |
+  | dynamic range / sign changes | real (24× range, 29/92 negative) but **irrelevant** — z-scoring removes both before the flow sees anything |
+  | dimension (92 vs 50) | **EXCLUDED** by control: raw non-BNT at rebin 10 = **100 features** keeps r = −0.946 (vs −0.947 at 50) and *improves* FoM₃ 1.39e5 → 1.58e5 |
+  | **information dilution** | **SUPPORTED — this is the explanation** |
+
+  Fraction of Fisher information in the highest-S/N **10%** of features:
+  σ(S₈): **0.64 non-BNT vs 0.05 BNT**; Ωm: 0.67 vs 0.07. Median per-feature S/N falls **73 → 6** (S₈);
+  for w₀ only **39%** of BNT features reach S/N > 1. Nulling removes the dominant common mode and
+  leaves differences, so the large amplitudes cancel and the signal survives only in small residuals
+  spread across many modes. A flow conditioned on the raw vector must learn the correct *relative*
+  weighting of ~90 individually weak features from a finite simulation suite; small errors in that
+  weighting damage the joint structure far more than the marginals — exactly the observed failure.
+  MOPED supplies the weighting analytically as C⁻¹J F⁻¹.
 
 - **Binning is a side issue, measured.** MOPED at rebin 20/10/5/2/1 (matched @460, NPE trained and
   calibrated at every rung): Fisher predicts 2.1–2.6× going to native, the posteriors deliver +3%
