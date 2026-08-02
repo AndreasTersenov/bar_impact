@@ -67,6 +67,13 @@ L1_NBINS, L1_MIN, L1_MAX = 40, -10.0, 10.0      # paper's range (was -13,13 in t
 PK_NBINS, PK_MIN, PK_MAX = 31, -2.0, 10.0       # 31 EDGES -> 30 counts
 SEED_BASE = 20260802                            # same rule as the power-spectrum regeneration
 
+# BNT nulling matrix, verbatim from bnt_power_spectrum_processing.py:17. The published BNT HOS
+# pipeline applies it to the four NOISY maps and then computes the statistic per BNT bin.
+BNT_MATRIX = np.array([[1.0, 0.0, 0.0, 0.0],
+                       [-1.0, 1.0, 0.0, 0.0],
+                       [0.4521097, -1.4521097, 1.0, 0.0],
+                       [0.0, 0.25127807, -1.251278, 1.0]])
+
 
 def load_upstream():
     """Pull get_wtl1_sphere / get_wtpeaks_sphere out of the upstream file as source, and exec them.
@@ -126,7 +133,17 @@ def _init_worker():
     _L1F, _PKF, _ = load_upstream()
 
 
-def one_perm(p, bins):
+def _stats(m, l1f, pkf):
+    l1b, l1 = l1f(m, nscales=NSCALES, nbins=L1_NBINS, min_snr=L1_MIN, max_snr=L1_MAX,
+                  noise_std=NOISE_STD)
+    pk, pkb = pkf(m, nscales=NSCALES, noise_std=NOISE_STD, nbins=PK_NBINS, Min=PK_MIN,
+                  Max=PK_MAX, verbose=False)
+    return np.asarray(l1), np.asarray(pk), np.asarray(l1b), np.asarray(pkb)
+
+
+def one_perm(p, bins, bnt=False):
+    """With bnt=True the four tomographic maps are read together, the SAME per-bin noise as the
+    non-BNT suite is added to each, and BNT_MATRIX mixes them before the statistic is taken."""
     l1f, pkf = _L1F, _PKF
     d = f"{SRC}/perm_{p:04d}"
     fb, fn = (f"{d}/projected_probes_maps_baryonified512.h5",
@@ -136,6 +153,19 @@ def one_perm(p, bins):
     out = {}
     try:
         with h5py.File(fb, "r") as hb, h5py.File(fn, "r") as hn:
+            if bnt:
+                noises = [noise_map(SEED_BASE + 1000 * p + (i + 1)) for i in range(4)]
+                for kind, h in (("baryonified", hb), ("nobaryons", hn)):
+                    maps = np.array([np.array(h[f"kg/stage3_lensing{i+1}"], dtype=np.float64)
+                                     + noises[i] for i in range(4)])
+                    maps = BNT_MATRIX @ maps
+                    for b in bins:
+                        l1, pk, l1b, pkb = _stats(maps[b - 1], l1f, pkf)
+                        out[(b, kind, "l1")] = l1
+                        out[(b, kind, "pk")] = pk
+                        out[(b, "l1_bins")] = l1b
+                        out[(b, "pk_bins")] = pkb
+                return p, out, None
             for b in bins:
                 key = f"kg/stage3_lensing{b}"
                 kg = {"baryonified": np.array(hb[key], dtype=np.float64),
@@ -161,6 +191,8 @@ def main():
     ap.add_argument("--nperm", type=int, default=200)
     ap.add_argument("--bins", default="1,2,3,4")
     ap.add_argument("--nproc", type=int, default=40)
+    ap.add_argument("--bnt", action="store_true",
+                    help="apply the BNT nulling to the four noisy maps before the statistic")
     ap.add_argument("--tag", default="matchednoise")
     ap.add_argument("--outdir", default=OUT)
     ap.add_argument("--check-source", action="store_true",
@@ -181,7 +213,7 @@ def main():
     os.makedirs(a.outdir, exist_ok=True)
 
     import multiprocessing as mp
-    fn = partial(one_perm, bins=bins)
+    fn = partial(one_perm, bins=bins, bnt=a.bnt)
     res, fails = {}, []
     with mp.Pool(processes=a.nproc, initializer=_init_worker) as pool:
         for i, (p, out, err) in enumerate(pool.imap_unordered(fn, range(a.nperm)), 1):
@@ -199,15 +231,17 @@ def main():
         for stat, nb in (("l1", L1_NBINS), ("pk", PK_NBINS - 1)):
             for kind in ("baryonified", "nobaryons"):
                 arr = np.stack([res[p][(b, kind, stat)] for p in order])
-                nm = ("all_l1_norms" if stat == "l1" else "all_peak_counts")
+                nm = (("all_bnt_l1_norms" if a.bnt else "all_l1_norms") if stat == "l1"
+                      else ("all_bnt_peak_counts" if a.bnt else "all_peak_counts"))
                 path = (f"{a.outdir}/{nm}_fiducial_{kind}_bin{b}_noisy_s{SIGMA_E:.2f}"
                         f"_new_normalization_{a.tag}.npy")
                 np.save(path, arr)
                 print(f"wrote {path}  {arr.shape}", flush=True)
             # THE BIN CENTRES -- the thing the original pipeline computed and discarded.
             bn = res[order[0]][(b, f"{stat}_bins")]
-            bpath = (f"{a.outdir}/{'all_l1_norms' if stat=='l1' else 'all_peak_counts'}"
-                     f"_fiducial_bin{b}_{a.tag}_bincentres.npy")
+            pre = ("all_bnt_" if a.bnt else "all_") + ("l1_norms" if stat == "l1"
+                                                        else "peak_counts")
+            bpath = f"{a.outdir}/{pre}_fiducial_bin{b}_{a.tag}_bincentres.npy"
             np.save(bpath, bn)
             print(f"wrote {bpath}  {bn.shape}", flush=True)
 
@@ -225,10 +259,10 @@ def main():
             "nside": NSIDE, "nscales": NSCALES, "sigma_e": SIGMA_E, "galaxy_density": NGAL,
             "noise_std": NOISE_STD,
             "seed_rule": f"np.random.default_rng({SEED_BASE} + 1000*perm + bin)",
-            "noise_shared_between_variants": True,
+            "noise_shared_between_variants": True, "bnt": bool(a.bnt),
             "bin_centres_saved": True,
             "failures": fails}
-    mpath = f"{a.outdir}/all_hos_fiducial_{a.tag}_manifest.json"
+    mpath = f"{a.outdir}/all_{'bnt_' if a.bnt else ''}hos_fiducial_{a.tag}_manifest.json"
     with open(mpath, "w") as fh:
         json.dump(meta, fh, indent=2)
     print(f"wrote {mpath}")

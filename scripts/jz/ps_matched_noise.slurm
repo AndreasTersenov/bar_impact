@@ -52,7 +52,7 @@ echo "start : $(date -Is)"
 echo
 
 srun $PY -u scripts/ps_matched_noise_processing.py \
-    --nperm "$NPERM" --bins "$BINS" --nproc "$NPROC" --tag "$TAG"
+    --nperm "$NPERM" --bins "$BINS" --nproc "$NPROC" --tag "$TAG" ${BNT:+--bnt}
 rc=$?
 
 echo

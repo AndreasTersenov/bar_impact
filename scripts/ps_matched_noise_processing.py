@@ -59,6 +59,13 @@ SIGMA_E = 0.26
 NGAL = 6.75
 SEED_BASE = 20260802     # fixed, so this is reproducible forever; change only to make a new suite
 
+# BNT nulling matrix, verbatim from bnt_power_spectrum_processing.py:17. Applied to the four
+# tomographic MAPS after the noise is added, exactly as the published pipeline does it.
+BNT_MATRIX = np.array([[1.0, 0.0, 0.0, 0.0],
+                       [-1.0, 1.0, 0.0, 0.0],
+                       [0.4521097, -1.4521097, 1.0, 0.0],
+                       [0.0, 0.25127807, -1.251278, 1.0]])
+
 
 def noise_map(seed, sigma_e=SIGMA_E, galaxy_density=NGAL, nside=NSIDE):
     """The shape-noise map. Same formula as power_spectrum_processing.add_shape_noise, but the
@@ -74,8 +81,14 @@ def get_power_spectrum(m, lmax=LMAX):
     return hp.alm2cl(hp.map2alm(m, lmax=lmax))
 
 
-def one_perm(p, bins, lmax):
-    """Process one permutation: for each bin, add the SAME noise map to both variants."""
+def one_perm(p, bins, lmax, bnt=False):
+    """Process one permutation: for each bin, add the SAME noise map to both variants.
+
+    With bnt=True the four tomographic maps are read together, the SAME per-bin noise as the
+    non-BNT suite is added to each, and BNT_MATRIX mixes them before the spectrum is taken -- the
+    order the published pipeline uses. Reusing the non-BNT seeds means the two suites are built on
+    identical noise realizations and can be compared directly.
+    """
     d = f"{SRC}/perm_{p:04d}"
     fb = f"{d}/projected_probes_maps_baryonified512.h5"
     fn = f"{d}/projected_probes_maps_nobaryons512.h5"
@@ -84,6 +97,15 @@ def one_perm(p, bins, lmax):
     out = {}
     try:
         with h5py.File(fb, "r") as hb, h5py.File(fn, "r") as hn:
+            if bnt:
+                noises = [noise_map(SEED_BASE + 1000 * p + (i + 1)) for i in range(4)]
+                for kind, h in (("baryonified", hb), ("nobaryons", hn)):
+                    maps = np.array([np.array(h[f"kg/stage3_lensing{i+1}"], dtype=np.float64)
+                                     + noises[i] for i in range(4)])
+                    maps = BNT_MATRIX @ maps
+                    for b in bins:
+                        out[(b, kind)] = get_power_spectrum(maps[b - 1], lmax)
+                return p, out, None
             for b in bins:
                 key = f"kg/stage3_lensing{b}"
                 kg_bar = np.array(hb[key], dtype=np.float64)
@@ -104,6 +126,8 @@ def main():
     ap.add_argument("--bins", default="1,2,3,4")
     ap.add_argument("--nproc", type=int, default=10)
     ap.add_argument("--lmax", type=int, default=LMAX)
+    ap.add_argument("--bnt", action="store_true",
+                    help="apply the BNT nulling to the four noisy maps before taking the spectrum")
     ap.add_argument("--tag", default="matchednoise",
                     help="output suffix: all_cls_fiducial_<kind>_bin<b>_noisy_s0.26_<tag>.npy")
     ap.add_argument("--outdir", default=OUT)
@@ -119,7 +143,7 @@ def main():
     import multiprocessing as mp
     # NOTE: no pool initializer reseeding the RNG. That is exactly what broke the original --
     # every worker reseeded from os.urandom, so noise depended on which worker got the task.
-    fn = partial(one_perm, bins=bins, lmax=a.lmax)
+    fn = partial(one_perm, bins=bins, lmax=a.lmax, bnt=a.bnt)
     results, failures = {}, []
     with mp.Pool(processes=a.nproc) as pool:
         for i, (p, out, err) in enumerate(pool.imap_unordered(fn, range(a.nperm)), 1):
@@ -141,7 +165,8 @@ def main():
             arr = np.zeros((len(order), nl))
             for i, p in enumerate(order):
                 arr[i] = results[p][(b, kind)][:nl]
-            path = f"{a.outdir}/all_cls_fiducial_{kind}_bin{b}_noisy_s{SIGMA_E:.2f}_{a.tag}.npy"
+            pre = "all_bnt_cls" if a.bnt else "all_cls"
+            path = f"{a.outdir}/{pre}_fiducial_{kind}_bin{b}_noisy_s{SIGMA_E:.2f}_{a.tag}.npy"
             np.save(path, arr)
             print(f"wrote {path}  {arr.shape}", flush=True)
 
@@ -153,12 +178,12 @@ def main():
         "perms_used": order, "bins": bins, "lmax": a.lmax,
         "nside": NSIDE, "sigma_e": SIGMA_E, "galaxy_density": NGAL,
         "seed_rule": f"np.random.default_rng({SEED_BASE} + 1000*perm + bin)",
-        "noise_shared_between_variants": True,
+        "noise_shared_between_variants": True, "bnt": bool(a.bnt),
         "failures": failures,
         "differs_from_published_only_by": ("the noise realization; add_shape_noise formula, "
                                            "map2alm/alm2cl, nside, lmax, sigma_e, n_gal identical"),
     }
-    mpath = f"{a.outdir}/all_cls_fiducial_{a.tag}_manifest.json"
+    mpath = (f"{a.outdir}/all_{'bnt_' if a.bnt else ''}cls_fiducial_{a.tag}_manifest.json")
     with open(mpath, "w") as fh:
         json.dump(meta, fh, indent=2)
     print(f"wrote {mpath}")
