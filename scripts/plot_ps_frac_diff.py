@@ -152,9 +152,24 @@ def main():
                         "original suite). matched = the regenerated suite where the SAME noise "
                         "realization was added to both, so cosmic variance AND shape noise cancel "
                         "in the difference (job 533505).")
+    p.add_argument("--area", default="fullsky",
+                   help="'fullsky' (the simulations' own footprint) or a survey area in deg2, e.g. "
+                        "'14000'. Only the BAND scales, by 1/sqrt(f_sky): the curve is a ratio of "
+                        "signal quantities and is area-independent. This is the Gaussian scaling, "
+                        "justified because the full-sky band was verified against sqrt(2/N_modes) "
+                        "to a few percent; it does NOT model mask-induced mode coupling, so treat "
+                        "it as the idealised error for that sky fraction.")
     p.add_argument("--outdir", default="outputs/plots/ps_frac_diff")
     p.add_argument("--name", default=None)
     a = p.parse_args()
+
+    SKY_DEG2 = 41253.0
+    if a.area == "fullsky":
+        fsky, area_lab = 1.0, "full sky"
+    else:
+        fsky = float(a.area) / SKY_DEG2
+        area_lab = f"{float(a.area):.0f} deg2"
+    band_scale = 1.0 / np.sqrt(fsky)
 
     styles = ["-", "--", "-.", ":"]
     colors = ["C0", "C1", "C2", "C3"]
@@ -172,6 +187,7 @@ def main():
             band = bar.std(0) / mean_nob                # err(PS_bar) / PS_DMO
         else:
             band = ((bar - nob) / nob).std(0)           # the published band
+        band = band * band_scale                        # 1/sqrt(f_sky); no-op for full sky
         curves.append(curve); bands.append(band)
         for j in range(NBIN):
             rows.append(dict(bin=b, ell_index=j, frac_diff=float(curve[j]),
@@ -199,10 +215,14 @@ def main():
             per_bin[f"bin{b}"] = {str(lm): round(float(c[lm]), 2)
                                   for lm in (200, 400, 460, 600, 800, 1000)}
         cumsn[lab] = per_bin
-    print("\ncumulative S/N of the mismatch (sqrt(sum (dC/sigma)^2)), full sky:")
+    # Print the entry matching the plotted area, not a hardcoded one -- a mismatched number in the
+    # log is the kind of thing that ends up quoted in a caption.
+    key = "full_sky" if a.area == "fullsky" else "14000deg2"
+    key = key if key in cumsn else "full_sky"
+    print(f"\ncumulative S/N of the mismatch (sqrt(sum (dC/sigma)^2)), {key}:")
     for b in (1, 2, 3, 4):
         print(f"  bin {b}: " + "  ".join(f"lmax{k}={v}" for k, v in
-                                         cumsn['full_sky'][f'bin{b}'].items()))
+                                         cumsn[key][f'bin{b}'].items()))
 
     ells_published = np.arange(LMIN, LMAX, 100)
     ells_true = ell_centres(ncol, mode=a.binning)
@@ -210,7 +230,8 @@ def main():
     # --binning fixed we draw them where they belong.
     x = ells_published if a.binning == "published" else ells_true
 
-    print(f"band = {a.band}   binning = {a.binning}   noise = {a.noise}")
+    print(f"band = {a.band}   binning = {a.binning}   noise = {a.noise}   "
+          f"area = {area_lab} (band x{band_scale:.3f})")
     print(f"  published x : {ells_published}")
     print(f"  true centres: {np.round(ells_true).astype(int)}")
     for i, b in enumerate((1, 2, 3, 4)):
@@ -240,7 +261,9 @@ def main():
 
     outdir = os.path.join(REPO, a.outdir)
     os.makedirs(outdir, exist_ok=True)
-    name = a.name or f"ps_frac_diff_band_{a.band}" + ("" if a.binning == "published" else "_binfix")
+    name = (a.name or f"ps_frac_diff_band_{a.band}"
+            + ("" if a.binning == "published" else "_binfix")
+            + ("" if a.area == "fullsky" else f"_{a.area}"))
     base = os.path.join(outdir, name)
     for ext in ("pdf", "png"):
         plt.savefig(f"{base}.{ext}", transparent=True, bbox_inches="tight", dpi=200)
@@ -282,7 +305,9 @@ def main():
         "ell_axis_published": [int(v) for v in ells_published],
         "ell_axis_true_centres": [float(v) for v in ells_true],
         "cumulative_SN_of_mismatch": cumsn,
-        "band_area": "full sky (the simulations' own footprint); NOT rescaled to 14000 deg2",
+        "band_area": area_lab,
+        "f_sky": fsky,
+        "band_scale_applied": band_scale,
         "caveats": [
             "THE PER-BAND COMPARISON UNDERSTATES THE IMPACT. The curve sits below the band at most "
             "ell, but the baryonic shift is COHERENT while the noise is random, so it accumulates "

@@ -1,0 +1,40 @@
+{
+  "slug": "ps_frac_diff_fig2_14000",
+  "title": "Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra",
+  "paper_position": null,
+  "published_utc": "2026-08-02T12:07:07+00:00",
+  "published_at_repo_commit": "97b0eaf",
+  "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.pdf",
+      "sha256": "fb8cb649e05271ccb9325d1bb9be78b9b5604946d270bea62d0d917b9bae3e05",
+      "bytes": 13628
+    },
+    "figure.png": {
+      "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.png",
+      "sha256": "15a33b4b96d17ce011fad7ddbeef80b10783cb2ffa500cb5f9f185a92e56f1d9",
+      "bytes": 81962
+    },
+    "values.csv": {
+      "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_values.csv",
+      "sha256": "9e40c240c5bd1d70b44ec971fe6ca0042348e86a7492b84d50cf9f97529ff0e6",
+      "bytes": 2125
+    },
+    "provenance.json": {
+      "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_provenance.json",
+      "sha256": "2093e235a5e5bdb458d970fccbcb8e0086b88577e242bbc9c84352593b69ae39",
+      "bytes": 4307
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+      "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
+    ]
+  },
+  "value_rows": 40,
+  "n_caveats": 4
+}

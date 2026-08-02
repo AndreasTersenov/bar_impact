@@ -75,9 +75,21 @@ measured on the unbinned spectra, which was never affected by the binning used f
 Fig. 2 is now accompanied by a statement that the per-multipole comparison understates the total
 impact of baryons. The baryonic shift is coherent across multipoles while the noise is random, so it
 accumulates: although the curve lies within the 1σ band at most multipoles, the cumulative
-significance of the DMO-model / baryonified-data mismatch reaches ≈ 3.5σ (bin 1) to ≈ 10σ (bin 4) by
-ℓ = 1000 for a full-sky measurement. This is the reason a scale cut is required, and we felt it
-should be stated explicitly so the figure is not read as implying that baryons are negligible.
+significance of the DMO-model / baryonified-data mismatch grows to
+
+| ℓ_max | bin 1 | bin 2 | bin 3 | bin 4 |
+|---|---|---|---|---|
+| 460 | 1.7σ | 2.6σ | 2.8σ | 2.6σ |
+| 1000 | 3.5σ | 6.7σ | 9.6σ | 10.1σ |
+
+for a full-sky measurement. This is the reason a scale cut is required, and we felt it should be
+stated explicitly so the figure is not read as implying that baryons are negligible.
+
+> **Internal note (not for the referee).** The figure exists in two variants and the numbers above
+> are the full-sky ones. If the 14000 deg² variant is used instead, the band widens by
+> 1/√f_sky = 1.72 and the table becomes 1.0/1.5/1.7/1.5 σ at ℓ_max = 460 and 2.1/3.9/5.6/5.9 σ at
+> ℓ_max = 1000. **Update this section to match whichever figure ships.** Slugs:
+> `paper/figures/ps_frac_diff_fig2` (full sky) and `ps_frac_diff_fig2_14000`.
 
 ---
 
