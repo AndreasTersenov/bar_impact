@@ -1,0 +1,75 @@
+{
+  "figure": "hos_bnt_l1_nobaryons",
+  "generator": "scripts/plot_hos_bnt_triangle.py",
+  "command": "scripts/plot_hos_bnt_triangle.py --stat l1 --bnt-arm nobaryons",
+  "git_commit": "a3f63d23f6c425f005185ba5e2ba2fb219773eeb",
+  "generated_utc": "2026-08-01T21:08:42Z",
+  "statistic": "l1",
+  "bnt_arm": "nobaryons",
+  "bnt_arm_note": "NO baryons injected -- not like-for-like with the other two",
+  "scales_included": {
+    "all": "scales1234 = internal 0,1,2,3 = all four wavelet scales",
+    "cut": "scales234 = internal 1,2,3 = three scales, finest dropped; legend [20',40',80']",
+    "bnt": "bntbins1234 scales1234"
+  },
+  "legend_correction": "Original legend listed four entries [20',40',80',coarse] for the three-scale cut vector. The coarse scale was not used; the label now lists three.",
+  "truth": {
+    "$\\Omega_{m}$": 0.26,
+    "$\\sigma_8$": 0.84,
+    "$w_0$": -1.0
+  },
+  "fom_definition": "FoM_3 = 1/sqrt(det Cov(Omega_m, S8, w0))",
+  "caveats": [
+    "OLD CONVENTION: these NPE runs predate the lmin=37 / monopole-subtraction / MASTER recovery. Do not overlay on current-convention figures without rerunning.",
+    "Single NPE run per arm (not seed-pooled), so the contour width carries the seed-to-seed training scatter of one seed only."
+  ],
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "matplotlib": "3.11.1"
+  },
+  "series": [
+    {
+      "arm": "bnt_nobaryons",
+      "label": "$\\ell_1^{BNT}$, no baryons",
+      "color": "0.55",
+      "file": "posterior_samples_nobaryons_vs_nobaryons_bntbins1234_scales1234_noisy_s0.26_new_normalization_npe.npy",
+      "n_samples": 3000,
+      "mean_Om": 0.2543031871318817,
+      "mean_S8": 0.8484928607940674,
+      "mean_w0": -1.0217722654342651,
+      "sigma_Om": 0.010612201876938343,
+      "sigma_S8": 0.020404430106282234,
+      "sigma_w0": 0.07499606162309647,
+      "fom3": 171465.83190940556
+    },
+    {
+      "arm": "cut",
+      "label": "$\\ell_1$, scales [20',40',80']",
+      "color": "#d62728",
+      "file": "posterior_samples_nobaryons_vs_baryonified_bins1234_scales234_noisy_s0.26_new_normalization_npe.npy",
+      "n_samples": 3000,
+      "mean_Om": 0.2555057108402252,
+      "mean_S8": 0.8344575762748718,
+      "mean_w0": -1.074528694152832,
+      "sigma_Om": 0.008297089487314224,
+      "sigma_S8": 0.01059654075652361,
+      "sigma_w0": 0.05896932631731033,
+      "fom3": 1312847.3336746593
+    },
+    {
+      "arm": "all",
+      "label": "$\\ell_1$, all scales",
+      "color": "#1f77b4",
+      "file": "posterior_samples_nobaryons_vs_baryonified_bins1234_scales1234_noisy_s0.26_new_normalization_npe.npy",
+      "n_samples": 3000,
+      "mean_Om": 0.2546496093273163,
+      "mean_S8": 0.8126078844070435,
+      "mean_w0": -1.2148503065109253,
+      "sigma_Om": 0.00690089026466012,
+      "sigma_S8": 0.008991904556751251,
+      "sigma_w0": 0.03953442722558975,
+      "fom3": 3623692.8629971817
+    }
+  ]
+}

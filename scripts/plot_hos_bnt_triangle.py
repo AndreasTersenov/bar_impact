@@ -151,7 +151,12 @@ def main():
         # float() every numpy scalar: json cannot serialize np.float32, and the L1 posteriors are
         # stored float32 where the peaks ones are float64 -- so this only bites on some arms, which
         # is exactly the kind of thing that ships a truncated provenance file unnoticed.
-        rows.append(dict(arm=key, label=label, color=col, file=fname, n_samples=int(s.shape[0]),
+        # n_seeds is 1 and stated rather than omitted: these runs predate the seed-pooling
+        # convention, so each contour's width carries ONE seed's training scatter. The publish
+        # gate warns when this column is absent, and it is right to -- an absent seed count
+        # reads as "pooled" to anyone comparing against the current figures.
+        rows.append(dict(arm=key, label=label, color=col, file=fname, n_seeds=1,
+                         n_samples=int(s.shape[0]),
                          mean_Om=float(m[0]), mean_S8=float(m[1]), mean_w0=float(m[2]),
                          sigma_Om=float(sd[0]), sigma_S8=float(sd[1]), sigma_w0=float(sd[2]),
                          fom3=fom3(s)))
@@ -198,6 +203,8 @@ def main():
         "git_commit": commit,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "mplstyle": ("matplotlib dark_background" if a.dark else "matplotlib default")
+                    + " + getdist get_subplot_plotter(width_inch=6); no repo style sheet",
         "statistic": a.stat,
         "bnt_arm": a.bnt_arm,
         "bnt_arm_note": bnt_note,
@@ -213,6 +220,13 @@ def main():
         "truth": {PAR_LABELS[i]: float(TRUTH[i]) for i in SUB},
         "fom_definition": "FoM_3 = 1/sqrt(det Cov(Omega_m, S8, w0))",
         "caveats": [
+            f"BNT arm is the {a.bnt_arm} run ({bnt_note}).",
+        ] + ([
+            "The BNT contour has NO baryons injected, while the other two do. It therefore sits "
+            "on the truth because it is baryon-free, NOT because BNT removed the bias. The "
+            "baryonified BNT run exists and sits at w0 = -0.825, biased opposite to 'all "
+            "scales'. Rerun with --bnt-arm baryonified for the like-for-like comparison."
+        ] if a.bnt_arm == "nobaryons" else []) + [
             "OLD CONVENTION: these NPE runs predate the lmin=37 / monopole-subtraction / MASTER "
             "recovery. Do not overlay on current-convention figures without rerunning.",
             "Single NPE run per arm (not seed-pooled), so the contour width carries the "
