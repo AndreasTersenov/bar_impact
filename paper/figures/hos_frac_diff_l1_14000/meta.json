@@ -1,0 +1,37 @@
+{
+  "slug": "hos_frac_diff_l1_14000",
+  "title": "Fractional baryonic impact on the starlet l1-norm (14000 deg2)",
+  "paper_position": null,
+  "published_utc": "2026-08-02T13:58:34+00:00",
+  "published_at_repo_commit": "0bbd792",
+  "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.pdf",
+      "sha256": "a7adb4ac180d0bf2efe03eea9c44214b91cd592a27e32b19bcef184018e08012",
+      "bytes": 26775
+    },
+    "figure.png": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.png",
+      "sha256": "ac478b4cea86cbf50f8c92b790978f28287b82dfb89fe2573b4676d973ebc3df",
+      "bytes": 277653
+    },
+    "values.csv": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_values.csv",
+      "sha256": "e29b3e9590e1186d66ba3abc61c514637757458601807a1f5eb973f9bcfeeae7",
+      "bytes": 26083
+    },
+    "provenance.json": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_provenance.json",
+      "sha256": "a22528c901ace5c4a372a0220a052d117c60e31abbd87295157d0634c62f0eb3",
+      "bytes": 1597
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 426,
+  "n_caveats": 3
+}

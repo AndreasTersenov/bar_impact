@@ -1,0 +1,37 @@
+{
+  "slug": "hos_frac_diff_l1",
+  "title": "Fractional baryonic impact on the starlet l1-norm (full sky)",
+  "paper_position": null,
+  "published_utc": "2026-08-02T13:58:34+00:00",
+  "published_at_repo_commit": "0bbd792",
+  "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.pdf",
+      "sha256": "7b15ebac939d51500f739af216dbffce3135fe969869f768dd5cbb3de2928496",
+      "bytes": 26704
+    },
+    "figure.png": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.png",
+      "sha256": "f5fc6a4949239ef9aec3b4908bf70fe4512ab75419e47364b9a6e97bbfe4fa3d",
+      "bytes": 270878
+    },
+    "values.csv": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_values.csv",
+      "sha256": "5f1ae3002da02ed6b3c6fdcaefdadc67622fad228068eba02c29a418591a200a",
+      "bytes": 26204
+    },
+    "provenance.json": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_provenance.json",
+      "sha256": "26d2857097b785fd0a371eacb132b1a50725595fbfe9d6a0f0c3cf5f150798b1",
+      "bytes": 1539
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 426,
+  "n_caveats": 3
+}

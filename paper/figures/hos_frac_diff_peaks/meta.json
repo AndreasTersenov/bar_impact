@@ -1,0 +1,37 @@
+{
+  "slug": "hos_frac_diff_peaks",
+  "title": "Fractional baryonic impact on the starlet peak counts (full sky)",
+  "paper_position": null,
+  "published_utc": "2026-08-02T13:58:34+00:00",
+  "published_at_repo_commit": "0bbd792",
+  "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.pdf",
+      "sha256": "0c191c2786a41b0a13064d3e926fd2344264941c017f52e5b2d8d446dfbe7845",
+      "bytes": 25267
+    },
+    "figure.png": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.png",
+      "sha256": "a9f0290369b936ca5d9215ed7aef673397deea1c4a618892354042636e2844b1",
+      "bytes": 297233
+    },
+    "values.csv": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_values.csv",
+      "sha256": "77ce53bdf1c65d9a6b89be24aa40d64f24667a87de2cd3d84bcdf0e7a4eb6641",
+      "bytes": 25408
+    },
+    "provenance.json": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_provenance.json",
+      "sha256": "e672ea4cdb6b43f785fc1e9aaad823c53d13ca040e994a13b9403e334c3f283c",
+      "bytes": 1544
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 353,
+  "n_caveats": 3
+}

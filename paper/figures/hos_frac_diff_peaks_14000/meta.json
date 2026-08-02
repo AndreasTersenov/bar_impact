@@ -1,0 +1,37 @@
+{
+  "slug": "hos_frac_diff_peaks_14000",
+  "title": "Fractional baryonic impact on the starlet peak counts (14000 deg2)",
+  "paper_position": null,
+  "published_utc": "2026-08-02T13:58:34+00:00",
+  "published_at_repo_commit": "0bbd792",
+  "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.pdf",
+      "sha256": "f98fadbc180ad554e5377885947c9e9f5b39ebe070587922f283aaa4c2796b8d",
+      "bytes": 25425
+    },
+    "figure.png": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.png",
+      "sha256": "ff3b4b3eba0687da82e3f4f3d8e12ee88988d2c4c23e65e2eb3963ec8263e481",
+      "bytes": 301036
+    },
+    "values.csv": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_values.csv",
+      "sha256": "7af4315b0fa548fd2d760b00293a0b5bc5643af27c3e489338897be179a88310",
+      "bytes": 25304
+    },
+    "provenance.json": {
+      "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_provenance.json",
+      "sha256": "595c186df9b61f1c86a3c16253e7d95d2978f05fe4917fb9b68d6487cdd76e2a",
+      "bytes": 1602
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 353,
+  "n_caveats": 3
+}
