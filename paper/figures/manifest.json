@@ -1681,5 +1681,48 @@
       "value_rows": 3,
       "n_caveats": 2
     }
+  },
+  {
+    "slug": "ps_frac_diff_fig2",
+    "meta": {
+      "slug": "ps_frac_diff_fig2",
+      "title": "Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)",
+      "paper_position": null,
+      "published_utc": "2026-08-02T11:26:08+00:00",
+      "published_at_repo_commit": "dd75859",
+      "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.pdf",
+          "sha256": "998b6cf4eaf1eceb2f9bd303aceaa2ba8f98cb5d52ffa8930339656d3cc03d7b",
+          "bytes": 13273
+        },
+        "figure.png": {
+          "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.png",
+          "sha256": "0ce9ad4c33cb32172462e8569d849d93d2940b671b8244706f75b6c9c8e42223",
+          "bytes": 109308
+        },
+        "values.csv": {
+          "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_values.csv",
+          "sha256": "9c229865b2f6f8659c89cf3738962cf482dc628f7f43bf39a6ee6cfa8cef994d",
+          "bytes": 2130
+        },
+        "provenance.json": {
+          "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_provenance.json",
+          "sha256": "db314d59ef49c4c83660d29272374e5ad2dcb5e92f328b72fd0f04d42e820405",
+          "bytes": 3994
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+          "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
+        ]
+      },
+      "value_rows": 40,
+      "n_caveats": 4
+    }
   }
 ]
