@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_both_14000_pooled",
   "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
   "paper_position": 3.5,
-  "published_utc": "2026-08-01T12:21:27+00:00",
-  "published_at_repo_commit": "5a91756",
+  "published_utc": "2026-08-02T12:03:22+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {

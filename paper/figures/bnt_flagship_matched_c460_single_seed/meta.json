@@ -2,8 +2,8 @@
   "slug": "bnt_flagship_matched_c460_single_seed",
   "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
   "paper_position": 6.2,
-  "published_utc": "2026-08-01T18:42:31+00:00",
-  "published_at_repo_commit": "1f3f0a4",
+  "published_utc": "2026-08-02T12:03:21+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
   "files": {
     "figure.pdf": {

@@ -2,8 +2,8 @@
   "slug": "bnt_score_contours_matched_pooled",
   "title": "bnt score contours matched pooled",
   "paper_position": 6.6,
-  "published_utc": "2026-08-01T18:42:47+00:00",
-  "published_at_repo_commit": "1f3f0a4",
+  "published_utc": "2026-08-02T12:03:21+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "plots/score_contours_matched_580_14000_pooled",
   "files": {
     "figure.pdf": {

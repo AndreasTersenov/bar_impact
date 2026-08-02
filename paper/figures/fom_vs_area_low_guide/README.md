@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor`
 - **generator commit**: `9c33642`
 - **generated**: 2026-07-30T08:38:13+00:00
-- **published**: 2026-08-01T12:21:27+00:00 at repo `5a91756`
+- **published**: 2026-08-02T12:03:22+00:00 at repo `489dd05`
 - **rows in values.csv**: 18
 
 ## Scales included

@@ -2,13 +2,13 @@
   "slug": "hos_bnt_peaks_vs_scale_cut",
   "title": "Peak counts: BNT vs scale cut vs all scales (baryonified)",
   "paper_position": null,
-  "published_utc": "2026-08-02T08:10:17+00:00",
-  "published_at_repo_commit": "cd90af1",
+  "published_utc": "2026-08-02T12:03:22+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified.pdf",
-      "sha256": "aaf998f80a9f09469eac270987d506e99d6896ea3d9a8ab49473c8a3f3a19d1a",
+      "sha256": "c2c6ad40255818a66147694f768326f0970597d11e83a35f188df9f8b5e27d5d",
       "bytes": 149506
     },
     "figure.png": {
@@ -18,23 +18,20 @@
     },
     "values.csv": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified_values.csv",
-      "sha256": "5e6d3d0a9efd2b32b2d6f7ee809feccdcb6d1884d55ab52643bae669494b8278",
-      "bytes": 951
+      "sha256": "7b462bd59eaa1bbf67e36c2b7e0b69cc970e8fb8293c8bd14ad8e4a731f9de62",
+      "bytes": 965
     },
     "provenance.json": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified_provenance.json",
-      "sha256": "f5865b6369106912f776bd6dfbae6d80580881a5bc22df90e14f5b8350fd6421",
-      "bytes": 2916
+      "sha256": "d913fd2428dc582608f8a7bce846b24d8e6e2e454da3960a7a3eea9e18badec5",
+      "bytes": 3164
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-      "provenance is missing 'mplstyle'"
-    ]
+    "warnings": []
   },
   "value_rows": 3,
-  "n_caveats": 2
+  "n_caveats": 3
 }

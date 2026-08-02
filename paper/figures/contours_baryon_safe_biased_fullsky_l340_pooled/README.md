@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled`
 - **generator commit**: `bc8ebd2`
 - **generated**: 2026-07-30T21:55:17+00:00
-- **published**: 2026-08-01T12:21:27+00:00 at repo `5a91756`
+- **published**: 2026-08-02T12:03:22+00:00 at repo `489dd05`
 - **rows in values.csv**: 9
 
 ## Scales included

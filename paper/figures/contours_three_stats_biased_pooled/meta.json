@@ -2,8 +2,8 @@
   "slug": "contours_three_stats_biased_pooled",
   "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
   "paper_position": 5,
-  "published_utc": "2026-08-01T12:21:27+00:00",
-  "published_at_repo_commit": "5a91756",
+  "published_utc": "2026-08-02T12:03:22+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
   "files": {
     "figure.pdf": {

@@ -1,9 +1,9 @@
 # Peak counts: BNT vs scale cut vs all scales (baryonified)
 
 - **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified`
-- **generator commit**: `a3f63d23f6c425f005185ba5e2ba2fb219773eeb`
-- **generated**: 2026-08-01T20:54:47Z
-- **published**: 2026-08-02T08:10:17+00:00 at repo `cd90af1`
+- **generator commit**: `cd90af18dd6ed3086423e62af72340014bdc6cc3`
+- **generated**: 2026-08-02T08:20:38Z
+- **published**: 2026-08-02T12:03:22+00:00 at repo `489dd05`
 - **rows in values.csv**: 3
 
 ## Scales included
@@ -12,13 +12,9 @@
 - **cut**: scales234 = internal 1,2,3 = three scales, finest dropped; legend [20',40',80']
 - **bnt**: bntbins1234 scales1234
 
-## Known gaps
-
-- _values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to
-- provenance is missing 'mplstyle'
-
 ## Caveats (from provenance)
 
+- BNT arm is the baryonified run (baryonified, like-for-like with the other two).
 - OLD CONVENTION: these NPE runs predate the lmin=37 / monopole-subtraction / MASTER recovery. Do not overlay on current-convention figures without rerunning.
 - Single NPE run per arm (not seed-pooled), so the contour width carries the seed-to-seed training scatter of one seed only.
 

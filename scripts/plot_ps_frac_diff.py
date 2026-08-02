@@ -78,28 +78,58 @@ def load(kind, b, tag=""):
     return a
 
 
-def rebin(arr, new_size=NBIN):
-    """The published binning, reproduced verbatim so the curve is unchanged.
+def _edges(mode, new_size=NBIN):
+    """Band edges in ell.
 
-    NOTE the log_bins values are used as INDICES into an array already sliced at LMIN, so each bin
-    covers ell = index + LMIN. `ell_centres()` below reports where the bins actually sit; the
-    published x-axis was np.arange(30, 1024, 100), which is linear and does not match. Exposed as
-    --ell-axis rather than silently corrected, because it changes where the points are drawn.
+    The published version keeps astype(int), which TRUNCATES: np.logspace returns 29.999... for the
+    first edge, so it becomes 29 rather than 30. Harmless there only because that mode does not
+    subtract lmin before indexing; subtracting would give index -1, an empty slice and a NaN band.
+    The fixed version rounds instead and clamps the ends to [LMIN, LMAX], so the first band starts
+    exactly at lmin and no multipole is lost.
     """
-    log_bins = np.logspace(np.log10(LMIN), np.log10(LMAX), new_size + 1).astype(int)
+    e = np.logspace(np.log10(LMIN), np.log10(LMAX), new_size + 1)
+    if mode == "published":
+        return e.astype(int)
+    e = np.round(e).astype(int)
+    e[0], e[-1] = LMIN, LMAX
+    return e
+
+
+def rebin(arr, new_size=NBIN, mode="fixed"):
+    """Average C_ell into `new_size` logarithmic bands over [LMIN, LMAX).
+
+    `arr` is ALREADY sliced at LMIN, so its column j is ell = j + LMIN.
+
+    mode="published" reproduces the notebook verbatim, INCLUDING ITS BUG: it uses the ell-valued
+    edges directly as column indices into that offset array, so every band is shifted up by LMIN
+    and ell 30-58 are silently dropped -- the lowest ell in the published figure is 59, not 30.
+
+    mode="fixed" subtracts LMIN before indexing, so band i covers exactly ell in
+    [log_bins[i], log_bins[i+1]) as intended, and no multipole is lost.
+    """
+    log_bins = _edges(mode)
+    off = 0 if mode == "published" else LMIN
     out = np.zeros((arr.shape[0], new_size))
     for i in range(new_size):
-        out[:, i] = arr[:, log_bins[i]:log_bins[i + 1]].mean(axis=1)
+        lo, hi = log_bins[i] - off, log_bins[i + 1] - off
+        out[:, i] = arr[:, lo:hi].mean(axis=1)
     return out
 
 
-def ell_centres(ncol, new_size=NBIN):
-    log_bins = np.logspace(np.log10(LMIN), np.log10(LMAX), new_size + 1).astype(int)
+def ell_centres(ncol, new_size=NBIN, mode="fixed"):
+    """Effective ell of each band: the arithmetic mean of the multipoles actually averaged.
+
+    rebin() takes an UNWEIGHTED mean of C_ell over the band, so the arithmetic mean of ell is the
+    consistent place to draw the point. (A mode-weighted band estimator would want
+    sum((2l+1)l)/sum(2l+1) instead, but that would change the estimator, not just the axis.)
+    """
+    log_bins = _edges(mode)
+    off = 0 if mode == "published" else LMIN
     c = []
     for i in range(new_size):
-        lo = min(log_bins[i], ncol) + LMIN
-        hi = min(log_bins[i + 1], ncol) + LMIN
-        c.append(0.5 * (lo + hi))
+        lo = min(log_bins[i] - off, ncol) + LMIN
+        hi = min(log_bins[i + 1] - off, ncol) + LMIN
+        c.append(0.5 * (lo + hi - 1))
     return np.array(c)
 
 
@@ -108,9 +138,11 @@ def main():
     p.add_argument("--band", default="survey", choices=["survey", "diff"],
                    help="survey = err(PS_bar)/PS_DMO (referee's request, default). "
                         "diff = err(PS_bar-PS_DMO)/PS_DMO (as published).")
-    p.add_argument("--ell-axis", default="published", choices=["published", "centres"],
-                   help="published = np.arange(30,1024,100) as in the paper. "
-                        "centres = where the log bins actually sit.")
+    p.add_argument("--binning", default="fixed", choices=["published", "fixed"],
+                   help="published = reproduce the notebook exactly, bug included: ell-valued band "
+                        "edges used as indices into an array offset by lmin, so bands shift up by "
+                        "30 and ell 30-58 are dropped. fixed = index correctly, keeping all "
+                        "multipoles, and draw each point at the mean ell it actually averages.")
     p.add_argument("--ylim", default="published",
                    help="'published' = (-0.05, 0.05) as in the paper; 'auto' = fit the curves and "
                         "bands, which is the only way the shape is actually visible since the "
@@ -131,8 +163,8 @@ def main():
     ncol = None
     for b in (1, 2, 3, 4):
         tag = "" if a.noise == "published" else "_matchednoise"
-        bar = rebin(load("baryonified", b, tag)[:, LMIN:])
-        nob = rebin(load("nobaryons", b, tag)[:, LMIN:])
+        bar = rebin(load("baryonified", b, tag)[:, LMIN:], mode=a.binning)
+        nob = rebin(load("nobaryons", b, tag)[:, LMIN:], mode=a.binning)
         ncol = load("nobaryons", b, tag).shape[1] - LMIN
         mean_nob = nob.mean(0)
         curve = (bar - nob).mean(0) / mean_nob          # unchanged from the published figure
@@ -173,10 +205,12 @@ def main():
                                          cumsn['full_sky'][f'bin{b}'].items()))
 
     ells_published = np.arange(LMIN, LMAX, 100)
-    ells_true = ell_centres(ncol)
-    x = ells_published if a.ell_axis == "published" else ells_true
+    ells_true = ell_centres(ncol, mode=a.binning)
+    # The published figure drew the points on a LINEAR axis while the bands are logarithmic; with
+    # --binning fixed we draw them where they belong.
+    x = ells_published if a.binning == "published" else ells_true
 
-    print(f"band = {a.band}   ell-axis = {a.ell_axis}   noise = {a.noise}")
+    print(f"band = {a.band}   binning = {a.binning}   noise = {a.noise}")
     print(f"  published x : {ells_published}")
     print(f"  true centres: {np.round(ells_true).astype(int)}")
     for i, b in enumerate((1, 2, 3, 4)):
@@ -206,7 +240,7 @@ def main():
 
     outdir = os.path.join(REPO, a.outdir)
     os.makedirs(outdir, exist_ok=True)
-    name = a.name or f"ps_frac_diff_band_{a.band}" + ("" if a.ell_axis == "published" else "_ellfix")
+    name = a.name or f"ps_frac_diff_band_{a.band}" + ("" if a.binning == "published" else "_binfix")
     base = os.path.join(outdir, name)
     for ext in ("pdf", "png"):
         plt.savefig(f"{base}.{ext}", transparent=True, bbox_inches="tight", dpi=200)
@@ -240,8 +274,11 @@ def main():
                  if a.band == "survey" else
                  "std((C_bar - C_DMO)/C_DMO) -- as published"),
         "binning": f"{NBIN} logarithmic bands, lmin={LMIN}, lmax={LMAX}",
-        "ell_axis": ("np.arange(30,1024,100), as published" if a.ell_axis == "published"
-                     else "true log-bin centres"),
+        "binning_mode": a.binning,
+        "ell_axis": ("np.arange(30,1024,100) (LINEAR, while the bands are logarithmic); bands "
+                     "shifted up by lmin so ell 30-58 are dropped -- reproduces the paper"
+                     if a.binning == "published" else
+                     "each point at the mean ell of the multipoles it averages; all ell>=30 kept"),
         "ell_axis_published": [int(v) for v in ells_published],
         "ell_axis_true_centres": [float(v) for v in ells_true],
         "cumulative_SN_of_mismatch": cumsn,
@@ -259,8 +296,11 @@ def main():
             "(power_spectrum_processing.py:91 seeds from os.urandom). The survey band is unaffected "
             "since it involves no subtraction, but the residual wiggle in the mean curve is caused "
             "by this and can only be removed by regenerating with matched seeds.",
-            "The published x-axis is linear while the binning is logarithmic; --ell-axis centres "
-            "shows where the bins actually sit. Default reproduces the published positions.",
+            "PUBLISHED BINNING HAS TWO DEFECTS, reproduced by --binning published: the log-spaced "
+            "band edges are ell VALUES used as INDICES into an array already sliced at lmin, so "
+            "every band is shifted up by 30 and ell 30-58 never enter the figure (lowest ell "
+            "plotted is 59); and the points are drawn on a linear axis while the bands are "
+            "logarithmic. --binning fixed corrects both.",
         ],
         "versions": {"python": sys.version.split()[0], "numpy": np.__version__,
                      "matplotlib": matplotlib.__version__},

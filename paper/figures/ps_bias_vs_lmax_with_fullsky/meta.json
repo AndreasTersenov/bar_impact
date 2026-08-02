@@ -2,8 +2,8 @@
   "slug": "ps_bias_vs_lmax_with_fullsky",
   "title": "PS baryon bias vs cut, 6 footprints plus full sky",
   "paper_position": 2,
-  "published_utc": "2026-08-01T12:21:28+00:00",
-  "published_at_repo_commit": "5a91756",
+  "published_utc": "2026-08-02T12:03:22+00:00",
+  "published_at_repo_commit": "489dd05",
   "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky",
   "files": {
     "figure.pdf": {
