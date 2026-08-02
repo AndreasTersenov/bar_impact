@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed`
 - **generator commit**: `d8384e9`
 - **generated**: 2026-07-30T15:47:08+00:00
-- **published**: 2026-08-02T12:03:22+00:00 at repo `489dd05`
+- **published**: 2026-08-02T12:45:29+00:00 at repo `cb724b6`
 - **rows in values.csv**: 18
 
 ## Scales included

@@ -2,8 +2,8 @@
   "slug": "bias_vs_area_three_stats",
   "title": "Baryon bias vs survey area, three statistics, full resolution",
   "paper_position": 3,
-  "published_utc": "2026-08-02T12:03:21+00:00",
-  "published_at_repo_commit": "489dd05",
+  "published_utc": "2026-08-02T12:45:28+00:00",
+  "published_at_repo_commit": "cb724b6",
   "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
   "files": {
     "figure.pdf": {

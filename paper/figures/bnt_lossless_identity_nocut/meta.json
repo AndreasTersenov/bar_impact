@@ -2,8 +2,8 @@
   "slug": "bnt_lossless_identity_nocut",
   "title": "VALIDATION: BNT vs standard basis with NO scale cut (lossless identity)",
   "paper_position": 6.3,
-  "published_utc": "2026-08-02T12:03:21+00:00",
-  "published_at_repo_commit": "489dd05",
+  "published_utc": "2026-08-02T12:45:28+00:00",
+  "published_at_repo_commit": "cb724b6",
   "source_stem": "plots/bnt_lossless_identity_nocut_14000",
   "files": {
     "figure.pdf": {

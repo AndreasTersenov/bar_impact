@@ -3,7 +3,7 @@
 - **source**: `plots/score_contours_debiased_580_14000_single_seed`
 - **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
 - **generated**: 2026-07-31T13:00:41Z
-- **published**: 2026-08-02T12:03:21+00:00 at repo `489dd05`
+- **published**: 2026-08-02T12:45:28+00:00 at repo `cb724b6`
 - **rows in values.csv**: 2
 
 ## Scales included

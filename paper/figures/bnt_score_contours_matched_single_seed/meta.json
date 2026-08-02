@@ -2,8 +2,8 @@
   "slug": "bnt_score_contours_matched_single_seed",
   "title": "bnt score contours matched single seed",
   "paper_position": 6.7,
-  "published_utc": "2026-08-02T12:03:21+00:00",
-  "published_at_repo_commit": "489dd05",
+  "published_utc": "2026-08-02T12:45:28+00:00",
+  "published_at_repo_commit": "cb724b6",
   "source_stem": "plots/score_contours_matched_580_14000_single_seed",
   "files": {
     "figure.pdf": {

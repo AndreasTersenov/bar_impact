@@ -51,6 +51,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.patheffects as pe  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FID = ("/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/"
@@ -159,6 +160,44 @@ def main():
                         "justified because the full-sky band was verified against sqrt(2/N_modes) "
                         "to a few percent; it does NOT model mask-induced mode coupling, so treat "
                         "it as the idealised error for that sky fraction.")
+    p.add_argument("--layout", default="single", choices=["single", "panels", "significance"],
+                   help="single = all four bins on one panel (as published). panels = one small "
+                        "multiple per bin, which is the fix for four overlapping uncertainty "
+                        "bands. significance = dC/sigma per bin, which removes the bands entirely "
+                        "since the band IS the denominator.")
+    p.add_argument("--xscale", default="linear", choices=["linear", "log"],
+                   help="log matches the logarithmic banding and stops the low-ell bands crowding "
+                        "into the left edge.")
+    p.add_argument("--palette", default="tab10",
+                   choices=["tab10", "ordinal", "cvd4", "cvd4b"],
+                   help="tab10 = matplotlib default, as published -- but its orange and green fail "
+                        "CVD separation (protan dE 0.7, floor 8), i.e. bins 2 and 3 are "
+                        "indistinguishable to a red-blind reader. ordinal = a single-hue blue ramp "
+                        "light->dark, which is what ORDERED categories (redshift bins) should use: "
+                        "it encodes the ordering, is CVD-safe by construction and survives "
+                        "greyscale printing.")
+    p.add_argument("--band-style", default="fill", choices=["fill", "edges", "both"],
+                   help="fill = solid translucent band (as published; where four overlap the "
+                        "boundaries become impossible to trace). edges = boundary lines only. "
+                        "both = a lighter fill PLUS thin boundary lines carrying a surface-coloured "
+                        "halo, so every band stays traceable through an overlap.")
+    p.add_argument("--fill-alpha", type=float, default=None,
+                   help="band fill opacity; default 0.30 for --band-style fill, 0.24 for both")
+    p.add_argument("--edge-alpha", type=float, default=0.75,
+                   help="boundary-line opacity. Kept well below the central lines so the edges "
+                        "delimit each band without competing with the curves themselves.")
+    p.add_argument("--edge-lw", type=float, default=0.9)
+    p.add_argument("--edge-halo", type=float, default=0.0,
+                   help="width of a surface-coloured halo under the boundary lines. Default 0 = "
+                        "none: the boundaries are drawn in their own band's colour. A halo wider "
+                        "than the line washes the colour out and the edges read as white.")
+    p.add_argument("--curve-lw", type=float, default=1.9,
+                   help="width of the central curves. They already sit above every fill and edge "
+                        "(zorder), so weight and separation are the levers, not stacking order.")
+    p.add_argument("--curve-halo", type=float, default=1.8,
+                   help="width of the surface-coloured ring under each central curve. Set it "
+                        "clearly WIDER than --curve-lw for the curve to read as lifted off the "
+                        "bands; at or below the line width it does nothing visible. 0 disables it.")
     p.add_argument("--outdir", default="outputs/plots/ps_frac_diff")
     p.add_argument("--name", default=None)
     a = p.parse_args()
@@ -172,7 +211,20 @@ def main():
     band_scale = 1.0 / np.sqrt(fsky)
 
     styles = ["-", "--", "-.", ":"]
-    colors = ["C0", "C1", "C2", "C3"]
+    # tab10 as published; ordinal = blue ramp steps 250/400/500/650, validated light->dark
+    # (monotone L, adjacent dL >= 0.06, light end 2.06:1 vs surface, single hue).
+    # cvd4: four distinct hues like the published figure, but validated -- worst adjacent CVD
+    # dE 9.2 (deutan) against the tab10 default's 0.7, where 8 is the floor. tab10's orange and
+    # green are effectively the same colour to a red-blind reader.
+    _PAL = {"tab10":   ["C0", "C1", "C2", "C3"],
+            "ordinal": ["#86b6ef", "#3987e5", "#256abf", "#104281"],
+            "cvd4":    ["#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7"],
+            # cvd4b: four distinct hue FAMILIES. cvd4's violet and blue are both cool, and the
+            # all-pairs check confirms it -- their pair was the weakest at dE 16.3. Chosen by
+            # exhaustive search of the palette's 70 four-subsets under --pairs all, which is the
+            # list that includes bin1-vs-bin4; the default adjacent list never tests it.
+            "cvd4b":   ["#2a78d6", "#eda100", "#e87ba4", "#008300"]}
+    colors = _PAL[a.palette]
 
     curves, bands, rows = [], [], []
     ncol = None
@@ -237,31 +289,101 @@ def main():
     for i, b in enumerate((1, 2, 3, 4)):
         print(f"  bin {b}: frac_diff[last]={curves[i][-1]:+.4f}  band[last]={bands[i][-1]:.4f}")
 
-    plt.rcParams["legend.fontsize"] = 13
-    plt.rcParams["axes.labelsize"] = 15
-    plt.rcParams["xtick.labelsize"] = 14
-    plt.rcParams["ytick.labelsize"] = 14
-    plt.figure(figsize=(6, 3.5))
-    for i, b in enumerate((1, 2, 3, 4)):
-        plt.fill_between(x, curves[i] - bands[i], curves[i] + bands[i], color=colors[i], alpha=0.3)
-        plt.plot(x, curves[i], label=f"bin {b}", ls=styles[i], color=colors[i])
-    plt.axhline(0, color="black", linestyle="--", lw=1)
-    plt.xlabel(r"$\ell$")
-    plt.ylabel(r"$\langle \Delta C_\ell \rangle / \langle C_\ell \rangle$")
-    plt.legend()
-    if a.ylim == "published":
-        plt.ylim(-0.05, 0.05)
-    elif a.ylim == "auto":
-        lo = min((c - b).min() for c, b in zip(curves, bands))
-        hi = max((c + b).max() for c, b in zip(curves, bands))
-        pad = 0.08 * (hi - lo)
-        plt.ylim(lo - pad, hi + pad)
+    plt.rcParams["legend.fontsize"] = 11
+    plt.rcParams["axes.labelsize"] = 13
+    plt.rcParams["xtick.labelsize"] = 11
+    plt.rcParams["ytick.labelsize"] = 11
+    GRID = dict(color="0.88", lw=0.6, ls="-")     # solid hairline; dashed grid reads as a threshold
+    YLAB = r"$\langle \Delta C_\ell \rangle / \langle C_\ell \rangle$"
+
+    def ylimits(ax, cs, bs):
+        if a.ylim == "published":
+            ax.set_ylim(-0.05, 0.05)
+        elif a.ylim == "auto":
+            lo = min((c - b).min() for c, b in zip(cs, bs))
+            hi = max((c + b).max() for c, b in zip(cs, bs))
+            pad = 0.08 * (hi - lo)
+            ax.set_ylim(lo - pad, hi + pad)
+        else:
+            ax.set_ylim(*[float(v) for v in a.ylim.split(",")])
+
+    if a.layout == "panels":
+        # Small multiples: the sanctioned fix for overlapping series. Each panel carries one bin,
+        # so nothing occludes anything, and the panel title -- not colour alone -- carries identity.
+        fig, axes = plt.subplots(1, 4, figsize=(13, 3.2), sharey=True)
+        for i, (b, ax) in enumerate(zip((1, 2, 3, 4), axes)):
+            ax.fill_between(x, curves[i] - bands[i], curves[i] + bands[i],
+                            color=colors[i], alpha=0.25, lw=0)
+            ax.plot(x, curves[i], color=colors[i], lw=2)
+            ax.axhline(0, color="0.35", lw=0.9)
+            ax.grid(True, **GRID); ax.set_axisbelow(True)
+            ax.set_title(f"Bin {b}", fontsize=12)
+            ax.set_xlabel(r"$\ell$")
+            if a.xscale == "log":
+                ax.set_xscale("log")
+            for sp in ("top", "right"):
+                ax.spines[sp].set_visible(False)
+        axes[0].set_ylabel(YLAB)
+        ylimits(axes[0], curves, bands)
+        fig.tight_layout()
+
+    elif a.layout == "significance":
+        # The band IS the denominator here, so there is nothing left to overlap: one line per bin
+        # and a +/-1 sigma reference. Directly answers "is the shift bigger than the noise".
+        fig, ax = plt.subplots(figsize=(6.5, 3.8))
+        ax.axhspan(-1, 1, color="0.90", zorder=0)
+        ax.axhline(0, color="0.35", lw=0.9)
+        for i, b in enumerate((1, 2, 3, 4)):
+            sig = curves[i] / bands[i]
+            ax.plot(x, sig, color=colors[i], lw=2, ls=styles[i], label=f"bin {b}")
+            # Direct labels: the contrast WARN on light steps obliges visible labels, and they
+            # remove the need to trace a colour back to a legend swatch.
+            ax.annotate(f"bin {b}", (x[-1], sig[-1]), textcoords="offset points",
+                        xytext=(6, 0), va="center", fontsize=10, color="0.25")
+        ax.grid(True, **GRID); ax.set_axisbelow(True)
+        ax.set_xlabel(r"$\ell$")
+        ax.set_ylabel(r"$\langle \Delta C_\ell \rangle\, /\, \sigma(C_\ell)$")
+        ax.set_xlim(x.min() * 0.9, x.max() * 1.35)
+        if a.xscale == "log":
+            ax.set_xscale("log")
+        for sp in ("top", "right"):
+            ax.spines[sp].set_visible(False)
+        ax.legend(frameon=False, loc="lower left")
+        fig.tight_layout()
+
     else:
-        plt.ylim(*[float(v) for v in a.ylim.split(",")])
+        fig, ax = plt.subplots(figsize=(6, 3.5))
+        # A halo in the surface colour under each boundary line: where two bands cross, the upper
+        # line visibly passes OVER the lower one instead of merging into it. This is the one thing
+        # that makes four overlapping bands readable.
+        halo = ([pe.withStroke(linewidth=a.curve_halo, foreground="white")]
+                if a.curve_halo > 0 else None)
+        fa = a.fill_alpha if a.fill_alpha is not None else (
+            0.30 if a.band_style == "fill" else 0.24)
+        for i, b in enumerate((1, 2, 3, 4)):
+            if a.band_style in ("fill", "both"):
+                ax.fill_between(x, curves[i] - bands[i], curves[i] + bands[i], color=colors[i],
+                                alpha=fa, lw=0)
+            if a.band_style in ("edges", "both"):
+                edge_pe = ([pe.withStroke(linewidth=a.edge_halo, foreground="white")]
+                           if a.edge_halo > 0 else None)
+                for edge in (curves[i] - bands[i], curves[i] + bands[i]):
+                    ax.plot(x, edge, color=colors[i], lw=a.edge_lw, ls="-", alpha=a.edge_alpha,
+                            path_effects=edge_pe, zorder=3)
+            ax.plot(x, curves[i], label=f"bin {b}", ls=styles[i], color=colors[i],
+                    lw=a.curve_lw, path_effects=halo, zorder=5)
+        ax.axhline(0, color="black", linestyle="--", lw=1)
+        ax.set_xlabel(r"$\ell$")
+        ax.set_ylabel(YLAB)
+        if a.xscale == "log":
+            ax.set_xscale("log")
+        ax.legend()
+        ylimits(ax, curves, bands)
+        fig.tight_layout()
 
     outdir = os.path.join(REPO, a.outdir)
     os.makedirs(outdir, exist_ok=True)
-    name = (a.name or f"ps_frac_diff_band_{a.band}"
+    name = (a.name or f"ps_frac_diff_{a.layout}_{a.band}"
             + ("" if a.binning == "published" else "_binfix")
             + ("" if a.area == "fullsky" else f"_{a.area}"))
     base = os.path.join(outdir, name)
@@ -298,6 +420,7 @@ def main():
                  "std((C_bar - C_DMO)/C_DMO) -- as published"),
         "binning": f"{NBIN} logarithmic bands, lmin={LMIN}, lmax={LMAX}",
         "binning_mode": a.binning,
+        "layout": a.layout, "xscale": a.xscale, "palette": a.palette,
         "ell_axis": ("np.arange(30,1024,100) (LINEAR, while the bands are logarithmic); bands "
                      "shifted up by lmin so ell 30-58 are dropped -- reproduces the paper"
                      if a.binning == "published" else

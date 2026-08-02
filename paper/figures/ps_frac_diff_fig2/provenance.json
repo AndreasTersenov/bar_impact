@@ -1,9 +1,9 @@
 {
   "figure": "ps_frac_diff_matched_survey",
   "generator": "scripts/plot_ps_frac_diff.py",
-  "command": "scripts/plot_ps_frac_diff.py --noise matched --band survey --ylim auto --name ps_frac_diff_matched_survey",
-  "git_commit": "489dd050ac61261718ff80e6641a56bec62a9a87",
-  "generated_utc": "2026-08-02T12:03:20Z",
+  "command": "scripts/plot_ps_frac_diff.py --noise matched --band survey --palette tab10 --band-style both --fill-alpha 0.28 --edge-alpha 0.50 --edge-lw 0.65 --curve-lw 2.6 --curve-halo 0 --ylim=-0.036,0.020 --name ps_frac_diff_matched_survey",
+  "git_commit": "cb724b61c20ae63fa66fbe357b1d7042ce54c418",
+  "generated_utc": "2026-08-02T12:45:18Z",
   "mplstyle": "matplotlib default; no repo style sheet",
   "statistic": "tomographic auto angular power spectra, 4 bins",
   "source_data": "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/all_cls_fiducial_{baryonified,nobaryons}_bin{1..4}_noisy_s0.26.npy",
@@ -13,6 +13,9 @@
   "band": "std(C_bar) / mean(C_DMO) -- the survey statistical error; the referee's requested err(PS_bar)/PS_DMO",
   "binning": "10 logarithmic bands, lmin=30, lmax=1024",
   "binning_mode": "fixed",
+  "layout": "single",
+  "xscale": "linear",
+  "palette": "tab10",
   "ell_axis": "each point at the mean ell of the multipoles it averages; all ell>=30 kept",
   "ell_axis_published": [
     30,
@@ -108,7 +111,9 @@
       }
     }
   },
-  "band_area": "full sky (the simulations' own footprint); NOT rescaled to 14000 deg2",
+  "band_area": "full sky",
+  "f_sky": 0.33936925799335804,
+  "band_scale_applied": 1.0,
   "caveats": [
     "THE PER-BAND COMPARISON UNDERSTATES THE IMPACT. The curve sits below the band at most ell, but the baryonic shift is COHERENT while the noise is random, so it accumulates as sqrt(N). See cumulative_SN_of_mismatch: it reaches ~10 sigma (full sky) / ~6 sigma (14000 deg2) by lmax=1000 in the high-z bins. The caption MUST say this, or the figure argues against the paper's own conclusion.",
     "The denominator is the NOISY DMO spectrum, so this is the baryonic shift relative to the measured spectrum. Fig. B.1 divides by the signal alone, so the same physics appears up to ~34x larger there at high ell. State this in the caption.",

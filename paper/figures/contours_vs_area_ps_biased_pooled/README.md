@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky`
 - **generator commit**: `3d0116e`
 - **generated**: 2026-07-30T11:59:55+00:00
-- **published**: 2026-08-02T12:03:22+00:00 at repo `489dd05`
+- **published**: 2026-08-02T12:45:29+00:00 at repo `cb724b6`
 - **rows in values.csv**: 21
 
 ## Scales included

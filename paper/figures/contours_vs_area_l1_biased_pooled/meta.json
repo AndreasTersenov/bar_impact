@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_l1_biased_pooled",
   "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution",
   "paper_position": 25.0,
-  "published_utc": "2026-08-02T12:03:22+00:00",
-  "published_at_repo_commit": "489dd05",
+  "published_utc": "2026-08-02T12:45:29+00:00",
+  "published_at_repo_commit": "cb724b6",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
   "files": {
     "figure.pdf": {

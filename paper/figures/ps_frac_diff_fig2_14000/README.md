@@ -1,9 +1,9 @@
 # Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra
 
 - **source**: `outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000`
-- **generator commit**: `97b0eafc8fdae46aa1d3d051ae317988f4c05750`
-- **generated**: 2026-08-02T12:06:55Z
-- **published**: 2026-08-02T12:07:07+00:00 at repo `97b0eaf`
+- **generator commit**: `cb724b61c20ae63fa66fbe357b1d7042ce54c418`
+- **generated**: 2026-08-02T12:45:27Z
+- **published**: 2026-08-02T12:45:29+00:00 at repo `cb724b6`
 - **rows in values.csv**: 40
 
 ## Known gaps

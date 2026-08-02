@@ -2,8 +2,8 @@
   "slug": "bnt_flagship_embedding_matched_c460",
   "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
   "paper_position": 6.0,
-  "published_utc": "2026-08-02T12:03:21+00:00",
-  "published_at_repo_commit": "489dd05",
+  "published_utc": "2026-08-02T12:45:28+00:00",
+  "published_at_repo_commit": "cb724b6",
   "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
   "files": {
     "figure.pdf": {

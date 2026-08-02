@@ -1,9 +1,9 @@
 {
   "figure": "ps_frac_diff_matched_survey_14000",
   "generator": "scripts/plot_ps_frac_diff.py",
-  "command": "scripts/plot_ps_frac_diff.py --noise matched --band survey --ylim auto --area 14000 --name ps_frac_diff_matched_survey_14000",
-  "git_commit": "97b0eafc8fdae46aa1d3d051ae317988f4c05750",
-  "generated_utc": "2026-08-02T12:06:55Z",
+  "command": "scripts/plot_ps_frac_diff.py --noise matched --band survey --area 14000 --palette tab10 --band-style both --fill-alpha 0.28 --edge-alpha 0.50 --edge-lw 0.65 --curve-lw 2.6 --curve-halo 0 --ylim=-0.036,0.020 --name ps_frac_diff_matched_survey_14000",
+  "git_commit": "cb724b61c20ae63fa66fbe357b1d7042ce54c418",
+  "generated_utc": "2026-08-02T12:45:27Z",
   "mplstyle": "matplotlib default; no repo style sheet",
   "statistic": "tomographic auto angular power spectra, 4 bins",
   "source_data": "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/all_cls_fiducial_{baryonified,nobaryons}_bin{1..4}_noisy_s0.26.npy",
@@ -13,6 +13,9 @@
   "band": "std(C_bar) / mean(C_DMO) -- the survey statistical error; the referee's requested err(PS_bar)/PS_DMO",
   "binning": "10 logarithmic bands, lmin=30, lmax=1024",
   "binning_mode": "fixed",
+  "layout": "single",
+  "xscale": "linear",
+  "palette": "tab10",
   "ell_axis": "each point at the mean ell of the multipoles it averages; all ell>=30 kept",
   "ell_axis_published": [
     30,
