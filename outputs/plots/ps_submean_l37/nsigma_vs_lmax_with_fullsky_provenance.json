@@ -1,7 +1,7 @@
 {
   "figure": "nsigma_vs_lmax_with_fullsky",
-  "generated_utc": "2026-07-30T08:37:53+00:00",
-  "git_commit": "9c33642",
+  "generated_utc": "2026-08-03T20:53:24+00:00",
+  "git_commit": "9ef3572",
   "errbar": "std",
   "threshold_sigma": 0.3,
   "fullsky_panel": true,
@@ -32,9 +32,9 @@
     "tensiometer": "1.1.0",
     "matplotlib": "3.11.1"
   },
-  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
   "caveats": [
-    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it.",
     "Read from the campaign's aggregated table, which survived intact (n=5/5 on every row, 0 exclusions) \u2014 so unlike nsigma_vs_area these points are NOT re-averaged over a damaged subset and should reproduce the pre-crash figure exactly.",
     "The 6-param tables of this campaign are zero-length disk-failure casualties; only the 3-param subset is available.",
     "Threshold crossings are first-upcrossing linear interpolations; these curves are non-monotonic in places (2000 deg2 dips at lmax 940), so a global or last crossing would give a larger, less conservative lmax.",
