@@ -1,9 +1,22 @@
 {
   "figure": "nsigma_vs_area_fullres_noref",
-  "generated_utc": "2026-07-29T16:10:50+00:00",
-  "git_commit": "def9087",
+  "generated_utc": "2026-08-03T12:32:13+00:00",
+  "git_commit": "805e4cc",
   "errbar": "std",
+  "stroke_weights": {
+    "lw": 2.2,
+    "ms": 7.0,
+    "elinewidth": 1.6,
+    "capsize": 6.0,
+    "capthick": 2.0
+  },
   "refline_drawn": false,
+  "scales_included": {
+    "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax~1020, rebin=10; no upper scale cut",
+    "peaks_l1": "wavelet detail scales 0,1,2,3 (coarse dropped), submean, new_normalization, noisy s=0.26, bins1234",
+    "note": "full resolution for every statistic \u2014 this figure measures how the baryon bias grows with area BEFORE any scale cut is applied."
+  },
+  "lmin": 37,
   "estimator": "tensiometer gaussian_tension.Q_DM -> chi2.cdf -> from_confidence_to_sigma",
   "param_subset": [
     0,
@@ -17,9 +30,9 @@
     "tensiometer": "1.1.0",
     "matplotlib": "3.11.1"
   },
-  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
   "caveats": [
-    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data points are unaffected.",
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it.",
     "Damaged run-pairs are skipped (see [skip] lines in the run log), so n_seeds differs from the original campaign and each mean is over a different subset."
   ]
 }

@@ -1,20 +1,20 @@
 {
   "slug": "bias_vs_area_three_stats",
-  "title": "Baryon bias vs survey area, three statistics, full resolution",
-  "paper_position": 3,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "bias vs area three stats",
+  "paper_position": null,
+  "published_utc": "2026-08-03T12:32:14+00:00",
+  "published_at_repo_commit": "805e4cc",
   "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
-      "sha256": "5c89f3952865aa092dc6b9fefffed3b9bb8cccacf5e0c7324323e42e98cf81df",
-      "bytes": 20953
+      "sha256": "dd05a26de8cc01d883bda4788300134ea7ef0a9da1b9bc17a99ecd8269edc06f",
+      "bytes": 19375
     },
     "figure.png": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
-      "sha256": "7486fc33f09584bed9a60aa767265e8cb1135d59bdd6a232b2238095ccf28701",
-      "bytes": 94130
+      "sha256": "db57a7ea62732db6c673a11a5cd8e9bd7608b549fd491cd626df018b6c4721b0",
+      "bytes": 176785
     },
     "values.csv": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
@@ -23,16 +23,14 @@
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
-      "sha256": "d3ae9965018a0dc5445fd6fd86d873bf24acf289aa07c2a54835602e27717b2c",
-      "bytes": 857
+      "sha256": "b067ee75457272c84db2dd4f3e7ab0c8aeb987f991c8ee18a58ca1a7cde7b1ad",
+      "bytes": 1389
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
-    ]
+    "warnings": []
   },
   "value_rows": 18,
   "n_caveats": 2

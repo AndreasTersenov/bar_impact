@@ -5,8 +5,8 @@
       "slug": "ps_bias_vs_lmax",
       "title": "PS baryon bias vs upper scale cut, 6 footprints",
       "paper_position": 1,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax",
       "files": {
         "figure.pdf": {
@@ -50,8 +50,8 @@
       "slug": "ps_bias_vs_lmax_with_fullsky",
       "title": "PS baryon bias vs cut, 6 footprints plus full sky",
       "paper_position": 2,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky",
       "files": {
         "figure.pdf": {
@@ -90,55 +90,13 @@
     }
   },
   {
-    "slug": "bias_vs_area_three_stats",
-    "meta": {
-      "slug": "bias_vs_area_three_stats",
-      "title": "Baryon bias vs survey area, three statistics, full resolution",
-      "paper_position": 3,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
-      "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
-          "sha256": "5c89f3952865aa092dc6b9fefffed3b9bb8cccacf5e0c7324323e42e98cf81df",
-          "bytes": 20953
-        },
-        "figure.png": {
-          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
-          "sha256": "7486fc33f09584bed9a60aa767265e8cb1135d59bdd6a232b2238095ccf28701",
-          "bytes": 94130
-        },
-        "values.csv": {
-          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
-          "sha256": "61d115f5775ab4de4c8f147c1ed78e147b8f7be5f4c08c1d6056d93482b3aa2c",
-          "bytes": 822
-        },
-        "provenance.json": {
-          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
-          "sha256": "d3ae9965018a0dc5445fd6fd86d873bf24acf289aa07c2a54835602e27717b2c",
-          "bytes": 857
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": [
-          "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
-        ]
-      },
-      "value_rows": 18,
-      "n_caveats": 2
-    }
-  },
-  {
     "slug": "contours_baryon_safe_biased_14000_pooled",
     "meta": {
       "slug": "contours_baryon_safe_biased_14000_pooled",
       "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
       "paper_position": 3.0,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
       "files": {
         "figure.pdf": {
@@ -177,8 +135,8 @@
       "slug": "contours_baryon_safe_biased_14000_single_seed",
       "title": "PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed)",
       "paper_position": 3.1,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
       "files": {
         "figure.pdf": {
@@ -217,8 +175,8 @@
       "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
       "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)",
       "paper_position": 3.2,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
       "files": {
         "figure.pdf": {
@@ -257,8 +215,8 @@
       "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
       "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed)",
       "paper_position": 3.3,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
       "files": {
         "figure.pdf": {
@@ -297,8 +255,8 @@
       "slug": "contours_baryon_safe_both_14000_pooled",
       "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
       "paper_position": 3.5,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
       "files": {
         "figure.pdf": {
@@ -337,8 +295,8 @@
       "slug": "contours_three_stats_null_pooled",
       "title": "Null posteriors, three statistics, 14000 deg2",
       "paper_position": 4,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
       "files": {
         "figure.pdf": {
@@ -377,8 +335,8 @@
       "slug": "contours_three_stats_biased_pooled",
       "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
       "paper_position": 5,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
       "files": {
         "figure.pdf": {
@@ -417,13 +375,13 @@
       "slug": "bnt_flagship_embedding_matched_c460",
       "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
       "paper_position": 6.0,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
       "files": {
         "figure.pdf": {
           "from": "plots/bnt_vs_nonbnt_embedding_14000.pdf",
-          "sha256": "0a37e4e5a3ab0c65834da16fec6045e8d7abffb4278e700c6d34ee752cbbba1e",
+          "sha256": "f032b2087937df9cee78f73eed04bbbabf7705e275aaeac465f71968fa1b5ff1",
           "bytes": 136964
         },
         "figure.png": {
@@ -438,8 +396,8 @@
         },
         "provenance.json": {
           "from": "plots/bnt_vs_nonbnt_embedding_14000_provenance.json",
-          "sha256": "2553b03a71963bd63db9309fc85555f7b8e16ae86d079ca9816b647385937289",
-          "bytes": 3594
+          "sha256": "823219a5244a3cf939dd7be0893c8f52f13671d56b78d6234599e2480aaef702",
+          "bytes": 3602
         }
       },
       "note": "THE PAPER FIGURE for the BNT constraining-power result. Both arms at the SAME scale cut (lmax=460, rebin=20), both fed the FULL data vector (92 features BNT, 50 non-BNT) noise-whitened by the analytic covariance, with a 16-dimensional embedding network inside the normalizing flow trained jointly under the NPE loss. No separate compression stage. The only difference between the two contours is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024, non-BNT cuts every bin. BNT/non-BNT FoM3 = 1.41x; per parameter sigma(Om) 1.15x, sigma(S8) 1.24x, sigma(w0) 1.04x, so the gain is concentrated where lensing constrains and is negligible in w0. Both posteriors pass TARP (max|ecp-alpha| 0.05, 0.05) and SBC (rank-std 0.29-0.30 against the ideal 0.289). INDEPENDENT CORROBORATION: the MOPED analysis of the same configuration gives 1.47x (see bnt_flagship_matched_c460_pooled). MOPED assumes Gaussianity and needs the analytic covariance and local Jacobian; the embedding needs none of them, so the two share essentially no failure modes and agree to 4 percent. Read as constraining power at fixed cut, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax than non-BNT cut-all. Bias at this cut: non-BNT safe at 0.17 sigma, BNT marginally at the 0.3 threshold and tolerated on its error bar.",
@@ -457,8 +415,8 @@
       "slug": "contours_three_stats_both_pooled",
       "title": "Null and biased overlaid, three statistics, 14000 deg2",
       "paper_position": 6,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
       "files": {
         "figure.pdf": {
@@ -497,8 +455,8 @@
       "slug": "bnt_flagship_matched_c460_pooled",
       "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
       "paper_position": 6.1,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
       "files": {
         "figure.pdf": {
@@ -537,8 +495,8 @@
       "slug": "bnt_flagship_matched_c460_single_seed",
       "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
       "paper_position": 6.2,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
       "files": {
         "figure.pdf": {
@@ -577,8 +535,8 @@
       "slug": "bnt_lossless_identity_nocut",
       "title": "VALIDATION: BNT vs standard basis with NO scale cut (lossless identity)",
       "paper_position": 6.3,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/bnt_lossless_identity_nocut_14000",
       "files": {
         "figure.pdf": {
@@ -617,8 +575,8 @@
       "slug": "bnt_lossless_identity_nocut_single_seed",
       "title": "VALIDATION: no scale cut, lossless identity (single seed)",
       "paper_position": 6.35,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/bnt_lossless_identity_nocut_14000_single_seed",
       "files": {
         "figure.pdf": {
@@ -657,8 +615,8 @@
       "slug": "bnt_score_contours_debiasing_pooled",
       "title": "bnt score contours debiasing pooled",
       "paper_position": 6.4,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/score_contours_debiased_580_14000_pooled",
       "files": {
         "figure.pdf": {
@@ -697,8 +655,8 @@
       "slug": "bnt_score_contours_debiasing_single_seed",
       "title": "bnt score contours debiasing single seed",
       "paper_position": 6.5,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/score_contours_debiased_580_14000_single_seed",
       "files": {
         "figure.pdf": {
@@ -737,8 +695,8 @@
       "slug": "bnt_score_contours_matched_pooled",
       "title": "bnt score contours matched pooled",
       "paper_position": 6.6,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/score_contours_matched_580_14000_pooled",
       "files": {
         "figure.pdf": {
@@ -777,8 +735,8 @@
       "slug": "bnt_score_contours_matched_single_seed",
       "title": "bnt score contours matched single seed",
       "paper_position": 6.7,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "plots/score_contours_matched_580_14000_single_seed",
       "files": {
         "figure.pdf": {
@@ -817,8 +775,8 @@
       "slug": "bnt_bin1_vs_cut_optimal",
       "title": "BNT bin-1 vs non-BNT, optimal binning (rebin 40)",
       "paper_position": 7,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal",
       "files": {
         "figure.pdf": {
@@ -864,8 +822,8 @@
       "slug": "fisher_constraining_power_baryon_safe",
       "title": "Fisher 68% contours, baryon-safe regime (full sky)",
       "paper_position": 8,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe",
       "files": {
         "figure.pdf": {
@@ -913,8 +871,8 @@
       "slug": "fisher_constraining_power_full",
       "title": "Fisher 68% contours, full-resolution regime (full sky)",
       "paper_position": 9,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/diagnostics/constraining_power/fisher_contours",
       "files": {
         "figure.pdf": {
@@ -962,8 +920,8 @@
       "slug": "constraining_power_vs_area",
       "title": "Constraining power vs survey area: sigma(S8) and FoM3",
       "paper_position": 10,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
       "files": {
         "figure.pdf": {
@@ -1002,8 +960,8 @@
       "slug": "fom_vs_area",
       "title": "FoM3 vs survey area, single panel (guide pinned to PS)",
       "paper_position": 11,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats",
       "files": {
         "figure.pdf": {
@@ -1042,8 +1000,8 @@
       "slug": "fom_vs_area_low_guide",
       "title": "FoM3 vs survey area, guide dropped clear of the data",
       "paper_position": 12,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor",
       "files": {
         "figure.pdf": {
@@ -1082,8 +1040,8 @@
       "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
       "title": "Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)",
       "paper_position": 13.0,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
       "files": {
         "figure.pdf": {
@@ -1122,8 +1080,8 @@
       "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
       "title": "Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed)",
       "paper_position": 13.1,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
       "files": {
         "figure.pdf": {
@@ -1162,8 +1120,8 @@
       "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
       "title": "APPENDIX: full-sky baryon-safe contours, three statistics, PS lmax=340",
       "paper_position": 14.0,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled",
       "files": {
         "figure.pdf": {
@@ -1202,8 +1160,8 @@
       "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
       "title": "Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed)",
       "paper_position": 14.1,
-      "published_utc": "2026-08-02T12:45:28+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
       "files": {
         "figure.pdf": {
@@ -1242,8 +1200,8 @@
       "slug": "contours_vs_area_ps_null_pooled",
       "title": "PS null posteriors, all survey areas overlaid, full resolution",
       "paper_position": 20,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky",
       "files": {
         "figure.pdf": {
@@ -1282,8 +1240,8 @@
       "slug": "contours_vs_area_peaks_null_pooled",
       "title": "Peak-count null posteriors, all survey areas overlaid, full resolution",
       "paper_position": 21.0,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
       "files": {
         "figure.pdf": {
@@ -1322,8 +1280,8 @@
       "slug": "contours_vs_area_ps_biased_pooled",
       "title": "PAPER: PS biased posteriors, all survey areas overlaid, full resolution",
       "paper_position": 22.0,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky",
       "files": {
         "figure.pdf": {
@@ -1362,8 +1320,8 @@
       "slug": "contours_vs_area_ps_biased_single_seed",
       "title": "PAPER: PS biased posteriors, all survey areas overlaid (single seed)",
       "paper_position": 22.1,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
       "files": {
         "figure.pdf": {
@@ -1402,8 +1360,8 @@
       "slug": "contours_vs_area_l1_null_pooled",
       "title": "L1-norm null posteriors, all survey areas overlaid, full resolution",
       "paper_position": 23.0,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
       "files": {
         "figure.pdf": {
@@ -1442,8 +1400,8 @@
       "slug": "contours_vs_area_peaks_biased_pooled",
       "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid, full resolution",
       "paper_position": 24.0,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020",
       "files": {
         "figure.pdf": {
@@ -1482,8 +1440,8 @@
       "slug": "contours_vs_area_peaks_biased_single_seed",
       "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid (single seed)",
       "paper_position": 24.1,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
       "files": {
         "figure.pdf": {
@@ -1522,8 +1480,8 @@
       "slug": "contours_vs_area_l1_biased_pooled",
       "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution",
       "paper_position": 25.0,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
       "files": {
         "figure.pdf": {
@@ -1562,8 +1520,8 @@
       "slug": "contours_vs_area_l1_biased_single_seed",
       "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed)",
       "paper_position": 25.1,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
       "files": {
         "figure.pdf": {
@@ -1597,24 +1555,64 @@
     }
   },
   {
+    "slug": "bias_vs_area_three_stats",
+    "meta": {
+      "slug": "bias_vs_area_three_stats",
+      "title": "bias vs area three stats",
+      "paper_position": null,
+      "published_utc": "2026-08-03T12:32:14+00:00",
+      "published_at_repo_commit": "805e4cc",
+      "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
+          "sha256": "dd05a26de8cc01d883bda4788300134ea7ef0a9da1b9bc17a99ecd8269edc06f",
+          "bytes": 19375
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
+          "sha256": "db57a7ea62732db6c673a11a5cd8e9bd7608b549fd491cd626df018b6c4721b0",
+          "bytes": 176785
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
+          "sha256": "61d115f5775ab4de4c8f147c1ed78e147b8f7be5f4c08c1d6056d93482b3aa2c",
+          "bytes": 822
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
+          "sha256": "b067ee75457272c84db2dd4f3e7ab0c8aeb987f991c8ee18a58ca1a7cde7b1ad",
+          "bytes": 1389
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 2
+    }
+  },
+  {
     "slug": "bnt_frac_diff_l1_scale1",
     "meta": {
       "slug": "bnt_frac_diff_l1_scale1",
       "title": "BNT vs standard basis: fractional baryonic impact (l1_scale1)",
       "paper_position": null,
-      "published_utc": "2026-08-02T15:18:37+00:00",
-      "published_at_repo_commit": "fb1a87b",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1.pdf",
-          "sha256": "fd2fd55e591f35db2386a81eeecec1d62ee61a8388939ea5f232e9a43148422d",
-          "bytes": 22162
+          "sha256": "0f837bee0cdeef642530e1b643a05c58964af810b62c6570ed0a8ff6a83a343b",
+          "bytes": 21131
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1.png",
-          "sha256": "2642f0e9a7ed9b3a658396887778e5f2efb9b290fb8ca801669c91da11895772",
-          "bytes": 185385
+          "sha256": "d5afdeb492135acb7a7c50ffe4dff0168cb2012491a306de91386b877e62a87a",
+          "bytes": 216940
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_values.csv",
@@ -1623,14 +1621,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_provenance.json",
-          "sha256": "08c5ab3b60c07458195e3f56163bb1eba8c55e91dacd30659a524c85fd9f8328",
-          "bytes": 1449
+          "sha256": "0d909f961be820c3964e8c3ee772bef86c066bf94d705b063a325c159abd4e30",
+          "bytes": 1437
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 276,
       "n_caveats": 4
@@ -1642,19 +1643,19 @@
       "slug": "bnt_frac_diff_l1_scale1_14000",
       "title": "BNT vs standard basis: fractional baryonic impact (l1_scale1_14000)",
       "paper_position": null,
-      "published_utc": "2026-08-02T15:18:37+00:00",
-      "published_at_repo_commit": "fb1a87b",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000.pdf",
-          "sha256": "0e50fdf77602f8b754f44e50d96ba2dabeb2cc3e1ee6aafc6e57ce4a777a4c87",
-          "bytes": 22173
+          "sha256": "3aa173a929eb9d2d4b5e27859c1c0775c05e30acd99d56103f15e985bd37728d",
+          "bytes": 21175
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000.png",
-          "sha256": "e2661264c85770fb436517fb241f595672dccd715a2e8590d2752b757063384c",
-          "bytes": 188096
+          "sha256": "5e1c746b4965f0df81d99a67f18898702b258ba5028bf805f72f95e891a71dbb",
+          "bytes": 219978
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000_values.csv",
@@ -1663,14 +1664,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000_provenance.json",
-          "sha256": "74292b62ed9ca9367af72555b29ded76fa216df298bfb8f18b8e2ede05f89765",
-          "bytes": 1538
+          "sha256": "21cc1ec9e7a2026e671c0827e87071f968ad5e443554f0b075aaf3bbc5126635",
+          "bytes": 1495
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 276,
       "n_caveats": 4
@@ -1682,19 +1686,19 @@
       "slug": "bnt_frac_diff_peaks_scale1",
       "title": "BNT vs standard basis: fractional baryonic impact (peaks_scale1)",
       "paper_position": null,
-      "published_utc": "2026-08-03T08:22:28+00:00",
-      "published_at_repo_commit": "5a835c0",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1.pdf",
-          "sha256": "c2b28b2960d3d0c5583c694f8e5245eab42d5dca78105d99df54b94f8970c9a3",
-          "bytes": 21023
+          "sha256": "286bb93061898bd5ff4f517816c36aeb974b27a76015490f1dff28d27760aace",
+          "bytes": 21054
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1.png",
-          "sha256": "e8249282cd1d4c85b8aa823aa5536cccd99f04787ebeba71d3de96b87a24ad12",
-          "bytes": 215500
+          "sha256": "39156571e9f2fb8a4be81c8fe15c3d6b06b39a865a7370e6b64c58fb8f32084c",
+          "bytes": 248871
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_values.csv",
@@ -1703,14 +1707,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_provenance.json",
-          "sha256": "144ae3201599741c628911cefcfbb8750309382fa1112a0809f43f1febd4d7dc",
-          "bytes": 1495
+          "sha256": "9872e7abd9b95fa7f6f3d81884fc9d681f337817587595492797c65e1a93d43a",
+          "bytes": 1452
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 225,
       "n_caveats": 4
@@ -1722,19 +1729,19 @@
       "slug": "bnt_frac_diff_peaks_scale1_14000",
       "title": "BNT vs standard basis: fractional baryonic impact (peaks_scale1_14000)",
       "paper_position": null,
-      "published_utc": "2026-08-03T08:22:28+00:00",
-      "published_at_repo_commit": "5a835c0",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_14000.pdf",
-          "sha256": "e0f398c936f0380165df3a3c78b52e75e0225b576cbb000aded1f1d20e9ad308",
-          "bytes": 21071
+          "sha256": "0e5ce4124ecd25da89452801855ad25dc9ecc6a5c78bad09aa4898608c243c1b",
+          "bytes": 21074
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_14000.png",
-          "sha256": "df6fbd00d281e8f327838717386d931dd5d4ebd5abc2db7a1530e559bbfdcd8b",
-          "bytes": 214750
+          "sha256": "b8dc61ea666df42351332aef88365acdcf31377db02780a6f0fdc882751d78d6",
+          "bytes": 247590
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_14000_values.csv",
@@ -1743,14 +1750,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_peaks_scale1_14000_provenance.json",
-          "sha256": "5b0fa8053c0bdb22c96b04f61b44ab79291567413c4bcd96955bd28532d08a1c",
-          "bytes": 1553
+          "sha256": "2fd08141e1a97193728bb872928ccc8387525259d9af0c301513187c382979bf",
+          "bytes": 1510
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 225,
       "n_caveats": 4
@@ -1762,19 +1772,19 @@
       "slug": "bnt_frac_diff_ps",
       "title": "BNT vs standard basis: fractional baryonic impact (ps)",
       "paper_position": null,
-      "published_utc": "2026-08-02T15:18:37+00:00",
-      "published_at_repo_commit": "fb1a87b",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps.pdf",
-          "sha256": "818e521531cddc2201201537335dec1b592df99d18acfd190f4d60a138a6a51a",
-          "bytes": 16043
+          "sha256": "de515ea249a0953154cee6791420bbea29740388d84c2108b09c0016439c7c44",
+          "bytes": 15467
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps.png",
-          "sha256": "30ace00babfd4b3813735200a7b7e42f6fe87eee8159fa94383a2c787cd86275",
-          "bytes": 152174
+          "sha256": "f663e0ce0b87105c94fcf135ff6c01be8c91588a606ca2580355a63c13b38b04",
+          "bytes": 174523
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_values.csv",
@@ -1783,14 +1793,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_provenance.json",
-          "sha256": "7375da011d9488593f8ee632602f791b6084ba67a4283c4445f1710f25c9d98e",
-          "bytes": 1461
+          "sha256": "4174d8322f3076d1357c84ec2de8346e383bf0d86a4cc656e9fb206f61367ae2",
+          "bytes": 1418
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 80,
       "n_caveats": 4
@@ -1802,19 +1815,19 @@
       "slug": "bnt_frac_diff_ps_14000",
       "title": "BNT vs standard basis: fractional baryonic impact (ps_14000)",
       "paper_position": null,
-      "published_utc": "2026-08-02T15:18:37+00:00",
-      "published_at_repo_commit": "fb1a87b",
+      "published_utc": "2026-08-03T09:36:13+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000.pdf",
-          "sha256": "938421dd7f325fc97633412c8f483998642144e7786f70bff7bb3ed689ed2339",
-          "bytes": 16051
+          "sha256": "529518b4fe05f1645ec462cfaf68a8f3cf42778db649c3a1cb9c6312d059ec00",
+          "bytes": 15498
         },
         "figure.png": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000.png",
-          "sha256": "6b04c18f0c911d9dac89e64e9a9f1f167b03494e1704782567a07364ee4b2853",
-          "bytes": 156465
+          "sha256": "0094752b73dcb7cedabe2dba96cf065b3a584f0d7bfd2327b872efede1ceb24a",
+          "bytes": 179827
         },
         "values.csv": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000_values.csv",
@@ -1823,14 +1836,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000_provenance.json",
-          "sha256": "53c7772045ea1858b017beed0cffbd73cdb91cb0df7c4affe4b3aec7461a7d99",
-          "bytes": 1519
+          "sha256": "12f43a1dd5ab68953424d6965e49c031f4b791d21c974fe26f778ca09cdfac63",
+          "bytes": 1476
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 80,
       "n_caveats": 4
@@ -1842,8 +1858,8 @@
       "slug": "hos_bnt_l1_vs_scale_cut",
       "title": "L1-norm: BNT vs scale cut vs all scales",
       "paper_position": null,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons",
       "files": {
         "figure.pdf": {
@@ -1885,8 +1901,8 @@
       "slug": "hos_bnt_peaks_vs_scale_cut",
       "title": "Peak counts: BNT vs scale cut vs all scales (baryonified)",
       "paper_position": null,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified",
       "files": {
         "figure.pdf": {
@@ -1925,19 +1941,19 @@
       "slug": "hos_frac_diff_l1",
       "title": "Fractional baryonic impact on the starlet l1-norm (full sky)",
       "paper_position": null,
-      "published_utc": "2026-08-02T13:58:34+00:00",
-      "published_at_repo_commit": "0bbd792",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.pdf",
-          "sha256": "7b15ebac939d51500f739af216dbffce3135fe969869f768dd5cbb3de2928496",
-          "bytes": 26704
+          "sha256": "a4d122ee5b4f3ffcc30b2b37c98376b14ae589ee0c4490cdb3c2dca7cc611e0d",
+          "bytes": 25482
         },
         "figure.png": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.png",
-          "sha256": "f5fc6a4949239ef9aec3b4908bf70fe4512ab75419e47364b9a6e97bbfe4fa3d",
-          "bytes": 270878
+          "sha256": "c273bc876643aefde52a1771a588c5315753aee61b7ac4967c27eb6b06f60357",
+          "bytes": 211477
         },
         "values.csv": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_values.csv",
@@ -1946,14 +1962,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_provenance.json",
-          "sha256": "26d2857097b785fd0a371eacb132b1a50725595fbfe9d6a0f0c3cf5f150798b1",
-          "bytes": 1539
+          "sha256": "94b2cb0c68459c412e1e3b102df5da6a0251f3ddf049585390ef5d843280d991",
+          "bytes": 1496
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 426,
       "n_caveats": 3
@@ -1965,19 +1984,19 @@
       "slug": "hos_frac_diff_l1_14000",
       "title": "Fractional baryonic impact on the starlet l1-norm (14000 deg2)",
       "paper_position": null,
-      "published_utc": "2026-08-02T13:58:34+00:00",
-      "published_at_repo_commit": "0bbd792",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.pdf",
-          "sha256": "a7adb4ac180d0bf2efe03eea9c44214b91cd592a27e32b19bcef184018e08012",
-          "bytes": 26775
+          "sha256": "aca1727e0d9256eecbe3f97c4bbaf67b2ff6b44d624d75a64a1eaaee042d67a8",
+          "bytes": 25598
         },
         "figure.png": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.png",
-          "sha256": "ac478b4cea86cbf50f8c92b790978f28287b82dfb89fe2573b4676d973ebc3df",
-          "bytes": 277653
+          "sha256": "6ee0453c758c22fda349b20e2424985523178210cf29f84a1d247438510c52cc",
+          "bytes": 218587
         },
         "values.csv": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_values.csv",
@@ -1986,14 +2005,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_provenance.json",
-          "sha256": "a22528c901ace5c4a372a0220a052d117c60e31abbd87295157d0634c62f0eb3",
-          "bytes": 1597
+          "sha256": "3817f90a949a0a23ec1cd27cec317e4c1d81673577b31f0fb664e6b7ce0c330b",
+          "bytes": 1554
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 426,
       "n_caveats": 3
@@ -2005,19 +2027,19 @@
       "slug": "hos_frac_diff_peaks",
       "title": "Fractional baryonic impact on the starlet peak counts (full sky)",
       "paper_position": null,
-      "published_utc": "2026-08-02T13:58:34+00:00",
-      "published_at_repo_commit": "0bbd792",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.pdf",
-          "sha256": "0c191c2786a41b0a13064d3e926fd2344264941c017f52e5b2d8d446dfbe7845",
-          "bytes": 25267
+          "sha256": "4bee685f6504610800ed83361297a119583de0a4be1568dc58a168be1d792195",
+          "bytes": 24390
         },
         "figure.png": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.png",
-          "sha256": "a9f0290369b936ca5d9215ed7aef673397deea1c4a618892354042636e2844b1",
-          "bytes": 297233
+          "sha256": "4667368184cec8e727d06bd17ead550033c806fb4538fa1935fa178f4a3ae155",
+          "bytes": 237938
         },
         "values.csv": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_values.csv",
@@ -2026,14 +2048,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_provenance.json",
-          "sha256": "e672ea4cdb6b43f785fc1e9aaad823c53d13ca040e994a13b9403e334c3f283c",
-          "bytes": 1544
+          "sha256": "c05f3b68b3afe4dbf201cb50596b2f669c16fcfdfc4a8e342cab437d5ed44df3",
+          "bytes": 1501
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 353,
       "n_caveats": 3
@@ -2045,19 +2070,19 @@
       "slug": "hos_frac_diff_peaks_14000",
       "title": "Fractional baryonic impact on the starlet peak counts (14000 deg2)",
       "paper_position": null,
-      "published_utc": "2026-08-02T13:58:34+00:00",
-      "published_at_repo_commit": "0bbd792",
+      "published_utc": "2026-08-03T09:36:14+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.pdf",
-          "sha256": "f98fadbc180ad554e5377885947c9e9f5b39ebe070587922f283aaa4c2796b8d",
-          "bytes": 25425
+          "sha256": "b75620b7b517bf268ea7efc37b59e8b0090ef9c8f16f5399a6120b7445089da5",
+          "bytes": 24517
         },
         "figure.png": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.png",
-          "sha256": "ff3b4b3eba0687da82e3f4f3d8e12ee88988d2c4c23e65e2eb3963ec8263e481",
-          "bytes": 301036
+          "sha256": "42dc4c3af4f704c4d69fb46138fb2f3afdf50a5fc12601bf4025c184f56a04ed",
+          "bytes": 241144
         },
         "values.csv": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_values.csv",
@@ -2066,14 +2091,17 @@
         },
         "provenance.json": {
           "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_provenance.json",
-          "sha256": "595c186df9b61f1c86a3c16253e7d95d2978f05fe4917fb9b68d6487cdd76e2a",
-          "bytes": 1602
+          "sha256": "cb5d5915835050ab31ad072f458f1fa408c181bd56f4403009766b4002452313",
+          "bytes": 1559
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": []
+        "warnings": [
+          "provenance is missing 'git_commit'",
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
       },
       "value_rows": 353,
       "n_caveats": 3
@@ -2085,19 +2113,19 @@
       "slug": "ps_frac_diff_fig2",
       "title": "Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)",
       "paper_position": null,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:15+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.pdf",
-          "sha256": "e04a480d73fce58d92e022086a0da78c099d3273a893e55dc33403d525f242a1",
-          "bytes": 13582
+          "sha256": "96ccdf26bf66bb83636022a42fba0070550f652090b0094602b3596699d80480",
+          "bytes": 13244
         },
         "figure.png": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.png",
-          "sha256": "bada90253bf681991d9f8152259a78d136cfa38ccb72836e332700d49845c811",
-          "bytes": 100834
+          "sha256": "bd7ea100e6df13f22ac05d6beb116dd82ca013d92def9e2eb6bf0f0db8db7edd",
+          "bytes": 105108
         },
         "values.csv": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_values.csv",
@@ -2106,8 +2134,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_provenance.json",
-          "sha256": "1b7cc7246834a14e5fc4db0ccb0308ac23c7189f0e6329ae445fd8cb6a9ec73f",
-          "bytes": 4454
+          "sha256": "eda37c8a0c92bfe7fd62a0637865c4c7f23d7739d2b7a7cc533ab6f7978a2164",
+          "bytes": 4410
         }
       },
       "note": null,
@@ -2128,19 +2156,19 @@
       "slug": "ps_frac_diff_fig2_14000",
       "title": "Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra",
       "paper_position": null,
-      "published_utc": "2026-08-02T12:45:29+00:00",
-      "published_at_repo_commit": "cb724b6",
+      "published_utc": "2026-08-03T09:36:15+00:00",
+      "published_at_repo_commit": "17afa33",
       "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.pdf",
-          "sha256": "f229c5356eac32e5eae7d3465726f37485dde70f088bb93a56e313b2e9261f7b",
-          "bytes": 13575
+          "sha256": "466ddc3a18bf7d1bbb501241ce8350c7435d00f184a297e4d7cb3ff0a9df8d2b",
+          "bytes": 13236
         },
         "figure.png": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.png",
-          "sha256": "97310e6b0e51e4af8c3e5937dcbcf7ca740b31d5863a7c4e5bc0099991091337",
-          "bytes": 104639
+          "sha256": "501d63ca5e5abc97b0f1f3067b04dfb97647e5523e4c63ead17ca4791e5f12a4",
+          "bytes": 109581
         },
         "values.csv": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_values.csv",
@@ -2149,8 +2177,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_provenance.json",
-          "sha256": "59e62822df877668d4207208fd7577b52ef25ad013d80c7c25b8f5defb8154e3",
-          "bytes": 4496
+          "sha256": "adcf4d7f26282ca08ba903c7d5142173f0b7f0f5f47d2d6a5564998cb67a583d",
+          "bytes": 4452
         }
       },
       "note": null,

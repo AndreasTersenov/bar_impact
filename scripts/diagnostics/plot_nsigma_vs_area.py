@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from tension.estimators import tension_sigma, SUBSET_INDICES  # noqa: E402
 
 _AA = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))), "styles", "aa.mplstyle")
+    os.path.abspath(__file__)))), "styles", "paper_v1.mplstyle")
 if os.path.exists(_AA):
     plt.style.use(_AA)
 else:
@@ -172,24 +172,92 @@ def hos_globs(prefix, A):
             f"{SAMP}/posterior_samples_{prefix}nobaryons_vs_baryonified_{tail}")
 
 
-print("Building n_sigma vs area (3-param Q_DM, full resolution, submean) with width-QA:")
-RESULT = {}
-for name, gfun in [("Power spectrum", lambda A: ps_globs(A)),
-                   ("Peak counts", lambda A: hos_globs("pc_", A)),
-                   ("L1 norm", lambda A: hos_globs("", A))]:
-    print(f"\n{name}:")
-    M, S, N = [], [], []
-    for A in AREAS:
-        ng, bg = gfun(A)
-        m, s, n = series(ng, bg, f"{A} deg2", MANUAL_EXCLUDE.get((name, A), frozenset()))
-        M.append(m); S.append(s); N.append(n)
-    RESULT[name] = (np.array(AREAS, float), np.array(M), np.array(S), np.array(N, float))
+SERIES_DEFS = [("Power spectrum", lambda A: ps_globs(A)),
+               ("Peak counts", lambda A: hos_globs("pc_", A)),
+               ("L1 norm", lambda A: hos_globs("", A))]
+
+# ---- cache the NUMBERS so cosmetic re-runs are free ---------------------------------
+# Q_DM over every seed pair for 3 statistics x 6 areas costs ~10 minutes. Paying that to
+# change a line width is untenable, and the natural response to that cost is to hand-edit
+# the PDF instead -- which is precisely how a figure and its values.csv drift apart.
+#
+# The key is (a) a hash of this file ABOVE the "# ---- plot ----" marker, i.e. every line
+# that can change a number and none that only changes appearance, and (b) the identity
+# (path, size, mtime) of every posterior actually matched. A new seed, an edited QA rule,
+# or a repaired file all change the key; a thicker line does not. That asymmetry is the
+# whole point: a stale cache must never be able to outlive a change to the data.
+import hashlib as _hl, pickle as _pk  # noqa: E402
+
+_CACHE = "outputs/plots/submean_masked_peaks/.nsigma_vs_area_result.pkl"
+
+
+def _fingerprint():
+    src = open(os.path.abspath(__file__)).read().split("# ---- plot ----")[0]
+    h = _hl.sha256(src.encode())
+    for _n, _g in SERIES_DEFS:
+        for A in AREAS:
+            for pat in _g(A):
+                for p in sorted(glob.glob(pat)):
+                    st = os.stat(p)
+                    h.update(f"{p}:{st.st_size}:{st.st_mtime_ns}".encode())
+    return h.hexdigest()
+
+
+_fp = _fingerprint()
+RESULT = None
+if os.environ.get("CACHE", "1") != "0" and os.path.exists(_CACHE):
+    try:
+        _c = _pk.load(open(_CACHE, "rb"))
+        if _c.get("fingerprint") == _fp:
+            RESULT = _c["result"]
+            print(f"[cache] HIT {_CACHE} — numbers reused, nothing recomputed.\n"
+                  f"[cache] fingerprint {_fp[:16]}  (CACHE=0 forces a recompute)")
+    except Exception as e:
+        print(f"[cache] ignoring unreadable cache ({type(e).__name__})")
+
+if RESULT is None:
+    print("Building n_sigma vs area (3-param Q_DM, full resolution, submean) with width-QA:")
+    RESULT = {}
+    for name, gfun in SERIES_DEFS:
+        print(f"\n{name}:")
+        M, S, N = [], [], []
+        for A in AREAS:
+            ng, bg = gfun(A)
+            m, s, n = series(ng, bg, f"{A} deg2", MANUAL_EXCLUDE.get((name, A), frozenset()))
+            M.append(m); S.append(s); N.append(n)
+        RESULT[name] = (np.array(AREAS, float), np.array(M), np.array(S), np.array(N, float))
+    os.makedirs(os.path.dirname(_CACHE), exist_ok=True)
+    _pk.dump({"fingerprint": _fp, "result": RESULT}, open(_CACHE, "wb"))
+    print(f"\n[cache] stored {_CACHE}")
 
 # ---- plot ----
 STYLE = {"Power spectrum": ("#0072B2", "-", "o"),
          "Peak counts": ("#D55E00", "--", "s"),
          "L1 norm": ("#009E73", "-.", "^")}
-W = 3.46
+W = 6.9   # submitted-style canvas (paper_v1 fonts are ~2x the A&A ones)
+
+# Stroke weights. The previous values (lw 1.3, ms 4.0, elinewidth 0.8, capsize 2) were
+# sized for the A&A style sheet -- 9 pt type on an 88 mm single column. This figure now
+# carries the submitted paper's type, roughly twice that, on a 6.9 in canvas, so those
+# weights read as spindly against the labels. Scaled to match the type, and exposed as
+# env vars because each recompute used to cost 10 minutes; with the cache above, trying
+# a value is now seconds.
+LW = float(os.environ.get("LW", "2.2"))          # data line
+MS = float(os.environ.get("MS", "7.0"))          # marker
+ELW = float(os.environ.get("ELW", "1.6"))        # error bar
+# Caps need to be generous here, not merely proportional: several bars are short (sigma
+# ~0.05-0.5 against a 0-6.5 axis), so a cap scaled to the line weight disappears into the
+# marker. Sized to stay legible on the shortest bar in the figure.
+CAPSIZE = float(os.environ.get("CAPSIZE", "6.0"))
+CAPTHICK = float(os.environ.get("CAPTHICK", "2.0"))
+
+# DO NOT pass markeredgewidth to errorbar(). The caps are '_' MARKERS, so their stroke IS
+# markeredgewidth -- and an explicit markeredgewidth in kwargs beats capthick, contrary to
+# what the docs imply by calling capthick "a synonym for markeredgewidth". Setting it to 0
+# for a clean filled data marker therefore sets the cap stroke to 0 and the caps vanish
+# entirely, at every capsize. Verified: with mew=0 the caps come back ms=12 mew=0.0
+# (invisible); without it, ms=12 mew=2.0 (capthick, as intended).
+
 fig, ax = plt.subplots(figsize=(W, 0.82 * W))
 handles = []
 for name in ("Power spectrum", "Peak counts", "L1 norm"):
@@ -197,8 +265,8 @@ for name in ("Power spectrum", "Peak counts", "L1 norm"):
     err = s / np.sqrt(np.maximum(n, 1)) if ERRBAR == "sem" else s
     c, ls, mk = STYLE[name]
     ok = np.isfinite(m)
-    eb = ax.errorbar(A[ok], m[ok], yerr=err[ok], color=c, ls=ls, marker=mk, ms=4.0, lw=1.3,
-                     capsize=2, elinewidth=0.8, label=name)
+    eb = ax.errorbar(A[ok], m[ok], yerr=err[ok], color=c, ls=ls, marker=mk, ms=MS, lw=LW,
+                     capsize=CAPSIZE, capthick=CAPTHICK, elinewidth=ELW, label=name)
     handles.append(eb)
 
 # REFLINE=0 drops the sqrt(A) guide (writes a "_noref" variant; see `out` below).
@@ -222,8 +290,7 @@ ax.set_xlabel(r"survey area $\,[\mathrm{deg}^2]$")
 ax.set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},S_8,w_0)$")
 ax.set_xlim(0, 37000)
 ax.set_ylim(0, None)
-ax.tick_params(which="both", direction="in", top=True, right=True)
-ax.legend(handles=handles, frameon=False, fontsize=8, handlelength=2.2, loc="upper left")
+ax.legend(handles=handles, frameon=False, loc="upper left")
 
 fig.tight_layout(pad=0.4)
 out = "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres"
@@ -245,7 +312,11 @@ with open(out + "_values.csv", "w", newline="") as _fh:
     _w.writerow(["statistic", "area_sqdeg", "nsigma", "nsigma_err", "n_seeds", "errbar_kind"])
     for _name, (_A, _M, _S, _N) in RESULT.items():
         for _a, _m, _s, _n in zip(_A, _M, _S, _N):
-            _w.writerow([_name, int(_a), f"{_m:.6f}", f"{_s:.6f}", int(_n), ERRBAR])
+            # Report the bar that is actually DRAWN, not the raw spread. This wrote _s while
+            # labelling the column ERRBAR, so in sem mode the sidecar disagreed with the figure
+            # by sqrt(n) -- the one disagreement values.csv exists to make impossible.
+            _e = _s / np.sqrt(max(int(_n), 1)) if ERRBAR == "sem" else _s
+            _w.writerow([_name, int(_a), f"{_m:.6f}", f"{_e:.6f}", int(_n), ERRBAR])
 
 def _ver(mod):
     try:
@@ -264,14 +335,30 @@ _prov = {
     "generated_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"),
     "git_commit": _commit,
     "errbar": ERRBAR,
+    # Stroke weights are env-tunable, so record them: otherwise the same commit can
+    # produce visibly different figures and provenance would not say why.
+    "stroke_weights": {"lw": LW, "ms": MS, "elinewidth": ELW, "capsize": CAPSIZE,
+                       "capthick": CAPTHICK},
     "refline_drawn": os.environ.get("REFLINE", "1") != "0",
+    # The publish gate warns when a figure does not say which multipoles and wavelet scales
+    # went in, and it is right to: these three curves are only comparable because each is at
+    # ITS full resolution, which is a different thing for the PS than for the HOS.
+    "scales_included": {
+        "power_spectrum": "monopole-subtracted MASTER, lmin=37, lmax~1020, rebin=10; "
+                          "no upper scale cut",
+        "peaks_l1": "wavelet detail scales 0,1,2,3 (coarse dropped), submean, "
+                    "new_normalization, noisy s=0.26, bins1234",
+        "note": "full resolution for every statistic — this figure measures how the baryon "
+                "bias grows with area BEFORE any scale cut is applied.",
+    },
+    "lmin": 37,
     "estimator": "tensiometer gaussian_tension.Q_DM -> chi2.cdf -> from_confidence_to_sigma",
     "param_subset": list(SUBSET_INDICES),
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "getdist", "tensiometer", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
     "caveats": [
-        "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-        "pre-crash figures are expected, data points are unaffected.",
+        "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
         "Damaged run-pairs are skipped (see [skip] lines in the run log), so n_seeds "
         "differs from the original campaign and each mean is over a different subset.",
     ],
