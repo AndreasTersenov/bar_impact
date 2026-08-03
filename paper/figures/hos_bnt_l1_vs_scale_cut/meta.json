@@ -2,8 +2,8 @@
   "slug": "hos_bnt_l1_vs_scale_cut",
   "title": "L1-norm: BNT vs scale cut vs all scales",
   "paper_position": null,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "published_utc": "2026-08-03T21:10:14+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons",
   "files": {
     "figure.pdf": {

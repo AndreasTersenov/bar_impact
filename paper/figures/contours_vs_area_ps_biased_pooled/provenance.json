@@ -1,9 +1,10 @@
 {
-  "figure": "contours_vs_area_ps_biased_l37-1020_with_fullsky",
-  "generated_utc": "2026-07-30T11:59:55+00:00",
-  "git_commit": "3d0116e",
+  "figure": "contours_vs_area_ps_biased_l37-1020_with_fullsky_pooled",
+  "generated_utc": "2026-08-03T14:15:55+00:00",
+  "git_commit": "unknown",
   "statistic": "Power spectrum",
   "role": "biased",
+  "seed_mode": "pooled",
   "role_meaning": "biased = baryonified data vs nobaryons-trained model (bias, uncorrected)",
   "areas_drawn": [
     2000,
@@ -29,6 +30,54 @@
     "w0"
   ],
   "collapse_guard_sigma_S8_max": 0.08,
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.",
+    "per_area": {
+      "2000": {
+        "fom3_pooled": 26734.21211768813,
+        "fom3_per_seed_mean": 27222.131516436162,
+        "fom3_per_seed_std": 1417.0972077586453,
+        "n_seeds": 5
+      },
+      "5000": {
+        "fom3_pooled": 79716.28218481218,
+        "fom3_per_seed_mean": 86203.10012226431,
+        "fom3_per_seed_std": 7058.802956827975,
+        "n_seeds": 5
+      },
+      "10000": {
+        "fom3_pooled": 199666.21728066655,
+        "fom3_per_seed_mean": 209657.30036491217,
+        "fom3_per_seed_std": 5360.351829445229,
+        "n_seeds": 3
+      },
+      "14000": {
+        "fom3_pooled": 244856.27592449015,
+        "fom3_per_seed_mean": 259190.61459525506,
+        "fom3_per_seed_std": 30656.62537988405,
+        "n_seeds": 5
+      },
+      "28000": {
+        "fom3_pooled": 344344.6922015473,
+        "fom3_per_seed_mean": 436742.918045888,
+        "fom3_per_seed_std": 52253.11018356921,
+        "n_seeds": 9
+      },
+      "35000": {
+        "fom3_pooled": 506655.59329067304,
+        "fom3_per_seed_mean": 614062.3393180645,
+        "fom3_per_seed_std": 56388.84063795773,
+        "n_seeds": 3
+      },
+      "fullsky": {
+        "fom3_pooled": 464694.7753805063,
+        "fom3_per_seed_mean": 648949.8861349315,
+        "fom3_per_seed_std": 135037.931897966,
+        "n_seeds": 5
+      }
+    }
+  },
   "colour_encoding": "sequential single-hue ramp on the statistic's own base hue; light = small area, dark = large. Area is ordered, so a categorical or rainbow palette would misrepresent it.",
   "series": [
     {
@@ -51,7 +100,12 @@
         0.033142127096652985,
         0.06192915514111519,
         0.11186646670103073
-      ]
+      ],
+      "fom3_pooled": 26734.21211768813,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 27222.131516436162,
+      "fom3_per_seed_std": 1417.0972077586453
     },
     {
       "area": 5000,
@@ -73,7 +127,12 @@
         0.021845746785402298,
         0.040938738733530045,
         0.09299209713935852
-      ]
+      ],
+      "fom3_pooled": 79716.28218481218,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 86203.10012226431,
+      "fom3_per_seed_std": 7058.802956827975
     },
     {
       "area": 10000,
@@ -93,7 +152,12 @@
         0.016165124252438545,
         0.029347648844122887,
         0.07741475105285645
-      ]
+      ],
+      "fom3_pooled": 199666.21728066655,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 209657.30036491217,
+      "fom3_per_seed_std": 5360.351829445229
     },
     {
       "area": 14000,
@@ -115,7 +179,12 @@
         0.01419828925281763,
         0.02550368942320347,
         0.07673893123865128
-      ]
+      ],
+      "fom3_pooled": 244856.27592449015,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 259190.61459525506,
+      "fom3_per_seed_std": 30656.62537988405
     },
     {
       "area": 28000,
@@ -133,15 +202,20 @@
       ],
       "n_samples": 27000,
       "mean": [
-        0.24180951714515686,
-        0.8401281237602234,
-        -1.1878756284713745
+        0.2418096363544464,
+        0.8401249051094055,
+        -1.18787682056427
       ],
       "std": [
-        0.012045296840369701,
-        0.022064538672566414,
-        0.07216672599315643
-      ]
+        0.012045278213918209,
+        0.022064540535211563,
+        0.07216665148735046
+      ],
+      "fom3_pooled": 344344.6922015473,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 436742.918045888,
+      "fom3_per_seed_std": 52253.11018356921
     },
     {
       "area": 35000,
@@ -161,7 +235,12 @@
         0.01032261736690998,
         0.019806208088994026,
         0.06544428318738937
-      ]
+      ],
+      "fom3_pooled": 506655.59329067304,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 614062.3393180645,
+      "fom3_per_seed_std": 56388.84063795773
     },
     {
       "area": "fullsky",
@@ -183,7 +262,12 @@
         0.00895457062870264,
         0.017222333699464798,
         0.06530129164457321
-      ]
+      ],
+      "fom3_pooled": 464694.7753805063,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 648949.8861349315,
+      "fom3_per_seed_std": 135037.931897966
     }
   ],
   "runs_dropped": {
@@ -224,137 +308,19 @@
     "getdist": "1.6.1",
     "matplotlib": "3.11.1"
   },
-  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
+  "contour_style": "scripts/paper_contour_style.py",
+  "palette": "okabe",
+  "palette_note": "Okabe-Ito colourblind-safe palette; does NOT match the figures kept from the submitted version",
+  "axes_fontsize": 14,
+  "lab_fontsize": 16,
+  "legend_fontsize": 14,
+  "alpha_filled_add": 0.99,
   "caveats": [
     "FULL RESOLUTION \u2014 no scale cut. For the power spectrum and, at large areas, the higher-order statistics, this is the regime where the baryon bias is significant; the 'biased' role therefore shows a posterior that is NOT baryon-safe by design.",
     "Contours pool all readable, non-collapsed seeds for the given role, so their width includes NPE seed-to-seed training scatter, not the posterior width of one seed. n_seeds per area is in the values CSV and varies with disk damage.",
     "Seeds are NOT matched between roles here (each role pools its own readable set), because these are single-role figures. Use plot_contours_three_stats.py, which pairs runs, for any null-to-biased comparison.",
     "Higher-order products are the SUBMEAN (footprint-mean-subtracted) ones with the corrected mask treatment. The pre-submean products spuriously tighten the masked posteriors; the glob requires '_submean_' so a missing file surfaces as missing rather than being silently substituted.",
-    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, data unaffected."
-  ],
-  "fom3": {
-    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
-    "pooled_vs_per_seed": "fom3_pooled is computed from the pooled samples, i.e. from the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and therefore LOWERS the FoM. fom3_per_seed_mean is the mean of the per-seed FoM and is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot, so it is the value to use when comparing against those figures. Do not compare a pooled value against a per-seed one.",
-    "per_contour": [
-      {
-        "contour": "2000",
-        "n_seeds": 5,
-        "runs": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "fom3_pooled": 26734.21211768813,
-        "fom3_per_seed_mean": 27222.131516436162,
-        "fom3_per_seed_std": 1417.0972077586453,
-        "sigma_Om_pooled": 0.033143225838871436,
-        "sigma_S8_pooled": 0.061931291357532246,
-        "sigma_w0_pooled": 0.11187010651612168
-      },
-      {
-        "contour": "5000",
-        "n_seeds": 5,
-        "runs": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "fom3_pooled": 79716.28218481218,
-        "fom3_per_seed_mean": 86203.10012226431,
-        "fom3_per_seed_std": 7058.802956827975,
-        "sigma_Om_pooled": 0.02184649176588514,
-        "sigma_S8_pooled": 0.04094010086381109,
-        "sigma_w0_pooled": 0.09299519550609113
-      },
-      {
-        "contour": "10000",
-        "n_seeds": 3,
-        "runs": [
-          2,
-          3,
-          4
-        ],
-        "fom3_pooled": 199666.21728066655,
-        "fom3_per_seed_mean": 209657.30036491217,
-        "fom3_per_seed_std": 5360.351829445229,
-        "sigma_Om_pooled": 0.01616601884120028,
-        "sigma_S8_pooled": 0.02934928858322552,
-        "sigma_w0_pooled": 0.07741908952003339
-      },
-      {
-        "contour": "14000",
-        "n_seeds": 5,
-        "runs": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "fom3_pooled": 244856.27592449015,
-        "fom3_per_seed_mean": 259190.61459525506,
-        "fom3_per_seed_std": 30656.62537988405,
-        "sigma_Om_pooled": 0.0141987660365696,
-        "sigma_S8_pooled": 0.025504566817801978,
-        "sigma_w0_pooled": 0.07674155031795649
-      },
-      {
-        "contour": "28000",
-        "n_seeds": 9,
-        "runs": [
-          1,
-          2,
-          3,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10
-        ],
-        "fom3_pooled": 344344.6922015473,
-        "fom3_per_seed_mean": 436742.918045888,
-        "fom3_per_seed_std": 52253.11018356921,
-        "sigma_Om_pooled": 0.01204555025601284,
-        "sigma_S8_pooled": 0.022064956284490782,
-        "sigma_w0_pooled": 0.07216802605219758
-      },
-      {
-        "contour": "35000",
-        "n_seeds": 3,
-        "runs": [
-          2,
-          3,
-          4
-        ],
-        "fom3_pooled": 506655.59329067304,
-        "fom3_per_seed_mean": 614062.3393180645,
-        "fom3_per_seed_std": 56388.84063795773,
-        "sigma_Om_pooled": 0.010323194430063838,
-        "sigma_S8_pooled": 0.019807299374699123,
-        "sigma_w0_pooled": 0.0654479467229718
-      },
-      {
-        "contour": "fullsky",
-        "n_seeds": 5,
-        "runs": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
-        "fom3_pooled": 464694.7753805063,
-        "fom3_per_seed_mean": 648949.8861349315,
-        "fom3_per_seed_std": 135037.931897966,
-        "sigma_Om_pooled": 0.00895486865742549,
-        "sigma_S8_pooled": 0.017222907739772347,
-        "sigma_w0_pooled": 0.06530346922777644
-      }
-    ]
-  }
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it."
+  ]
 }

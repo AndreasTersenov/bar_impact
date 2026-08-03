@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-03T14:15:50+00:00
-- **published**: 2026-08-03T14:15:57+00:00 at repo `unknown`
+- **published**: 2026-08-03T21:10:13+00:00 at repo `9ef3572`
 - **rows in values.csv**: 18
 
 ## Scales included

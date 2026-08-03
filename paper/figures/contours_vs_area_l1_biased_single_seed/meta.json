@@ -2,8 +2,8 @@
   "slug": "contours_vs_area_l1_biased_single_seed",
   "title": "contours vs area l1 biased single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T14:15:59+00:00",
-  "published_at_repo_commit": "unknown",
+  "published_utc": "2026-08-03T21:10:13+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {

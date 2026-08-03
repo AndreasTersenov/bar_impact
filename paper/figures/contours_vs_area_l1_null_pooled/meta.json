@@ -2,29 +2,29 @@
   "slug": "contours_vs_area_l1_null_pooled",
   "title": "contours vs area l1 null pooled",
   "paper_position": null,
-  "published_utc": "2026-08-03T14:15:59+00:00",
-  "published_at_repo_commit": "unknown",
-  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
+  "published_utc": "2026-08-03T21:10:33+00:00",
+  "published_at_repo_commit": "9ef3572",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.pdf",
-      "sha256": "a18b97e5d96b7ab4910c09430009644beabd56d14e3b8a5ab868902c0c6749bd",
-      "bytes": 183552
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled.pdf",
+      "sha256": "3e5264ecaae88c06a9de6ee91bc3e0a18bf5b546be2bf3de0c99590eb83fbe4d",
+      "bytes": 179793
     },
     "figure.png": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.png",
-      "sha256": "dbad244024df35244d56c69d48b5ae5fc9f5fa2d700629b080f56e75f30df43f",
-      "bytes": 408612
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled.png",
+      "sha256": "1dabb34e172f3459701a3bb6f25a3ce0b991391524f6b5bbad659bde221e7e4a",
+      "bytes": 402050
     },
     "values.csv": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_values.csv",
-      "sha256": "46225b9f8fc99de638ec9f2aa47a56945c2142335643f11867603f860b271d2c",
-      "bytes": 1350
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled_values.csv",
+      "sha256": "8571f62936cb173b8ff185e17deb8ba96c8e347c09f3f4ec6c709d7ee34e07d0",
+      "bytes": 1846
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_provenance.json",
-      "sha256": "aa8db37a6207ab767b46716a0f49132825a77bf37063583f16affe8bb9d33746",
-      "bytes": 9060
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled_provenance.json",
+      "sha256": "0f0e3146845e40e71c4a40f35e315cdb97672dcefd21a448f398b1cfe4c34c9a",
+      "bytes": 8621
     }
   },
   "note": null,

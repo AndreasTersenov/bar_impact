@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-03T14:15:54+00:00
-- **published**: 2026-08-03T14:15:59+00:00 at repo `unknown`
+- **published**: 2026-08-03T21:10:13+00:00 at repo `9ef3572`
 - **rows in values.csv**: 18
 
 ## Scales included

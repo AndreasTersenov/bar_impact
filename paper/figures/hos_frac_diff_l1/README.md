@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/hos_frac_diff/hos_frac_diff_l1`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-03T09:27:53Z
-- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
+- **published**: 2026-08-03T21:10:14+00:00 at repo `9ef3572`
 - **rows in values.csv**: 426
 
 ## Scales included

@@ -2,8 +2,8 @@
   "slug": "bnt_frac_diff_ps",
   "title": "BNT vs standard basis: fractional baryonic impact (ps)",
   "paper_position": null,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "published_utc": "2026-08-03T21:09:26+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps",
   "files": {
     "figure.pdf": {

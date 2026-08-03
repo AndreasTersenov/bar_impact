@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal`
 - **generator commit**: `701fba8`
 - **generated**: 2026-07-29T16:58:19+00:00
-- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
+- **published**: 2026-08-03T21:08:35+00:00 at repo `9ef3572`
 - **rows in values.csv**: 216
 
 ## Scales included

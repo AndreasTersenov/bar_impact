@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_14000_single_seed",
   "title": "contours baryon safe biased 14000 single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T14:15:57+00:00",
-  "published_at_repo_commit": "unknown",
+  "published_utc": "2026-08-03T21:10:13+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
   "files": {
     "figure.pdf": {

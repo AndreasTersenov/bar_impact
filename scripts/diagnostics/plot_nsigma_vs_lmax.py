@@ -36,7 +36,7 @@ import matplotlib.pyplot as plt
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-_AA = os.path.join(REPO, "styles", "aa.mplstyle")
+_AA = os.path.join(REPO, "styles", "paper_v1.mplstyle")
 if os.path.exists(_AA):
     plt.style.use(_AA)
 else:
@@ -111,7 +111,7 @@ if WANT_FULLSKY:
     curves.append(("Full sky", "fullsky", *fs["fullsky"]))
 
 n = len(curves)
-fig, axes = plt.subplots(1, n, figsize=(2.35 * n, 2.9), sharex=not WANT_FULLSKY)
+fig, axes = plt.subplots(1, n, figsize=(4.7 * n, 5.8), sharex=not WANT_FULLSKY)
 axes = np.atleast_1d(axes)
 
 RESULT = {}
@@ -122,7 +122,6 @@ for ax, (label, area, cuts, mean, std, nseed) in zip(axes, curves):
     ax.axhline(THRESHOLD, color="crimson", ls="--", lw=1.0, zorder=2)
     ax.set_title(rf"Area = {label}" if area != "fullsky" else "Full sky", pad=4)
     ax.grid(True, alpha=0.25, ls=":")
-    ax.tick_params(which="both", direction="in", top=True, right=True)
     ax.set_ylim(0, None)
     RESULT[area] = (cuts, mean, err, nseed)
 
@@ -135,7 +134,7 @@ fig.supxlabel(r"upper scale cut $\,\ell_\mathrm{max}$", y=0.02)
 
 # Label the threshold once, on the leftmost panel, rather than a legend box per panel.
 axes[0].text(0.04, THRESHOLD, rf"${THRESHOLD}\sigma$", transform=axes[0].get_yaxis_transform(),
-             color="crimson", fontsize=7, va="bottom", ha="left")
+             color="crimson", fontsize=11, va="bottom", ha="left")
 
 if WANT_SUBTITLE:
     what = "6 footprints + full sky" if WANT_FULLSKY else "6 footprints"
@@ -145,7 +144,7 @@ if WANT_SUBTITLE:
              rf"{what} | monopole-subtracted PS, $\ell\geq37$ | step-40 | "
              rf"3-param $Q_\mathrm{{DM}}$, mean$\pm$" + ("s.e.m." if ERRBAR == "sem" else "std")
              + rf"/{int(RESULT[AREAS[0]][3][0])} runs{extra}",
-             ha="center", va="top", fontsize=7, color="0.4")
+             ha="center", va="top", fontsize=11, color="0.4")
 
 fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 0.94 if WANT_SUBTITLE else 1.0))
 
@@ -235,8 +234,8 @@ _prov = {
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "getdist", "tensiometer", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
     "caveats": [
-        "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-        "pre-crash figures are expected, data points are unaffected.",
+        "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
         "Read from the campaign's aggregated table, which survived intact (n=5/5 on every "
         "row, 0 exclusions) — so unlike nsigma_vs_area these points are NOT re-averaged "
         "over a damaged subset and should reproduce the pre-crash figure exactly.",

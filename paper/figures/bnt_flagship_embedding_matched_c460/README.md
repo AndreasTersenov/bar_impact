@@ -5,7 +5,7 @@ THE PAPER FIGURE for the BNT constraining-power result. Both arms at the SAME sc
 - **source**: `plots/bnt_vs_nonbnt_embedding_14000`
 - **generator commit**: `17afa3349c1e447cfe405f432616ee922069fccd`
 - **generated**: 2026-08-03T09:36:01Z
-- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
+- **published**: 2026-08-03T21:08:39+00:00 at repo `9ef3572`
 - **rows in values.csv**: 2
 
 ## Scales included

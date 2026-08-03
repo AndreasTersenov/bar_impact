@@ -5,7 +5,7 @@ THE ORACLE for the BNT result. BNT is an invertible linear map of the standard t
 - **source**: `plots/bnt_lossless_identity_nocut_14000`
 - **generator commit**: `80956a42f88866b110521653cd1338b0b0f13f28`
 - **generated**: 2026-08-01T19:05:05Z
-- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
+- **published**: 2026-08-03T21:09:36+00:00 at repo `9ef3572`
 - **rows in values.csv**: 2
 
 ## Scales included

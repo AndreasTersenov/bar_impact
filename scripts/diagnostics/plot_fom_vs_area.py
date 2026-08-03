@@ -19,7 +19,7 @@ from matplotlib.ticker import FixedLocator, FuncFormatter, NullFormatter, LogLoc
 from scipy.stats import linregress
 
 _AA = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))), "styles", "aa.mplstyle")
+    os.path.abspath(__file__)))), "styles", "paper_v1.mplstyle")
 if os.path.exists(_AA):
     plt.style.use(_AA)
 else:
@@ -78,7 +78,7 @@ SERIES = [
     ("L1 norm",        HOS, [avg(hf("", A)) for A in HOS],     "#009E73", "-.", "^"),
 ]
 
-W = 3.543                                  # A&A single column (90 mm)
+W = 7.0    # submitted-style canvas; paper_v1 fonts are ~2x the A&A ones
 fig, ax = plt.subplots(figsize=(W, W * 0.95))
 
 ps_anchor = None
@@ -131,10 +131,9 @@ ax.yaxis.set_major_locator(LogLocator(base=10, numticks=8))
 ax.yaxis.set_minor_locator(LogLocator(base=10, subs=np.arange(2, 10) * 0.1, numticks=40))
 ax.yaxis.set_minor_formatter(NullFormatter())
 
-ax.tick_params(which="both", direction="in", top=True, right=True)
 ax.tick_params(which="major", length=4)
 ax.tick_params(which="minor", length=2)
-ax.legend(frameon=False, fontsize=7, handlelength=2.2, loc="upper left",
+ax.legend(frameon=False, loc="upper left",
           borderaxespad=0.4, labelspacing=0.35)
 
 fig.tight_layout(pad=0.3)
@@ -195,8 +194,8 @@ _json.dump({
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
     "caveats": [
-        "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-        "pre-crash figures are expected, the data points are unaffected.",
+        "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
         "Damaged posteriors are skipped (see [skip] lines in the run log), so n_seeds "
         "differs from the original campaign and each point averages a different subset.",
         "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks "

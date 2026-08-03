@@ -2,35 +2,37 @@
   "slug": "contours_vs_area_peaks_biased_pooled",
   "title": "contours vs area peaks biased pooled",
   "paper_position": null,
-  "published_utc": "2026-08-03T14:15:59+00:00",
-  "published_at_repo_commit": "unknown",
-  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020",
+  "published_utc": "2026-08-03T21:10:33+00:00",
+  "published_at_repo_commit": "9ef3572",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.pdf",
-      "sha256": "32a97ecbeaae5d5bd83d23d30554914402c48719adf51f4ebda19b2322626427",
-      "bytes": 180807
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_pooled.pdf",
+      "sha256": "da654518b6e6483bc651ba344ae1227e9dfb57a0359301d9ca5a27e791cf3ca4",
+      "bytes": 176812
     },
     "figure.png": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.png",
-      "sha256": "04ba5b7a132850bed3969e19ff82d2c0e61ee08979a4224536aa02559ede2ca3",
-      "bytes": 408109
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_pooled.png",
+      "sha256": "2ac51b2f5f607b0d1e44d35e9b8d51f4cde5a6d90881cab8963766846bcff8e1",
+      "bytes": 394759
     },
     "values.csv": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_values.csv",
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_pooled_values.csv",
       "sha256": "74292ac5790c1396ebf8a88baa873243c8edf56bc0230b849e556f74d49c0ce9",
       "bytes": 1945
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_provenance.json",
-      "sha256": "d67605511ccef5b6a045a14c6a7c4dee3517425a2bdd5d51309a7a2b8a0ffcea",
-      "bytes": 10201
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_pooled_provenance.json",
+      "sha256": "a35d471607dbc9ae4fa6e1c2bb7196292e5ccb3c29bd47ccd706403b09daec79",
+      "bytes": 8958
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 5

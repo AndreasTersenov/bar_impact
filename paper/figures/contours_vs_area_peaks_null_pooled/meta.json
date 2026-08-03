@@ -2,35 +2,37 @@
   "slug": "contours_vs_area_peaks_null_pooled",
   "title": "contours vs area peaks null pooled",
   "paper_position": null,
-  "published_utc": "2026-08-03T14:15:59+00:00",
-  "published_at_repo_commit": "unknown",
-  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
+  "published_utc": "2026-08-03T21:10:33+00:00",
+  "published_at_repo_commit": "9ef3572",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.pdf",
-      "sha256": "bfb74d66cde4dbf227570fb401560efc95f00479ab63c1b53a9043510e33c2c5",
-      "bytes": 190730
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_pooled.pdf",
+      "sha256": "24b0b057788063faec8da2bc823ce1b221bd1545ff236f4685a402a1bba0ee23",
+      "bytes": 187157
     },
     "figure.png": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.png",
-      "sha256": "21486ce4660bc8f687a9ec8787f60560dcdaefa3b4baa1e0dd76f15f04e0ae2d",
-      "bytes": 411689
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_pooled.png",
+      "sha256": "2e3ea0485aa6833fa058b577fea20ea16730204eb1823b28a1937775f271c615",
+      "bytes": 414423
     },
     "values.csv": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_values.csv",
-      "sha256": "1efcf857bbd336dbafacff79370a8d2e58dfb47850b9dffaea215becdd2438ff",
-      "bytes": 1461
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_pooled_values.csv",
+      "sha256": "a73aadaf58003d39c35aceb0f374c93cfe4a3ae4fd973a6e771db6221f9c12a0",
+      "bytes": 1969
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
-      "sha256": "3833adf07d6660996ddbfc884f67804173aea7b48fae7695cb033e6a9de70bf9",
-      "bytes": 9107
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_pooled_provenance.json",
+      "sha256": "850f69743e42da41e135b9b931b48af3845bb36f7d20f853ed0ec0b833714804",
+      "bytes": 8633
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 5

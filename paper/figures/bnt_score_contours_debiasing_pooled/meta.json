@@ -2,8 +2,8 @@
   "slug": "bnt_score_contours_debiasing_pooled",
   "title": "bnt score contours debiasing pooled",
   "paper_position": 6.4,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "published_utc": "2026-08-03T21:09:52+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "plots/score_contours_debiased_580_14000_pooled",
   "files": {
     "figure.pdf": {

@@ -2,8 +2,8 @@
   "slug": "hos_frac_diff_l1",
   "title": "Fractional baryonic impact on the starlet l1-norm (full sky)",
   "paper_position": null,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "published_utc": "2026-08-03T21:10:14+00:00",
+  "published_at_repo_commit": "9ef3572",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1",
   "files": {
     "figure.pdf": {

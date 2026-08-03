@@ -1,7 +1,7 @@
 {
   "figure": "fom_vs_area_all_stats_lowanchor",
-  "generated_utc": "2026-07-30T08:38:13+00:00",
-  "git_commit": "9c33642",
+  "generated_utc": "2026-08-03T20:53:33+00:00",
+  "git_commit": "9ef3572",
   "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
   "guide_scale": 0.24,
   "guide_note": "A^+3/2 reference line = GUIDE_SCALE x (measured PS FoM3 at 14000) x (A/14000)^1.5. GUIDE_SCALE is a COSMETIC vertical offset; only the slope of this line carries meaning.",
@@ -17,9 +17,9 @@
     "scipy": "1.17.1",
     "matplotlib": "3.11.1"
   },
-  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
   "caveats": [
-    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, the data points are unaffected.",
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it.",
     "Damaged posteriors are skipped (see [skip] lines in the run log), so n_seeds differs from the original campaign and each point averages a different subset.",
     "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and L1 are capped at 5 seeds even where 10 posteriors exist. Widening it would change the plotted values; n_seeds records what was actually used.",
     "The A^+3/2 guide is anchored on the MEASURED PS value at 14000 deg^2, read from the series rather than hardcoded, so it stays correct if the inputs change.",
