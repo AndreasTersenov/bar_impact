@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
-  "title": "APPENDIX: full-sky baryon-safe contours, three statistics, PS lmax=340",
-  "paper_position": 14.0,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased fullsky l340 pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:58+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.pdf",
-      "sha256": "f944da438e15e8d4bfc465b618de84b8e8c9ab7f1c656967b5fefe1b467f19b5",
-      "bytes": 147801
+      "sha256": "24ce77b122e456e34601f8aa0d28454a94101d53a079ba2f6c4d6df299c440c8",
+      "bytes": 142859
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.png",
-      "sha256": "52d759c76684a4f59397f6161cafe60f968f0567ea49e86b6a194483f70ea09f",
-      "bytes": 311801
+      "sha256": "57c75d285464ef0161189e6b82897b2b7f115a869ff5d6935c6a7dc4bf53368b",
+      "bytes": 302884
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_provenance.json",
-      "sha256": "4b185b0f02bbebfcfea95d1b3dd894cf6074bf73c4d77f3a9c4295aa2612d28c",
-      "bytes": 3837
+      "sha256": "b18f663d4ea8360d131ad186d3e998ad9432985bdb1894628f853b18b9fce325",
+      "bytes": 4129
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

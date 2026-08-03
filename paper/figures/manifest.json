@@ -90,286 +90,6 @@
     }
   },
   {
-    "slug": "contours_baryon_safe_biased_14000_pooled",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_14000_pooled",
-      "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
-      "paper_position": 3.0,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.pdf",
-          "sha256": "b63ee5ef39cee930048cd6b42d86cedf8de9938d737502c0ac7830fdd7956672",
-          "bytes": 152602
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.png",
-          "sha256": "e5818eca805b23fa4a5c942fe0c7be3608fc5e383b2084c616565516a40db7c2",
-          "bytes": 302821
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_values.csv",
-          "sha256": "fd93fc73a1da2a74eb7c7b381a41e0c1a52df4c79740f1073cca11dea5b265c1",
-          "bytes": 646
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
-          "sha256": "840f6f9049db87538138a20b44ebbf4252ca5632fe5d270fd159dc0e088d91d0",
-          "bytes": 5644
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_14000_single_seed",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_14000_single_seed",
-      "title": "PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed)",
-      "paper_position": 3.1,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.pdf",
-          "sha256": "0d6a62a982e9a167cb15f416c7f43212238dd522706ac1f621f551c08802fb57",
-          "bytes": 159095
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.png",
-          "sha256": "eb883bf1fe42313250d97d9d415e8a5244e4886f5382bb742c33420cc4918904",
-          "bytes": 306641
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_values.csv",
-          "sha256": "10c86130dc29658e4c5a24bd248d64f1338d480986b61096c4f064e082809043",
-          "bytes": 637
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_provenance.json",
-          "sha256": "eb971b27eef05b983d6dd104b1fe8bd762edea844ccc0d6116dc8439b98e22ec",
-          "bytes": 9333
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
-      "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)",
-      "paper_position": 3.2,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.pdf",
-          "sha256": "a35b1669775b4cd28606f36e3e84c3582cc894efcb074112a2747603e37031a4",
-          "bytes": 152855
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.png",
-          "sha256": "e2fd052b3c707a472cac3ea7c645629f8b75d2f6135d28d60ed1d19918716a6c",
-          "bytes": 305446
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_values.csv",
-          "sha256": "c39d2be542ccd4f29967a1398ccbadc3f69747bc2810d57363bc4a9df7017b51",
-          "bytes": 646
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_provenance.json",
-          "sha256": "650d7d77bb67c048be80d34357faef00d23289a620e1e55df69f7109e2a874df",
-          "bytes": 5839
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
-      "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed)",
-      "paper_position": 3.3,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.pdf",
-          "sha256": "2df2858f055c9f230e7c71b192fde2da8fa7be342e7bae4709c04aac3820d42c",
-          "bytes": 158375
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.png",
-          "sha256": "ceef24d98f6abe0373c91e0274b9dd4fa9f58befd7804f9bf89c39304bf409f1",
-          "bytes": 308095
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_values.csv",
-          "sha256": "cf9fd23bdd2d1aa48a3c6ec5d38245eaa9d34e80eb0ea14fab55e48e27c72952",
-          "bytes": 637
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_provenance.json",
-          "sha256": "dd1a339826b839d43d8a867e7f69e46a33f32645f40d328a9b69eb685fa1ec85",
-          "bytes": 9335
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_both_14000_pooled",
-    "meta": {
-      "slug": "contours_baryon_safe_both_14000_pooled",
-      "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
-      "paper_position": 3.5,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.pdf",
-          "sha256": "a657a28847262915cd92bce924f73ca55cb37325e8ebd2707e8741027e4bbc0a",
-          "bytes": 227677
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.png",
-          "sha256": "081817ad30a74ffc11c03c5ee3085ec6d39e2cc1affae5983e3d8a7d5dbdf01a",
-          "bytes": 461764
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_values.csv",
-          "sha256": "42df524cdbefd47cf6eaa0f5a6739f7d41fc0aaa9df9d76bbbdf5910774d940c",
-          "bytes": 1204
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_provenance.json",
-          "sha256": "814ec3a52986c5b221003e2360947426599b5c19ff1675d8d7ae3a03d4c675ff",
-          "bytes": 8246
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_three_stats_null_pooled",
-    "meta": {
-      "slug": "contours_three_stats_null_pooled",
-      "title": "Null posteriors, three statistics, 14000 deg2",
-      "paper_position": 4,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
-          "sha256": "dc250dd15815d5a394f63dd7fb8099c6431dd3adc16f21a5fa1b2e4d0ba8c39f",
-          "bytes": 182389
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.png",
-          "sha256": "d77806952447c6af2eeb8d942538f212ab8fc9d8660fe67086ac75aca09edc23",
-          "bytes": 312178
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_values.csv",
-          "sha256": "021fc5d287bf9330fefe17a850c799a8d9ac1f5ccdc5e3345490d23a3cd89cd1",
-          "bytes": 631
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
-          "sha256": "98a48f97ac4a7b696aa25dfc52ee2248b4eb2752353463993397a28c032c877d",
-          "bytes": 5495
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 4
-    }
-  },
-  {
-    "slug": "contours_three_stats_biased_pooled",
-    "meta": {
-      "slug": "contours_three_stats_biased_pooled",
-      "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
-      "paper_position": 5,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
-          "sha256": "9ec9b8e0e0e1e00edae6eeb577028357150edf8bc8aa251738484260c25ba318",
-          "bytes": 181468
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.png",
-          "sha256": "7322762090e8288ac1128c6e9d84750540e0cc8d1d4a6bc82bd489b7f18d048c",
-          "bytes": 297418
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_values.csv",
-          "sha256": "2cd9846e12081643110c27eae37d704931e5d847d334d88c2a338100e8cb4b86",
-          "bytes": 649
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
-          "sha256": "6aaeba9f87bec0f418775964f783535af1ef16c88739a10838c27de1790fe3a4",
-          "bytes": 5514
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 4
-    }
-  },
-  {
     "slug": "bnt_flagship_embedding_matched_c460",
     "meta": {
       "slug": "bnt_flagship_embedding_matched_c460",
@@ -406,46 +126,6 @@
         "warnings": []
       },
       "value_rows": 2,
-      "n_caveats": 4
-    }
-  },
-  {
-    "slug": "contours_three_stats_both_pooled",
-    "meta": {
-      "slug": "contours_three_stats_both_pooled",
-      "title": "Null and biased overlaid, three statistics, 14000 deg2",
-      "paper_position": 6,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
-          "sha256": "21ae237b4dd8d6c8cee384daa1c8c18ef1c9264fe45f78fcb85a4a83ab776826",
-          "bytes": 275786
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
-          "sha256": "2f991b6efa8a3f565c2da92003116310d4040fe132bf7dcbb793ce166cff2164",
-          "bytes": 484389
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
-          "sha256": "2562d32f8d87a71b91cb3e1db88d71e933a24b9385b3e32eee98264a97f8b893",
-          "bytes": 1210
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
-          "sha256": "bdc1f051fc3405aa6417fbe9badbbaad136b0db5f958769df96337a8966e18d4",
-          "bytes": 8116
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
       "n_caveats": 4
     }
   },
@@ -915,46 +595,6 @@
     }
   },
   {
-    "slug": "constraining_power_vs_area",
-    "meta": {
-      "slug": "constraining_power_vs_area",
-      "title": "Constraining power vs survey area: sigma(S8) and FoM3",
-      "paper_position": 10,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
-          "sha256": "8a6e4003622874c4629aa3c5cc0b9a673a84cd0ef937c8a5752a22563a8deb91",
-          "bytes": 25033
-        },
-        "figure.png": {
-          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.png",
-          "sha256": "e4c6d4c22adaafe2ce69fa9d57244be1d1dc9e60ad4fb44f943edd135f0f9b14",
-          "bytes": 227279
-        },
-        "values.csv": {
-          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_values.csv",
-          "sha256": "b3aa783d02b55bd9cb0fbe809285226a02b9dcc2f1ab3e3ec876270170fb5d01",
-          "bytes": 1189
-        },
-        "provenance.json": {
-          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
-          "sha256": "fcb320d03fac826c3dc17cc614324c0351bb7d1af437963e187679f2203d25ee",
-          "bytes": 2340
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
     "slug": "fom_vs_area",
     "meta": {
       "slug": "fom_vs_area",
@@ -1023,526 +663,6 @@
           "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor_provenance.json",
           "sha256": "564dc1bd1ab5d4a41a04062c08fdfcf0f40107ce2adc908c1f482290c66fe9f4",
           "bytes": 1923
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
-      "title": "Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)",
-      "paper_position": 13.0,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.pdf",
-          "sha256": "732cd81027e60ddc6188b97bd78ebeae40972ad821cf88d0637ed1834e0a38a2",
-          "bytes": 152317
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.png",
-          "sha256": "cf073ca8b85326b966ab47ed8ddad0df756aff222707b58c8a825080896cb832",
-          "bytes": 307645
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_values.csv",
-          "sha256": "db54585f8f03fafb92f6be03c0f586e20ba3c594fcb11fa283549801512cdbaa",
-          "bytes": 631
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_provenance.json",
-          "sha256": "95a9659241bd40e7777dc002a69e678e001837177b2c5cd7733693b4217802a9",
-          "bytes": 3971
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
-      "title": "Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed)",
-      "paper_position": 13.1,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.pdf",
-          "sha256": "a0e4172cdf0078bf458f590fc0cd78b6972c64cd97ae979c894c6609b0a0084e",
-          "bytes": 157002
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.png",
-          "sha256": "eacfbfd85a0385fcc31cc71769c0593c55b3f62a31ccddddbfaddbe237fbcb91",
-          "bytes": 302116
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_values.csv",
-          "sha256": "0315b4c2dc784fdd0cacf2ba7b33d34ee61aef3c9a1b39fbf33bb613a991c426",
-          "bytes": 625
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_provenance.json",
-          "sha256": "0c9c3b608bd098408818052413e9d3759597c5f34e8abec7a8a2685712d0cc1b",
-          "bytes": 7024
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
-      "title": "APPENDIX: full-sky baryon-safe contours, three statistics, PS lmax=340",
-      "paper_position": 14.0,
-      "published_utc": "2026-08-03T09:36:13+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.pdf",
-          "sha256": "f944da438e15e8d4bfc465b618de84b8e8c9ab7f1c656967b5fefe1b467f19b5",
-          "bytes": 147801
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.png",
-          "sha256": "52d759c76684a4f59397f6161cafe60f968f0567ea49e86b6a194483f70ea09f",
-          "bytes": 311801
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_values.csv",
-          "sha256": "ebaba7127d5a864a6d18fb10e7ea963e032cd90f9cef66520331fbdc4dd739d6",
-          "bytes": 646
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_provenance.json",
-          "sha256": "4b185b0f02bbebfcfea95d1b3dd894cf6074bf73c4d77f3a9c4295aa2612d28c",
-          "bytes": 3837
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
-    "meta": {
-      "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
-      "title": "Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed)",
-      "paper_position": 14.1,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.pdf",
-          "sha256": "26d2c68a7c08bfe601bdc8ea578249d4397dafa2ab4b0a7e9f42dd5dba4086a4",
-          "bytes": 156002
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.png",
-          "sha256": "895e2b9096d6370df39c21d5b87228d4eed60590ee087788b4710534bbd02679",
-          "bytes": 315673
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_values.csv",
-          "sha256": "8b960ca41ef8715510f4778559e207bd0256371eabf96bd347e2260c9eb7a241",
-          "bytes": 637
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_provenance.json",
-          "sha256": "14609d30f992359eebf488e797b02b3f3be2f7b3007d7626e607c7c8a56a2c6c",
-          "bytes": 7288
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 9,
-      "n_caveats": 6
-    }
-  },
-  {
-    "slug": "contours_vs_area_ps_null_pooled",
-    "meta": {
-      "slug": "contours_vs_area_ps_null_pooled",
-      "title": "PS null posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 20,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.pdf",
-          "sha256": "695bcb90b49e31fc3310f5cbab896f142106f6b7a172351edd688ab3378c6ce0",
-          "bytes": 239006
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.png",
-          "sha256": "a9661ad7963e5716aa552406590fa549121a5d8a33d645978df0fa671b37e84c",
-          "bytes": 430326
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_values.csv",
-          "sha256": "777045012f018e72aed363c504e676408c05d03fb2c4dbf86c2be0756c13e7ab",
-          "bytes": 1597
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_provenance.json",
-          "sha256": "6253f3ff63a65f9454e921836e953303f125e494cb4680f1967673cdb4136533",
-          "bytes": 9026
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 21,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_peaks_null_pooled",
-    "meta": {
-      "slug": "contours_vs_area_peaks_null_pooled",
-      "title": "Peak-count null posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 21.0,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.pdf",
-          "sha256": "bfb74d66cde4dbf227570fb401560efc95f00479ab63c1b53a9043510e33c2c5",
-          "bytes": 190730
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.png",
-          "sha256": "21486ce4660bc8f687a9ec8787f60560dcdaefa3b4baa1e0dd76f15f04e0ae2d",
-          "bytes": 411689
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_values.csv",
-          "sha256": "1efcf857bbd336dbafacff79370a8d2e58dfb47850b9dffaea215becdd2438ff",
-          "bytes": 1461
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
-          "sha256": "3833adf07d6660996ddbfc884f67804173aea7b48fae7695cb033e6a9de70bf9",
-          "bytes": 9107
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_ps_biased_pooled",
-    "meta": {
-      "slug": "contours_vs_area_ps_biased_pooled",
-      "title": "PAPER: PS biased posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 22.0,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.pdf",
-          "sha256": "013f4a2895f47e42c0949a86d3ffc957a0b81e797e08cabf5beda2986c65074b",
-          "bytes": 246689
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.png",
-          "sha256": "ad0a53b8792d03722dcf48a699faf47420b1f84d1af8beede7d9195f352b9541",
-          "bytes": 419828
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_values.csv",
-          "sha256": "c1393907cf60bc6235cf248ad7d9ebf73f2acf663da4d7d482d31218257d1e14",
-          "bytes": 1612
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_provenance.json",
-          "sha256": "846cecc411aba4835518f8562aa642ce0ede3cf11bbc838cba436b1595b130df",
-          "bytes": 9136
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 21,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_ps_biased_single_seed",
-    "meta": {
-      "slug": "contours_vs_area_ps_biased_single_seed",
-      "title": "PAPER: PS biased posteriors, all survey areas overlaid (single seed)",
-      "paper_position": 22.1,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.pdf",
-          "sha256": "9e2682ac1330edfacbf1a8ed7a4d7fbd119d1fd5663f371e0353151d08286efd",
-          "bytes": 255500
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.png",
-          "sha256": "23f70cf286de077b33ab18af27841ab5960ce79e6b0278d6d53cad9f44741b01",
-          "bytes": 410458
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_values.csv",
-          "sha256": "1ca94a13e6ab2129b7b13f41c845d641594113dc59d2ca719477a29692eb935a",
-          "bytes": 2111
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_provenance.json",
-          "sha256": "43f0b248ed20851f87edf9ccdaf8730cb73e34bf5157848fac5b4cad6b32ec13",
-          "bytes": 18633
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 21,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_l1_null_pooled",
-    "meta": {
-      "slug": "contours_vs_area_l1_null_pooled",
-      "title": "L1-norm null posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 23.0,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.pdf",
-          "sha256": "a18b97e5d96b7ab4910c09430009644beabd56d14e3b8a5ab868902c0c6749bd",
-          "bytes": 183552
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.png",
-          "sha256": "dbad244024df35244d56c69d48b5ae5fc9f5fa2d700629b080f56e75f30df43f",
-          "bytes": 408612
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_values.csv",
-          "sha256": "46225b9f8fc99de638ec9f2aa47a56945c2142335643f11867603f860b271d2c",
-          "bytes": 1350
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_provenance.json",
-          "sha256": "aa8db37a6207ab767b46716a0f49132825a77bf37063583f16affe8bb9d33746",
-          "bytes": 9060
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_peaks_biased_pooled",
-    "meta": {
-      "slug": "contours_vs_area_peaks_biased_pooled",
-      "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 24.0,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.pdf",
-          "sha256": "32a97ecbeaae5d5bd83d23d30554914402c48719adf51f4ebda19b2322626427",
-          "bytes": 180807
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.png",
-          "sha256": "04ba5b7a132850bed3969e19ff82d2c0e61ee08979a4224536aa02559ede2ca3",
-          "bytes": 408109
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_values.csv",
-          "sha256": "74292ac5790c1396ebf8a88baa873243c8edf56bc0230b849e556f74d49c0ce9",
-          "bytes": 1945
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_provenance.json",
-          "sha256": "d67605511ccef5b6a045a14c6a7c4dee3517425a2bdd5d51309a7a2b8a0ffcea",
-          "bytes": 10201
-        }
-      },
-      "note": "PAPER FIGURE. Peak-count posteriors for the baryonified observation, six masked footprints overlaid at full map resolution (scales1234 on submean maps) -- BEFORE any scale cut, so the baryon bias is present and grows with area. Regenerated WITH the centre-outlier guard: run 8 at 28000 deg2 returned w0 = -0.053 against a median of -1.25 with a perfectly normal sigma(S8), and run 10 at 35000 gave -0.935. Neither is catchable by the collapse guard or by the width-based QA, and pooling them inflated the covariance determinant ~200x -- visible as a pooled/per-seed FoM ratio of x14 where every other contour sits near 1.1. Both are dropped and recorded in runs_dropped. NOTE the source file predates the _pooled naming convention, so its stem carries no suffix.",
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_peaks_biased_single_seed",
-    "meta": {
-      "slug": "contours_vs_area_peaks_biased_single_seed",
-      "title": "PAPER: Peak-count biased posteriors, all survey areas overlaid (single seed)",
-      "paper_position": 24.1,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.pdf",
-          "sha256": "518fcf505d5b28424415471dfd099e0cd06aad7250d79357a0b1503149754fe7",
-          "bytes": 194802
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.png",
-          "sha256": "d7501888651b5857198e6d86f491000026951a0bc455a029dd48311dbef076d2",
-          "bytes": 392623
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_values.csv",
-          "sha256": "f360a298a99f80c03a099f1033387f193673b559822648179402c85d3bf68a7c",
-          "bytes": 1927
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_provenance.json",
-          "sha256": "8dafb2887d381bacb2b66ce5910b04e4df7c3da6be4e25e973f6900d1140f0bf",
-          "bytes": 21250
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_l1_biased_pooled",
-    "meta": {
-      "slug": "contours_vs_area_l1_biased_pooled",
-      "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution",
-      "paper_position": 25.0,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.pdf",
-          "sha256": "48cb3aeb8e1ec90fe2e2fe6f29676ad4b0ad1185d77ba64244d5233c1250173a",
-          "bytes": 172901
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.png",
-          "sha256": "9d6bee252a39fc8863f841b2d7c2de5ff903d1652904000e66c1a978e8ddd8b0",
-          "bytes": 412014
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_values.csv",
-          "sha256": "a5f9494aae383588e3bbe33ea946475b277c93ece7689eb9c74cce6e0a5f2507",
-          "bytes": 1359
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_provenance.json",
-          "sha256": "c3c5c8c1fcc65377a1a2dfd6e39bd6b2483e1af0848aa45ce2b761daf377fe1a",
-          "bytes": 9215
-        }
-      },
-      "note": null,
-      "gate": {
-        "passed": true,
-        "warnings": []
-      },
-      "value_rows": 18,
-      "n_caveats": 5
-    }
-  },
-  {
-    "slug": "contours_vs_area_l1_biased_single_seed",
-    "meta": {
-      "slug": "contours_vs_area_l1_biased_single_seed",
-      "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed)",
-      "paper_position": 25.1,
-      "published_utc": "2026-08-03T09:36:14+00:00",
-      "published_at_repo_commit": "17afa33",
-      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.pdf",
-          "sha256": "d359c71d51ecababc39309fd4cd8f3846c511334d209ec12c98f6514129e6b00",
-          "bytes": 185095
-        },
-        "figure.png": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.png",
-          "sha256": "870c06f9ec0b45548fb4c64454ce18ba383a7ecb62419cfc519725e81fcd78a8",
-          "bytes": 397348
-        },
-        "values.csv": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_values.csv",
-          "sha256": "49015f11cf2f11135609d6b72287b7c077a38023bcfdcedfb6d3da7e8e458f1e",
-          "bytes": 1837
-        },
-        "provenance.json": {
-          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_provenance.json",
-          "sha256": "b656a3d8b9bc788895716535e800db4f16e93465aeda0d27a17bc1be8cbf3556",
-          "bytes": 20103
         }
       },
       "note": null,
@@ -1850,6 +970,916 @@
       },
       "value_rows": 80,
       "n_caveats": 4
+    }
+  },
+  {
+    "slug": "constraining_power_vs_area",
+    "meta": {
+      "slug": "constraining_power_vs_area",
+      "title": "constraining power vs area",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:00:47+00:00",
+      "published_at_repo_commit": "ea7ccfa",
+      "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
+          "sha256": "267d2cdea0d9b08ac7e856794c108db9756573a0fab68d69049e9c923894ccd0",
+          "bytes": 23261
+        },
+        "figure.png": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.png",
+          "sha256": "4835a6f8304d1fc5d72fc2b5c540dbdd55bd066e4ec48df66b21b76506f19333",
+          "bytes": 443545
+        },
+        "values.csv": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_values.csv",
+          "sha256": "b3aa783d02b55bd9cb0fbe809285226a02b9dcc2f1ab3e3ec876270170fb5d01",
+          "bytes": 1189
+        },
+        "provenance.json": {
+          "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
+          "sha256": "8656a76ef4b504decea50ecbdc8032c8fb21b6c9ad68e736ec2235a1abf6d49a",
+          "bytes": 2339
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_14000_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_pooled",
+      "title": "contours baryon safe biased 14000 pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.pdf",
+          "sha256": "bce1e7ec9d00b322d1e45b078e70869bfd9f136e895ff81424ce5559b1e61e0e",
+          "bytes": 148145
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.png",
+          "sha256": "ecf8125b8dc007941606df32160df7621cb53f00148ae36596147c690759ecb0",
+          "bytes": 295285
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_values.csv",
+          "sha256": "fd93fc73a1da2a74eb7c7b381a41e0c1a52df4c79740f1073cca11dea5b265c1",
+          "bytes": 646
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
+          "sha256": "a16a9d20d42469e768aa9d984baf0d07aff3e301aa00a6472235536f5d31b857",
+          "bytes": 4144
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
+      "title": "contours baryon safe biased 14000 scales2345 pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.pdf",
+          "sha256": "5fc668288e5525302d8e3d315897b6e74002ce7b70b1000a0854b174567019fa",
+          "bytes": 148693
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.png",
+          "sha256": "874f38bd84b14d1dfff1f776895bac2a78032320eb74ba29e15901a1d5069f24",
+          "bytes": 297571
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_values.csv",
+          "sha256": "c39d2be542ccd4f29967a1398ccbadc3f69747bc2810d57363bc4a9df7017b51",
+          "bytes": 646
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_provenance.json",
+          "sha256": "17d5fd654bf639f1f52dc0a06923aeab1b16170ac5d574aa1871c7f0f6299e47",
+          "bytes": 4153
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
+      "title": "contours baryon safe biased 14000 scales2345 single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.pdf",
+          "sha256": "27dc81ab382ec165e2922cbf28299a22a8e9153538cd71595de4878210cb89a2",
+          "bytes": 154019
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.png",
+          "sha256": "11d7ba989ffc6108e2f7d8a7b200e6d32d4dded13cd2878031c494b1581d431f",
+          "bytes": 300281
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_values.csv",
+          "sha256": "cf9fd23bdd2d1aa48a3c6ec5d38245eaa9d34e80eb0ea14fab55e48e27c72952",
+          "bytes": 637
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_provenance.json",
+          "sha256": "908c8861bc46d01d69441c6f40d887f485f4cbd6facc8b6fd2401e4265053d5a",
+          "bytes": 7649
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_14000_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_14000_single_seed",
+      "title": "contours baryon safe biased 14000 single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.pdf",
+          "sha256": "64e696501083914d77b9a90be3218bd82845eb972d1a6b3a9faf1702a0f5ddfe",
+          "bytes": 154148
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.png",
+          "sha256": "e11dcef6318924348d9a4bd15db725edab3c71652359a042d4ec44fe29c71ea8",
+          "bytes": 295275
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_values.csv",
+          "sha256": "10c86130dc29658e4c5a24bd248d64f1338d480986b61096c4f064e082809043",
+          "bytes": 637
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_provenance.json",
+          "sha256": "389d3a4e9cdce6c82d3372b896b6a13de8b37dbf56235900b3e4479dc82a1aa8",
+          "bytes": 7649
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
+      "title": "contours baryon safe biased fullsky l300 pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.pdf",
+          "sha256": "e914800787642988aea1284575b608df273b6b1ce94e603b0a924d03bc9d9def",
+          "bytes": 147324
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.png",
+          "sha256": "3a482ed568188e0ceeca02fd818e83140ef160321ae6a7d753e7a23b518ac406",
+          "bytes": 299055
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_values.csv",
+          "sha256": "db54585f8f03fafb92f6be03c0f586e20ba3c594fcb11fa283549801512cdbaa",
+          "bytes": 631
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_provenance.json",
+          "sha256": "a51d4b31a9ac99cdc8cd81efa4fd720cf215209ed28fc2985b7f0e02ae0507c0",
+          "bytes": 4232
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
+      "title": "contours baryon safe biased fullsky l300 single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.pdf",
+          "sha256": "54d49d497602c5b62076af3b66762b052bfc0357e33e29ea07f9bb068b5426c3",
+          "bytes": 152458
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.png",
+          "sha256": "1f009ae1b830559f7e51ae8c56f78a006178b567e722089787665a85699ab36a",
+          "bytes": 294711
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_values.csv",
+          "sha256": "0315b4c2dc784fdd0cacf2ba7b33d34ee61aef3c9a1b39fbf33bb613a991c426",
+          "bytes": 625
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_provenance.json",
+          "sha256": "5c2495533415b0b89d3a038de7549e203d86264ed0c690499014c95f1334f4bc",
+          "bytes": 7285
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l340_pooled",
+      "title": "contours baryon safe biased fullsky l340 pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.pdf",
+          "sha256": "24ce77b122e456e34601f8aa0d28454a94101d53a079ba2f6c4d6df299c440c8",
+          "bytes": 142859
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled.png",
+          "sha256": "57c75d285464ef0161189e6b82897b2b7f115a869ff5d6935c6a7dc4bf53368b",
+          "bytes": 302884
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_values.csv",
+          "sha256": "ebaba7127d5a864a6d18fb10e7ea963e032cd90f9cef66520331fbdc4dd739d6",
+          "bytes": 646
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_pooled_provenance.json",
+          "sha256": "b18f663d4ea8360d131ad186d3e998ad9432985bdb1894628f853b18b9fce325",
+          "bytes": 4129
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
+    "meta": {
+      "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
+      "title": "contours baryon safe biased fullsky l340 single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.pdf",
+          "sha256": "379ce57211ab1d103993b44b59d9615ae5b7b552904ee20fbdd084c6382d4231",
+          "bytes": 150987
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.png",
+          "sha256": "71aadcc568e9dbdff2577030a9823cdaf67724461234c2374443ff1eb4cced58",
+          "bytes": 315277
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_values.csv",
+          "sha256": "8b960ca41ef8715510f4778559e207bd0256371eabf96bd347e2260c9eb7a241",
+          "bytes": 637
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_provenance.json",
+          "sha256": "1b552e19e909e0236a8bbcc6a7e647d573169c043aa56c21475ab3007c9b08fa",
+          "bytes": 7580
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_baryon_safe_both_14000_pooled",
+    "meta": {
+      "slug": "contours_baryon_safe_both_14000_pooled",
+      "title": "contours baryon safe both 14000 pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:58+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.pdf",
+          "sha256": "2acd91f5a17e19369aa13dd25450c1d0f6bcb66bb7dc60b7998aaeae2a391e93",
+          "bytes": 223018
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.png",
+          "sha256": "d74cf31707ca42944d9b7978f495b64ff565125ee87d0b5d72457851831a9704",
+          "bytes": 449728
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_values.csv",
+          "sha256": "42df524cdbefd47cf6eaa0f5a6739f7d41fc0aaa9df9d76bbbdf5910774d940c",
+          "bytes": 1204
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_provenance.json",
+          "sha256": "d13a509466248d37738449cbe4d78f32be7f59415640a0274ca4cfe8df5e40b3",
+          "bytes": 5533
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 18,
+      "n_caveats": 6
+    }
+  },
+  {
+    "slug": "contours_three_stats_biased_pooled",
+    "meta": {
+      "slug": "contours_three_stats_biased_pooled",
+      "title": "contours three stats biased pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
+          "sha256": "f42eab6f3188c1b50b097055b7c0d859dec75a362eb879cb5bd8a79e25f0e827",
+          "bytes": 177246
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.png",
+          "sha256": "2c9ac60846a1400c64b04258b03f1335ce7a4201f013a3c627e3862a760d14be",
+          "bytes": 295973
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_values.csv",
+          "sha256": "2cd9846e12081643110c27eae37d704931e5d847d334d88c2a338100e8cb4b86",
+          "bytes": 649
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
+          "sha256": "6fb1e3e3b361c8511478eaee3061d2cdc1c92e4fc74f324adde5d2a57c694d16",
+          "bytes": 4010
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "contours_three_stats_both_pooled",
+    "meta": {
+      "slug": "contours_three_stats_both_pooled",
+      "title": "contours three stats both pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
+          "sha256": "1582747f4bca0ad3fcd93a5e419e75b6a58963e1c8acffb7ce9c5afd1d89ade6",
+          "bytes": 269092
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
+          "sha256": "2fba55ab218aa8b819b2893a6e91945bffeaaf62df8389c4ffdf652add0d43e8",
+          "bytes": 468186
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
+          "sha256": "2562d32f8d87a71b91cb3e1db88d71e933a24b9385b3e32eee98264a97f8b893",
+          "bytes": 1210
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
+          "sha256": "ad5a01c4d8cc06ae69a4d94ca8e4013ac38e23a7f4b68f0dfec6a626ee49c888",
+          "bytes": 5401
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 18,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "contours_three_stats_null_pooled",
+    "meta": {
+      "slug": "contours_three_stats_null_pooled",
+      "title": "contours three stats null pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:57+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
+          "sha256": "840ff469aa20055e8f4cb1be16fdab6fb542666fa0bf3ce3be37be860c2d138a",
+          "bytes": 177059
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.png",
+          "sha256": "8bc871f1fb8688e4c3c5e26133abe678756e4a2f904bf6e8818220b7029ade97",
+          "bytes": 304261
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_values.csv",
+          "sha256": "021fc5d287bf9330fefe17a850c799a8d9ac1f5ccdc5e3345490d23a3cd89cd1",
+          "bytes": 631
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
+          "sha256": "455619ed1ab59ffabbc0312f6c50f7392b28e73605c49f86828a6a44b552ae41",
+          "bytes": 3999
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 9,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "contours_vs_area_l1_biased_pooled",
+    "meta": {
+      "slug": "contours_vs_area_l1_biased_pooled",
+      "title": "contours vs area l1 biased pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.pdf",
+          "sha256": "48cb3aeb8e1ec90fe2e2fe6f29676ad4b0ad1185d77ba64244d5233c1250173a",
+          "bytes": 172901
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020.png",
+          "sha256": "9d6bee252a39fc8863f841b2d7c2de5ff903d1652904000e66c1a978e8ddd8b0",
+          "bytes": 412014
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_values.csv",
+          "sha256": "a5f9494aae383588e3bbe33ea946475b277c93ece7689eb9c74cce6e0a5f2507",
+          "bytes": 1359
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_provenance.json",
+          "sha256": "c3c5c8c1fcc65377a1a2dfd6e39bd6b2483e1af0848aa45ce2b761daf377fe1a",
+          "bytes": 9215
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_l1_biased_single_seed",
+    "meta": {
+      "slug": "contours_vs_area_l1_biased_single_seed",
+      "title": "contours vs area l1 biased single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.pdf",
+          "sha256": "2cd55a7e8397a24db075f9d8dd636783ceedf737c1ae48a19b31894c76c12604",
+          "bytes": 181697
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.png",
+          "sha256": "d2b7ce88322d3d309a33b795eaf9c85fcd08f0162a00ee3049b00596f7db1e56",
+          "bytes": 393985
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_values.csv",
+          "sha256": "49015f11cf2f11135609d6b72287b7c077a38023bcfdcedfb6d3da7e8e458f1e",
+          "bytes": 1837
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_provenance.json",
+          "sha256": "6cd466104ec03c80066c863a563fad74641ff42a42640017b41794e970f3b7ce",
+          "bytes": 18574
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_l1_null_pooled",
+    "meta": {
+      "slug": "contours_vs_area_l1_null_pooled",
+      "title": "contours vs area l1 null pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.pdf",
+          "sha256": "a18b97e5d96b7ab4910c09430009644beabd56d14e3b8a5ab868902c0c6749bd",
+          "bytes": 183552
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020.png",
+          "sha256": "dbad244024df35244d56c69d48b5ae5fc9f5fa2d700629b080f56e75f30df43f",
+          "bytes": 408612
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_values.csv",
+          "sha256": "46225b9f8fc99de638ec9f2aa47a56945c2142335643f11867603f860b271d2c",
+          "bytes": 1350
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_provenance.json",
+          "sha256": "aa8db37a6207ab767b46716a0f49132825a77bf37063583f16affe8bb9d33746",
+          "bytes": 9060
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_peaks_biased_pooled",
+    "meta": {
+      "slug": "contours_vs_area_peaks_biased_pooled",
+      "title": "contours vs area peaks biased pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.pdf",
+          "sha256": "32a97ecbeaae5d5bd83d23d30554914402c48719adf51f4ebda19b2322626427",
+          "bytes": 180807
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020.png",
+          "sha256": "04ba5b7a132850bed3969e19ff82d2c0e61ee08979a4224536aa02559ede2ca3",
+          "bytes": 408109
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_values.csv",
+          "sha256": "74292ac5790c1396ebf8a88baa873243c8edf56bc0230b849e556f74d49c0ce9",
+          "bytes": 1945
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_provenance.json",
+          "sha256": "d67605511ccef5b6a045a14c6a7c4dee3517425a2bdd5d51309a7a2b8a0ffcea",
+          "bytes": 10201
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_peaks_biased_single_seed",
+    "meta": {
+      "slug": "contours_vs_area_peaks_biased_single_seed",
+      "title": "contours vs area peaks biased single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.pdf",
+          "sha256": "baff3ef1c3d295fbd8232f8dbb850817c705e6933274828639f12af7939f9e71",
+          "bytes": 191226
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.png",
+          "sha256": "19b168c3a93a6dd9df91ff712fe4da6b32a57b57fc0fd6c10eb7e75eb81360c6",
+          "bytes": 390459
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_values.csv",
+          "sha256": "f360a298a99f80c03a099f1033387f193673b559822648179402c85d3bf68a7c",
+          "bytes": 1927
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_provenance.json",
+          "sha256": "080b7f17d644db6904fcfe92aa013741b16dda66d5a142b1fabca7e584c89968",
+          "bytes": 19662
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_peaks_null_pooled",
+    "meta": {
+      "slug": "contours_vs_area_peaks_null_pooled",
+      "title": "contours vs area peaks null pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.pdf",
+          "sha256": "bfb74d66cde4dbf227570fb401560efc95f00479ab63c1b53a9043510e33c2c5",
+          "bytes": 190730
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020.png",
+          "sha256": "21486ce4660bc8f687a9ec8787f60560dcdaefa3b4baa1e0dd76f15f04e0ae2d",
+          "bytes": 411689
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_values.csv",
+          "sha256": "1efcf857bbd336dbafacff79370a8d2e58dfb47850b9dffaea215becdd2438ff",
+          "bytes": 1461
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020_provenance.json",
+          "sha256": "3833adf07d6660996ddbfc884f67804173aea7b48fae7695cb033e6a9de70bf9",
+          "bytes": 9107
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 18,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_ps_biased_pooled",
+    "meta": {
+      "slug": "contours_vs_area_ps_biased_pooled",
+      "title": "contours vs area ps biased pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:16:00+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.pdf",
+          "sha256": "013f4a2895f47e42c0949a86d3ffc957a0b81e797e08cabf5beda2986c65074b",
+          "bytes": 246689
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky.png",
+          "sha256": "ad0a53b8792d03722dcf48a699faf47420b1f84d1af8beede7d9195f352b9541",
+          "bytes": 419828
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_values.csv",
+          "sha256": "c1393907cf60bc6235cf248ad7d9ebf73f2acf663da4d7d482d31218257d1e14",
+          "bytes": 1612
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_provenance.json",
+          "sha256": "846cecc411aba4835518f8562aa642ce0ede3cf11bbc838cba436b1595b130df",
+          "bytes": 9136
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 21,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_ps_biased_single_seed",
+    "meta": {
+      "slug": "contours_vs_area_ps_biased_single_seed",
+      "title": "contours vs area ps biased single seed",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:16:00+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.pdf",
+          "sha256": "5f75ea04e0a5844e0466245a311e043173aa7b9b900c60385483f9418518dd90",
+          "bytes": 249934
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.png",
+          "sha256": "6f9599f7e74f17c6b58fd885804ab3ab64a0ba4ae99f9fc6010092333a60ab58",
+          "bytes": 399426
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_values.csv",
+          "sha256": "1ca94a13e6ab2129b7b13f41c845d641594113dc59d2ca719477a29692eb935a",
+          "bytes": 2111
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_provenance.json",
+          "sha256": "547102bd5964f107cc00de14c65d991b26d4b6efb5d46cc09d358646790d947c",
+          "bytes": 17032
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+        ]
+      },
+      "value_rows": 21,
+      "n_caveats": 5
+    }
+  },
+  {
+    "slug": "contours_vs_area_ps_null_pooled",
+    "meta": {
+      "slug": "contours_vs_area_ps_null_pooled",
+      "title": "contours vs area ps null pooled",
+      "paper_position": null,
+      "published_utc": "2026-08-03T14:15:59+00:00",
+      "published_at_repo_commit": "unknown",
+      "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.pdf",
+          "sha256": "695bcb90b49e31fc3310f5cbab896f142106f6b7a172351edd688ab3378c6ce0",
+          "bytes": 239006
+        },
+        "figure.png": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky.png",
+          "sha256": "a9661ad7963e5716aa552406590fa549121a5d8a33d645978df0fa671b37e84c",
+          "bytes": 430326
+        },
+        "values.csv": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_values.csv",
+          "sha256": "777045012f018e72aed363c504e676408c05d03fb2c4dbf86c2be0756c13e7ab",
+          "bytes": 1597
+        },
+        "provenance.json": {
+          "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky_provenance.json",
+          "sha256": "6253f3ff63a65f9454e921836e953303f125e494cb4680f1967673cdb4136533",
+          "bytes": 9026
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 21,
+      "n_caveats": 5
     }
   },
   {

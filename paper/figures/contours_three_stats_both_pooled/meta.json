@@ -1,20 +1,20 @@
 {
   "slug": "contours_three_stats_both_pooled",
-  "title": "Null and biased overlaid, three statistics, 14000 deg2",
-  "paper_position": 6,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours three stats both pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
-      "sha256": "21ae237b4dd8d6c8cee384daa1c8c18ef1c9264fe45f78fcb85a4a83ab776826",
-      "bytes": 275786
+      "sha256": "1582747f4bca0ad3fcd93a5e419e75b6a58963e1c8acffb7ce9c5afd1d89ade6",
+      "bytes": 269092
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
-      "sha256": "2f991b6efa8a3f565c2da92003116310d4040fe132bf7dcbb793ce166cff2164",
-      "bytes": 484389
+      "sha256": "2fba55ab218aa8b819b2893a6e91945bffeaaf62df8389c4ffdf652add0d43e8",
+      "bytes": 468186
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
-      "sha256": "bdc1f051fc3405aa6417fbe9badbbaad136b0db5f958769df96337a8966e18d4",
-      "bytes": 8116
+      "sha256": "ad5a01c4d8cc06ae69a4d94ca8e4013ac38e23a7f4b68f0dfec6a626ee49c888",
+      "bytes": 5401
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 4

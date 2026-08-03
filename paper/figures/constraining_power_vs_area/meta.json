@@ -1,20 +1,20 @@
 {
   "slug": "constraining_power_vs_area",
-  "title": "Constraining power vs survey area: sigma(S8) and FoM3",
-  "paper_position": 10,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "constraining power vs area",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:00:47+00:00",
+  "published_at_repo_commit": "ea7ccfa",
   "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
-      "sha256": "8a6e4003622874c4629aa3c5cc0b9a673a84cd0ef937c8a5752a22563a8deb91",
-      "bytes": 25033
+      "sha256": "267d2cdea0d9b08ac7e856794c108db9756573a0fab68d69049e9c923894ccd0",
+      "bytes": 23261
     },
     "figure.png": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.png",
-      "sha256": "e4c6d4c22adaafe2ce69fa9d57244be1d1dc9e60ad4fb44f943edd135f0f9b14",
-      "bytes": 227279
+      "sha256": "4835a6f8304d1fc5d72fc2b5c540dbdd55bd066e4ec48df66b21b76506f19333",
+      "bytes": 443545
     },
     "values.csv": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
-      "sha256": "fcb320d03fac826c3dc17cc614324c0351bb7d1af437963e187679f2203d25ee",
-      "bytes": 2340
+      "sha256": "8656a76ef4b504decea50ecbdc8032c8fb21b6c9ad68e736ec2235a1abf6d49a",
+      "bytes": 2339
     }
   },
   "note": null,

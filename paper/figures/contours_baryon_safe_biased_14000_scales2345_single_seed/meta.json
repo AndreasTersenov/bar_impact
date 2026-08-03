@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_14000_scales2345_single_seed",
-  "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed)",
-  "paper_position": 3.3,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased 14000 scales2345 single seed",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:58+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.pdf",
-      "sha256": "2df2858f055c9f230e7c71b192fde2da8fa7be342e7bae4709c04aac3820d42c",
-      "bytes": 158375
+      "sha256": "27dc81ab382ec165e2922cbf28299a22a8e9153538cd71595de4878210cb89a2",
+      "bytes": 154019
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed.png",
-      "sha256": "ceef24d98f6abe0373c91e0274b9dd4fa9f58befd7804f9bf89c39304bf409f1",
-      "bytes": 308095
+      "sha256": "11d7ba989ffc6108e2f7d8a7b200e6d32d4dded13cd2878031c494b1581d431f",
+      "bytes": 300281
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_single_seed_provenance.json",
-      "sha256": "dd1a339826b839d43d8a867e7f69e46a33f32645f40d328a9b69eb685fa1ec85",
-      "bytes": 9335
+      "sha256": "908c8861bc46d01d69441c6f40d887f485f4cbd6facc8b6fd2401e4265053d5a",
+      "bytes": 7649
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

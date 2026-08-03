@@ -1,11 +1,9 @@
-# PAPER: Peak-count biased posteriors, all survey areas overlaid, full resolution
-
-PAPER FIGURE. Peak-count posteriors for the baryonified observation, six masked footprints overlaid at full map resolution (scales1234 on submean maps) -- BEFORE any scale cut, so the baryon bias is present and grows with area. Regenerated WITH the centre-outlier guard: run 8 at 28000 deg2 returned w0 = -0.053 against a median of -1.25 with a perfectly normal sigma(S8), and run 10 at 35000 gave -0.935. Neither is catchable by the collapse guard or by the width-based QA, and pooling them inflated the covariance determinant ~200x -- visible as a pooled/per-seed FoM ratio of x14 where every other contour sits near 1.1. Both are dropped and recorded in runs_dropped. NOTE the source file predates the _pooled naming convention, so its stem carries no suffix.
+# contours vs area peaks biased pooled
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020`
 - **generator commit**: `3d0116e`
 - **generated**: 2026-07-30T13:28:41+00:00
-- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
+- **published**: 2026-08-03T14:15:59+00:00 at repo `unknown`
 - **rows in values.csv**: 18
 
 ## Scales included

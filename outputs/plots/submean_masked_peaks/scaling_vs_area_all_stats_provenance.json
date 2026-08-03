@@ -1,7 +1,7 @@
 {
   "figure": "scaling_vs_area_all_stats",
-  "generated_utc": "2026-07-30T08:38:01+00:00",
-  "git_commit": "9c33642",
+  "generated_utc": "2026-08-03T13:22:05+00:00",
+  "git_commit": "ea7ccfa",
   "panels": {
     "a": "sigma(S8) vs area",
     "b": "FoM_3 vs area"
@@ -33,9 +33,9 @@
     "scipy": "1.17.1",
     "matplotlib": "3.11.1"
   },
-  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/aa.mplstyle",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
   "caveats": [
-    "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, the data points are unaffected.",
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it.",
     "Damaged posteriors are skipped, so n_seeds differs from the original campaign and each point averages a different subset.",
     "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and L1 are capped at 5 seeds even where 10 posteriors exist. n_seeds records what was used.",
     "The two reference guides are HARDCODED anchors (0.0135 and 1.05e5 at 14000 deg^2) chosen pre-crash; unlike plot_fom_vs_area.py they are NOT read from the series, so they may no longer sit on the data. They are guides to the SLOPE, not fits.",

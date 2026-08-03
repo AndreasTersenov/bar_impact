@@ -1,9 +1,9 @@
-# Peak-count null posteriors, all survey areas overlaid, full resolution
+# contours vs area peaks null pooled
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_peaks_null_l37-1020`
 - **generator commit**: `7cfd75b`
 - **generated**: 2026-07-30T11:53:52+00:00
-- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
+- **published**: 2026-08-03T14:15:59+00:00 at repo `unknown`
 - **rows in values.csv**: 18
 
 ## Scales included

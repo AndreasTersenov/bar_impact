@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_both_14000_pooled",
-  "title": "Baryon-safe: null and biased overlaid, three statistics, 14000 deg2",
-  "paper_position": 3.5,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe both 14000 pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:58+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.pdf",
-      "sha256": "a657a28847262915cd92bce924f73ca55cb37325e8ebd2707e8741027e4bbc0a",
-      "bytes": 227677
+      "sha256": "2acd91f5a17e19369aa13dd25450c1d0f6bcb66bb7dc60b7998aaeae2a391e93",
+      "bytes": 223018
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.png",
-      "sha256": "081817ad30a74ffc11c03c5ee3085ec6d39e2cc1affae5983e3d8a7d5dbdf01a",
-      "bytes": 461764
+      "sha256": "d74cf31707ca42944d9b7978f495b64ff565125ee87d0b5d72457851831a9704",
+      "bytes": 449728
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_provenance.json",
-      "sha256": "814ec3a52986c5b221003e2360947426599b5c19ff1675d8d7ae3a03d4c675ff",
-      "bytes": 8246
+      "sha256": "d13a509466248d37738449cbe4d78f32be7f59415640a0274ca4cfe8df5e40b3",
+      "bytes": 5533
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 6

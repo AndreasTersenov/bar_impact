@@ -167,11 +167,8 @@ def main():
     style = "dark_background" if a.dark else "default"
     with plt.style.context(style):
         g = plots.get_subplot_plotter(width_inch=6)
-        g.settings.figure_legend_frame = False
-        g.settings.alpha_filled_add = 0.99
-        g.settings.axes_fontsize = 14
-        g.settings.lab_fontsize = 16
-        g.settings.legend_fontsize = 14
+        import paper_contour_style as PCS
+        _palette = PCS.apply(g)
         g.settings.title_limit_fontsize = 12
         g.triangle_plot(mcs, filled=True, contour_colors=colors,
                         legend_labels=[m.label for m in mcs],

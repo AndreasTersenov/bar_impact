@@ -6,11 +6,11 @@ import numpy as np, glob, matplotlib
 matplotlib.use("Agg")
 import os
 import matplotlib.pyplot as plt
-from matplotlib.ticker import LogLocator
+from matplotlib.ticker import FixedLocator, FuncFormatter, NullFormatter
 from scipy.stats import linregress
 
 _AA = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))), "styles", "aa.mplstyle")
+    os.path.abspath(__file__)))), "styles", "paper_v1.mplstyle")
 if os.path.exists(_AA):
     plt.style.use(_AA)
 else:
@@ -62,7 +62,11 @@ SERIES = [
     ("L1 norm",        HOS, [avg(hf("",   A)) for A in HOS], "#009E73", "-.", "^"),
 ]
 
-W = 7.087  # A&A double-column, inches
+W = 14.0   # submitted-style canvas; paper_v1 fonts are ~2x the A&A ones
+
+LW, MS, ELW = 2.2, 7.0, 1.6
+CAPSIZE, CAPTHICK = 6.0, 2.0
+
 fig, ax = plt.subplots(1, 2, figsize=(W, 0.46 * W))
 
 for j, (name, A, m, c, ls, mk) in enumerate(SERIES):
@@ -71,10 +75,15 @@ for j, (name, A, m, c, ls, mk) in enumerate(SERIES):
     fom = np.array([x[2] for x in m]); ef = np.array([x[3] for x in m])
     ss = linregress(np.log(A), np.log(s8)).slope
     sf = linregress(np.log(A), np.log(fom)).slope
-    ax[0].errorbar(A, s8, yerr=es, color=c, ls=ls, marker=mk, ms=4.5, lw=1.4,
-                   capsize=2, elinewidth=0.9, label=rf"{name} ($\alpha={ss:+.2f}$)")
-    ax[1].errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=4.5, lw=1.4,
-                   capsize=2, elinewidth=0.9, label=rf"{name} ($\alpha={sf:+.2f}$)")
+    # Stroke weights match plot_nsigma_vs_area.py so the two area-scaling figures read as a
+    # pair. NOTE: do not add markeredgewidth here -- caps are '_' markers, so an explicit
+    # markeredgewidth overrides capthick and silently erases every cap.
+    ax[0].errorbar(A, s8, yerr=es, color=c, ls=ls, marker=mk, ms=MS, lw=LW,
+                   capsize=CAPSIZE, capthick=CAPTHICK, elinewidth=ELW,
+                   label=rf"{name} ($\alpha={ss:+.2f}$)")
+    ax[1].errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=MS, lw=LW,
+                   capsize=CAPSIZE, capthick=CAPTHICK, elinewidth=ELW,
+                   label=rf"{name} ($\alpha={sf:+.2f}$)")
 
 # reference slopes (anchored at 14000), neutral gray dotted
 Aref = np.array([1.7e3, 4.2e4])
@@ -83,13 +92,26 @@ ax[1].plot(Aref, 1.05e5 * (Aref / 14000.) ** +1.5, color="0.45", ls=":", lw=1.0,
 
 ax[0].set_ylabel(r"$\sigma(S_8)$")
 ax[1].set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},S_8,w_0)$")
+# The x range spans barely one decade (2e3 to 4e4), and in that regime matplotlib's log
+# formatter labels the MINOR ticks too. Setting a major LogLocator does not stop it, so the
+# axis came out as an unreadable pile: "2x10^3 3x10^3 4x10^3 6x10^3 10^4 2x10^4 ...". Fix
+# the majors at round areas and silence the minor formatter explicitly -- the minors stay as
+# tick marks, which is what a log axis wants, but they carry no text.
+XTICKS = [2000, 5000, 10000, 20000, 40000]
+
+# Legends were colliding with the data in both panels. sigma(S8) falls to the right, so its
+# empty corner is lower-left; FoM3 rises to the right, so its empty corner is upper-left.
+LEGEND_LOC = ["lower left", "upper left"]
+
 for k, a in enumerate(ax):
     a.set_xscale("log"); a.set_yscale("log")
     a.set_xlabel(r"mask area $\,[\mathrm{deg}^2]$")
-    a.xaxis.set_major_locator(LogLocator(base=10, numticks=6))
-    a.tick_params(which="both", direction="in", top=True, right=True)
-    a.legend(frameon=False, fontsize=8, handlelength=2.2)
-    a.text(0.04, 0.06, f"({'ab'[k]})", transform=a.transAxes, fontsize=9, va="bottom")
+    a.set_xlim(1.7e3, 4.4e4)
+    a.xaxis.set_major_locator(FixedLocator(XTICKS))
+    a.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{int(round(v)):d}"))
+    a.xaxis.set_minor_formatter(NullFormatter())
+    a.legend(frameon=False, loc=LEGEND_LOC[k])
+    a.text(0.04, 0.06, f"({'ab'[k]})", transform=a.transAxes, fontsize=13, va="bottom")
 
 fig.tight_layout(pad=0.4, w_pad=1.2)
 out = "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats"
@@ -155,8 +177,8 @@ _json.dump({
     "versions": {m: _ver(m) for m in ("numpy", "scipy", "matplotlib")},
     "mplstyle": _AA if os.path.exists(_AA) else "matplotlib defaults",
     "caveats": [
-        "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-        "pre-crash figures are expected, the data points are unaffected.",
+        "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
         "Damaged posteriors are skipped, so n_seeds differs from the original campaign and "
         "each point averages a different subset.",
         "KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and "

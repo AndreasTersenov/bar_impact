@@ -1,9 +1,9 @@
-# PS null posteriors, all survey areas overlaid, full resolution
+# contours vs area ps null pooled
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_ps_null_l37-1020_with_fullsky`
 - **generator commit**: `7cfd75b`
 - **generated**: 2026-07-30T10:55:03+00:00
-- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
+- **published**: 2026-08-03T14:15:59+00:00 at repo `unknown`
 - **rows in values.csv**: 21
 
 ## Scales included

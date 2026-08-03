@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
-  "title": "Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed)",
-  "paper_position": 13.1,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased fullsky l300 single seed",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:58+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.pdf",
-      "sha256": "a0e4172cdf0078bf458f590fc0cd78b6972c64cd97ae979c894c6609b0a0084e",
-      "bytes": 157002
+      "sha256": "54d49d497602c5b62076af3b66762b052bfc0357e33e29ea07f9bb068b5426c3",
+      "bytes": 152458
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed.png",
-      "sha256": "eacfbfd85a0385fcc31cc71769c0593c55b3f62a31ccddddbfaddbe237fbcb91",
-      "bytes": 302116
+      "sha256": "1f009ae1b830559f7e51ae8c56f78a006178b567e722089787665a85699ab36a",
+      "bytes": 294711
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed_provenance.json",
-      "sha256": "0c9c3b608bd098408818052413e9d3759597c5f34e8abec7a8a2685712d0cc1b",
-      "bytes": 7024
+      "sha256": "5c2495533415b0b89d3a038de7549e203d86264ed0c690499014c95f1334f4bc",
+      "bytes": 7285
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

@@ -1,9 +1,9 @@
-# Constraining power vs survey area: sigma(S8) and FoM3
+# constraining power vs area
 
 - **source**: `outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats`
-- **generator commit**: `9c33642`
-- **generated**: 2026-07-30T08:38:01+00:00
-- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
+- **generator commit**: `ea7ccfa`
+- **generated**: 2026-08-03T13:22:05+00:00
+- **published**: 2026-08-03T14:00:47+00:00 at repo `ea7ccfa`
 - **rows in values.csv**: 18
 
 ## Scales included
@@ -17,7 +17,7 @@ If this figure is used anywhere (paper or referee response) the x-axis tick labe
 
 ## Caveats (from provenance)
 
-- aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from pre-crash figures are expected, the data points are unaffected.
+- styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it.
 - Damaged posteriors are skipped, so n_seeds differs from the original campaign and each point averages a different subset.
 - KNOWN LIMITATION: the higher-order file list is enumerated as runs 1-5, so peaks and L1 are capped at 5 seeds even where 10 posteriors exist. n_seeds records what was used.
 - The two reference guides are HARDCODED anchors (0.0135 and 1.05e5 at 14000 deg^2) chosen pre-crash; unlike plot_fom_vs_area.py they are NOT read from the series, so they may no longer sit on the data. They are guides to the SLOPE, not fits.

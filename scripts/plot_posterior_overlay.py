@@ -81,6 +81,10 @@ def main():
                          "seed per series (tension.seeds, median-referenced on centre AND width)")
     ap.add_argument("--title", default=None)
     ap.add_argument("--subtitle", default=None)
+    ap.add_argument("--fom-box", action="store_true",
+                    help="draw the FoM/ratio box inside the axes. Off by default: it restates "
+                         "values.csv in a form nobody can verify and goes stale on regeneration. "
+                         "Put the numbers in the caption instead.")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
 
@@ -121,10 +125,11 @@ def main():
     mcs = [MCSamples(samples=series[i]["samples"], names=NAMES, labels=LABELS,
                      label=series[i]["label"]) for i in order]
     draw_cols = [cols[i] for i in order]
+    # Type and fills from the shared contour style, so every contour figure in the paper
+    # matches. plt.style.use() cannot do this: getdist carries its own font sizes.
+    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=7.5)
-    g.settings.legend_fontsize = 12
-    g.settings.axes_labelsize = 15
-    g.settings.axes_fontsize = 11
+    _palette = PCS.apply(g)
     g.triangle_plot(mcs, filled=True, contour_colors=draw_cols,
                     legend_labels=[series[i]["label"] for i in order], legend_loc="upper right")
     for i in range(3):
@@ -138,11 +143,17 @@ def main():
 
     if a.title:
         g.fig.suptitle(a.title, fontsize=14, y=1.02)
-    box = [rf"FoM$_3$ = {s['fom']:.2e}   $r(\Omega_m,S_8)$ = {s['R'][0,1]:+.2f}" for s in series]
-    if len(series) >= 2:
-        box.append(rf"ratio = $\mathbf{{{series[0]['fom']/series[1]['fom']:.2f}\times}}$")
-    g.fig.text(0.62, 0.80, "\n".join(box), ha="center", va="center", fontsize=11,
-               bbox=dict(boxstyle="round", fc="white", ec="0.7", alpha=0.9))
+    # The FoM/ratio box is OFF by default. It duplicates values.csv inside the image, where
+    # it cannot be checked and goes stale if the figure is regenerated with different seeds,
+    # and it sits in the empty upper-right where a reader expects the legend. The numbers
+    # belong in the caption, sourced from values.csv. --fom-box brings it back for a slide.
+    if a.fom_box:
+        box = [rf"FoM$_3$ = {s['fom']:.2e}   $r(\Omega_m,S_8)$ = {s['R'][0,1]:+.2f}"
+               for s in series]
+        if len(series) >= 2:
+            box.append(rf"ratio = $\mathbf{{{series[0]['fom']/series[1]['fom']:.2f}\times}}$")
+        g.fig.text(0.62, 0.80, "\n".join(box), ha="center", va="center", fontsize=11,
+                   bbox=dict(boxstyle="round", fc="white", ec="0.7", alpha=0.9))
     if a.subtitle:
         g.fig.text(0.5, -0.01, a.subtitle, ha="center", fontsize=9, color="0.4")
     for ext in ("png", "pdf"):

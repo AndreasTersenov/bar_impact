@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_14000_single_seed",
-  "title": "PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed)",
-  "paper_position": 3.1,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased 14000 single seed",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.pdf",
-      "sha256": "0d6a62a982e9a167cb15f416c7f43212238dd522706ac1f621f551c08802fb57",
-      "bytes": 159095
+      "sha256": "64e696501083914d77b9a90be3218bd82845eb972d1a6b3a9faf1702a0f5ddfe",
+      "bytes": 154148
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed.png",
-      "sha256": "eb883bf1fe42313250d97d9d415e8a5244e4886f5382bb742c33420cc4918904",
-      "bytes": 306641
+      "sha256": "e11dcef6318924348d9a4bd15db725edab3c71652359a042d4ec44fe29c71ea8",
+      "bytes": 295275
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_single_seed_provenance.json",
-      "sha256": "eb971b27eef05b983d6dd104b1fe8bd762edea844ccc0d6116dc8439b98e22ec",
-      "bytes": 9333
+      "sha256": "389d3a4e9cdce6c82d3372b896b6a13de8b37dbf56235900b3e4479dc82a1aa8",
+      "bytes": 7649
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

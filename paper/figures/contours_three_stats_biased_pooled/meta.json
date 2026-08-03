@@ -1,20 +1,20 @@
 {
   "slug": "contours_three_stats_biased_pooled",
-  "title": "Baryon-biased posteriors, three statistics, 14000 deg2",
-  "paper_position": 5,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours three stats biased pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
-      "sha256": "9ec9b8e0e0e1e00edae6eeb577028357150edf8bc8aa251738484260c25ba318",
-      "bytes": 181468
+      "sha256": "f42eab6f3188c1b50b097055b7c0d859dec75a362eb879cb5bd8a79e25f0e827",
+      "bytes": 177246
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.png",
-      "sha256": "7322762090e8288ac1128c6e9d84750540e0cc8d1d4a6bc82bd489b7f18d048c",
-      "bytes": 297418
+      "sha256": "2c9ac60846a1400c64b04258b03f1335ce7a4201f013a3c627e3862a760d14be",
+      "bytes": 295973
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
-      "sha256": "6aaeba9f87bec0f418775964f783535af1ef16c88739a10838c27de1790fe3a4",
-      "bytes": 5514
+      "sha256": "6fb1e3e3b361c8511478eaee3061d2cdc1c92e4fc74f324adde5d2a57c694d16",
+      "bytes": 4010
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 4

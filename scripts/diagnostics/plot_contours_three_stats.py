@@ -230,7 +230,7 @@ def main():
         ps_cut_note = "no upper cut (full resolution)" if not args.ps_lmax else "explicit --ps-lmax"
     print(f"cut mode: {args.cut_mode}   PS lmax={ps_lmax} ({ps_cut_note})   HOS {hos_scales}")
 
-    aa = f"{REPO}/styles/aa.mplstyle"
+    aa = f"{REPO}/styles/paper_v1.mplstyle"
     if os.path.exists(aa):
         plt.style.use(aa)
     else:
@@ -275,7 +275,7 @@ def main():
             # same role, and dashing them all just makes the figure harder to read.
             solo = args.mode != "both"
             filled.append(solo or role == "null")
-            line_args.append({"color": STYLE[label], "lw": 1.6,
+            line_args.append({"color": STYLE[label], "lw": __import__("paper_contour_style").CONTOUR_LW,
                               "ls": "-" if (solo or role == "null") else "--"})
             legend.append(tag)
             rows.append({"statistic": label, "role": role, "n_runs": len(runs),
@@ -287,11 +287,13 @@ def main():
     if not mcs:
         raise SystemExit("[fatal] nothing to plot — every statistic lost its pairs")
 
+    # Type and palette come from scripts/paper_contour_style.py, NOT from the mplstyle sheet:
+    # plt.style.use() does not reach getdist's own font sizes or fills, which is how this
+    # figure kept 7 pt axis labels and 0.55 fills after the move to paper_v1.
+    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=args.width)
-    g.settings.legend_fontsize = 8
-    g.settings.axes_fontsize = 7
-    g.settings.lab_fontsize = 9
-    g.settings.alpha_filled_add = 0.55
+    _palette = PCS.apply(g)
+    colors = PCS.colors_for(legend, _palette)
     g.triangle_plot(mcs, names, filled=filled, contour_colors=colors,
                     contour_lws=[a["lw"] for a in line_args],
                     contour_ls=[a["ls"] for a in line_args],
@@ -368,6 +370,7 @@ def main():
         },
         "versions": {m: ver(m) for m in ("numpy", "scipy", "getdist", "matplotlib")},
         "mplstyle": aa if os.path.exists(aa) else "matplotlib defaults",
+        **PCS.provenance(_palette),
         "caveats": [
             "Runs are used only as null/biased PAIRS; a run unreadable on either side is "
             "dropped from both, so the null-to-biased offset is like-for-like. See "
@@ -375,8 +378,8 @@ def main():
             "Contours pool all surviving NPE training seeds, so their width includes the "
             "seed-to-seed training scatter, not just the posterior width of one seed. "
             "--single-run gives the single-seed version.",
-            "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-            "pre-crash figures are expected, data points are unaffected.",
+            "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
             "The surviving pre-crash contours_PS_peaks_L1_baryons_unbiased.pdf (Sept 2025) "
             "predates the lmin 100->37 recovery and the submean correction, so it is NOT "
             "numerically comparable to this figure.",

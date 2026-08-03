@@ -1,9 +1,9 @@
-# L1-norm null posteriors, all survey areas overlaid, full resolution
+# contours vs area l1 null pooled
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020`
 - **generator commit**: `3d0116e`
 - **generated**: 2026-07-30T12:41:18+00:00
-- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
+- **published**: 2026-08-03T14:15:59+00:00 at repo `unknown`
 - **rows in values.csv**: 18
 
 ## Scales included

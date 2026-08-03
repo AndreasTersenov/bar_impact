@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
-  "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)",
-  "paper_position": 3.2,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased 14000 scales2345 pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.pdf",
-      "sha256": "a35b1669775b4cd28606f36e3e84c3582cc894efcb074112a2747603e37031a4",
-      "bytes": 152855
+      "sha256": "5fc668288e5525302d8e3d315897b6e74002ce7b70b1000a0854b174567019fa",
+      "bytes": 148693
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled.png",
-      "sha256": "e2fd052b3c707a472cac3ea7c645629f8b75d2f6135d28d60ed1d19918716a6c",
-      "bytes": 305446
+      "sha256": "874f38bd84b14d1dfff1f776895bac2a78032320eb74ba29e15901a1d5069f24",
+      "bytes": 297571
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled_provenance.json",
-      "sha256": "650d7d77bb67c048be80d34357faef00d23289a620e1e55df69f7109e2a874df",
-      "bytes": 5839
+      "sha256": "17d5fd654bf639f1f52dc0a06923aeab1b16170ac5d574aa1871c7f0f6299e47",
+      "bytes": 4153
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

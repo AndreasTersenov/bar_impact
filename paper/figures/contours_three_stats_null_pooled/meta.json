@@ -1,20 +1,20 @@
 {
   "slug": "contours_three_stats_null_pooled",
-  "title": "Null posteriors, three statistics, 14000 deg2",
-  "paper_position": 4,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours three stats null pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
-      "sha256": "dc250dd15815d5a394f63dd7fb8099c6431dd3adc16f21a5fa1b2e4d0ba8c39f",
-      "bytes": 182389
+      "sha256": "840ff469aa20055e8f4cb1be16fdab6fb542666fa0bf3ce3be37be860c2d138a",
+      "bytes": 177059
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.png",
-      "sha256": "d77806952447c6af2eeb8d942538f212ab8fc9d8660fe67086ac75aca09edc23",
-      "bytes": 312178
+      "sha256": "8bc871f1fb8688e4c3c5e26133abe678756e4a2f904bf6e8818220b7029ade97",
+      "bytes": 304261
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
-      "sha256": "98a48f97ac4a7b696aa25dfc52ee2248b4eb2752353463993397a28c032c877d",
-      "bytes": 5495
+      "sha256": "455619ed1ab59ffabbc0312f6c50f7392b28e73605c49f86828a6a44b552ae41",
+      "bytes": 3999
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 4

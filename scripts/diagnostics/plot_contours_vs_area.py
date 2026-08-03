@@ -277,10 +277,11 @@ def build(stat, role, include_fullsky, width, seed_mode):
         print(f"  [skip] {stat} {role}: nothing usable, no figure written")
         return None
 
+    # Shared contour style, not the mplstyle sheet: plt.style.use() does not reach getdist's
+    # own font sizes or fills. See scripts/paper_contour_style.py.
+    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=width)
-    g.settings.legend_fontsize = 8
-    g.settings.axes_fontsize = 7
-    g.settings.lab_fontsize = 9
+    _palette = PCS.apply(g)
     # Unfilled: six overlapping filled contours are unreadable at any palette.
     g.triangle_plot(mcs, names, filled=False, contour_colors=colors,
                     contour_lws=[1.4] * len(mcs),
@@ -325,7 +326,7 @@ def build(stat, role, include_fullsky, width, seed_mode):
     except Exception:
         commit = "unknown"
 
-    aa = f"{REPO}/styles/aa.mplstyle"
+    aa = f"{REPO}/styles/paper_v1.mplstyle"
     json.dump({
         "figure": os.path.basename(out),
         "generated_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
@@ -362,6 +363,7 @@ def build(stat, role, include_fullsky, width, seed_mode):
         "runs_dropped": {k: [[r, why] for r, why in v] for k, v in dropped_all.items()},
         "versions": {m: ver(m) for m in ("numpy", "scipy", "getdist", "matplotlib")},
         "mplstyle": aa if os.path.exists(aa) else "matplotlib defaults",
+        **PCS.provenance(_palette),
         "caveats": [
             "FULL RESOLUTION — no scale cut. For the power spectrum and, at large areas, the "
             "higher-order statistics, this is the regime where the baryon bias is significant; "
@@ -376,8 +378,8 @@ def build(stat, role, include_fullsky, width, seed_mode):
             "corrected mask treatment. The pre-submean products spuriously tighten the masked "
             "posteriors; the glob requires '_submean_' so a missing file surfaces as missing "
             "rather than being silently substituted.",
-            "aa.mplstyle is a post-disk-failure RECONSTRUCTION; cosmetic differences from "
-            "pre-crash figures are expected, data unaffected.",
+            "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this "
+            "figure sits beside the figures kept verbatim from it.",
         ],
     }, open(out + "_provenance.json", "w"), indent=2)
 
@@ -397,7 +399,7 @@ def main():
     ap.add_argument("--width", type=float, default=6.0)
     args = ap.parse_args()
 
-    aa = f"{REPO}/styles/aa.mplstyle"
+    aa = f"{REPO}/styles/paper_v1.mplstyle"
     if os.path.exists(aa):
         plt.style.use(aa)
     else:

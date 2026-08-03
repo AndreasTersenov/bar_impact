@@ -202,10 +202,9 @@ def main():
         sets.append(MCSamples(samples=ref, names=NAMES, labels=LABELS, label=lr))
         cols.append("C3"); labs.append(lr); filled.append(False)
 
+    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=7.5)
-    g.settings.legend_fontsize = 12
-    g.settings.axes_labelsize = 15
-    g.settings.axes_fontsize = 11
+    _palette = PCS.apply(g)
     g.triangle_plot(sets, filled=filled, contour_colors=cols,
                     legend_labels=labs, legend_loc="upper right")
     for i in range(3):
@@ -271,7 +270,8 @@ def main():
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "versions": {"python": sys.version.split()[0], "numpy": np.__version__,
                      "getdist": _gd.__version__, "matplotlib": matplotlib.__version__},
-        "mplstyle": "getdist default (no custom style sheet)",
+        "mplstyle": "scripts/paper_contour_style.py (getdist settings; no rcParams sheet)",
+        **PCS.provenance(_palette),
         "area_deg2": 14000,
         "statistic": "tomographic auto+cross angular power spectra",
         "compression": "score / MOPED, quasi-MLE form theta_hat = FID + (x-x_fid) @ C^-1 J F^-1",

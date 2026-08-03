@@ -1,20 +1,20 @@
 {
   "slug": "contours_vs_area_l1_biased_single_seed",
-  "title": "PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed)",
-  "paper_position": 25.1,
-  "published_utc": "2026-08-03T09:36:14+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours vs area l1 biased single seed",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:59+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.pdf",
-      "sha256": "d359c71d51ecababc39309fd4cd8f3846c511334d209ec12c98f6514129e6b00",
-      "bytes": 185095
+      "sha256": "2cd55a7e8397a24db075f9d8dd636783ceedf737c1ae48a19b31894c76c12604",
+      "bytes": 181697
     },
     "figure.png": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.png",
-      "sha256": "870c06f9ec0b45548fb4c64454ce18ba383a7ecb62419cfc519725e81fcd78a8",
-      "bytes": 397348
+      "sha256": "d2b7ce88322d3d309a33b795eaf9c85fcd08f0162a00ee3049b00596f7db1e56",
+      "bytes": 393985
     },
     "values.csv": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_provenance.json",
-      "sha256": "b656a3d8b9bc788895716535e800db4f16e93465aeda0d27a17bc1be8cbf3556",
-      "bytes": 20103
+      "sha256": "6cd466104ec03c80066c863a563fad74641ff42a42640017b41794e970f3b7ce",
+      "bytes": 18574
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 5

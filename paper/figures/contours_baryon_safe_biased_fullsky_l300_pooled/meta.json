@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_fullsky_l300_pooled",
-  "title": "Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative)",
-  "paper_position": 13.0,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased fullsky l300 pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:58+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.pdf",
-      "sha256": "732cd81027e60ddc6188b97bd78ebeae40972ad821cf88d0637ed1834e0a38a2",
-      "bytes": 152317
+      "sha256": "e914800787642988aea1284575b608df273b6b1ce94e603b0a924d03bc9d9def",
+      "bytes": 147324
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled.png",
-      "sha256": "cf073ca8b85326b966ab47ed8ddad0df756aff222707b58c8a825080896cb832",
-      "bytes": 307645
+      "sha256": "3a482ed568188e0ceeca02fd818e83140ef160321ae6a7d753e7a23b518ac406",
+      "bytes": 299055
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_pooled_provenance.json",
-      "sha256": "95a9659241bd40e7777dc002a69e678e001837177b2c5cd7733693b4217802a9",
-      "bytes": 3971
+      "sha256": "a51d4b31a9ac99cdc8cd81efa4fd720cf215209ed28fc2985b7f0e02ae0507c0",
+      "bytes": 4232
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

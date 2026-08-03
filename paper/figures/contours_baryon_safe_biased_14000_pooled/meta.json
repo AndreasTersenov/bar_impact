@@ -1,20 +1,20 @@
 {
   "slug": "contours_baryon_safe_biased_14000_pooled",
-  "title": "PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2",
-  "paper_position": 3.0,
-  "published_utc": "2026-08-03T09:36:13+00:00",
-  "published_at_repo_commit": "17afa33",
+  "title": "contours baryon safe biased 14000 pooled",
+  "paper_position": null,
+  "published_utc": "2026-08-03T14:15:57+00:00",
+  "published_at_repo_commit": "unknown",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.pdf",
-      "sha256": "b63ee5ef39cee930048cd6b42d86cedf8de9938d737502c0ac7830fdd7956672",
-      "bytes": 152602
+      "sha256": "bce1e7ec9d00b322d1e45b078e70869bfd9f136e895ff81424ce5559b1e61e0e",
+      "bytes": 148145
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234.png",
-      "sha256": "e5818eca805b23fa4a5c942fe0c7be3608fc5e383b2084c616565516a40db7c2",
-      "bytes": 302821
+      "sha256": "ecf8125b8dc007941606df32160df7621cb53f00148ae36596147c690759ecb0",
+      "bytes": 295285
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales234_provenance.json",
-      "sha256": "840f6f9049db87538138a20b44ebbf4252ca5632fe5d270fd159dc0e088d91d0",
-      "bytes": 5644
+      "sha256": "a16a9d20d42469e768aa9d984baf0d07aff3e301aa00a6472235536f5d31b857",
+      "bytes": 4144
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 9,
   "n_caveats": 6

@@ -10,15 +10,7 @@ integrity and source drift with `verify`.
 |---|---|---|---|---|---|
 | 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `9c33642` | 108 | - |
 | 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `9c33642` | 132 | - |
-| 3.0 | [`contours_baryon_safe_biased_14000_pooled`](contours_baryon_safe_biased_14000_pooled/) | PAPER: baryon-safe contours, biased observation, three statistics, 14000 deg2 | `7cfd75b` | 9 | - |
-| 3.1 | [`contours_baryon_safe_biased_14000_single_seed`](contours_baryon_safe_biased_14000_single_seed/) | PAPER: baryon-safe contours, biased, three statistics, 14000 deg2 (single seed) | `d8384e9` | 9 | - |
-| 3.2 | [`contours_baryon_safe_biased_14000_scales2345_pooled`](contours_baryon_safe_biased_14000_scales2345_pooled/) | ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled) | `2cb7a65` | 9 | - |
-| 3.3 | [`contours_baryon_safe_biased_14000_scales2345_single_seed`](contours_baryon_safe_biased_14000_scales2345_single_seed/) | ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (single_seed) | `2cb7a65` | 9 | - |
-| 3.5 | [`contours_baryon_safe_both_14000_pooled`](contours_baryon_safe_both_14000_pooled/) | Baryon-safe: null and biased overlaid, three statistics, 14000 deg2 | `7cfd75b` | 18 | - |
-| 4 | [`contours_three_stats_null_pooled`](contours_three_stats_null_pooled/) | Null posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
-| 5 | [`contours_three_stats_biased_pooled`](contours_three_stats_biased_pooled/) | Baryon-biased posteriors, three statistics, 14000 deg2 | `7620563` | 9 | - |
 | 6.0 | [`bnt_flagship_embedding_matched_c460`](bnt_flagship_embedding_matched_c460/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED) | `17afa3349c1e447cfe405f432616ee922069fccd` | 2 | - |
-| 6 | [`contours_three_stats_both_pooled`](contours_three_stats_both_pooled/) | Null and biased overlaid, three statistics, 14000 deg2 | `9c33642` | 18 | - |
 | 6.1 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
 | 6.2 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
 | 6.3 | [`bnt_lossless_identity_nocut`](bnt_lossless_identity_nocut/) | VALIDATION: BNT vs standard basis with NO scale cut (lossless identity) | `80956a42f88866b110521653cd1338b0b0f13f28` | 2 | - |
@@ -30,22 +22,8 @@ integrity and source drift with `verify`.
 | 7 | [`bnt_bin1_vs_cut_optimal`](bnt_bin1_vs_cut_optimal/) | BNT bin-1 vs non-BNT, optimal binning (rebin 40) | `701fba8` | 216 | **1** |
 | 8 | [`fisher_constraining_power_baryon_safe`](fisher_constraining_power_baryon_safe/) | Fisher 68% contours, baryon-safe regime (full sky) | `unknown` | 4 | **3** |
 | 9 | [`fisher_constraining_power_full`](fisher_constraining_power_full/) | Fisher 68% contours, full-resolution regime (full sky) | `unknown` | 4 | **3** |
-| 10 | [`constraining_power_vs_area`](constraining_power_vs_area/) | Constraining power vs survey area: sigma(S8) and FoM3 | `9c33642` | 18 | - |
 | 11 | [`fom_vs_area`](fom_vs_area/) | FoM3 vs survey area, single panel (guide pinned to PS) | `9c33642` | 18 | - |
 | 12 | [`fom_vs_area_low_guide`](fom_vs_area_low_guide/) | FoM3 vs survey area, guide dropped clear of the data | `9c33642` | 18 | - |
-| 13.0 | [`contours_baryon_safe_biased_fullsky_l300_pooled`](contours_baryon_safe_biased_fullsky_l300_pooled/) | Full sky: baryon-safe contours, three statistics, PS lmax=300 (conservative) | `bc8ebd2` | 9 | - |
-| 13.1 | [`contours_baryon_safe_biased_fullsky_l300_single_seed`](contours_baryon_safe_biased_fullsky_l300_single_seed/) | Full-sky baryon-safe contours, three statistics, PS lmax=300 (single seed) | `2cb7a65` | 9 | - |
-| 14.0 | [`contours_baryon_safe_biased_fullsky_l340_pooled`](contours_baryon_safe_biased_fullsky_l340_pooled/) | APPENDIX: full-sky baryon-safe contours, three statistics, PS lmax=340 | `bc8ebd2` | 9 | - |
-| 14.1 | [`contours_baryon_safe_biased_fullsky_l340_single_seed`](contours_baryon_safe_biased_fullsky_l340_single_seed/) | Full-sky baryon-safe contours, three statistics, PS lmax=340 (single seed) | `2cb7a65` | 9 | - |
-| 20 | [`contours_vs_area_ps_null_pooled`](contours_vs_area_ps_null_pooled/) | PS null posteriors, all survey areas overlaid, full resolution | `7cfd75b` | 21 | - |
-| 21.0 | [`contours_vs_area_peaks_null_pooled`](contours_vs_area_peaks_null_pooled/) | Peak-count null posteriors, all survey areas overlaid, full resolution | `7cfd75b` | 18 | - |
-| 22.0 | [`contours_vs_area_ps_biased_pooled`](contours_vs_area_ps_biased_pooled/) | PAPER: PS biased posteriors, all survey areas overlaid, full resolution | `3d0116e` | 21 | - |
-| 22.1 | [`contours_vs_area_ps_biased_single_seed`](contours_vs_area_ps_biased_single_seed/) | PAPER: PS biased posteriors, all survey areas overlaid (single seed) | `d8384e9` | 21 | - |
-| 23.0 | [`contours_vs_area_l1_null_pooled`](contours_vs_area_l1_null_pooled/) | L1-norm null posteriors, all survey areas overlaid, full resolution | `3d0116e` | 18 | - |
-| 24.0 | [`contours_vs_area_peaks_biased_pooled`](contours_vs_area_peaks_biased_pooled/) | PAPER: Peak-count biased posteriors, all survey areas overlaid, full resolution | `3d0116e` | 18 | - |
-| 24.1 | [`contours_vs_area_peaks_biased_single_seed`](contours_vs_area_peaks_biased_single_seed/) | PAPER: Peak-count biased posteriors, all survey areas overlaid (single seed) | `d8384e9` | 18 | - |
-| 25.0 | [`contours_vs_area_l1_biased_pooled`](contours_vs_area_l1_biased_pooled/) | PAPER: L1-norm biased posteriors, all survey areas overlaid, full resolution | `3d0116e` | 18 | - |
-| 25.1 | [`contours_vs_area_l1_biased_single_seed`](contours_vs_area_l1_biased_single_seed/) | PAPER: L1-norm biased posteriors, all survey areas overlaid (single seed) | `d8384e9` | 18 | - |
 | - | [`bias_vs_area_three_stats`](bias_vs_area_three_stats/) | bias vs area three stats | `805e4cc` | 18 | - |
 | - | [`bnt_frac_diff_l1_scale1`](bnt_frac_diff_l1_scale1/) | BNT vs standard basis: fractional baryonic impact (l1_scale1) | `?` | 276 | **2** |
 | - | [`bnt_frac_diff_l1_scale1_14000`](bnt_frac_diff_l1_scale1_14000/) | BNT vs standard basis: fractional baryonic impact (l1_scale1_14000) | `?` | 276 | **2** |
@@ -53,6 +31,28 @@ integrity and source drift with `verify`.
 | - | [`bnt_frac_diff_peaks_scale1_14000`](bnt_frac_diff_peaks_scale1_14000/) | BNT vs standard basis: fractional baryonic impact (peaks_scale1_14000) | `?` | 225 | **2** |
 | - | [`bnt_frac_diff_ps`](bnt_frac_diff_ps/) | BNT vs standard basis: fractional baryonic impact (ps) | `?` | 80 | **2** |
 | - | [`bnt_frac_diff_ps_14000`](bnt_frac_diff_ps_14000/) | BNT vs standard basis: fractional baryonic impact (ps_14000) | `?` | 80 | **2** |
+| - | [`constraining_power_vs_area`](constraining_power_vs_area/) | constraining power vs area | `ea7ccfa` | 18 | - |
+| - | [`contours_baryon_safe_biased_14000_pooled`](contours_baryon_safe_biased_14000_pooled/) | contours baryon safe biased 14000 pooled | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_14000_scales2345_pooled`](contours_baryon_safe_biased_14000_scales2345_pooled/) | contours baryon safe biased 14000 scales2345 pooled | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_14000_scales2345_single_seed`](contours_baryon_safe_biased_14000_scales2345_single_seed/) | contours baryon safe biased 14000 scales2345 single seed | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_14000_single_seed`](contours_baryon_safe_biased_14000_single_seed/) | contours baryon safe biased 14000 single seed | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_fullsky_l300_pooled`](contours_baryon_safe_biased_fullsky_l300_pooled/) | contours baryon safe biased fullsky l300 pooled | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_fullsky_l300_single_seed`](contours_baryon_safe_biased_fullsky_l300_single_seed/) | contours baryon safe biased fullsky l300 single seed | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_fullsky_l340_pooled`](contours_baryon_safe_biased_fullsky_l340_pooled/) | contours baryon safe biased fullsky l340 pooled | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_biased_fullsky_l340_single_seed`](contours_baryon_safe_biased_fullsky_l340_single_seed/) | contours baryon safe biased fullsky l340 single seed | `unknown` | 9 | **1** |
+| - | [`contours_baryon_safe_both_14000_pooled`](contours_baryon_safe_both_14000_pooled/) | contours baryon safe both 14000 pooled | `unknown` | 18 | **1** |
+| - | [`contours_three_stats_biased_pooled`](contours_three_stats_biased_pooled/) | contours three stats biased pooled | `unknown` | 9 | **1** |
+| - | [`contours_three_stats_both_pooled`](contours_three_stats_both_pooled/) | contours three stats both pooled | `unknown` | 18 | **1** |
+| - | [`contours_three_stats_null_pooled`](contours_three_stats_null_pooled/) | contours three stats null pooled | `unknown` | 9 | **1** |
+| - | [`contours_vs_area_l1_biased_pooled`](contours_vs_area_l1_biased_pooled/) | contours vs area l1 biased pooled | `3d0116e` | 18 | - |
+| - | [`contours_vs_area_l1_biased_single_seed`](contours_vs_area_l1_biased_single_seed/) | contours vs area l1 biased single seed | `unknown` | 18 | **1** |
+| - | [`contours_vs_area_l1_null_pooled`](contours_vs_area_l1_null_pooled/) | contours vs area l1 null pooled | `3d0116e` | 18 | - |
+| - | [`contours_vs_area_peaks_biased_pooled`](contours_vs_area_peaks_biased_pooled/) | contours vs area peaks biased pooled | `3d0116e` | 18 | - |
+| - | [`contours_vs_area_peaks_biased_single_seed`](contours_vs_area_peaks_biased_single_seed/) | contours vs area peaks biased single seed | `unknown` | 18 | **1** |
+| - | [`contours_vs_area_peaks_null_pooled`](contours_vs_area_peaks_null_pooled/) | contours vs area peaks null pooled | `7cfd75b` | 18 | - |
+| - | [`contours_vs_area_ps_biased_pooled`](contours_vs_area_ps_biased_pooled/) | contours vs area ps biased pooled | `3d0116e` | 21 | - |
+| - | [`contours_vs_area_ps_biased_single_seed`](contours_vs_area_ps_biased_single_seed/) | contours vs area ps biased single seed | `unknown` | 21 | **1** |
+| - | [`contours_vs_area_ps_null_pooled`](contours_vs_area_ps_null_pooled/) | contours vs area ps null pooled | `7cfd75b` | 21 | - |
 | - | [`hos_bnt_l1_vs_scale_cut`](hos_bnt_l1_vs_scale_cut/) | L1-norm: BNT vs scale cut vs all scales | `a3f63d23f6c425f005185ba5e2ba2fb219773eeb` | 3 | **2** |
 | - | [`hos_bnt_peaks_vs_scale_cut`](hos_bnt_peaks_vs_scale_cut/) | Peak counts: BNT vs scale cut vs all scales (baryonified) | `cd90af18dd6ed3086423e62af72340014bdc6cc3` | 3 | - |
 | - | [`hos_frac_diff_l1`](hos_frac_diff_l1/) | Fractional baryonic impact on the starlet l1-norm (full sky) | `?` | 426 | **2** |
