@@ -5,7 +5,7 @@ Single-seed companion to the MOPED cross-check at position 6.1; see the embeddin
 - **source**: `plots/bnt_flagship_matched_c460_14000_single_seed`
 - **generator commit**: `64c032ddee8516c384194122e13fcbdec7296e36`
 - **generated**: 2026-08-01T14:26:46Z
-- **published**: 2026-08-03T08:56:38+00:00 at repo `c409dc2`
+- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
 - **rows in values.csv**: 2
 
 ## Scales included

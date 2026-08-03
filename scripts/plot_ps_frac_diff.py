@@ -44,6 +44,7 @@ import datetime
 import json
 import os
 import subprocess
+import shlex
 import sys
 
 import numpy as np
@@ -54,16 +55,14 @@ import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.patheffects as pe  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# --- A&A house style -------------------------------------------------------
-# Load the style sheet rather than scattering rcParams: it fixes font family and
-# every text size at the journal minimum, the Okabe-Ito colour cycle, inward ticks
-# on all four sides, and Type-42 embedded fonts. Restored from the figure-polish
-# skill (private repo dotfiles-claude); styles/aa.mplstyle carries the provenance.
-STYLE = os.path.join(REPO, "styles", "aa.mplstyle")
+# --- style -----------------------------------------------------------------
+# paper_v1, NOT aa.mplstyle. Several figures from the submitted version are being
+# kept in the revision, so everything regenerated has to match THEM: sans-serif,
+# tab10, and the label/tick/legend sizes read off the notebook that made them.
+# aa.mplstyle (A&A house style) is still in styles/ and is the better baseline for
+# a figure set built from scratch -- it is deliberately not used here.
+STYLE = os.path.join(REPO, "styles", "paper_v1.mplstyle")
 plt.style.use(STYLE)
-# A&A printed widths. Size the figure to the column it will occupy -- letting the
-# journal scale it down shrinks the text below the legibility minimum.
-AA_W = {"single": 3.465, "intermediate": 4.724, "double": 7.087}
 
 FID = ("/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/"
        "fiducial/cosmo_fiducial")
@@ -197,12 +196,12 @@ def main():
     p.add_argument("--edge-alpha", type=float, default=0.75,
                    help="boundary-line opacity. Kept well below the central lines so the edges "
                         "delimit each band without competing with the curves themselves.")
-    p.add_argument("--edge-lw", type=float, default=0.45)
+    p.add_argument("--edge-lw", type=float, default=0.65)
     p.add_argument("--edge-halo", type=float, default=0.0,
                    help="width of a surface-coloured halo under the boundary lines. Default 0 = "
                         "none: the boundaries are drawn in their own band's colour. A halo wider "
                         "than the line washes the colour out and the edges read as white.")
-    p.add_argument("--curve-lw", type=float, default=1.4,
+    p.add_argument("--curve-lw", type=float, default=2.6,
                    help="width of the central curves. They already sit above every fill and edge "
                         "(zorder), so weight and separation are the levers, not stacking order.")
     p.add_argument("--curve-halo", type=float, default=1.8,
@@ -317,7 +316,7 @@ def main():
     if a.layout == "panels":
         # Small multiples: the sanctioned fix for overlapping series. Each panel carries one bin,
         # so nothing occludes anything, and the panel title -- not colour alone -- carries identity.
-        fig, axes = plt.subplots(1, 4, figsize=(AA_W["double"], 2.3), sharey=True)
+        fig, axes = plt.subplots(1, 4, figsize=(20, 4), sharey=True)
         for i, (b, ax) in enumerate(zip((1, 2, 3, 4), axes)):
             ax.fill_between(x, curves[i] - bands[i], curves[i] + bands[i],
                             color=colors[i], alpha=0.25, lw=0)
@@ -336,7 +335,7 @@ def main():
     elif a.layout == "significance":
         # The band IS the denominator here, so there is nothing left to overlap: one line per bin
         # and a +/-1 sigma reference. Directly answers "is the shift bigger than the noise".
-        fig, ax = plt.subplots(figsize=(AA_W["single"], 2.6))
+        fig, ax = plt.subplots(figsize=(6, 3.5))
         ax.axhspan(-1, 1, color="0.90", zorder=0)
         ax.axhline(0, color="0.35", lw=0.9)
         for i, b in enumerate((1, 2, 3, 4)):
@@ -357,7 +356,7 @@ def main():
         ax.legend(frameon=False, loc="lower left")
     
     else:
-        fig, ax = plt.subplots(figsize=(AA_W["single"], 2.6))
+        fig, ax = plt.subplots(figsize=(6, 3.5))
         # A halo in the surface colour under each boundary line: where two bands cross, the upper
         # line visibly passes OVER the lower one instead of merging into it. This is the one thing
         # that makes four overlapping bands readable.
@@ -405,11 +404,11 @@ def main():
     prov = {
         "figure": name,
         "generator": "scripts/plot_ps_frac_diff.py",
-        "command": " ".join(sys.argv),
+        "command": shlex.join(sys.argv),   # quoted, so it round-trips through shlex.split
         "git_commit": commit,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "mplstyle": "styles/aa.mplstyle (A&A; restored original)",
+        "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
         "statistic": "tomographic auto angular power spectra, 4 bins",
         "source_data": f"{FID}/all_cls_fiducial_{{baryonified,nobaryons}}_bin{{1..4}}_noisy_s0.26.npy",
         "n_realizations": 200,

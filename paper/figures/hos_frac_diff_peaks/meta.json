@@ -2,19 +2,19 @@
   "slug": "hos_frac_diff_peaks",
   "title": "Fractional baryonic impact on the starlet peak counts (full sky)",
   "paper_position": null,
-  "published_utc": "2026-08-03T08:56:40+00:00",
-  "published_at_repo_commit": "c409dc2",
+  "published_utc": "2026-08-03T09:36:14+00:00",
+  "published_at_repo_commit": "17afa33",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.pdf",
-      "sha256": "720d51793e9696335cb5cc26166a8a60707abe71b225bdaf7d508398df76aa7f",
-      "bytes": 27787
+      "sha256": "4bee685f6504610800ed83361297a119583de0a4be1568dc58a168be1d792195",
+      "bytes": 24390
     },
     "figure.png": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks.png",
-      "sha256": "b12a14601f8691f45b4617df1c5090329ca5953eb867cef917fdd5eeef2a7c29",
-      "bytes": 176116
+      "sha256": "4667368184cec8e727d06bd17ead550033c806fb4538fa1935fa178f4a3ae155",
+      "bytes": 237938
     },
     "values.csv": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_values.csv",
@@ -23,14 +23,17 @@
     },
     "provenance.json": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_provenance.json",
-      "sha256": "e7b9cc533ad973cce6d0816a485c7bb4187b82798b7d014852aa5b32286a28a3",
-      "bytes": 1548
+      "sha256": "c05f3b68b3afe4dbf201cb50596b2f669c16fcfdfc4a8e342cab437d5ed44df3",
+      "bytes": 1501
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance is missing 'git_commit'",
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 353,
   "n_caveats": 3

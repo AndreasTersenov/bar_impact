@@ -2,8 +2,8 @@
   "slug": "hos_bnt_peaks_vs_scale_cut",
   "title": "Peak counts: BNT vs scale cut vs all scales (baryonified)",
   "paper_position": null,
-  "published_utc": "2026-08-03T08:56:40+00:00",
-  "published_at_repo_commit": "c409dc2",
+  "published_utc": "2026-08-03T09:36:14+00:00",
+  "published_at_repo_commit": "17afa33",
   "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified",
   "files": {
     "figure.pdf": {

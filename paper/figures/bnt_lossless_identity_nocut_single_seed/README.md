@@ -5,7 +5,7 @@ Single-seed companion to the no-cut oracle at position 6.3. Each arm shows its m
 - **source**: `plots/bnt_lossless_identity_nocut_14000_single_seed`
 - **generator commit**: `80956a42f88866b110521653cd1338b0b0f13f28`
 - **generated**: 2026-08-01T19:12:23Z
-- **published**: 2026-08-03T08:56:38+00:00 at repo `c409dc2`
+- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
 - **rows in values.csv**: 2
 
 ## Scales included

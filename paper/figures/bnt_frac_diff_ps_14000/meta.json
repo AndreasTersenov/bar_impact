@@ -2,19 +2,19 @@
   "slug": "bnt_frac_diff_ps_14000",
   "title": "BNT vs standard basis: fractional baryonic impact (ps_14000)",
   "paper_position": null,
-  "published_utc": "2026-08-03T08:56:38+00:00",
-  "published_at_repo_commit": "c409dc2",
+  "published_utc": "2026-08-03T09:36:13+00:00",
+  "published_at_repo_commit": "17afa33",
   "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000.pdf",
-      "sha256": "26d7b1c89113a736ac99dbf0963d01e4dcf5cdbfcac9b673062799198cbee797",
-      "bytes": 19009
+      "sha256": "529518b4fe05f1645ec462cfaf68a8f3cf42778db649c3a1cb9c6312d059ec00",
+      "bytes": 15498
     },
     "figure.png": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000.png",
-      "sha256": "7da0e2dc428a661489b379555e34f6e42aec86e9b120b6f746ce31c7cc133727",
-      "bytes": 80935
+      "sha256": "0094752b73dcb7cedabe2dba96cf065b3a584f0d7bfd2327b872efede1ceb24a",
+      "bytes": 179827
     },
     "values.csv": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000_values.csv",
@@ -23,14 +23,17 @@
     },
     "provenance.json": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000_provenance.json",
-      "sha256": "ba6344346dbfd20a6e41861a3c9b90abab5dfff6f25959f051369b4760c89af9",
-      "bytes": 1523
+      "sha256": "12f43a1dd5ab68953424d6965e49c031f4b791d21c974fe26f778ca09cdfac63",
+      "bytes": 1476
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance is missing 'git_commit'",
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 80,
   "n_caveats": 4

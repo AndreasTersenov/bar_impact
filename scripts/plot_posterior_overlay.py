@@ -19,6 +19,7 @@ import glob
 import json
 import os
 import subprocess
+import shlex
 import sys
 from datetime import datetime, timezone
 
@@ -163,7 +164,7 @@ def main():
     prov = {
         "figure": os.path.basename(a.out),
         "generator": "scripts/plot_posterior_overlay.py",
-        "command": " ".join(sys.argv),
+        "command": shlex.join(sys.argv),
         "git_commit": git_commit(),
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "versions": {"python": sys.version.split()[0], "numpy": np.__version__,

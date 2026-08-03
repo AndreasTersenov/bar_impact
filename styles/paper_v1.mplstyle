@@ -1,0 +1,50 @@
+# paper_v1.mplstyle — the style of the SUBMITTED version of this paper.
+#
+# WHY THIS EXISTS, AND WHY IT IS NOT aa.mplstyle.
+# Several figures from the submitted version are being kept as-is in the revision
+# (the noiseless appendix figures, among others). Everything regenerated has to sit
+# beside them without a visible style change, so the target is the submitted look,
+# not the A&A house style.
+#
+# aa.mplstyle (serif, 9 pt, Okabe-Ito, inward ticks) remains in this directory and
+# is the right baseline for a figure set built from scratch. It is deliberately NOT
+# used for the figures in this paper.
+#
+# The values below are read off the notebook that produced the kept figures,
+# notebooks/inference/paper_plots.ipynb — not invented:
+#     font.size 18 · axes.labelsize 15 · axes.titlesize 16
+#     xtick/ytick.labelsize 14 · legend.fontsize 13
+# Family and colour cycle are matplotlib's defaults (DejaVu Sans, tab10), which is
+# what those figures used; they are set explicitly here so a change of matplotlib
+# default cannot silently move the paper's style.
+
+# --- type -------------------------------------------------------------------
+font.family:        sans-serif
+font.sans-serif:    DejaVu Sans, Bitstream Vera Sans, Arial, Helvetica
+mathtext.fontset:   dejavusans
+font.size:          18
+
+axes.labelsize:     15
+axes.titlesize:     16
+xtick.labelsize:    14
+ytick.labelsize:    14
+legend.fontsize:    13
+
+# --- colour -----------------------------------------------------------------
+# matplotlib's tab10, stated explicitly. NOTE: tab10 fails a colourblind check —
+# its orange and green are ΔE 0.7 apart under protanopia, against a floor of 8.
+# Retained because the kept figures use it and the revision must match them;
+# line styles carry a second, colour-independent channel in every figure here.
+axes.prop_cycle:    cycler('color', ['1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f'])
+
+# --- axes, lines ------------------------------------------------------------
+axes.grid:          False
+axes.axisbelow:     True
+lines.linewidth:    1.5
+
+# --- output: vector, embedded fonts -----------------------------------------
+figure.dpi:         150
+savefig.dpi:        300
+savefig.bbox:       tight
+pdf.fonttype:       42
+ps.fonttype:        42

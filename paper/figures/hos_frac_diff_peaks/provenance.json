@@ -2,9 +2,8 @@
   "figure": "hos_frac_diff_peaks",
   "generator": "scripts/plot_hos_frac_diff.py",
   "command": "scripts/plot_hos_frac_diff.py --stat peaks --name hos_frac_diff_peaks",
-  "git_commit": "c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8",
-  "generated_utc": "2026-08-03T08:56:16Z",
-  "mplstyle": "styles/aa.mplstyle (A&A; restored original)",
+  "generated_utc": "2026-08-03T09:28:01Z",
+  "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "starlet peak counts",
   "scales_included": {
     "scale 1": "10'",

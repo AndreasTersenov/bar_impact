@@ -1,14 +1,19 @@
 # BNT vs standard basis: fractional baryonic impact (l1_scale1_14000)
 
 - **source**: `outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_14000`
-- **generator commit**: `c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8`
-- **generated**: 2026-08-03T08:56:30Z
-- **published**: 2026-08-03T08:56:38+00:00 at repo `c409dc2`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-03T09:28:15Z
+- **published**: 2026-08-03T09:36:13+00:00 at repo `17afa33`
 - **rows in values.csv**: 276
 
 ## Scales included
 
 - **scales_included**: wavelet scale 1 (~10')
+
+## Known gaps
+
+- provenance is missing 'git_commit'
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

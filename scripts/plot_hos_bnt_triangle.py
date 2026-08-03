@@ -49,6 +49,7 @@ import datetime
 import json
 import os
 import subprocess
+import shlex
 import sys
 
 import numpy as np
@@ -199,7 +200,7 @@ def main():
     prov = {
         "figure": name,
         "generator": "scripts/plot_hos_bnt_triangle.py",
-        "command": " ".join(sys.argv),
+        "command": shlex.join(sys.argv),   # quoted, so it round-trips through shlex.split
         "git_commit": commit,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),

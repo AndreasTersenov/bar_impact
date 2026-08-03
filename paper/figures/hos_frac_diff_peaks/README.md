@@ -1,9 +1,9 @@
 # Fractional baryonic impact on the starlet peak counts (full sky)
 
 - **source**: `outputs/plots/hos_frac_diff/hos_frac_diff_peaks`
-- **generator commit**: `c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8`
-- **generated**: 2026-08-03T08:56:16Z
-- **published**: 2026-08-03T08:56:40+00:00 at repo `c409dc2`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-03T09:28:01Z
+- **published**: 2026-08-03T09:36:14+00:00 at repo `17afa33`
 - **rows in values.csv**: 353
 
 ## Scales included
@@ -11,6 +11,11 @@
 - **scale 1**: 10'
 - **scale 2**: 20'
 - **scale 3**: 40'
+
+## Known gaps
+
+- provenance is missing 'git_commit'
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 
