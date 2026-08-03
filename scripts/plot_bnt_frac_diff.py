@@ -41,6 +41,17 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# --- A&A house style -------------------------------------------------------
+# Load the style sheet rather than scattering rcParams: it fixes font family and
+# every text size at the journal minimum, the Okabe-Ito colour cycle, inward ticks
+# on all four sides, and Type-42 embedded fonts. Restored from the figure-polish
+# skill (private repo dotfiles-claude); styles/aa.mplstyle carries the provenance.
+STYLE = os.path.join(REPO, "styles", "aa.mplstyle")
+plt.style.use(STYLE)
+# A&A printed widths. Size the figure to the column it will occupy -- letting the
+# journal scale it down shrinks the text below the legibility minimum.
+AA_W = {"single": 3.465, "intermediate": 4.724, "double": 7.087}
+
 FID = ("/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/"
        "fiducial/cosmo_fiducial")
 SKY_DEG2 = 41253.0
@@ -96,8 +107,11 @@ def main():
     p.add_argument("--ypad-hi", type=float, default=0.32)
     p.add_argument("--fill-alpha", type=float, default=0.28)
     p.add_argument("--edge-alpha", type=float, default=0.50)
-    p.add_argument("--edge-lw", type=float, default=0.65)
-    p.add_argument("--curve-lw", type=float, default=2.6)
+    p.add_argument("--edge-lw", type=float, default=0.45)
+    p.add_argument("--curve-lw", type=float, default=1.4,
+                   help="curve weight. The style baseline is 1.2; 1.4 lifts the "
+                        "curves just clear of their bands without reading as heavy "
+                        "at A&A column width.")
     p.add_argument("--outdir", default="outputs/plots/bnt_frac_diff")
     p.add_argument("--name", default=None)
     a = p.parse_args()
@@ -147,9 +161,7 @@ def main():
                                  n_realizations=int(bar.shape[0]), n_seeds=1))
         panels.append(per)
 
-    plt.rcParams.update({"legend.fontsize": 11, "axes.labelsize": 13,
-                         "xtick.labelsize": 11, "ytick.labelsize": 11})
-    fig, axes = plt.subplots(1, 4, figsize=(17, 3.4), sharey=True)
+    fig, axes = plt.subplots(1, 4, figsize=(AA_W["double"], 2.3), sharey=True)
     for b, ax, per in zip((1, 2, 3, 4), axes, panels):
         for lab, col, ls, curve, band in per:
             ax.fill_between(x, curve - band, curve + band, color=col, alpha=a.fill_alpha, lw=0)
@@ -159,7 +171,8 @@ def main():
                     label=lab if b == 1 else None)
         ax.axhline(0, color="black", ls="--", lw=1)
         ax.set_xlabel(xlab)
-        ax.set_title(f"Bin {b}", fontsize=12)
+        ax.text(0.04, 0.94, f"Bin {b}", transform=ax.transAxes,
+                ha="left", va="top")
         for sp in ("top", "right"):
             ax.spines[sp].set_visible(False)
     axes[0].set_ylabel(YLAB[a.stat])
@@ -176,8 +189,7 @@ def main():
     elif a.ylim != "none":
         axes[0].set_ylim(*[float(v) for v in a.ylim.split(",")])
     h, l = axes[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, 0.93), ncol=2, frameon=False)
-    fig.tight_layout()
+    fig.legend(h, l, loc="outside upper center", ncol=4)
 
     outdir = os.path.join(REPO, a.outdir); os.makedirs(outdir, exist_ok=True)
     name = a.name or (f"bnt_frac_diff_{a.stat}"
@@ -199,7 +211,7 @@ def main():
         "command": " ".join(sys.argv), "git_commit": commit,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "mplstyle": "matplotlib default; no repo style sheet",
+        "mplstyle": "styles/aa.mplstyle (A&A; restored original)",
         "statistic": a.stat,
         "scales_included": ("PS: 10 logarithmic bands, lmin=30, lmax=1024"
                             if a.stat == "ps" else

@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_14000_scales2345_pooled",
   "title": "ROBUSTNESS: baryon-safe contours with the COARSE scale included, 14000 deg2 (pooled)",
   "paper_position": 3.2,
-  "published_utc": "2026-08-02T12:45:28+00:00",
-  "published_at_repo_commit": "cb724b6",
+  "published_utc": "2026-08-03T08:56:39+00:00",
+  "published_at_repo_commit": "c409dc2",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_bsafe_l460_scales2345_pooled",
   "files": {
     "figure.pdf": {

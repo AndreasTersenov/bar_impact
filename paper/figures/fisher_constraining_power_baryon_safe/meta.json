@@ -2,8 +2,8 @@
   "slug": "fisher_constraining_power_baryon_safe",
   "title": "Fisher 68% contours, baryon-safe regime (full sky)",
   "paper_position": 8,
-  "published_utc": "2026-08-02T12:45:29+00:00",
-  "published_at_repo_commit": "cb724b6",
+  "published_utc": "2026-08-03T08:56:39+00:00",
+  "published_at_repo_commit": "c409dc2",
   "source_stem": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe",
   "files": {
     "figure.pdf": {

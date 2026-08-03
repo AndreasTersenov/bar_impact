@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified`
 - **generator commit**: `cd90af18dd6ed3086423e62af72340014bdc6cc3`
 - **generated**: 2026-08-02T08:20:38Z
-- **published**: 2026-08-02T12:45:29+00:00 at repo `cb724b6`
+- **published**: 2026-08-03T08:56:40+00:00 at repo `c409dc2`
 - **rows in values.csv**: 3
 
 ## Scales included

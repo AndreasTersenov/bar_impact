@@ -54,6 +54,17 @@ import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.patheffects as pe  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# --- A&A house style -------------------------------------------------------
+# Load the style sheet rather than scattering rcParams: it fixes font family and
+# every text size at the journal minimum, the Okabe-Ito colour cycle, inward ticks
+# on all four sides, and Type-42 embedded fonts. Restored from the figure-polish
+# skill (private repo dotfiles-claude); styles/aa.mplstyle carries the provenance.
+STYLE = os.path.join(REPO, "styles", "aa.mplstyle")
+plt.style.use(STYLE)
+# A&A printed widths. Size the figure to the column it will occupy -- letting the
+# journal scale it down shrinks the text below the legibility minimum.
+AA_W = {"single": 3.465, "intermediate": 4.724, "double": 7.087}
+
 FID = ("/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/"
        "fiducial/cosmo_fiducial")
 LMIN = 30
@@ -186,12 +197,12 @@ def main():
     p.add_argument("--edge-alpha", type=float, default=0.75,
                    help="boundary-line opacity. Kept well below the central lines so the edges "
                         "delimit each band without competing with the curves themselves.")
-    p.add_argument("--edge-lw", type=float, default=0.9)
+    p.add_argument("--edge-lw", type=float, default=0.45)
     p.add_argument("--edge-halo", type=float, default=0.0,
                    help="width of a surface-coloured halo under the boundary lines. Default 0 = "
                         "none: the boundaries are drawn in their own band's colour. A halo wider "
                         "than the line washes the colour out and the edges read as white.")
-    p.add_argument("--curve-lw", type=float, default=1.9,
+    p.add_argument("--curve-lw", type=float, default=1.4,
                    help="width of the central curves. They already sit above every fill and edge "
                         "(zorder), so weight and separation are the levers, not stacking order.")
     p.add_argument("--curve-halo", type=float, default=1.8,
@@ -289,10 +300,6 @@ def main():
     for i, b in enumerate((1, 2, 3, 4)):
         print(f"  bin {b}: frac_diff[last]={curves[i][-1]:+.4f}  band[last]={bands[i][-1]:.4f}")
 
-    plt.rcParams["legend.fontsize"] = 11
-    plt.rcParams["axes.labelsize"] = 13
-    plt.rcParams["xtick.labelsize"] = 11
-    plt.rcParams["ytick.labelsize"] = 11
     GRID = dict(color="0.88", lw=0.6, ls="-")     # solid hairline; dashed grid reads as a threshold
     YLAB = r"$\langle \Delta C_\ell \rangle / \langle C_\ell \rangle$"
 
@@ -310,7 +317,7 @@ def main():
     if a.layout == "panels":
         # Small multiples: the sanctioned fix for overlapping series. Each panel carries one bin,
         # so nothing occludes anything, and the panel title -- not colour alone -- carries identity.
-        fig, axes = plt.subplots(1, 4, figsize=(13, 3.2), sharey=True)
+        fig, axes = plt.subplots(1, 4, figsize=(AA_W["double"], 2.3), sharey=True)
         for i, (b, ax) in enumerate(zip((1, 2, 3, 4), axes)):
             ax.fill_between(x, curves[i] - bands[i], curves[i] + bands[i],
                             color=colors[i], alpha=0.25, lw=0)
@@ -325,12 +332,11 @@ def main():
                 ax.spines[sp].set_visible(False)
         axes[0].set_ylabel(YLAB)
         ylimits(axes[0], curves, bands)
-        fig.tight_layout()
-
+    
     elif a.layout == "significance":
         # The band IS the denominator here, so there is nothing left to overlap: one line per bin
         # and a +/-1 sigma reference. Directly answers "is the shift bigger than the noise".
-        fig, ax = plt.subplots(figsize=(6.5, 3.8))
+        fig, ax = plt.subplots(figsize=(AA_W["single"], 2.6))
         ax.axhspan(-1, 1, color="0.90", zorder=0)
         ax.axhline(0, color="0.35", lw=0.9)
         for i, b in enumerate((1, 2, 3, 4)):
@@ -349,10 +355,9 @@ def main():
         for sp in ("top", "right"):
             ax.spines[sp].set_visible(False)
         ax.legend(frameon=False, loc="lower left")
-        fig.tight_layout()
-
+    
     else:
-        fig, ax = plt.subplots(figsize=(6, 3.5))
+        fig, ax = plt.subplots(figsize=(AA_W["single"], 2.6))
         # A halo in the surface colour under each boundary line: where two bands cross, the upper
         # line visibly passes OVER the lower one instead of merging into it. This is the one thing
         # that makes four overlapping bands readable.
@@ -379,8 +384,7 @@ def main():
             ax.set_xscale("log")
         ax.legend()
         ylimits(ax, curves, bands)
-        fig.tight_layout()
-
+    
     outdir = os.path.join(REPO, a.outdir)
     os.makedirs(outdir, exist_ok=True)
     name = (a.name or f"ps_frac_diff_{a.layout}_{a.band}"
@@ -405,7 +409,7 @@ def main():
         "git_commit": commit,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "mplstyle": "matplotlib default; no repo style sheet",
+        "mplstyle": "styles/aa.mplstyle (A&A; restored original)",
         "statistic": "tomographic auto angular power spectra, 4 bins",
         "source_data": f"{FID}/all_cls_fiducial_{{baryonified,nobaryons}}_bin{{1..4}}_noisy_s0.26.npy",
         "n_realizations": 200,

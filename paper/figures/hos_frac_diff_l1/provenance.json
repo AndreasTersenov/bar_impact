@@ -2,9 +2,9 @@
   "figure": "hos_frac_diff_l1",
   "generator": "scripts/plot_hos_frac_diff.py",
   "command": "scripts/plot_hos_frac_diff.py --stat l1 --name hos_frac_diff_l1",
-  "git_commit": "0bbd792c834ac14f516aa4dbd6e7092153578867",
-  "generated_utc": "2026-08-02T13:58:16Z",
-  "mplstyle": "matplotlib default; no repo style sheet",
+  "git_commit": "c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8",
+  "generated_utc": "2026-08-03T08:56:09Z",
+  "mplstyle": "styles/aa.mplstyle (A&A; restored original)",
   "statistic": "starlet l1-norm",
   "scales_included": {
     "scale 1": "10'",

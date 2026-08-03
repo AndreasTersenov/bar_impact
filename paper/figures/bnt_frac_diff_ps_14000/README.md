@@ -1,9 +1,9 @@
 # BNT vs standard basis: fractional baryonic impact (ps_14000)
 
 - **source**: `outputs/plots/bnt_frac_diff/bnt_frac_diff_ps_14000`
-- **generator commit**: `fb1a87baa1e3555e6d45d347e40479218b7b73cc`
-- **generated**: 2026-08-02T15:18:21Z
-- **published**: 2026-08-02T15:18:37+00:00 at repo `fb1a87b`
+- **generator commit**: `c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8`
+- **generated**: 2026-08-03T08:56:23Z
+- **published**: 2026-08-03T08:56:38+00:00 at repo `c409dc2`
 - **rows in values.csv**: 80
 
 ## Scales included

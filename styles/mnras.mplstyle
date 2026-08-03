@@ -1,0 +1,64 @@
+# mnras.mplstyle — Monthly Notices of the RAS figure baseline
+#
+# Part of the figure-polish skill. Sibling of aa.mplstyle.
+# Default figure width is the MNRAS single column (84 mm = 3.307 in).
+
+# ---- fonts -----------------------------------------------------------
+font.family         : serif
+font.serif          : DejaVu Serif, Times New Roman, Times, STIXGeneral
+mathtext.fontset    : stix
+font.size           : 8
+
+# axes.titlesize is a fallback for stray panel labels — journal figures
+# carry their description in the caption, NOT an in-axes set_title.
+axes.titlesize      : 8
+axes.labelsize      : 8
+xtick.labelsize     : 8
+ytick.labelsize     : 8
+legend.fontsize     : 7
+figure.titlesize    : 8
+
+# ---- figure ----------------------------------------------------------
+figure.figsize      : 3.307, 2.5
+figure.dpi          : 150
+savefig.dpi         : 300
+figure.constrained_layout.use : True
+
+# ---- axes ------------------------------------------------------------
+axes.linewidth      : 0.8
+axes.grid           : False
+axes.prop_cycle     : cycler('color', ['0072B2','D55E00','009E73','CC79A7','E69F00','56B4E9','F0E442','000000'])
+
+# ---- lines & markers -------------------------------------------------
+lines.linewidth     : 1.1
+lines.markersize    : 4
+lines.markeredgewidth : 0.8
+errorbar.capsize    : 2
+
+# ---- ticks -----------------------------------------------------------
+xtick.direction     : in
+ytick.direction     : in
+xtick.top           : True
+ytick.right         : True
+xtick.minor.visible : True
+ytick.minor.visible : True
+xtick.major.size    : 4
+ytick.major.size    : 4
+xtick.minor.size    : 2
+ytick.minor.size    : 2
+xtick.major.width   : 0.8
+ytick.major.width   : 0.8
+xtick.minor.width   : 0.6
+ytick.minor.width   : 0.6
+
+# ---- legend ----------------------------------------------------------
+legend.frameon      : False
+legend.handlelength : 1.6
+legend.borderaxespad : 0.4
+
+# ---- saving ----------------------------------------------------------
+savefig.format      : pdf
+savefig.bbox        : tight
+savefig.pad_inches  : 0.02
+pdf.fonttype        : 42
+ps.fonttype         : 42

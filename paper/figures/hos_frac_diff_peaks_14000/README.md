@@ -1,9 +1,9 @@
 # Fractional baryonic impact on the starlet peak counts (14000 deg2)
 
 - **source**: `outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000`
-- **generator commit**: `0bbd792c834ac14f516aa4dbd6e7092153578867`
-- **generated**: 2026-08-02T13:58:24Z
-- **published**: 2026-08-02T13:58:34+00:00 at repo `0bbd792`
+- **generator commit**: `c409dc2e98e4af63acfa2d6d8a4f27f32e192ce8`
+- **generated**: 2026-08-03T08:56:19Z
+- **published**: 2026-08-03T08:56:40+00:00 at repo `c409dc2`
 - **rows in values.csv**: 353
 
 ## Scales included

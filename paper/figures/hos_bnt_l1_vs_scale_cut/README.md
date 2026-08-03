@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons`
 - **generator commit**: `a3f63d23f6c425f005185ba5e2ba2fb219773eeb`
 - **generated**: 2026-08-01T21:08:42Z
-- **published**: 2026-08-02T12:45:29+00:00 at repo `cb724b6`
+- **published**: 2026-08-03T08:56:40+00:00 at repo `c409dc2`
 - **rows in values.csv**: 3
 
 ## Scales included

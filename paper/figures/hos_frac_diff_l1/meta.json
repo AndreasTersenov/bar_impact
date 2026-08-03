@@ -2,19 +2,19 @@
   "slug": "hos_frac_diff_l1",
   "title": "Fractional baryonic impact on the starlet l1-norm (full sky)",
   "paper_position": null,
-  "published_utc": "2026-08-02T13:58:34+00:00",
-  "published_at_repo_commit": "0bbd792",
+  "published_utc": "2026-08-03T08:56:40+00:00",
+  "published_at_repo_commit": "c409dc2",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.pdf",
-      "sha256": "7b15ebac939d51500f739af216dbffce3135fe969869f768dd5cbb3de2928496",
-      "bytes": 26704
+      "sha256": "37b389d25d1c98af5942285febf718e875800a496a00295bbb1618406557ba88",
+      "bytes": 28352
     },
     "figure.png": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1.png",
-      "sha256": "f5fc6a4949239ef9aec3b4908bf70fe4512ab75419e47364b9a6e97bbfe4fa3d",
-      "bytes": 270878
+      "sha256": "72acca014e8f2208458bf01f5d2f240263a4171081a74c594c5b40e492f98866",
+      "bytes": 160254
     },
     "values.csv": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_provenance.json",
-      "sha256": "26d2857097b785fd0a371eacb132b1a50725595fbfe9d6a0f0c3cf5f150798b1",
-      "bytes": 1539
+      "sha256": "afc219d74ecdd7d3a3a87ba2e7fea7da76e9b43e8b24896b4d919baea98275a4",
+      "bytes": 1543
     }
   },
   "note": null,

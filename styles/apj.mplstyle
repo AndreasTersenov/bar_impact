@@ -1,20 +1,7 @@
-# RESTORED FROM THE ORIGINAL, 2026-08-03.
-# Recovered from the private repo AndreasTersenov/dotfiles-claude at
-#   skills/figure-polish/style/aa.mplstyle
-# and installed verbatim below, replacing the post-crash reconstruction (kept as
-# aa.mplstyle.reconstruction.bak). The reconstruction had the palette, font sizes,
-# tick conventions and line weights right; it differed in constrained_layout (absent),
-# the default figsize, errorbar.capsize, legend handlelength/borderaxespad, and the
-# font.serif preference order. That last one is moot here: Times New Roman is not
-# installed on Jean Zay, so both stacks resolve to DejaVu Serif.
-# aa.mplstyle — Astronomy & Astrophysics figure baseline
+# apj.mplstyle — ApJ / AAS journals figure baseline
 #
-# Part of the figure-polish skill. Load with:  plt.style.use('.../aa.mplstyle')
-# Sets a sensible A&A-compatible baseline; the plotting code still sets
-# figsize explicitly to the chosen column width (88 / 120 / 180 mm).
-#
-# Profiles for MNRAS / ApJ are sibling files; the differences are mainly
-# font sizes and default figure width.
+# Part of the figure-polish skill. Sibling of aa.mplstyle.
+# Default figure width is the ApJ single column (~89 mm = 3.5 in).
 
 # ---- fonts -----------------------------------------------------------
 font.family         : serif
@@ -32,9 +19,7 @@ legend.fontsize     : 8
 figure.titlesize    : 9
 
 # ---- figure ----------------------------------------------------------
-# Default to A&A single-column width (88 mm = 3.465 in). The plotting code
-# should still set figsize explicitly per figure; this is only a fallback.
-figure.figsize      : 3.465, 2.6
+figure.figsize      : 3.5, 2.6
 figure.dpi          : 150
 savefig.dpi         : 300
 figure.constrained_layout.use : True
@@ -43,17 +28,14 @@ figure.constrained_layout.use : True
 axes.linewidth      : 0.8
 axes.grid           : False
 axes.prop_cycle     : cycler('color', ['0072B2','D55E00','009E73','CC79A7','E69F00','56B4E9','F0E442','000000'])
-# ^ Wong / Okabe-Ito colorblind-safe 8-color set. Pair with linestyle/marker
-#   for grayscale safety — color alone is not enough for A&A print.
 
 # ---- lines & markers -------------------------------------------------
 lines.linewidth     : 1.2
 lines.markersize    : 4
 lines.markeredgewidth : 0.8
-
 errorbar.capsize    : 2
 
-# ---- ticks (inward, all four sides, minor ticks on) ------------------
+# ---- ticks -----------------------------------------------------------
 xtick.direction     : in
 ytick.direction     : in
 xtick.top           : True
@@ -74,7 +56,7 @@ legend.frameon      : False
 legend.handlelength : 1.6
 legend.borderaxespad : 0.4
 
-# ---- saving (vector, embedded fonts) ---------------------------------
+# ---- saving ----------------------------------------------------------
 savefig.format      : pdf
 savefig.bbox        : tight
 savefig.pad_inches  : 0.02

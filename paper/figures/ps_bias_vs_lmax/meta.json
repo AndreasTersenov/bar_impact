@@ -2,8 +2,8 @@
   "slug": "ps_bias_vs_lmax",
   "title": "PS baryon bias vs upper scale cut, 6 footprints",
   "paper_position": 1,
-  "published_utc": "2026-08-02T12:45:29+00:00",
-  "published_at_repo_commit": "cb724b6",
+  "published_utc": "2026-08-03T08:56:40+00:00",
+  "published_at_repo_commit": "c409dc2",
   "source_stem": "outputs/plots/ps_submean_l37/nsigma_vs_lmax",
   "files": {
     "figure.pdf": {
