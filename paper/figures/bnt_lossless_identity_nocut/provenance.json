@@ -1,9 +1,9 @@
 {
   "figure": "bnt_lossless_identity_nocut_14000",
   "generator": "scripts/plot_posterior_overlay.py",
-  "command": "scripts/plot_posterior_overlay.py --series BNT basis=outputs/score_embed_nocut/bnt_r20_c1024:bnt --series standard basis=outputs/score_embed_nocut/nonbnt_r20_c1024:nonbnt --colors C0,0.45 --seed-mode pooled --title Lossless-identity oracle: NO scale cut, $\\ell_{\\max}=1024$ both arms --subtitle BNT is an invertible linear map, so uncut the two bases carry IDENTICAL information \u2014 the contours must coincide | same embedding setup as the flagship | dotted = truth --out plots/bnt_lossless_identity_nocut_14000",
-  "git_commit": "80956a42f88866b110521653cd1338b0b0f13f28",
-  "generated_utc": "2026-08-01T19:05:05Z",
+  "command": "scripts/plot_posterior_overlay.py --series 'BNT basis=outputs/score_embed_nocut/bnt_r20_c1024:bnt' --series 'standard basis=outputs/score_embed_nocut/nonbnt_r20_c1024:nonbnt' --seed-mode pooled --title 'Lossless-identity oracle: NO scale cut, $\\ell_{\\max}=1024$ both arms' --subtitle 'BNT is an invertible linear map, so uncut the two bases carry IDENTICAL information \u2014 the contours must coincide | same embedding setup as the flagship | dotted = truth' --out plots/bnt_lossless_identity_nocut_14000",
+  "git_commit": "unknown",
+  "generated_utc": "2026-08-04T16:21:26Z",
   "versions": {
     "python": "3.11.5",
     "numpy": "1.26.4",

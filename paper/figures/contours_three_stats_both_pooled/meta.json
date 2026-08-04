@@ -2,29 +2,29 @@
   "slug": "contours_three_stats_both_pooled",
   "title": "contours three stats both pooled",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.pdf",
-      "sha256": "1582747f4bca0ad3fcd93a5e419e75b6a58963e1c8acffb7ce9c5afd1d89ade6",
-      "bytes": 269092
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_pooled.pdf",
+      "sha256": "4c89ed3460bcc12c7ca572153226cfea1a812021de92d7e2672c2f93ca7d1f3a",
+      "bytes": 268980
     },
     "figure.png": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000.png",
-      "sha256": "2fba55ab218aa8b819b2893a6e91945bffeaaf62df8389c4ffdf652add0d43e8",
-      "bytes": 468186
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_pooled.png",
+      "sha256": "87109e38a663a70ee2ed0d79f431b81cd32133f832183576b6a5678417ae76e7",
+      "bytes": 467709
     },
     "values.csv": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_values.csv",
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_pooled_values.csv",
       "sha256": "2562d32f8d87a71b91cb3e1db88d71e933a24b9385b3e32eee98264a97f8b893",
       "bytes": 1210
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_provenance.json",
-      "sha256": "ad5a01c4d8cc06ae69a4d94ca8e4013ac38e23a7f4b68f0dfec6a626ee49c888",
-      "bytes": 5401
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_pooled_provenance.json",
+      "sha256": "4a7ec60e95f25842c6ce86a784a73dc111804560c0ef503b55b4edc2bdf7b452",
+      "bytes": 5408
     }
   },
   "note": null,

@@ -1,7 +1,7 @@
 {
   "figure": "fom_vs_area_all_stats",
-  "generated_utc": "2026-08-03T20:53:29+00:00",
-  "git_commit": "9ef3572",
+  "generated_utc": "2026-08-04T16:23:28+00:00",
+  "git_commit": "unknown",
   "quantity": "FoM_3 = 1/sqrt(det C) over the (Omega_m, S8, w0) sub-covariance",
   "guide_scale": 1.0,
   "guide_note": "A^+3/2 reference line = GUIDE_SCALE x (measured PS FoM3 at 14000) x (A/14000)^1.5. GUIDE_SCALE is a COSMETIC vertical offset; only the slope of this line carries meaning.",
@@ -13,7 +13,7 @@
   "arm": "NULL only (nobaryons vs nobaryons) \u2014 constraining power, not bias",
   "cut": "full resolution: PS lmin=37 lmax=1020 r10; HOS scales1234 submean",
   "versions": {
-    "numpy": "2.4.6",
+    "numpy": "1.26.4",
     "scipy": "1.17.1",
     "matplotlib": "3.11.1"
   },

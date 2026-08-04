@@ -1,6 +1,6 @@
 {
   "figure": "fisher_contours_baryon_safe",
-  "generated_utc": "2026-07-29T21:47:30+00:00",
+  "generated_utc": "2026-08-04T16:23:24+00:00",
   "git_commit": "unknown",
   "probes_drawn": [
     "PS l100-400",
@@ -46,7 +46,7 @@
     3
   ],
   "versions": {
-    "numpy": "2.4.6",
+    "numpy": "1.26.4",
     "scipy": "1.17.1",
     "matplotlib": "3.11.1"
   },

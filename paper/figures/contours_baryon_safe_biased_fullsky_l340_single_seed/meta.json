@@ -2,19 +2,19 @@
   "slug": "contours_baryon_safe_biased_fullsky_l340_single_seed",
   "title": "contours baryon safe biased fullsky l340 single seed",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.pdf",
-      "sha256": "379ce57211ab1d103993b44b59d9615ae5b7b552904ee20fbdd084c6382d4231",
-      "bytes": 150987
+      "sha256": "bd976ea2ae12d61d4c90172690000cc8156a6de048c6d661057a0d90d5dd5c3c",
+      "bytes": 150875
     },
     "figure.png": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed.png",
-      "sha256": "71aadcc568e9dbdff2577030a9823cdaf67724461234c2374443ff1eb4cced58",
-      "bytes": 315277
+      "sha256": "18ff2880bf5b938dc106a45cee91942690938ce63a4b5e0c6c45c00f5738d759",
+      "bytes": 314735
     },
     "values.csv": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l340_scales234_single_seed_provenance.json",
-      "sha256": "1b552e19e909e0236a8bbcc6a7e647d573169c043aa56c21475ab3007c9b08fa",
+      "sha256": "7bc77013a7f29f3b7e955229155fc5f3d86c6ceb8463deadf998da2395c868b7",
       "bytes": 7580
     }
   },

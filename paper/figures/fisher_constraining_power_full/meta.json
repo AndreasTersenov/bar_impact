@@ -2,19 +2,19 @@
   "slug": "fisher_constraining_power_full",
   "title": "Fisher 68% contours, full-resolution regime (full sky)",
   "paper_position": 9,
-  "published_utc": "2026-08-04T15:53:48+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:26+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/diagnostics/constraining_power/fisher_contours",
   "files": {
     "figure.pdf": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours.pdf",
-      "sha256": "4f3f066a6949816fe6a51cb814efbc99aab5695715dc475d5214fd9393b8f2ba",
-      "bytes": 26981
+      "sha256": "500cdd6ece72b09e392638b3d65cb7ed9caded57dd20d8ed837bae2c027ad6ba",
+      "bytes": 26769
     },
     "figure.png": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours.png",
-      "sha256": "ac5afeedd61d379fd5d8e6205fd733b919ba0d5c1ddc50d148702f760b239df9",
-      "bytes": 193290
+      "sha256": "2b2200808edea43784fe5146d9d6af7325da6cfda85ef3985edb66240770c8dc",
+      "bytes": 222548
     },
     "values.csv": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_provenance.json",
-      "sha256": "54acd59a3e1420cd4af2bb35b86ed7cb937adfeaefa032f09574295d0debba95",
-      "bytes": 1983
+      "sha256": "fe71d4db3fb2c742522029e29e7c245465f3914059e17d3f547beaa5a9a86e8b",
+      "bytes": 1984
     },
     "covariance.csv": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_covariance.csv",

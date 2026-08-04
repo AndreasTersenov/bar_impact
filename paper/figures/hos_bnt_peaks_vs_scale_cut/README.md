@@ -1,9 +1,9 @@
-# Peak counts: BNT vs scale cut vs all scales (baryonified)
+# hos bnt peaks vs scale cut
 
-- **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified`
-- **generator commit**: `cd90af18dd6ed3086423e62af72340014bdc6cc3`
-- **generated**: 2026-08-02T08:20:38Z
-- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
+- **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:23:45Z
+- **published**: 2026-08-04T16:28:16+00:00 at repo `d9ca381`
 - **rows in values.csv**: 3
 
 ## Scales included
@@ -11,6 +11,10 @@
 - **all**: scales1234 = internal 0,1,2,3 = all four wavelet scales
 - **cut**: scales234 = internal 1,2,3 = three scales, finest dropped; legend [20',40',80']
 - **bnt**: bntbins1234 scales1234
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

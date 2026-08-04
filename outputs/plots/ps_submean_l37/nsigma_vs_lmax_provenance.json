@@ -1,7 +1,7 @@
 {
   "figure": "nsigma_vs_lmax",
-  "generated_utc": "2026-08-03T20:52:55+00:00",
-  "git_commit": "9ef3572",
+  "generated_utc": "2026-08-04T16:24:03+00:00",
+  "git_commit": "unknown",
   "errbar": "std",
   "threshold_sigma": 0.3,
   "fullsky_panel": false,
@@ -25,10 +25,10 @@
     "power_spectrum": "monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies along the x-axis over the step-40 grid 340..1020"
   },
   "versions": {
-    "numpy": "2.4.6",
+    "numpy": "1.26.4",
     "scipy": "1.17.1",
-    "getdist": "1.4.3",
-    "tensiometer": "1.1.0",
+    "getdist": "1.6.1",
+    "tensiometer": "unavailable",
     "matplotlib": "3.11.1"
   },
   "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",

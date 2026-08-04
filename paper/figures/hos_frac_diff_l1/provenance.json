@@ -2,7 +2,7 @@
   "figure": "hos_frac_diff_l1",
   "generator": "scripts/plot_hos_frac_diff.py",
   "command": "scripts/plot_hos_frac_diff.py --stat l1 --name hos_frac_diff_l1",
-  "generated_utc": "2026-08-03T09:27:53Z",
+  "generated_utc": "2026-08-04T16:23:48Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "starlet l1-norm",
   "scales_included": {
@@ -23,8 +23,8 @@
     "The band is scaled to survey area by 1/sqrt(f_sky), which for a HOS has no mode-counting justification -- indicative only."
   ],
   "versions": {
-    "python": "3.11.15",
-    "numpy": "2.4.6",
+    "python": "3.11.5",
+    "numpy": "1.26.4",
     "matplotlib": "3.11.1"
   }
 }

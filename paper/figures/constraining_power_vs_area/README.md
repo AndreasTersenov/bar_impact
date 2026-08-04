@@ -1,9 +1,9 @@
 # constraining power vs area
 
 - **source**: `outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats`
-- **generator commit**: `ea7ccfa`
-- **generated**: 2026-08-03T13:22:05+00:00
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:21:58+00:00
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 18
 
 ## Scales included
@@ -14,6 +14,10 @@
 ## Presentation TODO before use
 
 If this figure is used anywhere (paper or referee response) the x-axis tick labels need decluttering first — the log locator currently overlaps them. plot_fom_vs_area.py already solves this with a FixedLocator at 2k/5k/10k/20k/40k plus NullFormatter on the minors; port that here.
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

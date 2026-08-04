@@ -1,15 +1,19 @@
 # FoM3 vs survey area, guide dropped clear of the data
 
 - **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor`
-- **generator commit**: `9ef3572`
-- **generated**: 2026-08-03T20:53:33+00:00
-- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:23:33+00:00
+- **published**: 2026-08-04T16:27:26+00:00 at repo `d9ca381`
 - **rows in values.csv**: 18
 
 ## Scales included
 
 - **power_spectrum**: monopole-subtracted MASTER, lmin=37, lmax=1020, rebin=10
 - **peaks_l1**: wavelet scales1234 (four detail scales; coarse/mass-sheet excluded), submean, new_normalization, noisy sigma_e=0.26
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

@@ -1,10 +1,18 @@
 {
-  "figure": "hos_bnt_peaks_baryonified",
+  "figure": "hos_bnt_peaks_vs_scale_cut",
   "generator": "scripts/plot_hos_bnt_triangle.py",
-  "command": "scripts/plot_hos_bnt_triangle.py --stat peaks --bnt-arm baryonified",
-  "git_commit": "cd90af18dd6ed3086423e62af72340014bdc6cc3",
-  "generated_utc": "2026-08-02T08:20:38Z",
+  "command": "scripts/plot_hos_bnt_triangle.py --stat peaks --bnt-arm baryonified --outline-bnt --name hos_bnt_peaks_vs_scale_cut",
+  "git_commit": "unknown",
+  "generated_utc": "2026-08-04T16:23:45Z",
   "mplstyle": "matplotlib default + getdist get_subplot_plotter(width_inch=6); no repo style sheet",
+  "contour_style": "scripts/paper_contour_style.py",
+  "palette": "okabe",
+  "palette_note": "Okabe-Ito colourblind-safe palette; does NOT match the figures kept from the submitted version",
+  "axes_fontsize": 14,
+  "lab_fontsize": 16,
+  "legend_fontsize": 14,
+  "alpha_filled_add": 0.99,
+  "colors_source": "paper_contour_style.colors_for",
   "statistic": "peaks",
   "bnt_arm": "baryonified",
   "bnt_arm_note": "baryonified, like-for-like with the other two",
@@ -15,7 +23,7 @@
   },
   "legend_correction": "Original legend listed four entries [20',40',80',coarse] for the three-scale cut vector. The coarse scale was not used; the label now lists three.",
   "truth": {
-    "$\\Omega_{m}$": 0.26,
+    "$\\Omega_\\mathrm{m}$": 0.26,
     "$\\sigma_8$": 0.84,
     "$w_0$": -1.0
   },
@@ -34,7 +42,7 @@
     {
       "arm": "bnt_baryonified",
       "label": "BNT peaks",
-      "color": "0.55",
+      "color": "#0072B2",
       "file": "posterior_samples_bnt_pc_nobaryons_vs_baryonified_bntbins1234_scales1234_noisy_s0.26_new_normalization_run2_npe.npy",
       "n_seeds": 1,
       "n_samples": 3000,
@@ -49,7 +57,7 @@
     {
       "arm": "cut",
       "label": "peaks, scales [20',40',80']",
-      "color": "#d62728",
+      "color": "#D55E00",
       "file": "posterior_samples_pc_nobaryons_vs_baryonified_bins1234_scales234_noisy_s0.26_new_normalization_npe.npy",
       "n_seeds": 1,
       "n_samples": 3000,
@@ -64,7 +72,7 @@
     {
       "arm": "all",
       "label": "peaks, all scales",
-      "color": "#1f77b4",
+      "color": "#009E73",
       "file": "posterior_samples_pc_nobaryons_vs_baryonified_bins1234_scales1234_noisy_s0.26_new_normalization_npe.npy",
       "n_seeds": 1,
       "n_samples": 3000,

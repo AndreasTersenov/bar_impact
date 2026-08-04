@@ -2,19 +2,19 @@
   "slug": "bnt_score_contours_matched_pooled",
   "title": "bnt score contours matched pooled",
   "paper_position": 6.6,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/score_contours_matched_580_14000_pooled",
   "files": {
     "figure.pdf": {
       "from": "plots/score_contours_matched_580_14000_pooled.pdf",
-      "sha256": "29c17d316cca175e89400113d77686398e6837f683efdcbd18f45928519658c8",
-      "bytes": 170219
+      "sha256": "57d117d6684f532645970f1124fc0c9cb9c909cdec48e9a4d1e8b24cf72f1149",
+      "bytes": 169241
     },
     "figure.png": {
       "from": "plots/score_contours_matched_580_14000_pooled.png",
-      "sha256": "c0983329b85cc7290a42c42da24281bccf662da84d183f8faa41a6ba2c1b137f",
-      "bytes": 122380
+      "sha256": "a92dd250b8b2d58b867a10fa66dd982e12b744e6917d4d899eeb07c84ce02e3e",
+      "bytes": 118651
     },
     "values.csv": {
       "from": "plots/score_contours_matched_580_14000_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/score_contours_matched_580_14000_pooled_provenance.json",
-      "sha256": "802a3e8bfb32097cd3bb6ff4b3c9121c2c66c680c638eb2b01026e679be54d58",
-      "bytes": 3756
+      "sha256": "3e835d6342cf951e16fd59473e8f443824928d669a275b9358c07750aa7bb1d2",
+      "bytes": 4041
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 3,
   "n_caveats": 5

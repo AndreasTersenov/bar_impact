@@ -2,8 +2,8 @@
 
 - **source**: `outputs/plots/bnt_frac_diff/bnt_frac_diff_ps`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-03T09:28:06Z
-- **published**: 2026-08-04T15:53:46+00:00 at repo `cade6ad`
+- **generated**: 2026-08-04T16:21:19Z
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 80
 
 ## Scales included

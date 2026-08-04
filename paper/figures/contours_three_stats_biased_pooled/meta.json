@@ -2,29 +2,29 @@
   "slug": "contours_three_stats_biased_pooled",
   "title": "contours three stats biased pooled",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.pdf",
-      "sha256": "f42eab6f3188c1b50b097055b7c0d859dec75a362eb879cb5bd8a79e25f0e827",
-      "bytes": 177246
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled.pdf",
+      "sha256": "0465e6c9683df1251b01599afaa33e00a657da2d4aed79ca44d2a9ec913f8a38",
+      "bytes": 177131
     },
     "figure.png": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000.png",
-      "sha256": "2c9ac60846a1400c64b04258b03f1335ce7a4201f013a3c627e3862a760d14be",
-      "bytes": 295973
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled.png",
+      "sha256": "10605f4c177e77835a865d102af5781b6eaee9796ce6029795723c4f59ffb977",
+      "bytes": 295377
     },
     "values.csv": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_values.csv",
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled_values.csv",
       "sha256": "2cd9846e12081643110c27eae37d704931e5d847d334d88c2a338100e8cb4b86",
       "bytes": 649
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_provenance.json",
-      "sha256": "6fb1e3e3b361c8511478eaee3061d2cdc1c92e4fc74f324adde5d2a57c694d16",
-      "bytes": 4010
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled_provenance.json",
+      "sha256": "9820397a1c915d3ddb272ab67ab76a1fbbd714edf67f70716ace901779f96bf6",
+      "bytes": 4017
     }
   },
   "note": null,

@@ -1,9 +1,9 @@
 # bnt score contours matched pooled
 
 - **source**: `plots/score_contours_matched_580_14000_pooled`
-- **generator commit**: `69586a219370d9a4bc00ed639396c383590f7375`
-- **generated**: 2026-07-31T12:39:06Z
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:21:47Z
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 3
 
 ## Scales included
@@ -12,6 +12,10 @@
 - **BNT_bin1**: [580, 1024, 1024, 1024]
 - **nonBNT_cutall**: [580, 580, 580, 580]
 - **BNT_bin1_ref**: [460, 1024, 1024, 1024]
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

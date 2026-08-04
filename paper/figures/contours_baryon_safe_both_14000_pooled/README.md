@@ -1,9 +1,9 @@
 # contours baryon safe both 14000 pooled
 
-- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234`
+- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-03T14:15:49+00:00
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generated**: 2026-08-04T16:22:48+00:00
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 18
 
 ## Scales included

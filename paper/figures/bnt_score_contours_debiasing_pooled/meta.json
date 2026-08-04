@@ -2,19 +2,19 @@
   "slug": "bnt_score_contours_debiasing_pooled",
   "title": "bnt score contours debiasing pooled",
   "paper_position": 6.4,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/score_contours_debiased_580_14000_pooled",
   "files": {
     "figure.pdf": {
       "from": "plots/score_contours_debiased_580_14000_pooled.pdf",
-      "sha256": "114e8cf9e66754131b63e4fce506b9d0a73955dc2e8a56dc219cc79447f51369",
-      "bytes": 135499
+      "sha256": "17530d9dc7ef637eeb486286484cae9ed676ddb69fc2f7ac19859063223259f6",
+      "bytes": 134251
     },
     "figure.png": {
       "from": "plots/score_contours_debiased_580_14000_pooled.png",
-      "sha256": "1009489a22a5137ef48a31798eb5a84d4ef65463d1b4c42fe112d475953980dd",
-      "bytes": 99016
+      "sha256": "6ba87cebc162147451b7b82b62f75e671331bb2716b9c01175929728198bdb98",
+      "bytes": 95586
     },
     "values.csv": {
       "from": "plots/score_contours_debiased_580_14000_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/score_contours_debiased_580_14000_pooled_provenance.json",
-      "sha256": "54ed72ce903ea66fa3bfba13aadf4374733ebce21b26afcc688d88100e2fc46f",
-      "bytes": 3436
+      "sha256": "fad536b41e2a6925d9eeab9ccd1c72b40fb4e42ea68de779cac660c251259902",
+      "bytes": 3721
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 2,
   "n_caveats": 4

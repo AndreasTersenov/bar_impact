@@ -3,14 +3,18 @@
 Single-seed companion to the no-cut oracle at position 6.3. Each arm shows its most representative NDE seed (BNT run 45, standard run 41), chosen independently per arm. Ratio 0.866x. This is the LEAST stable of the four seed conventions precisely because it compounds two independent selections - here the standard basis happened to draw a tight seed (5.32e5 against its 4.15e5 seed-average). Across all four conventions the no-cut ratio spans 0.87 to 1.14, centred on unity, which quantifies the seed-level training scatter (~5 percent per parameter). Do NOT quote this figure's ratio as the oracle result; use the per-seed mean 0.979 from position 6.3. Shown because the contour SHAPES are what the oracle is really about, and they coincide here as clearly as in the pooled version.
 
 - **source**: `plots/bnt_lossless_identity_nocut_14000_single_seed`
-- **generator commit**: `80956a42f88866b110521653cd1338b0b0f13f28`
-- **generated**: 2026-08-01T19:12:23Z
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:21:30Z
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 2
 
 ## Scales included
 
 - **scales_included**: both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

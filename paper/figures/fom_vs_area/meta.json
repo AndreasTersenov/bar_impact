@@ -2,19 +2,19 @@
   "slug": "fom_vs_area",
   "title": "FoM3 vs survey area, single panel (guide pinned to PS)",
   "paper_position": 11,
-  "published_utc": "2026-08-04T15:53:48+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:26+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats.pdf",
-      "sha256": "576f25f68a0cd37a5f353b2c4684bb965a2df9fa568a001ba99d0d5ddc843026",
-      "bytes": 19589
+      "sha256": "edbf90451849f77bc4a31fd221c7d6ee3a4926e69c26e3f3c0564cdb47003d7f",
+      "bytes": 19448
     },
     "figure.png": {
       "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats.png",
-      "sha256": "86a10a08490d9557063d38e44ef36815a38c420e5d1a4691e121644e65bee2d5",
-      "bytes": 225551
+      "sha256": "25574e87a5969b9a57b834cb75346ff8945546459baf4936d82d05cf61300ef8",
+      "bytes": 240496
     },
     "values.csv": {
       "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_provenance.json",
-      "sha256": "76a7d0502dac38dfdbbb2a98e298c947307b845fdd98d30572c4216a3140c290",
-      "bytes": 1911
+      "sha256": "96a3a14685d2d5456df84001798d7d5e7c0e65c3763176c87842770ce9956cd8",
+      "bytes": 1912
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 5

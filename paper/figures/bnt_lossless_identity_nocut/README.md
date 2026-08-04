@@ -3,14 +3,18 @@
 THE ORACLE for the BNT result. BNT is an invertible linear map of the standard tomographic spectra, so with NO scale cut applied the two bases carry IDENTICAL information and the contours must coincide. They do: per-seed-mean FoM3 4.326e5 (BNT) vs 4.420e5 (standard), ratio 0.979. Both arms at lmax=1024, 120 features each, same embedding-network setup as the flagship at position 6. The earlier score work verified this identity ANALYTICALLY at the summary level (gate 2, agreement to 1e-13); this is the first end-to-end confirmation through trained posteriors. CONVENTION NOTE: the ratio is 0.979 (mean of per-seed FoM3), 1.031 (FoM3 of the seed-averaged covariance) and 1.142 (FoM3 of pooled samples). The spread is seed-level training scatter, not a physical effect - the standard-basis arm has a per-seed spread of 19 percent (4.42e5 +/- 8.2e4) against BNT's 7 percent, so pooling fattens that arm. Report the per-seed mean: it treats each seed as one independent analysis and does not fold training scatter into the contour width. The marginals agree to ~5 percent per parameter with the STANDARD basis marginally tighter, i.e. no systematic advantage to either, exactly as an invertible map requires. WHY THIS MATTERS: it establishes that the 1.41x measured at lmax=460 is the effect of the TARGETED CUT and not an artifact of working in the BNT basis.
 
 - **source**: `plots/bnt_lossless_identity_nocut_14000`
-- **generator commit**: `80956a42f88866b110521653cd1338b0b0f13f28`
-- **generated**: 2026-08-01T19:05:05Z
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:21:26Z
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 2
 
 ## Scales included
 
 - **scales_included**: both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

@@ -196,25 +196,28 @@ def main():
     ln = rf"non-BNT cut-all ($\ell_{{\max}}={args.nonbnt_cut}$)"
     s_bnt = MCSamples(samples=bnt, names=NAMES, labels=LABELS, label=lb)
     s_non = MCSamples(samples=non, names=NAMES, labels=LABELS, label=ln)
-    sets, cols, labs, filled = [s_non, s_bnt], ["0.5", "C0"], [ln, lb], [True, True]
+    import paper_contour_style as PCS
+    # Colours from the shared cycle, not a private list. This read ["0.5", "C0", "C3"] -- a grey
+    # plus two tab10 entries -- so this family rendered in a different palette from every other
+    # contour figure in the paper even after they were all moved to Okabe-Ito.
+    sets, labs, filled = [s_non, s_bnt], [ln, lb], [True, True]
     if ref is not None:
         lr = rf"BNT bin-1 ($\ell_{{\max}}={args.ref_cut}$), reference"
         sets.append(MCSamples(samples=ref, names=NAMES, labels=LABELS, label=lr))
-        cols.append("C3"); labs.append(lr); filled.append(False)
+        labs.append(lr)
+        # The reference arm stays UNFILLED on purpose: it is the same arm as --bnt-cut at a
+        # different cut, so filling it would hide the comparison it exists to make.
+        filled.append(False)
+    cols = PCS.cycle_colors(len(sets))
 
-    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=7.5)
     _palette = PCS.apply(g)
+    # markers=, not hand-drawn axvline/axhline: getdist puts the truth on both axes of every
+    # panel in the thin dashed grey the published contour figures use. The manual version drew
+    # dotted BLACK, a different visual language from the rest of the paper.
     g.triangle_plot(sets, filled=filled, contour_colors=cols,
-                    legend_labels=labs, legend_loc="upper right")
-    for i in range(3):
-        for j in range(i + 1):
-            ax = g.subplots[i, j]
-            if ax is None:
-                continue
-            ax.axvline(TRUTH[j], color="k", ls=":", lw=1, alpha=0.7)
-            if i != j:
-                ax.axhline(TRUTH[i], color="k", ls=":", lw=1, alpha=0.7)
+                    legend_labels=labs, legend_loc="upper right",
+                    markers=dict(zip(NAMES, TRUTH)))
 
     title = args.title or (
         rf"Null contours at a MATCHED scale cut ($\ell_{{\max}}={args.nonbnt_cut}$) — 14000 deg$^2$"

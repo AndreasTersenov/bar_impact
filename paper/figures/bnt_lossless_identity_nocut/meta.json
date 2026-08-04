@@ -2,19 +2,19 @@
   "slug": "bnt_lossless_identity_nocut",
   "title": "VALIDATION: BNT vs standard basis with NO scale cut (lossless identity)",
   "paper_position": 6.3,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/bnt_lossless_identity_nocut_14000",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_lossless_identity_nocut_14000.pdf",
-      "sha256": "eb01f65258143e6760eb5752ff2e2986d8e5cf6a630cf7d3118ef02843a81db2",
-      "bytes": 132998
+      "sha256": "9a70fd96d4ec44254806e259349c63a4d81a73fe8d782b7cc4270968ca11a0c1",
+      "bytes": 128094
     },
     "figure.png": {
       "from": "plots/bnt_lossless_identity_nocut_14000.png",
-      "sha256": "908c1beb17b213277bdd5030724a310481c006480e05fe00499071cf5a488e78",
-      "bytes": 94708
+      "sha256": "ee972e8943eb38cbb7b307f0813e22cb5d34580a033fa9341043584ff85d8306",
+      "bytes": 79579
     },
     "values.csv": {
       "from": "plots/bnt_lossless_identity_nocut_14000_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/bnt_lossless_identity_nocut_14000_provenance.json",
-      "sha256": "872596a329b2a9aad50b8aa196a9519c6f64fb31e6f6e7b8885e37b2795ebcfb",
-      "bytes": 3567
+      "sha256": "7ebc95ec3e1bdac6f0f64cbeaaf4a8f306e5269b5d61ce03a983af6dd663905d",
+      "bytes": 3525
     }
   },
   "note": "THE ORACLE for the BNT result. BNT is an invertible linear map of the standard tomographic spectra, so with NO scale cut applied the two bases carry IDENTICAL information and the contours must coincide. They do: per-seed-mean FoM3 4.326e5 (BNT) vs 4.420e5 (standard), ratio 0.979. Both arms at lmax=1024, 120 features each, same embedding-network setup as the flagship at position 6. The earlier score work verified this identity ANALYTICALLY at the summary level (gate 2, agreement to 1e-13); this is the first end-to-end confirmation through trained posteriors. CONVENTION NOTE: the ratio is 0.979 (mean of per-seed FoM3), 1.031 (FoM3 of the seed-averaged covariance) and 1.142 (FoM3 of pooled samples). The spread is seed-level training scatter, not a physical effect - the standard-basis arm has a per-seed spread of 19 percent (4.42e5 +/- 8.2e4) against BNT's 7 percent, so pooling fattens that arm. Report the per-seed mean: it treats each seed as one independent analysis and does not fold training scatter into the contour width. The marginals agree to ~5 percent per parameter with the STANDARD basis marginally tighter, i.e. no systematic advantage to either, exactly as an invertible map requires. WHY THIS MATTERS: it establishes that the 1.41x measured at lmax=460 is the effect of the TARGETED CUT and not an artifact of working in the BNT basis.",
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 2,
   "n_caveats": 4

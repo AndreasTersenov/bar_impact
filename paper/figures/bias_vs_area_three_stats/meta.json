@@ -2,28 +2,28 @@
   "slug": "bias_vs_area_three_stats",
   "title": "bias vs area three stats",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:46+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:24+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
-      "sha256": "dd05a26de8cc01d883bda4788300134ea7ef0a9da1b9bc17a99ecd8269edc06f",
-      "bytes": 19375
+      "sha256": "427aa28d36afcea70d76a81f2a0b90f9707b50190fe6dcf2144c6b6c8297c212",
+      "bytes": 18968
     },
     "figure.png": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
-      "sha256": "db57a7ea62732db6c673a11a5cd8e9bd7608b549fd491cd626df018b6c4721b0",
-      "bytes": 176785
+      "sha256": "9dcc5b0520a7a2f91c46903a92867b75eae6ba49b9963ad819bfd0a9fae07d48",
+      "bytes": 176913
     },
     "values.csv": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
-      "sha256": "61d115f5775ab4de4c8f147c1ed78e147b8f7be5f4c08c1d6056d93482b3aa2c",
+      "sha256": "c039401ad983419ad2a440af01b4c6b91b137344d2e2268e7cfa713504972f86",
       "bytes": 822
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
-      "sha256": "b067ee75457272c84db2dd4f3e7ab0c8aeb987f991c8ee18a58ca1a7cde7b1ad",
+      "sha256": "8b2958b1e4bf452c7a15ebabe8268ab3ea6caca4ddbc56486601e201c845d49c",
       "bytes": 1389
     }
   },

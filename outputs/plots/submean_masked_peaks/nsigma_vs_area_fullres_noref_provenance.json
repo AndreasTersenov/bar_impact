@@ -1,8 +1,8 @@
 {
   "figure": "nsigma_vs_area_fullres_noref",
-  "generated_utc": "2026-08-03T12:32:13+00:00",
-  "git_commit": "805e4cc",
-  "errbar": "std",
+  "generated_utc": "2026-08-04T16:26:26+00:00",
+  "git_commit": "d9ca381",
+  "errbar": "sem",
   "stroke_weights": {
     "lw": 2.2,
     "ms": 7.0,

@@ -1,40 +1,39 @@
 {
   "slug": "hos_bnt_l1_vs_scale_cut",
-  "title": "L1-norm: BNT vs scale cut vs all scales",
+  "title": "hos bnt l1 vs scale cut",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:48+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons",
+  "published_utc": "2026-08-04T16:28:16+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons.pdf",
-      "sha256": "1bd4ea1b3d5b2dd7a9e36e47ed86d0f58bfa4a80a08f84e136a36ef0d2654450",
-      "bytes": 155070
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut.pdf",
+      "sha256": "02ef3b8cff8ba41a80867974f26ee1785853bd165f81173116c6b0a74d583d73",
+      "bytes": 137143
     },
     "figure.png": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons.png",
-      "sha256": "7edd41edf5bcd471c7be5d1f6e9cbf199505f723ebbd914cb6b2c95cc4af249f",
-      "bytes": 186582
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut.png",
+      "sha256": "e09f0b2543441cf0bd76c744086b3df3cd48448177b0102fd55a5620fcc3ab9c",
+      "bytes": 212647
     },
     "values.csv": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons_values.csv",
-      "sha256": "6f26e1b9048e3d37776e989bc554e1506ddad9991af5f12ce6935675581528c3",
-      "bytes": 951
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut_values.csv",
+      "sha256": "4bb30a0b4eba2a70a3fd235a401a33ddebfc9f3dea668d363bdca2b2cd1f9e40",
+      "bytes": 960
     },
     "provenance.json": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_nobaryons_provenance.json",
-      "sha256": "43b5b3effd7c076c2c40ba6c61fe66d11c3eb0d1028561e70923aa2f8467da68",
-      "bytes": 2916
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut_provenance.json",
+      "sha256": "70e39363db801f0daef22f251859caed98832ef7625db22108c7ef5182df413c",
+      "bytes": 3516
     }
   },
   "note": null,
   "gate": {
     "passed": true,
     "warnings": [
-      "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-      "provenance is missing 'mplstyle'"
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
     ]
   },
   "value_rows": 3,
-  "n_caveats": 2
+  "n_caveats": 3
 }

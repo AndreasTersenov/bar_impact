@@ -1,14 +1,18 @@
 # PS baryon bias vs cut, 6 footprints plus full sky
 
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky`
-- **generator commit**: `9ef3572`
-- **generated**: 2026-08-03T20:53:24+00:00
-- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:24:10+00:00
+- **published**: 2026-08-04T16:27:26+00:00 at repo `d9ca381`
 - **rows in values.csv**: 132
 
 ## Scales included
 
 - **power_spectrum**: monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies along the x-axis over the step-40 grid 340..1020
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

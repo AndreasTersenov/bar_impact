@@ -1,36 +1,38 @@
 {
   "slug": "hos_bnt_peaks_vs_scale_cut",
-  "title": "Peak counts: BNT vs scale cut vs all scales (baryonified)",
+  "title": "hos bnt peaks vs scale cut",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:48+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified",
+  "published_utc": "2026-08-04T16:28:16+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified.pdf",
-      "sha256": "c2c6ad40255818a66147694f768326f0970597d11e83a35f188df9f8b5e27d5d",
-      "bytes": 149506
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.pdf",
+      "sha256": "565a629fb23ebb761411f5ea7d86e8a69fcef13b946ccd8ff3d9b1c2247a063f",
+      "bytes": 131674
     },
     "figure.png": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified.png",
-      "sha256": "c1753faf07b2427f9d95f2963db095fd93ccde79add8b30fe12b7001a7e3b645",
-      "bytes": 186090
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.png",
+      "sha256": "e8fc90e6074bd72c2a1f7b535de29f501d41509af03dd6a9d60107dd31bae6d4",
+      "bytes": 215808
     },
     "values.csv": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified_values.csv",
-      "sha256": "7b462bd59eaa1bbf67e36c2b7e0b69cc970e8fb8293c8bd14ad8e4a731f9de62",
-      "bytes": 965
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_values.csv",
+      "sha256": "cdc400cb9fc1ed1f8a070eda9f19f9a135a60947ffb5743ef86b34e5abb64e86",
+      "bytes": 968
     },
     "provenance.json": {
-      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_baryonified_provenance.json",
-      "sha256": "d913fd2428dc582608f8a7bce846b24d8e6e2e454da3960a7a3eea9e18badec5",
-      "bytes": 3164
+      "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_provenance.json",
+      "sha256": "4f84aab547cb09e692adb0629a6b047c5e242be24db9eeacc9f0a0df3f3f1ed2",
+      "bytes": 3533
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 3,
   "n_caveats": 3

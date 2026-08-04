@@ -2,29 +2,29 @@
   "slug": "contours_baryon_safe_both_14000_pooled",
   "title": "contours baryon safe both 14000 pooled",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.pdf",
-      "sha256": "2acd91f5a17e19369aa13dd25450c1d0f6bcb66bb7dc60b7998aaeae2a391e93",
-      "bytes": 223018
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled.pdf",
+      "sha256": "248c57b1a6f961cc1bf6182395bb5d4cdace1997adf9f59e89f217ef40938880",
+      "bytes": 222906
     },
     "figure.png": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234.png",
-      "sha256": "d74cf31707ca42944d9b7978f495b64ff565125ee87d0b5d72457851831a9704",
-      "bytes": 449728
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled.png",
+      "sha256": "0c2972e4d2bd8b3faf3da1400ec088d88bfd71b298c2a8bd5f0e6f40ac4ad72f",
+      "bytes": 449305
     },
     "values.csv": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_values.csv",
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled_values.csv",
       "sha256": "42df524cdbefd47cf6eaa0f5a6739f7d41fc0aaa9df9d76bbbdf5910774d940c",
       "bytes": 1204
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_provenance.json",
-      "sha256": "d13a509466248d37738449cbe4d78f32be7f59415640a0274ca4cfe8df5e40b3",
-      "bytes": 5533
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234_pooled_provenance.json",
+      "sha256": "33a5beb6b8b37bb2e8d98eda155c6ae771d6d0c486c94c4086a8b44d173b2091",
+      "bytes": 5540
     }
   },
   "note": null,

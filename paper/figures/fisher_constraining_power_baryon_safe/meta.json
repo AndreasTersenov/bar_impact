@@ -2,19 +2,19 @@
   "slug": "fisher_constraining_power_baryon_safe",
   "title": "Fisher 68% contours, baryon-safe regime (full sky)",
   "paper_position": 8,
-  "published_utc": "2026-08-04T15:53:48+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:26+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe",
   "files": {
     "figure.pdf": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe.pdf",
-      "sha256": "54d71c5d67a4f8b9c2ae037f7702aec1a9f663d5281dab54ef7808c7f0e29a16",
-      "bytes": 28451
+      "sha256": "0d4524d7c2db95971f186d78f0641fa08c1c47f3509c52d8f1806d962caf10d0",
+      "bytes": 28285
     },
     "figure.png": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe.png",
-      "sha256": "4830fc64e88777dcd3ac9f68ab2f9bbf8dcf79708945f0c24a52fbebed99e0a7",
-      "bytes": 193922
+      "sha256": "234963d71158d029ddaadf4f8a71cc080c6b30d182fd26d145fb276581d56f9d",
+      "bytes": 222154
     },
     "values.csv": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_provenance.json",
-      "sha256": "971cbdecfa59e024023c10a29885fde91dd91f34a8c7b281451ce46fb8257b18",
-      "bytes": 1994
+      "sha256": "433b13b777924e82c676326593bda0d0cdbbb2375a93da91316572b596fa7201",
+      "bytes": 1995
     },
     "covariance.csv": {
       "from": "outputs/diagnostics/constraining_power/fisher_contours_baryon_safe_covariance.csv",

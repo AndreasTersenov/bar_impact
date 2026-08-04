@@ -2,7 +2,7 @@
   "figure": "bnt_frac_diff_l1_scale1",
   "generator": "scripts/plot_bnt_frac_diff.py",
   "command": "scripts/plot_bnt_frac_diff.py --stat l1 --scale 1 --name bnt_frac_diff_l1_scale1",
-  "generated_utc": "2026-08-03T09:28:12Z",
+  "generated_utc": "2026-08-04T16:21:07Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "l1",
   "scales_included": "wavelet scale 1 (~10')",
@@ -19,8 +19,8 @@
     "Band scaled to survey area by 1/sqrt(f_sky) -- indicative for the HOS, which have no mode-counting result behind them."
   ],
   "versions": {
-    "python": "3.11.15",
-    "numpy": "2.4.6",
+    "python": "3.11.5",
+    "numpy": "1.26.4",
     "matplotlib": "3.11.1"
   }
 }

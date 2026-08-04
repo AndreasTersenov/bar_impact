@@ -2,8 +2,8 @@
   "figure": "ps_frac_diff_matched_survey",
   "generator": "scripts/plot_ps_frac_diff.py",
   "command": "scripts/plot_ps_frac_diff.py --noise matched --band survey --band-style both --fill-alpha 0.28 --edge-alpha 0.50 --ylim=-0.036,0.020 --name ps_frac_diff_matched_survey",
-  "git_commit": "17afa3349c1e447cfe405f432616ee922069fccd",
-  "generated_utc": "2026-08-03T09:27:41Z",
+  "git_commit": "unknown",
+  "generated_utc": "2026-08-04T16:24:22Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "tomographic auto angular power spectra, 4 bins",
   "source_data": "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial/all_cls_fiducial_{baryonified,nobaryons}_bin{1..4}_noisy_s0.26.npy",
@@ -121,8 +121,8 @@
     "PUBLISHED BINNING HAS TWO DEFECTS, reproduced by --binning published: the log-spaced band edges are ell VALUES used as INDICES into an array already sliced at lmin, so every band is shifted up by 30 and ell 30-58 never enter the figure (lowest ell plotted is 59); and the points are drawn on a linear axis while the bands are logarithmic. --binning fixed corrects both."
   ],
   "versions": {
-    "python": "3.11.15",
-    "numpy": "2.4.6",
+    "python": "3.11.5",
+    "numpy": "1.26.4",
     "matplotlib": "3.11.1"
   }
 }

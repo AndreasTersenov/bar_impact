@@ -8,30 +8,30 @@ integrity and source drift with `verify`.
 
 | # | figure | what | generator commit | value rows | warns |
 |---|---|---|---|---|---|
-| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `9ef3572` | 108 | - |
-| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `9ef3572` | 132 | - |
-| 6.0 | [`bnt_flagship_embedding_matched_c460`](bnt_flagship_embedding_matched_c460/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED) | `17afa3349c1e447cfe405f432616ee922069fccd` | 2 | - |
-| 6.1 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
-| 6.2 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `64c032ddee8516c384194122e13fcbdec7296e36` | 2 | - |
-| 6.3 | [`bnt_lossless_identity_nocut`](bnt_lossless_identity_nocut/) | VALIDATION: BNT vs standard basis with NO scale cut (lossless identity) | `80956a42f88866b110521653cd1338b0b0f13f28` | 2 | - |
-| 6.35 | [`bnt_lossless_identity_nocut_single_seed`](bnt_lossless_identity_nocut_single_seed/) | VALIDATION: no scale cut, lossless identity (single seed) | `80956a42f88866b110521653cd1338b0b0f13f28` | 2 | - |
-| 6.4 | [`bnt_score_contours_debiasing_pooled`](bnt_score_contours_debiasing_pooled/) | bnt score contours debiasing pooled | `69586a219370d9a4bc00ed639396c383590f7375` | 2 | - |
-| 6.5 | [`bnt_score_contours_debiasing_single_seed`](bnt_score_contours_debiasing_single_seed/) | bnt score contours debiasing single seed | `69586a219370d9a4bc00ed639396c383590f7375` | 2 | - |
-| 6.6 | [`bnt_score_contours_matched_pooled`](bnt_score_contours_matched_pooled/) | bnt score contours matched pooled | `69586a219370d9a4bc00ed639396c383590f7375` | 3 | - |
-| 6.7 | [`bnt_score_contours_matched_single_seed`](bnt_score_contours_matched_single_seed/) | bnt score contours matched single seed | `69586a219370d9a4bc00ed639396c383590f7375` | 3 | - |
+| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `unknown` | 108 | **1** |
+| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `unknown` | 132 | **1** |
+| 6.0 | [`bnt_flagship_embedding_matched_c460`](bnt_flagship_embedding_matched_c460/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED) | `unknown` | 2 | **1** |
+| 6.1 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `unknown` | 2 | **1** |
+| 6.2 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `unknown` | 2 | **1** |
+| 6.3 | [`bnt_lossless_identity_nocut`](bnt_lossless_identity_nocut/) | VALIDATION: BNT vs standard basis with NO scale cut (lossless identity) | `unknown` | 2 | **1** |
+| 6.35 | [`bnt_lossless_identity_nocut_single_seed`](bnt_lossless_identity_nocut_single_seed/) | VALIDATION: no scale cut, lossless identity (single seed) | `unknown` | 2 | **1** |
+| 6.4 | [`bnt_score_contours_debiasing_pooled`](bnt_score_contours_debiasing_pooled/) | bnt score contours debiasing pooled | `unknown` | 2 | **1** |
+| 6.5 | [`bnt_score_contours_debiasing_single_seed`](bnt_score_contours_debiasing_single_seed/) | bnt score contours debiasing single seed | `unknown` | 2 | **1** |
+| 6.6 | [`bnt_score_contours_matched_pooled`](bnt_score_contours_matched_pooled/) | bnt score contours matched pooled | `unknown` | 3 | **1** |
+| 6.7 | [`bnt_score_contours_matched_single_seed`](bnt_score_contours_matched_single_seed/) | bnt score contours matched single seed | `unknown` | 3 | **1** |
 | 7 | [`bnt_bin1_vs_cut_optimal`](bnt_bin1_vs_cut_optimal/) | BNT bin-1 vs non-BNT, optimal binning (rebin 40) | `701fba8` | 216 | **1** |
 | 8 | [`fisher_constraining_power_baryon_safe`](fisher_constraining_power_baryon_safe/) | Fisher 68% contours, baryon-safe regime (full sky) | `unknown` | 4 | **3** |
 | 9 | [`fisher_constraining_power_full`](fisher_constraining_power_full/) | Fisher 68% contours, full-resolution regime (full sky) | `unknown` | 4 | **3** |
-| 11 | [`fom_vs_area`](fom_vs_area/) | FoM3 vs survey area, single panel (guide pinned to PS) | `9ef3572` | 18 | - |
-| 12 | [`fom_vs_area_low_guide`](fom_vs_area_low_guide/) | FoM3 vs survey area, guide dropped clear of the data | `9ef3572` | 18 | - |
-| - | [`bias_vs_area_three_stats`](bias_vs_area_three_stats/) | bias vs area three stats | `805e4cc` | 18 | - |
+| 11 | [`fom_vs_area`](fom_vs_area/) | FoM3 vs survey area, single panel (guide pinned to PS) | `unknown` | 18 | **1** |
+| 12 | [`fom_vs_area_low_guide`](fom_vs_area_low_guide/) | FoM3 vs survey area, guide dropped clear of the data | `unknown` | 18 | **1** |
+| - | [`bias_vs_area_three_stats`](bias_vs_area_three_stats/) | bias vs area three stats | `d9ca381` | 18 | - |
 | - | [`bnt_frac_diff_l1_scale1`](bnt_frac_diff_l1_scale1/) | BNT vs standard basis: fractional baryonic impact (l1_scale1) | `?` | 276 | **2** |
 | - | [`bnt_frac_diff_l1_scale1_14000`](bnt_frac_diff_l1_scale1_14000/) | BNT vs standard basis: fractional baryonic impact (l1_scale1_14000) | `?` | 276 | **2** |
 | - | [`bnt_frac_diff_peaks_scale1`](bnt_frac_diff_peaks_scale1/) | BNT vs standard basis: fractional baryonic impact (peaks_scale1) | `?` | 225 | **2** |
 | - | [`bnt_frac_diff_peaks_scale1_14000`](bnt_frac_diff_peaks_scale1_14000/) | BNT vs standard basis: fractional baryonic impact (peaks_scale1_14000) | `?` | 225 | **2** |
 | - | [`bnt_frac_diff_ps`](bnt_frac_diff_ps/) | BNT vs standard basis: fractional baryonic impact (ps) | `?` | 80 | **2** |
 | - | [`bnt_frac_diff_ps_14000`](bnt_frac_diff_ps_14000/) | BNT vs standard basis: fractional baryonic impact (ps_14000) | `?` | 80 | **2** |
-| - | [`constraining_power_vs_area`](constraining_power_vs_area/) | constraining power vs area | `ea7ccfa` | 18 | - |
+| - | [`constraining_power_vs_area`](constraining_power_vs_area/) | constraining power vs area | `unknown` | 18 | **1** |
 | - | [`contours_baryon_safe_biased_14000_pooled`](contours_baryon_safe_biased_14000_pooled/) | contours baryon safe biased 14000 pooled | `unknown` | 9 | **1** |
 | - | [`contours_baryon_safe_biased_14000_scales2345_pooled`](contours_baryon_safe_biased_14000_scales2345_pooled/) | contours baryon safe biased 14000 scales2345 pooled | `unknown` | 9 | **1** |
 | - | [`contours_baryon_safe_biased_14000_scales2345_single_seed`](contours_baryon_safe_biased_14000_scales2345_single_seed/) | contours baryon safe biased 14000 scales2345 single seed | `unknown` | 9 | **1** |
@@ -65,8 +65,8 @@ integrity and source drift with `verify`.
 | - | [`hos_frac_diff_l1_14000`](hos_frac_diff_l1_14000/) | Fractional baryonic impact on the starlet l1-norm (14000 deg2) | `?` | 426 | **2** |
 | - | [`hos_frac_diff_peaks`](hos_frac_diff_peaks/) | Fractional baryonic impact on the starlet peak counts (full sky) | `?` | 353 | **2** |
 | - | [`hos_frac_diff_peaks_14000`](hos_frac_diff_peaks_14000/) | Fractional baryonic impact on the starlet peak counts (14000 deg2) | `?` | 353 | **2** |
-| - | [`ps_frac_diff_fig2`](ps_frac_diff_fig2/) | Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band) | `17afa3349c1e447cfe405f432616ee922069fccd` | 40 | **2** |
-| - | [`ps_frac_diff_fig2_14000`](ps_frac_diff_fig2_14000/) | Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra | `17afa3349c1e447cfe405f432616ee922069fccd` | 40 | **2** |
+| - | [`ps_frac_diff_fig2`](ps_frac_diff_fig2/) | Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band) | `unknown` | 40 | **3** |
+| - | [`ps_frac_diff_fig2_14000`](ps_frac_diff_fig2_14000/) | Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra | `unknown` | 40 | **3** |
 
 Each directory holds `figure.pdf`, `figure.png`, `values.csv`, `provenance.json`,
 `meta.json` and a `README.md`. `meta.json` records the source path and a sha256 of

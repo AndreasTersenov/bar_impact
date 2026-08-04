@@ -2,19 +2,19 @@
   "slug": "bnt_flagship_matched_c460_single_seed",
   "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
   "paper_position": 6.2,
-  "published_utc": "2026-08-04T15:53:46+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:24+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed.pdf",
-      "sha256": "85e71607d749e1d0cfe263f3f1cb6790a767ddf708c94934cad1e97b3f11f6ee",
-      "bytes": 138260
+      "sha256": "0d0991b19ce9a4e84719a6bad94dd53f2cfbc4a249dbc049f012efce698cf382",
+      "bytes": 133359
     },
     "figure.png": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed.png",
-      "sha256": "fef1583233f6baa23136395ad0e830e62af59c18076b7a1ca3242bda7aafec44",
-      "bytes": 100529
+      "sha256": "f2f2669b38d9a916f73ff820c63a3b8acd087e68edb88142228518345fe05d0b",
+      "bytes": 84783
     },
     "values.csv": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed_provenance.json",
-      "sha256": "16b60252d2101cbd3a59f829abf95856c2cae9d2ff71726f98baf85c515bbef5",
-      "bytes": 6017
+      "sha256": "ac8c5a3774c73dac3bc1ab2efd079a30017b3d85627d90d87d728407cdd7e416",
+      "bytes": 5975
     }
   },
   "note": "Single-seed companion to the MOPED cross-check at position 6.1; see the embedding flagship at position 6 for the paper result. Each arm shows its most representative NDE seed (scripts/tension/seeds.py, median-referenced on centre and width; both select run 41). Ratio 1.507x against the pooled 1.467x - the difference is seed selection, not physics, since the two arms draw representatives independently. Quote pooled numbers.",
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 2,
   "n_caveats": 4

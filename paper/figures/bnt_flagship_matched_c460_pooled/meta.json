@@ -2,19 +2,19 @@
   "slug": "bnt_flagship_matched_c460_pooled",
   "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
   "paper_position": 6.1,
-  "published_utc": "2026-08-04T15:53:46+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:24+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
-      "sha256": "7c55bd192c666dfb3f7573193b95e9c64a5d91564fa532b776e76ce9cf03165b",
-      "bytes": 133603
+      "sha256": "2a26180244d1215cda28b8b4cc088697ae99fc0719a06228f89c2e09e9793270",
+      "bytes": 128882
     },
     "figure.png": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled.png",
-      "sha256": "44b2cdf253a85b7c8d15864d6ff43ad73a9e24dd91771adaa2df0e0428a83ce5",
-      "bytes": 99183
+      "sha256": "87cd83775f2266861aefbf02fdbd1c1a8a04f5ced2c2d9fb7ec2d8512bdb59bd",
+      "bytes": 81545
     },
     "values.csv": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
-      "sha256": "b30be9920bdb1e6a80eb7b66a44f5c7d02a8fa9bdfff7d5a56d0931f3a3f3ab9",
-      "bytes": 3649
+      "sha256": "1fe4ba400574734de9189cbefb70239dbe8714bda4c245832a25aebc713a2df7",
+      "bytes": 3607
     }
   },
   "note": "MOPED cross-check of the embedding-network flagship (position 6). Same cut, same rebinning, same 5-seed protocol, but the flow is fed 6 score/MOPED summaries instead of the whitened data vector. Gives 1.47x against the embedding's 1.41x. The two methods share no assumptions - MOPED requires Gaussianity, the analytic covariance and the local Jacobian; the embedding requires none - so their agreement to 4 percent is a genuine corroboration rather than a repeat. Both recover the physical Omega_m-S8 degeneracy (r = -0.909/-0.931 here, -0.919/-0.938 for the embedding). The embedding contours are tighter in both arms; that extra tightness sits 1.25-1.36x above the Gaussian Fisher bound and is accompanied by a w0 offset that scales with it, but it is COMMON MODE across the two arms (w0 offset -0.0435 BNT vs -0.0436 non-BNT) and cancels in the ratio. Bias caveat as in the flagship: BNT sits marginally at the 0.3 sigma threshold at this cut, tolerated on its error bar; its own adopted cut is 420.",
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 2,
   "n_caveats": 4

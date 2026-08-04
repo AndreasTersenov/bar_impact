@@ -1,14 +1,15 @@
 # Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra
 
 - **source**: `outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000`
-- **generator commit**: `17afa3349c1e447cfe405f432616ee922069fccd`
-- **generated**: 2026-08-03T09:27:50Z
-- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T16:24:32Z
+- **published**: 2026-08-04T16:27:26+00:00 at repo `d9ca381`
 - **rows in values.csv**: 40
 
 ## Known gaps
 
 - _values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 - provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') — a figure that does not say which multipoles and wavelet scales went in cannot be interpreted
 
 ## Caveats (from provenance)

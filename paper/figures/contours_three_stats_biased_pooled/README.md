@@ -1,9 +1,9 @@
 # contours three stats biased pooled
 
-- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000`
+- **source**: `outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_14000_pooled`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-03T14:15:48+00:00
-- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
+- **generated**: 2026-08-04T16:22:54+00:00
+- **published**: 2026-08-04T16:27:25+00:00 at repo `d9ca381`
 - **rows in values.csv**: 9
 
 ## Scales included

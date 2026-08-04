@@ -2,19 +2,19 @@
   "slug": "bnt_score_contours_debiasing_single_seed",
   "title": "bnt score contours debiasing single seed",
   "paper_position": 6.5,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "plots/score_contours_debiased_580_14000_single_seed",
   "files": {
     "figure.pdf": {
       "from": "plots/score_contours_debiased_580_14000_single_seed.pdf",
-      "sha256": "5dfc2bb59073d3cd44c2d873a12e46d3cc57ea4bc824a908e8346bb7e242ab54",
-      "bytes": 134699
+      "sha256": "7649e19e880a7072356f273e02ae3375e6ef56eee236d014d2a21dda08ec7b8c",
+      "bytes": 133656
     },
     "figure.png": {
       "from": "plots/score_contours_debiased_580_14000_single_seed.png",
-      "sha256": "812f495dc542e0129bff11e4c8a7c882f07225cdccff1df2e8c58b919aca4309",
-      "bytes": 97246
+      "sha256": "ac337c6e5266f0af6acb5c5b8c87b576c78f7979327719a0e90ce4380f431d30",
+      "bytes": 93287
     },
     "values.csv": {
       "from": "plots/score_contours_debiased_580_14000_single_seed_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "plots/score_contours_debiased_580_14000_single_seed_provenance.json",
-      "sha256": "d47022a77b2b4658734d33d4da0bbd8b847b77d6fd512acd150ecb724f42c155",
-      "bytes": 5704
+      "sha256": "f1e30990daf71eeb73fad72119f9c877a9cb5fa4a43c672f97b791a2429f5a4e",
+      "bytes": 5989
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 2,
   "n_caveats": 4

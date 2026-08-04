@@ -1,9 +1,9 @@
 # bias vs area three stats
 
 - **source**: `outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref`
-- **generator commit**: `805e4cc`
-- **generated**: 2026-08-03T12:32:13+00:00
-- **published**: 2026-08-04T15:53:46+00:00 at repo `cade6ad`
+- **generator commit**: `d9ca381`
+- **generated**: 2026-08-04T16:26:26+00:00
+- **published**: 2026-08-04T16:27:24+00:00 at repo `d9ca381`
 - **rows in values.csv**: 18
 
 ## Scales included

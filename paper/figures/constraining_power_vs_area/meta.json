@@ -2,19 +2,19 @@
   "slug": "constraining_power_vs_area",
   "title": "constraining power vs area",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
   "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.pdf",
-      "sha256": "267d2cdea0d9b08ac7e856794c108db9756573a0fab68d69049e9c923894ccd0",
-      "bytes": 23261
+      "sha256": "27633c6bb3456afcd98fb9170114161fb55019633e6fd2c135e07aa3d6e6e695",
+      "bytes": 22954
     },
     "figure.png": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats.png",
-      "sha256": "4835a6f8304d1fc5d72fc2b5c540dbdd55bd066e4ec48df66b21b76506f19333",
-      "bytes": 443545
+      "sha256": "65bb242fbfe17e707179f1d9fb0bb30b2517e5e3faab215ec6c0a2a2e9409f9a",
+      "bytes": 469163
     },
     "values.csv": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_values.csv",
@@ -23,14 +23,16 @@
     },
     "provenance.json": {
       "from": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats_provenance.json",
-      "sha256": "8656a76ef4b504decea50ecbdc8032c8fb21b6c9ad68e736ec2235a1abf6d49a",
-      "bytes": 2339
+      "sha256": "c09533c02b93b362185df94e0fa5d1977b40fe62908d0c2fb03b6212c9a63aa7",
+      "bytes": 2341
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": []
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
   },
   "value_rows": 18,
   "n_caveats": 5

@@ -2,29 +2,29 @@
   "slug": "contours_three_stats_null_pooled",
   "title": "contours three stats null pooled",
   "paper_position": null,
-  "published_utc": "2026-08-04T15:53:47+00:00",
-  "published_at_repo_commit": "cade6ad",
-  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000",
+  "published_utc": "2026-08-04T16:27:25+00:00",
+  "published_at_repo_commit": "d9ca381",
+  "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_pooled",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.pdf",
-      "sha256": "840ff469aa20055e8f4cb1be16fdab6fb542666fa0bf3ce3be37be860c2d138a",
-      "bytes": 177059
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_pooled.pdf",
+      "sha256": "38d51d3dda992482aff69f286035b2dca19d73e40a9bc249a9c2e4f1207481f5",
+      "bytes": 176948
     },
     "figure.png": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000.png",
-      "sha256": "8bc871f1fb8688e4c3c5e26133abe678756e4a2f904bf6e8818220b7029ade97",
-      "bytes": 304261
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_pooled.png",
+      "sha256": "6a88d1795c6d9fdf0e4df42fdaf92b3a8a94af02be9435ee11c01e9e3c7014ec",
+      "bytes": 303800
     },
     "values.csv": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_values.csv",
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_pooled_values.csv",
       "sha256": "021fc5d287bf9330fefe17a850c799a8d9ac1f5ccdc5e3345490d23a3cd89cd1",
       "bytes": 631
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_provenance.json",
-      "sha256": "455619ed1ab59ffabbc0312f6c50f7392b28e73605c49f86828a6a44b552ae41",
-      "bytes": 3999
+      "from": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_null_14000_pooled_provenance.json",
+      "sha256": "d7d1a49bc9cde1d23c1b912e1e5c233e355d3858c9aabc164b49d240176479b1",
+      "bytes": 4006
     }
   },
   "note": null,
