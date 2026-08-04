@@ -1,0 +1,53 @@
+====================================================================================================
+BARYON-SAFE FoM AUDIT  --  FoM_3 = 1/sqrt(det Cov(Om, sigma_8, w0)), NULL role
+====================================================================================================
+
+### 2000 deg^2
+    PS baryon-safe lmax : 940
+    HOS scale set       : scales234
+    Power spectrum   l37-940    n= 4  FoM3 pooled=2.5987e+04  per-seed mean=2.6969e+04 +/- 2.009e+03   x1.00 vs PS
+                     dropped 1: [(3, 'ValueError')]
+    Peak counts      scales234  n= 6  FoM3 pooled=1.0402e+04  per-seed mean=1.0645e+04 +/- 1.367e+03   x0.39 vs PS
+    L1 norm          scales234  n= 5  FoM3 pooled=2.6131e+04  per-seed mean=2.6820e+04 +/- 2.407e+03   x0.99 vs PS
+
+### 5000 deg^2
+    PS baryon-safe lmax : 620
+    HOS scale set       : scales234
+    Power spectrum   l37-620    n= 4  FoM3 pooled=6.2621e+04  per-seed mean=6.4265e+04 +/- 6.873e+03   x1.00 vs PS
+                     dropped 1: [(3, 'ValueError')]
+    Peak counts      scales234  n= 6  FoM3 pooled=3.9148e+04  per-seed mean=4.0630e+04 +/- 5.272e+03   x0.63 vs PS
+    L1 norm          scales234  n= 5  FoM3 pooled=9.9119e+04  per-seed mean=1.0287e+05 +/- 3.808e+03   x1.60 vs PS
+
+### 14000 deg^2
+    PS baryon-safe lmax : 460
+    HOS scale set       : scales234
+    Power spectrum   l37-460    n= 5  FoM3 pooled=1.4152e+05  per-seed mean=1.4506e+05 +/- 9.461e+03   x1.00 vs PS
+    Peak counts      scales234  n= 6  FoM3 pooled=1.4167e+05  per-seed mean=1.5483e+05 +/- 3.486e+04   x1.07 vs PS
+    L1 norm          scales234  n= 5  FoM3 pooled=2.2367e+05  per-seed mean=2.6102e+05 +/- 8.238e+04   x1.80 vs PS
+
+### full sky
+    PS baryon-safe lmax : 340
+    HOS scale set       : scales234
+    Power spectrum   l37-340    n= 5  FoM3 pooled=4.7950e+05  per-seed mean=5.4883e+05 +/- 2.892e+04   x1.00 vs PS
+    Peak counts      scales234  n= 5  FoM3 pooled=5.9264e+05  per-seed mean=6.3974e+05 +/- 7.191e+04   x1.17 vs PS
+    L1 norm          scales234  n= 5  FoM3 pooled=1.3124e+06  per-seed mean=1.4345e+06 +/- 2.139e+05   x2.61 vs PS
+
+====================================================================================================
+SUMMARY: 12 of 12 cells have a usable posterior
+
+====================================================================================================
+TABLE 3  --  FoM_3 / 10000, SEM errors, PS cut rule 'errorbar'
+====================================================================================================
+\begin{tabular}{lcccc}
+\hline\hline
+Statistic & 2,000 deg$^2$ & 5,000 deg$^2$ & 14,000 deg$^2$ & Full Sky \\
+\hline
+PS & 2.7 $\pm$ 0.1 & 6.4 $\pm$ 0.3 & 14.5 $\pm$ 0.4 & 54.9 $\pm$ 1.3 \\
+Starlet peak counts & 1.1 $\pm$ 0.1 ($\times$0.39 $\pm$ 0.03) & 4.1 $\pm$ 0.2 ($\times$0.63 $\pm$ 0.05) & 15.5 $\pm$ 1.4 ($\times$1.07 $\pm$ 0.10) & 64.0 $\pm$ 3.2 ($\times$1.17 $\pm$ 0.06) \\
+Starlet $\ell_1$-norm & 2.7 $\pm$ 0.1 ($\times$0.99 $\pm$ 0.05) & 10.3 $\pm$ 0.2 ($\times$1.60 $\pm$ 0.09) & 26.1 $\pm$ 3.7 ($\times$1.80 $\pm$ 0.26) & 143.4 $\pm$ 9.6 ($\times$2.61 $\pm$ 0.18) \\
+\hline
+\end{tabular}
+
+PS cuts used: 2000=l37-940, 5000=l37-620, 14000=l37-460, fullsky=l37-340
+
+wrote outputs/diagnostics/baryon_safe_fom_table_errorbar.csv

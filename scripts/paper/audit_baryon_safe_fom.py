@@ -58,16 +58,29 @@ SIG_MAX = 0.08          # prior-collapse guard, same threshold as every other ge
 HOS_SCALES = "scales234"
 
 
-def required_ps_lmax(A, threshold=THRESHOLD):
-    """Largest step-40 upper cut whose MEAN 3-param tension is still below `threshold`."""
+def required_ps_lmax(A, threshold=THRESHOLD, rule="mean"):
+    """Largest step-40 upper cut whose 3-param tension still clears `threshold`.
+
+    TWO RULES, and the table must use ONE of them for every statistic and every area:
+      "mean"     -- the cut's MEAN bias is below threshold. Strict.
+      "errorbar" -- the mean may exceed it so long as the 1-sigma interval still reaches it,
+                    i.e. mean - std < threshold. Looser, and the rule under which peaks at
+                    35000 (0.326 +/- 0.081) counts as safe.
+
+    Mixing them is what made the earlier table incoherent: the PS cut was re-derived per area
+    on the strict rule while the HOS cut was held fixed at scales234 regardless, so the PS was
+    held to a standard the HOS were not, and the HOS advantage at large area was inflated.
+    """
     path = PS_AGG_FS if A == "fullsky" else PS_AGG
     if not os.path.exists(path):
         return None, f"no campaign table at {os.path.relpath(path, REPO)}"
-    rows = [(int(r["upper_cut"]), float(r["mean"])) for r in csv.DictReader(open(path))
+    rows = [(int(r["upper_cut"]), float(r["mean"]), float(r.get("std") or 0.0))
+            for r in csv.DictReader(open(path))
             if (r["area"] == "fullsky" if A == "fullsky" else int(r["area"]) == A)]
     if not rows:
         return None, f"no rows for area {A}"
-    safe = [c for c, m in sorted(rows) if m < threshold]
+    safe = ([c for c, m, sd in sorted(rows) if m < threshold] if rule == "mean"
+            else [c for c, m, sd in sorted(rows) if (m - sd) < threshold])
     if not safe:
         return None, f"NOTHING baryon-safe: every cut at {A} exceeds {threshold} sigma"
     return max(safe), None
@@ -135,6 +148,68 @@ def measure(patterns):
     return dict(ok=False, n=0, runs=[], dropped=[], pattern=patterns[0])
 
 
+def emit_table(rows, areas, a):
+    """The submitted Table 3 layout: statistics as rows, areas as columns, HOS cells carrying
+    the ratio to the PS baseline in the same column.
+
+    Ratio errors are propagated in quadrature. The two statistics are trained independently, so
+    treating their seed scatters as uncorrelated is right; what it does NOT capture is that both
+    are evaluated on the same fiducial realisation, which is common to every column.
+    """
+    import math
+    by = {}
+    for r in rows:
+        if r.get("status") == "ok":
+            by.setdefault(str(r["area"]), {})[r["statistic"]] = r
+
+    def val(r):
+        f = float(r["fom3_mean"])
+        sd = float(r["fom3_std"]) if r["fom3_std"] else 0.0
+        e = sd / math.sqrt(int(r["n_seeds"])) if a.errbar == "sem" and int(r["n_seeds"]) > 1 else sd
+        return f, e
+
+    cols = [str(x) for x in areas if str(x) in by]
+    hdr = ["Statistic"] + [("Full Sky" if c == "fullsky" else f"{int(c):,} deg$^2$") for c in cols]
+    body = []
+    for name, key in (("PS", "Power spectrum"), ("Starlet peak counts", "Peak counts"),
+                      ("Starlet $\\ell_1$-norm", "L1 norm")):
+        cells = []
+        for c in cols:
+            d = by[c]
+            if key not in d or "Power spectrum" not in d:
+                cells.append("--"); continue
+            f, e = val(d[key]); fp, ep = val(d["Power spectrum"])
+            txt = f"{f/a.scale:.1f} $\\pm$ {e/a.scale:.1f}"
+            if key != "Power spectrum":
+                ratio = f / fp
+                rerr = ratio * math.sqrt((e / f) ** 2 + (ep / fp) ** 2)
+                txt += f" ($\\times${ratio:.2f} $\\pm$ {rerr:.2f})"
+            cells.append(txt)
+        body.append([name] + cells)
+
+    print("\n" + "=" * 100)
+    print(f"TABLE 3  --  FoM_3 / {a.scale:g}, {a.errbar.upper()} errors, PS cut rule '{a.rule}'")
+    print("=" * 100)
+    if a.latex:
+        print("\\begin{tabular}{l" + "c" * len(cols) + "}")
+        print("\\hline\\hline")
+        print(" & ".join(hdr) + " \\\\")
+        print("\\hline")
+        for r in body:
+            print(" & ".join(r) + " \\\\")
+        print("\\hline")
+        print("\\end{tabular}")
+    else:
+        w = max(len(h) for h in hdr) + 2
+        plain = lambda t: (t.replace("$\\pm$", "+/-").replace("$\\times$", "x")
+                            .replace("deg$^2$", "deg2").replace("$\\ell_1$", "l1"))
+        print(" | ".join(plain(h).ljust(w) for h in hdr))
+        for r in body:
+            print(" | ".join(plain(x).ljust(w) for x in r))
+    print("\nPS cuts used: " + ", ".join(
+        f"{c}={by[c]['Power spectrum']['cut']}" for c in cols if 'Power spectrum' in by[c]))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--areas", nargs="*", default=None)
@@ -146,6 +221,23 @@ def main():
     # mean fails, the 1-sigma interval does not. Whichever is used must be said in the caption.
     ap.add_argument("--ps-lmax", action="append", default=[], metavar="AREA=LMAX",
                     help="override the PS cut for one area, e.g. --ps-lmax fullsky=340")
+    ap.add_argument("--table", action="store_true",
+                    help="emit the paper's Table 3 layout (statistics as rows, areas as columns, "
+                         "HOS cells carrying the ratio to the PS in the same column)")
+    ap.add_argument("--latex", action="store_true", help="--table as a LaTeX tabular")
+    ap.add_argument("--scale", type=float, default=1e4,
+                    help="divide FoM_3 by this in --table output. The submitted table's values "
+                         "(8.8-135.9) sit in the same range as FoM_3/1e4, so 1e4 is the default; "
+                         "it is NOT confirmed to be the original normalisation, so state the unit "
+                         "in the caption rather than assuming a reader will infer it.")
+    ap.add_argument("--errbar", choices=("sem", "std"), default="sem",
+                    help="sem = std/sqrt(n), the uncertainty ON THE QUOTED VALUE -- right for a "
+                         "table. std = per-seed scatter, i.e. what ONE training would give; ~2x "
+                         "larger and the honest number when discussing a single-seed analysis.")
+    ap.add_argument("--rule", choices=("mean", "errorbar"), default="mean",
+                    help="'mean': cut's mean bias < 0.3 sigma. 'errorbar': mean - std < 0.3, "
+                         "i.e. still consistent with the threshold. Applies to the PS cut; the "
+                         "HOS cut must be judged on the SAME rule or the comparison is unfair.")
     a = ap.parse_args()
     areas = [x if x == "fullsky" else int(x) for x in a.areas] if a.areas else AREAS
 
@@ -162,11 +254,11 @@ def main():
     for A in areas:
         if A in override:
             lmax, why = override[A], None
-            auto, _ = required_ps_lmax(A)
+            auto, _ = required_ps_lmax(A, rule=a.rule)
             print(f"\n[override] {A}: PS lmax {lmax} (rule would give {auto}) "
                   f"-- justified by the error bar, not the mean; say so in the caption")
         else:
-            lmax, why = required_ps_lmax(A)
+            lmax, why = required_ps_lmax(A, rule=a.rule)
         print(f"\n### {A} deg^2" if A != "fullsky" else "\n### full sky")
         print(f"    PS baryon-safe lmax : {lmax if lmax else 'N/A -- ' + str(why)}")
         print(f"    HOS scale set       : {HOS_SCALES}")
@@ -215,6 +307,9 @@ def main():
         print(f"\nTHIN ({len(thin)}) -- present but <3 seeds, so the error bar is weak or absent:")
         for r in thin:
             print(f"   {r['statistic']:16s} {str(r['area']):8s} n_seeds={r['n_seeds']}")
+    if a.table:
+        emit_table(rows, areas, a)
+
     if a.csv:
         keys = ["statistic", "area", "cut", "status", "n_seeds", "runs",
                 "fom3_pooled", "fom3_mean", "fom3_std", "ratio"]
