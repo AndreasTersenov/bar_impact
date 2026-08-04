@@ -1,0 +1,56 @@
+{
+  "figure": "starlet_scale_ell",
+  "generator": "scripts/diagnostics/starlet_scale_ell.py",
+  "git_commit": "unknown",
+  "generated_utc": "2026-08-04T22:49:58Z",
+  "nside": 512,
+  "nscale": 5,
+  "lmax": 1535,
+  "method": "both",
+  "ndelta": 8,
+  "nreal": 40,
+  "estimator": "single-pixel (white) input, W^2 = C_ell[coef]/C_ell[input]; deterministic, no Monte Carlo error",
+  "validation": {
+    "max_rel_diff": 0.13496805191233247,
+    "median_rel_diff": 0.018105301208900342,
+    "isotropy_max": 0.002361772062097104,
+    "isotropy_median": 0.000265596845946089
+  },
+  "table": [
+    {
+      "scale": 0,
+      "type": "wav0",
+      "ell_peak": 767,
+      "ell_half_lo": 364,
+      "ell_half_hi": 1535
+    },
+    {
+      "scale": 1,
+      "type": "wav1",
+      "ell_peak": 228,
+      "ell_half_lo": 142,
+      "ell_half_hi": 336
+    },
+    {
+      "scale": 2,
+      "type": "wav2",
+      "ell_peak": 114,
+      "ell_half_lo": 71,
+      "ell_half_hi": 168
+    },
+    {
+      "scale": 3,
+      "type": "wav3",
+      "ell_peak": 57,
+      "ell_half_lo": 36,
+      "ell_half_hi": 84
+    },
+    {
+      "scale": 4,
+      "type": "coarse",
+      "ell_peak": 0,
+      "ell_half_lo": 0,
+      "ell_half_hi": 24
+    }
+  ]
+}

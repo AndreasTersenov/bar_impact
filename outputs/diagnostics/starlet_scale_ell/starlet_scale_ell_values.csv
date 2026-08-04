@@ -1,0 +1,6 @@
+scale,type,ell_peak,ell_half_lo,ell_half_hi
+0,wav0,767,364,1535
+1,wav1,228,142,336
+2,wav2,114,71,168
+3,wav3,57,36,84
+4,coarse,0,0,24
