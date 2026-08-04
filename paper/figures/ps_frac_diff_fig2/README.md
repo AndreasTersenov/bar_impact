@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-04T16:24:22Z
-- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
+- **published**: 2026-08-04T17:09:05+00:00 at repo `a57658d9`
 - **rows in values.csv**: 40
 
 ## Known gaps

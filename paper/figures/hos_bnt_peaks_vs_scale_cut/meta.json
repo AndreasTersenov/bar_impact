@@ -2,8 +2,8 @@
   "slug": "hos_bnt_peaks_vs_scale_cut",
   "title": "hos bnt peaks vs scale cut",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:00:48+00:00",
-  "published_at_repo_commit": "06e07006",
+  "published_utc": "2026-08-04T17:09:04+00:00",
+  "published_at_repo_commit": "a57658d9",
   "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut",
   "files": {
     "figure.pdf": {

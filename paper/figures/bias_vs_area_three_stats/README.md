@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref`
 - **generator commit**: `d9ca381`
 - **generated**: 2026-08-04T16:26:26+00:00
-- **published**: 2026-08-04T17:00:46+00:00 at repo `06e07006`
+- **published**: 2026-08-04T17:09:02+00:00 at repo `a57658d9`
 - **rows in values.csv**: 18
 
 ## Scales included

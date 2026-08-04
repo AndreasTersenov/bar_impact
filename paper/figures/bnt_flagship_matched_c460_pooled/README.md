@@ -5,7 +5,7 @@ MOPED cross-check of the embedding-network flagship (position 6). Same cut, same
 - **source**: `plots/bnt_flagship_matched_c460_14000_pooled`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-04T16:20:58Z
-- **published**: 2026-08-04T17:00:46+00:00 at repo `06e07006`
+- **published**: 2026-08-04T17:09:02+00:00 at repo `a57658d9`
 - **rows in values.csv**: 2
 
 ## Scales included

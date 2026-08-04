@@ -1,9 +1,9 @@
 # PS baryon bias vs cut, 6 footprints plus full sky
 
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax_with_fullsky`
-- **generator commit**: `06e07006`
-- **generated**: 2026-08-04T17:00:29+00:00
-- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
+- **generator commit**: `a57658d9`
+- **generated**: 2026-08-04T17:08:44+00:00
+- **published**: 2026-08-04T17:09:05+00:00 at repo `a57658d9`
 - **rows in values.csv**: 132
 
 ## Scales included

@@ -1,9 +1,9 @@
 # PS baryon bias vs upper scale cut, 6 footprints
 
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax`
-- **generator commit**: `06e07006`
-- **generated**: 2026-08-04T16:59:48+00:00
-- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
+- **generator commit**: `a57658d9`
+- **generated**: 2026-08-04T17:08:37+00:00
+- **published**: 2026-08-04T17:09:05+00:00 at repo `a57658d9`
 - **rows in values.csv**: 108
 
 ## Scales included

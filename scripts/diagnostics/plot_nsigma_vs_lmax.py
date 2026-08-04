@@ -126,7 +126,23 @@ n = len(curves)
 # 2.6 in per panel puts the type back on the same visual footing and lets the thickened
 # strokes read. Do not "fix" this by enlarging fonts: that would desynchronise this figure
 # from the shared style sheet, which is the drift the restyle work exists to remove.
-fig, axes = plt.subplots(1, n, figsize=(3.05 * n, 3.5), sharex=not WANT_FULLSKY)
+# Geometry is tunable because "tight enough" is a judgement made by eye, not a number
+# that can be derived: the floor on W_PAD is set by the y tick labels, which every panel
+# carries separately (the tension range differs per footprint).
+#   PANEL_W  inches per panel  -- raise to stretch the x axis
+#   PANEL_H  inches, total     -- lower to compact y (this is what made the panels look
+#                                 squarer rather than wider; prefer raising PANEL_W)
+#   W_PAD    tight_layout w_pad -- lower to close the gaps between panels
+#
+# Defaults 3.2 / 4.0 / 0.05 were chosen by eye from a three-way comparison against
+# 2.6/4.0/1.08 (too airy) and 3.6/4.0/0.02 (about as tight as the y tick labels allow).
+# An earlier attempt raised PANEL_W to 3.05 but dropped PANEL_H to 3.5, which reads as
+# SQUASHED rather than stretched -- the panels go squarer, not wider. Keep PANEL_H at
+# 4.0 and move PANEL_W alone.
+PANEL_W = float(os.environ.get("PANEL_W", "3.2"))
+PANEL_H = float(os.environ.get("PANEL_H", "4.0"))
+W_PAD = float(os.environ.get("W_PAD", "0.05"))
+fig, axes = plt.subplots(1, n, figsize=(PANEL_W * n, PANEL_H), sharex=not WANT_FULLSKY)
 axes = np.atleast_1d(axes)
 
 RESULT = {}
@@ -139,6 +155,7 @@ for ax, (label, area, cuts, mean, std, nseed) in zip(axes, curves):
     # unit already says, and it costs the width the panels need.
     ax.set_title(label if area != "fullsky" else "Full sky", pad=4)
     ax.grid(True, alpha=0.25, ls=":")
+    ax.tick_params(axis="y", pad=1.5)   # pull y labels in; the gap is label width + pad
     ax.set_ylim(0, None)
     RESULT[area] = (cuts, mean, err, nseed)
 
@@ -166,7 +183,7 @@ if WANT_SUBTITLE:
 # w_pad, not wspace: tight_layout recomputes spacing and would overwrite a wspace set
 # on the gridspec. It cannot go to 0 -- each panel has its OWN y tick labels because the
 # tension range differs per footprint, so the gap has to clear those numbers.
-fig.tight_layout(pad=0.4, w_pad=0.15, rect=(0, 0.03, 1, 0.94 if WANT_SUBTITLE else 1.0))
+fig.tight_layout(pad=0.4, w_pad=W_PAD, rect=(0, 0.03, 1, 0.94 if WANT_SUBTITLE else 1.0))
 
 out = f"{REPO}/outputs/plots/ps_submean_l37/nsigma_vs_lmax"
 if WANT_FULLSKY:

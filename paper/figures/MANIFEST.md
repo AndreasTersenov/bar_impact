@@ -8,8 +8,8 @@ integrity and source drift with `verify`.
 
 | # | figure | what | generator commit | value rows | warns |
 |---|---|---|---|---|---|
-| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `06e07006` | 108 | - |
-| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `06e07006` | 132 | - |
+| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `a57658d9` | 108 | - |
+| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `a57658d9` | 132 | - |
 | 6.0 | [`bnt_flagship_embedding_matched_c460`](bnt_flagship_embedding_matched_c460/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED) | `unknown` | 2 | **1** |
 | 6.1 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `unknown` | 2 | **1** |
 | 6.2 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `unknown` | 2 | **1** |

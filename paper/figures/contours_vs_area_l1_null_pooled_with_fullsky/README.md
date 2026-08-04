@@ -5,7 +5,7 @@ Same as contours_vs_area_l1_null_pooled but with a seventh, full-sky contour (bl
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-04T15:52:47+00:00
-- **published**: 2026-08-04T17:00:47+00:00 at repo `06e07006`
+- **published**: 2026-08-04T17:09:04+00:00 at repo `a57658d9`
 - **rows in values.csv**: 21
 
 ## Scales included

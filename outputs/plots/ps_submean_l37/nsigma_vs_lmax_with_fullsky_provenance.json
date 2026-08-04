@@ -1,7 +1,7 @@
 {
   "figure": "nsigma_vs_lmax_with_fullsky",
-  "generated_utc": "2026-08-04T17:00:29+00:00",
-  "git_commit": "06e07006",
+  "generated_utc": "2026-08-04T17:08:44+00:00",
+  "git_commit": "a57658d9",
   "errbar": "std",
   "threshold_sigma": 0.3,
   "fullsky_panel": true,
