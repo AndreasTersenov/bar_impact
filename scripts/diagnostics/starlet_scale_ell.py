@@ -129,6 +129,10 @@ def main():
     ap.add_argument("--ndelta", type=int, default=8)
     ap.add_argument("--nreal", type=int, default=40)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--top-axis", action="store_true",
+                    help="add the 10800/ell angular-scale axis on top. Off for the "
+                         "paper: the conversion is conventional and belongs in the "
+                         "caption, qualified.")
     a = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
 
@@ -196,10 +200,18 @@ def main():
     ax.legend(frameon=False, ncol=5, loc="upper center", fontsize=12,
           columnspacing=1.2, handlelength=1.6, borderaxespad=0.2)
     ax.grid(alpha=0.25, ls=":")
-    secax = ax.secondary_xaxis("top",
-                               functions=(lambda l: 10800.0 / np.clip(l, 1e-6, None),
-                                          lambda t: 10800.0 / np.clip(t, 1e-6, None)))
-    secax.set_xlabel(r"angular scale $10800/\ell$ [arcmin]")
+    # NO top angular-scale axis by default. theta[arcmin] ~ 10800/ell is a CONVENTION (from
+    # theta ~ 180 deg / ell, and 180 deg = 10800 arcmin); 360/ell and 2pi/ell are also in use.
+    # Worse, it invites exactly the mis-conversion this note warns about: a starlet band peaks
+    # at roughly HALF the multipole its nominal scale label implies, so 10800/ell_peak is not
+    # the scale name. The measured ell ranges are the authoritative quantity, and the
+    # conversion belongs in the caption where it can be qualified. --top-axis restores it for
+    # internal use.
+    if a.top_axis:
+        secax = ax.secondary_xaxis("top",
+                                   functions=(lambda l: 10800.0 / np.clip(l, 1e-6, None),
+                                              lambda t: 10800.0 / np.clip(t, 1e-6, None)))
+        secax.set_xlabel(r"angular scale $10800/\ell$ [arcmin]")
     fig.tight_layout()
     for ext in ("png", "pdf"):
         fig.savefig(f"{stem}.{ext}", dpi=200)

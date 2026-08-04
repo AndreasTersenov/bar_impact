@@ -2,7 +2,7 @@
   "figure": "starlet_scale_ell",
   "generator": "scripts/diagnostics/starlet_scale_ell.py",
   "git_commit": "unknown",
-  "generated_utc": "2026-08-04T22:49:58Z",
+  "generated_utc": "2026-08-04T23:07:38Z",
   "nside": 512,
   "nscale": 5,
   "lmax": 1535,

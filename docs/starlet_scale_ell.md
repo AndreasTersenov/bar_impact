@@ -96,6 +96,17 @@ The "rough angular scale" column is the dyadic smoothing-scale label and is deli
 `10800/ℓ_peak`: a starlet band peaks at a lower ℓ than its nominal scale size suggests, by a
 factor of about two. **The measured ℓ ranges are the authoritative quantity.**
 
+### A note on ℓ → angular scale
+
+A multipole ℓ is conventionally quoted as an angular scale `θ ≈ 180°/ℓ`, and since
+`180° = 10800′`, as `θ[arcmin] ≈ 10800/ℓ`. It is a rule of thumb, not an identity — `360°/ℓ`
+(full wavelength) and `2π/ℓ` are also in use — and for this transform it is actively
+misleading, because a starlet band peaks at roughly half the multipole its nominal scale label
+implies. Earlier versions of the figure carried a second axis showing `10800/ℓ` across the top;
+it has been removed for exactly that reason, and because the paper figures carry no axis
+titles beyond the two axes themselves. `--top-axis` restores it for internal use. If the
+conversion is wanted by the reader, put it in the caption where it can be qualified.
+
 ## 4. What this licenses in the analysis
 
 ### 4.1 The baryon-safe cut is a multipole cut
