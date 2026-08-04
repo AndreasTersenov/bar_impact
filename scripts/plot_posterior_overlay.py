@@ -31,7 +31,7 @@ from getdist import MCSamples, plots  # noqa: E402
 
 REPO = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact"
 NAMES = ["Omega_m", "S8", "w0"]
-LABELS = [r"\Omega_m", "S_8", "w_0"]
+LABELS = [r"\Omega_m", r"\sigma_8", "w_0"]
 TRUTH = [0.26, 0.84, -1.0]
 
 
@@ -75,7 +75,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--series", action="append", required=True,
                     help='"Label=<dir>:<tag>", repeatable (2-4 series)')
-    ap.add_argument("--colors", default="C0,0.45,C3,C2")
+    # Omit to take colours from paper_contour_style, like the rest of the paper's contour
+    # figures. The old default was a private tab10 list (C0,0.45,C3,C2) that could not follow
+    # PALETTE=; the published figures then pinned --colors C0,0.45 on top of it, so this family
+    # rendered in tab10 blue while every other contour figure was Okabe-Ito.
+    ap.add_argument("--colors", default=None,
+                    help="comma-separated contour colours in --series order. Omit to use "
+                         "scripts/paper_contour_style.py (the paper default).")
     ap.add_argument("--seed-mode", choices=["pooled", "single"], default="pooled",
                     help="pooled = all surviving seeds concatenated; single = the representative "
                          "seed per series (tension.seeds, median-referenced on centre AND width)")
@@ -117,29 +123,38 @@ def main():
         r = series[0]["fom"] / series[1]["fom"]
         print(f"\nFoM3 ratio  {series[0]['label']} / {series[1]['label']} = {r:.3f}x")
 
-    cols = a.colors.split(",")
+    import paper_contour_style as PCS
+    # Cycle colours, NOT colors_for(). The series here are bases and cuts, not the three
+    # statistics, so the PALETTES table has no meaningful key for them -- and the keys that do
+    # match ("BNT basis", "standard basis") map the standard arm onto "0.45", a grey that is not
+    # an Okabe-Ito colour and looks foreign in a figure whose other arm is Okabe-Ito blue.
+    # cycle_colors gives every series its own colourblind-safe hue.
+    cols = a.colors.split(",") if a.colors else PCS.cycle_colors(len(series))
     # getdist draws roots in order, so later ones land ON TOP. Draw the LARGEST contour first
-    # (lowest FoM3) so the tightest posterior is never hidden underneath a looser one. The legend
-    # and all reported numbers keep the user's --series order; only the z-order changes.
-    order = sorted(range(len(series)), key=lambda i: series[i]["fom"], reverse=True)
+    # (lowest FoM3) so the tightest posterior is never hidden underneath a looser one.
+    # The LEGEND follows this same order, not the user's --series order: getdist maps
+    # legend_labels onto the roots positionally, so the two cannot be decoupled without
+    # mislabelling the colours. Printed numbers and values.csv do keep --series order.
+    # ASCENDING FoM3. High FoM3 = TIGHT contour, so ascending puts the widest first (bottom) and
+    # the tightest last (top), which is what the line above describes. This read reverse=True
+    # until 2026-08-04 -- descending -- which did the exact opposite and buried the tightest
+    # posterior under the loosest. Invisible while the figures were effectively unfilled; the
+    # moment fills became opaque, the BNT arm vanished under the non-BNT one.
+    order = sorted(range(len(series)), key=lambda i: series[i]["fom"])
     mcs = [MCSamples(samples=series[i]["samples"], names=NAMES, labels=LABELS,
                      label=series[i]["label"]) for i in order]
     draw_cols = [cols[i] for i in order]
     # Type and fills from the shared contour style, so every contour figure in the paper
     # matches. plt.style.use() cannot do this: getdist carries its own font sizes.
-    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=7.5)
     _palette = PCS.apply(g)
+    # markers=, not hand-drawn axvline/axhline. getdist puts the truth on both axes of every
+    # panel itself, in the thin dashed grey the published contour figures use; the manual
+    # version drew dotted BLACK, which is the same information in a different visual language
+    # from the rest of the paper.
     g.triangle_plot(mcs, filled=True, contour_colors=draw_cols,
-                    legend_labels=[series[i]["label"] for i in order], legend_loc="upper right")
-    for i in range(3):
-        for j in range(i + 1):
-            ax = g.subplots[i, j]
-            if ax is None:
-                continue
-            ax.axvline(TRUTH[j], color="k", ls=":", lw=1, alpha=0.7)
-            if i != j:
-                ax.axhline(TRUTH[i], color="k", ls=":", lw=1, alpha=0.7)
+                    legend_labels=[series[i]["label"] for i in order], legend_loc="upper right",
+                    markers=dict(zip(NAMES, TRUTH)))
 
     if a.title:
         g.fig.suptitle(a.title, fontsize=14, y=1.02)
@@ -148,7 +163,7 @@ def main():
     # and it sits in the empty upper-right where a reader expects the legend. The numbers
     # belong in the caption, sourced from values.csv. --fom-box brings it back for a slide.
     if a.fom_box:
-        box = [rf"FoM$_3$ = {s['fom']:.2e}   $r(\Omega_m,S_8)$ = {s['R'][0,1]:+.2f}"
+        box = [rf"FoM$_3$ = {s['fom']:.2e}   $r(\Omega_m,\sigma_8)$ = {s['R'][0,1]:+.2f}"
                for s in series]
         if len(series) >= 2:
             box.append(rf"ratio = $\mathbf{{{series[0]['fom']/series[1]['fom']:.2f}\times}}$")

@@ -28,7 +28,7 @@ for i, a in enumerate(arms):
     ax1.bar(x + (i - 1) * w, sig[a], w, label=labels[a], color=colors[a])
 ax1.set_yscale("log")
 ax1.set_xticks(x); ax1.set_xticklabels([f"$\\ell$ {b}" for b in bands])
-ax1.set_ylabel(r"$\sigma(S_8)$  (Fisher)")
+ax1.set_ylabel(r"$\sigma(\sigma_8)$  (Fisher)")
 ax1.set_title("Constraint per band — smaller = tighter")
 ax1.legend(fontsize=9)
 ax1.grid(axis="y", ls=":", alpha=0.5)
@@ -43,7 +43,7 @@ for a in ["masked_raw", "masked_sub"]:
         ax2.annotate(f"{r:.2f}", (x[k], r), textcoords="offset points", xytext=(0, 8),
                      ha="center", fontsize=8)
 ax2.set_xticks(x); ax2.set_xticklabels([f"$\\ell$ {b}" for b in bands])
-ax2.set_ylabel(r"$\sigma(S_8)_{\rm masked} / \sigma(S_8)_{\rm full\text{-}sky}$")
+ax2.set_ylabel(r"$\sigma(\sigma_8)_{\rm masked} / \sigma(\sigma_8)_{\rm full\text{-}sky}$")
 ax2.set_title("Below 1 = impossible 'masking tightens' anomaly")
 ax2.text(0.02, 0.06, "shaded: unphysical (masked tighter than full-sky)",
          transform=ax2.transAxes, fontsize=8, color="#c0392b")

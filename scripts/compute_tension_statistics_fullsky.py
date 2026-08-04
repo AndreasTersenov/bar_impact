@@ -8,7 +8,7 @@ This script calculates Q_DM tension metrics for both normal and BNT-transformed 
 
 Outputs two tables per mode:
 1. Full 6-parameter tension
-2. Subset 3-parameter tension (Omega_m, S_8, w_0)
+2. Subset 3-parameter tension (Omega_m, sigma_8, w_0)
 
 Usage:
   python scripts/compute_tension_statistics_fullsky.py
@@ -24,8 +24,8 @@ import tensiometer.utilities as utilities
 from tensiometer import gaussian_tension
 
 # Parameter labels
-LABELS = [r"$\Omega_{m}$", r"$S_8$", r"$w_0$", r"$H_0$", r"$n_s$", r"$\Omega_b$"]
-LABELS_SUBSET = [r"$\Omega_{m}$", r"$S_8$", r"$w_0$"]
+LABELS = [r"$\Omega_{m}$", r"$\sigma_8$", r"$w_0$", r"$H_0$", r"$n_s$", r"$\Omega_b$"]
+LABELS_SUBSET = [r"$\Omega_{m}$", r"$\sigma_8$", r"$w_0$"]
 SUBSET_INDICES = [0, 1, 2]  # First 3 parameters
 
 # Sample directory
@@ -180,7 +180,7 @@ def main():
         print()
         
         print("="*80)
-        print(f"SUBSET 3-PARAMETER TENSION TABLE (Omega_m, S_8, w_0) ({mode_name})")
+        print(f"SUBSET 3-PARAMETER TENSION TABLE (Omega_m, sigma_8, w_0) ({mode_name})")
         print("="*80)
         print(df_subset.to_string(index=False))
         print()

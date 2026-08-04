@@ -22,7 +22,7 @@ from getdist import MCSamples, plots  # noqa: E402
 
 REPO = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact"
 NAMES = ["Om", "S8", "w0", "H0", "ns", "Ob"]
-LABELS = [r"\Omega_m", "S_8", "w_0", "H_0", "n_s", r"\Omega_b"]
+LABELS = [r"\Omega_m", r"\sigma_8", "w_0", "H_0", "n_s", r"\Omega_b"]
 TRUTH = [0.26, 0.84, -1.0, 67.36, 0.9649, 0.0493]
 SUB = [0, 1, 2]  # Ωm, S8, w0
 

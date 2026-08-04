@@ -89,7 +89,7 @@ cov_non = COVS[(PLOT_COV, "nonbnt_460")]
 cov_bnt = COVS[(PLOT_COV, "bnt_580")]
 styles = [("non-BNT  (cut all bins @ ℓ460)", cov_non, "#7f7f7f"),
           ("BNT  (bin1 @ ℓ580, bins2-4 full)", cov_bnt, "#c0392b")]
-labels = [r"$\Omega_m$", r"$S_8$", r"$w_0$"]
+labels = [r"$\Omega_m$", r"$\sigma_8$", r"$w_0$"]
 
 fig, axes = plt.subplots(3, 3, figsize=(8.2, 8.0))
 for a in range(3):

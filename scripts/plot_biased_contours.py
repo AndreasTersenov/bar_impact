@@ -35,7 +35,7 @@ def main():
     matplotlib.use("Agg")
     from getdist import MCSamples, plots
 
-    names, labels = ["Om", "S8", "w0"], [r"\Omega_m", "S_8", "w_0"]
+    names, labels = ["Om", "S8", "w0"], [r"\Omega_m", r"\sigma_8", "w_0"]
     mcs, filled, colors, line_args, rows = [], [], [], [], []
     for pat, label, fill, color, ls in SPECS:
         files = sorted(glob.glob(pat))

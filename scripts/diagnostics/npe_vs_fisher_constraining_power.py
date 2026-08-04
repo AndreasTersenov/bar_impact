@@ -92,7 +92,7 @@ def ell(ax, cov, ctr, i, j, color, ls, label):
     ax.add_patch(Ellipse(ctr[[i, j]], 2 * 1.517 * np.sqrt(w[1]), 2 * 1.517 * np.sqrt(w[0]),
                          angle=ang, fill=False, edgecolor=color, lw=2.0, ls=ls, label=label))
 
-pairs = [(0, 1, r"$\Omega_m$", r"$S_8$"), (0, 2, r"$\Omega_m$", r"$w_0$")]
+pairs = [(0, 1, r"$\Omega_m$", r"$\sigma_8$"), (0, 2, r"$\Omega_m$", r"$w_0$")]
 show = {"PS l100-1024": "#4d4d4d", "l1 scales1234": "#1f77b4", "peaks scales123": "#2ca02c"}
 fig, axc = plt.subplots(1, 2, figsize=(11, 4.8))
 for ax, (i, j, xl, yl) in zip(axc, pairs):

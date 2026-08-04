@@ -49,9 +49,9 @@ for ax, mask in zip(axes.flat, MASKS):
     bias[mask] = dict(sig_S8_null=float(nb[:, 1].std()),
                       sig_S8_bar=float(by[:, 1].std()),
                       dS8=float(dS8), dS8_sigma=float(dS8 / nb[:, 1].std()))
-    ax.set_title(f"{mask} deg$^2$   ($\\Delta S_8$={dS8:+.3f} = {dS8/nb[:,1].std():+.1f}$\\sigma$)",
+    ax.set_title(rf"{mask} deg$^2$   ($\\Delta \sigma_8$={dS8:+.3f} = {dS8/nb[:,1].std():+.1f}$\\sigma$)",
                  fontsize=11)
-    ax.set_xlabel(r"$\Omega_m$"); ax.set_ylabel(r"$S_8$")
+    ax.set_xlabel(r"$\Omega_m$"); ax.set_ylabel(r"$\sigma_8$")
     if mask == MASKS[0]:
         ax.legend(fontsize=9, loc="upper right")
 fig.suptitle("Masked power-spectrum NPE ($\\ell$ 37-1024, mean-subtracted): baryonic bias by survey area",
@@ -65,12 +65,12 @@ fig2, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.5))
 areas = MASKS
 a1.plot(areas, [bias[m]["sig_S8_null"] for m in areas], "o-", color="#2980b9", label="null")
 a1.plot(areas, [bias[m]["sig_S8_bar"] for m in areas], "s--", color="#c0392b", label="baryonified")
-a1.set_xscale("log"); a1.set_xlabel("survey area [deg$^2$]"); a1.set_ylabel(r"$\sigma(S_8)$")
+a1.set_xscale("log"); a1.set_xlabel("survey area [deg$^2$]"); a1.set_ylabel(r"$\sigma(\sigma_8)$")
 a1.set_title("Constraint vs area (tightens as area grows)"); a1.legend(); a1.grid(alpha=0.3)
 a2.plot(areas, [bias[m]["dS8_sigma"] for m in areas], "D-", color="#8e44ad")
 a2.axhline(0, color="k", lw=0.8); a2.axhline(-1, color="grey", ls=":")
 a2.set_xscale("log"); a2.set_xlabel("survey area [deg$^2$]")
-a2.set_ylabel(r"$S_8$ bias  [$\sigma$]"); a2.set_title("Baryonic bias on $S_8$ vs area")
+a2.set_ylabel(r"$\sigma_8$ bias  [$\sigma$]"); a2.set_title(r"Baryonic bias on $\sigma_8$ vs area")
 a2.grid(alpha=0.3)
 fig2.tight_layout()
 fig2.savefig(f"{OUT}/npe_bias_vs_area.png", dpi=140)

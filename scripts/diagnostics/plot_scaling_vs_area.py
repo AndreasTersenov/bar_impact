@@ -90,8 +90,8 @@ Aref = np.array([1.7e3, 4.2e4])
 ax[0].plot(Aref, 0.0135 * (Aref / 14000.) ** -0.5, color="0.45", ls=":", lw=1.0, zorder=0, label=r"$A^{-1/2}$")
 ax[1].plot(Aref, 1.05e5 * (Aref / 14000.) ** +1.5, color="0.45", ls=":", lw=1.0, zorder=0, label=r"$A^{+3/2}$")
 
-ax[0].set_ylabel(r"$\sigma(S_8)$")
-ax[1].set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},S_8,w_0)$")
+ax[0].set_ylabel(r"$\sigma(\sigma_8)$")
+ax[1].set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},\sigma_8,w_0)$")
 # The x range spans barely one decade (2e3 to 4e4), and in that regime matplotlib's log
 # formatter labels the MINOR ticks too. Setting a major LogLocator does not stop it, so the
 # axis came out as an unreadable pile: "2x10^3 3x10^3 4x10^3 6x10^3 10^4 2x10^4 ...". Fix

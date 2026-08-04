@@ -12,7 +12,7 @@ from getdist import plots
 from getdist.mcsamples import MCSamples
 
 P3 = [0, 1, 2]
-NAMES, LAB = ["Om", "S8", "w0"], [r"\Omega_m", "S_8", "w_0"]
+NAMES, LAB = ["Om", "S8", "w0"], [r"\Omega_m", r"\sigma_8", "w_0"]
 AREAS = [2000, 5000, 10000, 14000, 28000, 35000]
 NPE = "outputs/score_experiment/npe_score"
 OUT = "outputs/score_experiment/contours"

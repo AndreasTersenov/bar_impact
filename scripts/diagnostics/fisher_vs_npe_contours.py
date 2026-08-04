@@ -14,7 +14,7 @@ from getdist.mcsamples import MCSamples
 from getdist.gaussian_mixtures import GaussianND
 
 P3 = [0, 1, 2]
-NAMES3, LAB3 = ["Om", "S8", "w0"], [r"\Omega_m", "S_8", "w_0"]
+NAMES3, LAB3 = ["Om", "S8", "w0"], [r"\Omega_m", r"\sigma_8", "w_0"]
 FID3 = L.FID[P3]
 SCORE = "outputs/score_experiment/npe_score"
 OUT = "outputs/score_experiment"

@@ -13,7 +13,7 @@ SAMP = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/samples"
 GATE = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/diagnostics/gate_nlb4/samples"
 FS = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/diagnostics/fullsky_baseline/samples"
 OUT = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/diagnostics/gate_nlb4"
-NAMES = ["Om", "S8", "w0"]; LABELS = [r"\Omega_m", "S_8", "w_0"]
+NAMES = ["Om", "S8", "w0"]; LABELS = [r"\Omega_m", r"\sigma_8", "w_0"]
 truth = {"Om": 0.26, "S8": 0.84, "w0": -1.0}
 
 

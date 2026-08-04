@@ -61,9 +61,32 @@ PALETTES = {
         "standard basis": "0.45",
     },
 }
+# ORDER IS CHOSEN, NOT ARBITRARY. Seven entries because the contours_vs_area figures carry a
+# seventh series when --include-fullsky is passed, and cycle_colors refuses to wrap rather than
+# silently giving two survey areas the same colour.
+#
+# The first THREE are load-bearing and must not move: they are the per-statistic colours in
+# PALETTES (power spectrum / peak counts / L1 norm), fixed by commit 9ef3572 and used across the
+# published three-stats figures. Entries 4-7 were an unexercised fallback until 2026-08-04, when
+# the vs-area figures became the first to draw more than three series.
+#
+# The tail order was then picked by measurement rather than taste. Contour fills are compared as
+# LARGE AREAS, and getdist pales the 95% band by solid_contour_palefactor, so the quantity that
+# matters is the minimum CIE-Lab distance between PALED fills, not between the pure hues:
+#
+#     6 series   worst pair dE  15.6 -> 36.7      7 series   worst pair dE  15.6 -> 19.5
+#
+# achieved because the first six below are the best 6-subset of the eight Okabe-Ito colours and
+# all seven are the best 7-subset. The old order put #0072B2 and #56B4E9 -- the two blues -- in
+# the same figure, which is genuinely hard to separate as fills however distinct the lines look.
+# Sky blue is therefore dropped entirely and yellow restored: as a PALED FILL #F0E442 sits at
+# dE 49.5 from the white page, better than purple (33.5) or sky blue (30.1). Yellow's weakness
+# is thin lines, not areas.
+#
+# Sequential colormaps were measured too and are worse here: viridis 16.1, cividis 8.2.
 CYCLE = {
-    "submitted": ["0.45", "#E03424", "#1f77b4", "#2ca02c", "#9467bd", "#8c564b"],
-    "okabe":     ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9"],
+    "submitted": ["0.45", "#E03424", "#1f77b4", "#2ca02c", "#9467bd", "#8c564b", "#000000"],
+    "okabe":     ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#F0E442", "#000000", "#E69F00"],
 }
 
 
@@ -111,6 +134,29 @@ def colors_for(labels, palette: str | None = None):
             out.append(cyc[k % len(cyc)])
             k += 1
     return out
+
+
+def cycle_colors(n: int, palette: str | None = None):
+    """The first n palette colours, in cycle order — for figures whose series are NOT the three
+    statistics.
+
+    Use this when the series are areas, bases, or scale cuts: things the PALETTES table has no
+    key for. Going through colors_for() instead would silently drop such labels onto whatever
+    table entry happened to match ("standard basis" -> "0.45"), mixing a grey into an otherwise
+    Okabe-Ito figure, and unmatched ones onto the cycle anyway. Every series here gets a
+    distinct colourblind-safe hue, which is the paper's convention.
+
+    Deliberately NOT a lightness ramp of one hue. A ramp encodes an ordered variable elegantly
+    but reads as "playing with opacity" next to the flat-colour figures, and the paper's other
+    contour figures are flat.
+    """
+    p = palette or palette_name()
+    cyc = CYCLE[p]
+    if n > len(cyc):
+        raise SystemExit(f"[fatal] need {n} distinct colours but palette {p!r} has {len(cyc)}. "
+                         f"Add hues to CYCLE[{p!r}] rather than letting them wrap -- a wrap "
+                         f"gives two series the same colour with no warning.")
+    return list(cyc[:n])
 
 
 def provenance(palette: str | None = None) -> dict:

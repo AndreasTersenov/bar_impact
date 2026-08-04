@@ -9,7 +9,7 @@ OUT = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/outputs/diagnostics/npe
 os.makedirs(OUT, exist_ok=True)
 MASKS = [2000, 5000, 10000, 14000, 28000, 35000]
 NAMES = ["Om", "S8", "w0"]
-LABELS = [r"\Omega_m", "S_8", "w_0"]
+LABELS = [r"\Omega_m", r"\sigma_8", "w_0"]
 
 
 def mcs(mask, fid, label):

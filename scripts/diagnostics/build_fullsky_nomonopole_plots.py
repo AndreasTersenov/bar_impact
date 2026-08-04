@@ -40,7 +40,7 @@ SEARCH_DIRS = [
 ]
 
 NAMES = ["Om", "S8", "w0"]
-LABELS = [r"\Omega_m", "S_8", "w_0"]
+LABELS = [r"\Omega_m", r"\sigma_8", "w_0"]
 TRUTH = [0.26, 0.84, -1.0]
 
 # Fixed colour per probe so the legend/contour mapping stays correct even when a

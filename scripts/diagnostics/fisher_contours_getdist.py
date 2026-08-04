@@ -17,7 +17,7 @@ from getdist.gaussian_mixtures import GaussianND
 P3 = [0, 1, 2]
 FID3 = L.FID[P3]
 NAMES3 = ["Om", "S8", "w0"]
-LABELS3 = [r"\Omega_m", "S_8", "w_0"]
+LABELS3 = [r"\Omega_m", r"\sigma_8", "w_0"]
 OUT = "outputs/diagnostics/fisher_cov"
 
 Tfull = np.kron(H.bnt_spectra_operator(), np.eye(H.NBPW))

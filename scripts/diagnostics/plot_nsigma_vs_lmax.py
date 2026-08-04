@@ -129,7 +129,7 @@ for ax, (label, area, cuts, mean, std, nseed) in zip(axes, curves):
     if xi == xi:
         ax.axvline(xi, color="crimson", ls=":", lw=0.8, alpha=0.6, zorder=1)
 
-axes[0].set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},S_8,w_0)$")
+axes[0].set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},\sigma_8,w_0)$")
 fig.supxlabel(r"upper scale cut $\,\ell_\mathrm{max}$", y=0.02)
 
 # Label the threshold once, on the leftmost panel, rather than a legend box per panel.

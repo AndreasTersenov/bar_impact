@@ -287,7 +287,7 @@ if os.environ.get("REFLINE", "1") != "0":
     handles.append(ref)
 
 ax.set_xlabel(r"survey area $\,[\mathrm{deg}^2]$")
-ax.set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},S_8,w_0)$")
+ax.set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},\sigma_8,w_0)$")
 ax.set_xlim(0, 37000)
 ax.set_ylim(0, None)
 ax.legend(handles=handles, frameon=False, loc="upper left")

@@ -35,7 +35,7 @@ from tensiometer import gaussian_tension
 
 # Cosmological parameters carried in the posterior columns, in order.
 PARAM_NAMES = ["Omega_m", "S8", "w0", "H0", "ns", "Omega_b"]
-PARAM_LABELS = [r"\Omega_m", "S_8", "w_0", "H_0", "n_s", r"\Omega_b"]
+PARAM_LABELS = [r"\Omega_m", r"\sigma_8", "w_0", "H_0", "n_s", r"\Omega_b"]
 # The 3-parameter subset used for the headline tension.
 SUBSET_INDICES = (0, 1, 2)
 TRUTH = (0.26, 0.84, -1.0, 67.36, 0.9649, 0.0493)

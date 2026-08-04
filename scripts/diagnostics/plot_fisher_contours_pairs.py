@@ -15,7 +15,7 @@ with open(os.path.join(OUT, "fisher_gate_summary.json")) as f:
 
 PIDX = {"Omega_m": 0, "S8": 1, "w0": 2, "H0": 3, "ns": 4, "Omega_b": 5}
 CENTRE = {"Omega_m": 0.30, "S8": 0.90, "w0": -1.00}
-TEX = {"Omega_m": r"$\Omega_m$", "S8": r"$S_8$", "w0": r"$w_0$"}
+TEX = {"Omega_m": r"$\Omega_m$", "S8": r"$\sigma_8$", "w0": r"$w_0$"}
 PAIRS = [("Omega_m", "w0"), ("S8", "w0")]
 BANDS = ["30-100", "30-1024"]
 ARMS = ["fullsky", "masked_raw", "masked_sub"]

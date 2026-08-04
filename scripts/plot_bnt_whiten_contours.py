@@ -20,7 +20,7 @@ ZB = (f"{REPO}/outputs/baryon_tension/bnt_ps_bin1_submean_l37/posteriors/mask_14
       "posterior_samples_bnt_ps_auto_cross_nobaryons_vs_nobaryons_bins1234_l37-580_1024_1024_1024_"
       "r10_masked_14000sqdeg_apod2.0_master_submean_noisy_s0.26_run*.npy")
 NAMES = ["Om", "S8", "w0", "H0", "ns", "Ob"]
-LBL = [r"\Omega_m", "S_8", "w_0", "H_0", "n_s", r"\Omega_b"]
+LBL = [r"\Omega_m", r"\sigma_8", "w_0", "H_0", "n_s", r"\Omega_b"]
 TRUTH = [0.26, 0.84, -1.0, 67.36, 0.9649, 0.0493]
 SUB = ["Om", "S8", "w0"]
 

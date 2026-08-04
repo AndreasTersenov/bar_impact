@@ -307,7 +307,7 @@ probes = {**standalone, **combined}
 
 # --------------------------- bar figure (A): STANDALONE, rich binning ------------------------
 metrics = [("FoM6", "6-parameter FoM  (1/√det C)", False),
-           ("sig_S8", r"$\sigma(S_8)$", True),
+           ("sig_S8", r"$\sigma(\sigma_8)$", True),
            ("sig_w0", r"$\sigma(w_0)$", True),
            ("area_Om_w0", r"$(\Omega_m,w_0)$ 1$\sigma$ area", True)]
 bar_order = ["PS l100-1024 (paper)", "PS l37-1024 (recovered)", "PS l37-280 (HOS-l-tight)",
@@ -358,7 +358,7 @@ def ellipse(ax, cov, i, j, color, label, lw=2.0, ls="-"):
     ax.add_patch(Ellipse((0, 0), 2 * 1.52 * np.sqrt(w[1]), 2 * 1.52 * np.sqrt(w[0]),  # 1.52 = 68% (2D)
                          angle=ang, fill=False, edgecolor=color, lw=lw, ls=ls, label=label))
 
-pairs = [(0, 1, r"$\Delta\Omega_m$", r"$\Delta S_8$"), (0, 2, r"$\Delta\Omega_m$", r"$\Delta w_0$")]
+pairs = [(0, 1, r"$\Delta\Omega_m$", r"$\Delta \sigma_8$"), (0, 2, r"$\Delta\Omega_m$", r"$\Delta w_0$")]
 
 def contour_fig(cmp_probes, fname, suptitle):
     fig2, axc = plt.subplots(1, 2, figsize=(11, 4.6))

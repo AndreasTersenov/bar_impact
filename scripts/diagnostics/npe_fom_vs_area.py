@@ -80,7 +80,7 @@ if rows:
     ax[1].plot(A, sn, "o-", color="#7f7f7f", lw=2, label="non-BNT-460")
     ax[1].plot(A, sbv, "o-", color="#c0392b", lw=2, label="BNT-580")
     ax[1].set_xscale("log"); ax[1].set_yscale("log"); ax[1].set_xlabel("survey area [deg$^2$]")
-    ax[1].set_ylabel(r"NPE $\sigma(S_8)$"); ax[1].set_title("Realized $\\sigma(S_8)$ vs area")
+    ax[1].set_ylabel(r"NPE $\sigma(\sigma_8)$"); ax[1].set_title(r"Realized $\\sigma(\sigma_8)$ vs area")
     ax[1].legend(fontsize=9); ax[1].grid(alpha=0.3, which="both")
     fig.suptitle("Score-compression NPE across six footprints (calibrated) vs Fisher", fontsize=11)
     fig.tight_layout()

@@ -36,7 +36,7 @@ from getdist import MCSamples, plots  # noqa: E402
 
 REPO = "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact"
 NAMES = ["Omega_m", "S8", "w0"]
-LABELS = [r"\Omega_m", "S_8", "w_0"]
+LABELS = [r"\Omega_m", r"\sigma_8", "w_0"]
 TRUTH = [0.26, 0.84, -1.0]
 P3 = [0, 1, 2]
 ARM = {"bnt": "bnt_ps_bin1_score_l37", "nonbnt": "ps_cutall_score_l37"}

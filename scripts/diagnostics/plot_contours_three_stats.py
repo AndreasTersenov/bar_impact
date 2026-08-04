@@ -243,7 +243,7 @@ def main():
              ("L1 norm", hos_globs("", args.area, hos_scales))]
 
     names = ["Om", "S8", "w0"]
-    labels = [r"\Omega_\mathrm{m}", "S_8", "w_0"]
+    labels = [r"\Omega_\mathrm{m}", r"\sigma_8", "w_0"]
 
     mcs, colors, filled, line_args, legend, rows, dropped_all = [], [], [], [], [], [], {}
     for label, (ng, bg) in stats:

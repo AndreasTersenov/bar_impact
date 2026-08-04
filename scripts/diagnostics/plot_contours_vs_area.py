@@ -15,15 +15,21 @@ tighten the masked posteriors, which is precisely the error the ℓmin-recovery/
 corrected, so this script refuses to fall back to a non-submean file: the glob carries
 `_submean_` and a missing file is reported, never silently substituted.
 
-COLOUR. Survey area is an ORDERED quantity, so the six contours use a sequential single-hue
-ramp (light = small area, dark = large), not six categorical hues — a categorical palette
-would imply the areas are unrelated categories and a rainbow would imply a false ordering of
-its own. The ramp is built from each statistic's own base hue (the Okabe-Ito colour that
-statistic carries in every other figure), so a reader still recognises "this is the L1 figure"
-at a glance while reading area off the lightness.
+COLOUR. Six flat Okabe-Ito hues from paper_contour_style.cycle_colors — the same colourblind-safe
+palette, applied the same flat way, as every other contour figure in the paper.
 
-Contours are drawn UNFILLED. Six filled 2D contours over one another are unreadable however
-they are coloured; lines keep all six legible.
+Until 2026-08-04 this used a sequential light-to-dark ramp of the statistic's own hue, on the
+argument that survey area is an ORDERED quantity and a sequential encoding is the textbook
+choice for one. That argument is sound in isolation and wrong for this paper: beside the
+flat-colour figures the ramp reads as varying opacity rather than as a palette, and the reader
+loses the shared colour vocabulary. Area is already legible from the nesting order, so nothing
+is lost by encoding it once instead of twice. Do not reintroduce the ramp.
+
+Contours are drawn FILLED, like every other contour figure in the paper. The six posteriors are
+near-NESTED rather than merely overlapping -- same posterior, shrinking as area grows -- so
+opaque fills drawn widest-first read as concentric bands. (This figure was unfilled until
+2026-08-04 on the reasoning that six filled contours are always unreadable; that holds for
+contours that cross, not for nested ones.)
 
   --statistic ps|peaks|l1     (default: all three, one figure each)
   --role      null|biased     null = nobaryons data (constraining power);
@@ -49,7 +55,6 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap, to_rgb
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(REPO, "scripts"))
@@ -67,25 +72,16 @@ SIG_MAX = 0.08          # collapse guard on sigma(S8), same threshold as the oth
 LMAX = 1020             # full map resolution
 HOS_SCALES = "scales1234"
 
-# Base hue per statistic — matches plot_nsigma_vs_area.py / plot_contours_three_stats.py.
+# Base hue per statistic. The hue is NOT written here: it is looked up in
+# paper_contour_style.PALETTES by these exact label keys ("Power spectrum" / "Peak counts" /
+# "L1 norm"), so this figure follows PALETTE= and any future repalette instead of drifting.
+# Hardcoded duplicates of the Okabe-Ito values used to live here, which is the same private-
+# palette problem that made plot_hos_bnt_triangle.py read as a foreign figure.
 STAT = {
-    "ps":    {"label": "Power spectrum", "hue": "#0072B2"},
-    "peaks": {"label": "Peak counts",    "hue": "#D55E00"},
-    "l1":    {"label": "L1 norm",        "hue": "#009E73"},
+    "ps":    {"label": "Power spectrum"},
+    "peaks": {"label": "Peak counts"},
+    "l1":    {"label": "L1 norm"},
 }
-
-
-def area_ramp(hue, n):
-    """n colours, light -> dark, through the statistic's own hue.
-
-    Sequential because area is ordered. Endpoints are a near-white tint and a darkened
-    shade of the same hue, so lightness alone encodes area and the hue stays recognisable.
-    """
-    base = np.array(to_rgb(hue))
-    light = 1 - 0.18 * (1 - base)          # very light tint
-    dark = 0.42 * base                      # darkened shade
-    cmap = LinearSegmentedColormap.from_list("ramp", [light, base, dark])
-    return [cmap(x) for x in np.linspace(0.12, 1.0, n)]
 
 
 def run_index(fname):
@@ -150,7 +146,12 @@ def load(pattern):
         keep.append(a[:, :3])
         runs.append(r)
     if not keep:
-        return None, [], dropped, []
+        # FIVE values, matching the success return at the end of this function. These two
+        # early exits returned FOUR, so any area with zero usable posteriors crashed the
+        # caller with 'not enough values to unpack' instead of being reported as missing.
+        # Only reachable when an area has nothing at all -- which is exactly the case for
+        # peaks full sky, so it stayed hidden until --include-fullsky was tried on peaks.
+        return None, [], dropped, [], []
 
     # CENTRE-outlier guard. The sigma(S8) collapse guard above catches a seed whose posterior
     # is too WIDE; it cannot catch one whose posterior is the right width in the wrong PLACE.
@@ -161,7 +162,12 @@ def load(pattern):
     # mis-fit QA tests per-parameter WIDTH anomalies, so it would miss this too.
     keep, runs, dropped = _drop_centre_outliers(keep, runs, dropped)
     if not keep:
-        return None, [], dropped, []
+        # FIVE values, matching the success return at the end of this function. These two
+        # early exits returned FOUR, so any area with zero usable posteriors crashed the
+        # caller with 'not enough values to unpack' instead of being reported as missing.
+        # Only reachable when an area has nothing at all -- which is exactly the case for
+        # peaks full sky, so it stayed hidden until --include-fullsky was tried on peaks.
+        return None, [], dropped, [], []
     # Per-seed FoM_3 alongside the pooled samples. Pooling folds NPE seed-to-seed training
     # scatter into the covariance, which LOWERS the FoM, so the pooled value describes the
     # drawn contour while the per-seed mean is what plot_fom_vs_area.py plots. Both are
@@ -240,10 +246,15 @@ def build(stat, role, include_fullsky, width, seed_mode):
 
     gl = globber(stat)
     areas = list(AREAS) + (["fullsky"] if include_fullsky else [])
-    names, labels = ["Om", "S8", "w0"], [r"\Omega_\mathrm{m}", "S_8", "w_0"]
+    names, labels = ["Om", "S8", "w0"], [r"\Omega_\mathrm{m}", r"\sigma_8", "w_0"]
 
     mcs, colors, legend, rows, dropped_all = [], [], [], [], {}
-    ramp = area_ramp(STAT[stat]["hue"], len(areas))
+    import paper_contour_style as PCS
+    # One flat Okabe-Ito hue per area, from the shared cycle -- the same palette every other
+    # contour figure in the paper uses. This was a light-to-dark ramp of the statistic's own
+    # hue until 2026-08-04; sequential is the textbook encoding for an ordered variable, but it
+    # reads as varying opacity beside the flat-colour figures, so the paper uses flat here too.
+    ramp = PCS.cycle_colors(len(areas))
     for col, area in zip(ramp, areas):
         pooled, runs, dropped, per_seed_fom, per_seed_arrays = load(gl(area, role))
         s = pooled
@@ -277,13 +288,49 @@ def build(stat, role, include_fullsky, width, seed_mode):
         print(f"  [skip] {stat} {role}: nothing usable, no figure written")
         return None
 
+    # A missing AREA only prints "[missing]" and carries on, which is right for a masked
+    # footprint but wrong for full sky: the output STEM is tagged _with_fullsky, so a silent
+    # skip writes a file whose name promises a seventh contour it does not contain. peaks has
+    # no full-sky product at all (peak_counts_processing.py gates its submean branch on
+    # apply_mask, so none was ever produced), so `--statistic peaks --include-fullsky` would
+    # otherwise emit a _with_fullsky figure identical to the plain one.
+    if include_fullsky and "full sky" not in legend:
+        sys.exit(f"[fatal] {stat} {role}: --include-fullsky was requested but no usable full-sky "
+                 f"posterior was found ({gl('fullsky', role)}).\n"
+                 f"        Refusing to write a figure tagged _with_fullsky that has none. "
+                 f"Drop --include-fullsky, or produce the full-sky run first.")
+
+    # The full-sky contour is the one a reader will over-interpret, so state its seed support
+    # rather than leaving it in the CSV. Pooling ADDS training scatter, so a full-sky point
+    # backed by far fewer seeds than the masked ones is systematically too TIGHT -- it looks
+    # like extra constraining power from area when it is really the absence of seed averaging.
+    fullsky_caveat = None
+    if include_fullsky:
+        fs = next((r for r in rows if r["area"] == "fullsky"), None)
+        masked_n = sorted(r["n_seeds"] for r in rows if r["area"] != "fullsky")
+        if fs and masked_n:
+            med = masked_n[len(masked_n) // 2]
+            if fs["n_seeds"] * 2 <= med:
+                fullsky_caveat = (
+                    f"FULL-SKY CONTOUR IS UNDER-SEEDED: {fs['n_seeds']} seed(s) against a median "
+                    f"of {med} for the masked areas. Pooling adds training scatter, so this "
+                    f"contour is tighter than a like-for-like full-sky measurement would be, for "
+                    f"a reason unrelated to survey area. Do not read its size as constraining "
+                    f"power. FoM3 scales as area^1.5, which is the check to apply.")
+                print(f"  [WARN] {fullsky_caveat}")
+
     # Shared contour style, not the mplstyle sheet: plt.style.use() does not reach getdist's
     # own font sizes or fills. See scripts/paper_contour_style.py.
-    import paper_contour_style as PCS
     g = plots.get_subplot_plotter(width_inch=width)
     _palette = PCS.apply(g)
-    # Unfilled: six overlapping filled contours are unreadable at any palette.
-    g.triangle_plot(mcs, names, filled=False, contour_colors=colors,
+    # FILLED, matching the rest of the paper's contour figures. The old comment here warned that
+    # six overlapping filled contours are unreadable -- true for contours that merely OVERLAP,
+    # but these are very nearly NESTED (same posterior, shrinking with area), so opaque fills
+    # drawn widest-first read as concentric bands rather than mud. `areas` is ascending and the
+    # contour shrinks as area grows, so list order already puts the tightest one last, i.e. on
+    # top. Do not sort this list without re-checking that: reversed, the largest fill would
+    # cover every other contour completely.
+    g.triangle_plot(mcs, names, filled=True, contour_colors=colors,
                     contour_lws=[1.4] * len(mcs),
                     legend_labels=legend, legend_loc="upper right", markers=TRUTH)
 
@@ -364,7 +411,7 @@ def build(stat, role, include_fullsky, width, seed_mode):
         "versions": {m: ver(m) for m in ("numpy", "scipy", "getdist", "matplotlib")},
         "mplstyle": aa if os.path.exists(aa) else "matplotlib defaults",
         **PCS.provenance(_palette),
-        "caveats": [
+        "caveats": ([fullsky_caveat] if fullsky_caveat else []) + [
             "FULL RESOLUTION — no scale cut. For the power spectrum and, at large areas, the "
             "higher-order statistics, this is the regime where the baryon bias is significant; "
             "the 'biased' role therefore shows a posterior that is NOT baryon-safe by design.",

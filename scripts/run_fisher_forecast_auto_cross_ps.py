@@ -16,7 +16,7 @@ from getdist import plots, MCSamples
 
 DEFAULT_LATEX_LABELS = [
     r"$\Omega_{m}$",
-    r"$S_8$",
+    r"$\sigma_8$",
     r"$w_0$",
     r"$H_0$",
     r"$n_s$",
@@ -26,7 +26,7 @@ DEFAULT_LATEX_LABELS = [
 PARAM_LABEL_MAP = {
     "Omega_m": DEFAULT_LATEX_LABELS[0],
     "S8": DEFAULT_LATEX_LABELS[1],
-    "S_8": DEFAULT_LATEX_LABELS[1],
+    r"\sigma_8": DEFAULT_LATEX_LABELS[1],
     "w0": DEFAULT_LATEX_LABELS[2],
     "w_0": DEFAULT_LATEX_LABELS[2],
     "H0": DEFAULT_LATEX_LABELS[3],

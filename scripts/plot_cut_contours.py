@@ -34,7 +34,7 @@ def main():
     if a.biased_only:
         specs = [(p, lab.replace(" — biased", ""), True, c, "-") for p, lab, f, c, ls in specs
                  if "biased" in lab]
-    names, labels = ["Om", "S8", "w0"], [r"\Omega_m", "S_8", "w_0"]
+    names, labels = ["Om", "S8", "w0"], [r"\Omega_m", r"\sigma_8", "w_0"]
     mcs, filled, colors, line_args, rows = [], [], [], [], []
     for path, label, fill, color, ls in specs:
         if not path.exists():

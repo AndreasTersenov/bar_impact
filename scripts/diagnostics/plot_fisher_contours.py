@@ -52,7 +52,7 @@ for ax, band in zip(axes, BANDS):
         ellipse(ax, cov2, color, label)
     ax.plot(*CENTRE, "k+", ms=10)
     ax.set_xlabel(r"$\Omega_m$")
-    ax.set_ylabel(r"$S_8$")
+    ax.set_ylabel(r"$\sigma_8$")
     ax.set_title(f"$\\ell$ {band}")
     ax.legend(fontsize=9, loc="upper right")
     ax.autoscale_view()

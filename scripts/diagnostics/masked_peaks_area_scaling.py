@@ -139,7 +139,7 @@ for ax, ref_slope, anch_key in [(axes[0], -0.5, "sig_S8"), (axes[1], 3.0, "FoM6"
     y0 = curves[("l1_norms", "scales234")][a0][anch_key]
     ax.loglog(AREAS, [y0 * (a / a0) ** ref_slope for a in AREAS], "k:", lw=1,
               label=f"area^{ref_slope:+.1f} (physical)")
-axes[0].set_xlabel("mask area [sq deg]"); axes[0].set_ylabel(r"$\sigma(S_8)$")
+axes[0].set_xlabel("mask area [sq deg]"); axes[0].set_ylabel(r"$\sigma(\sigma_8)$")
 axes[0].set_title("Constraint vs area (lower=better; physical: area$^{-0.5}$)")
 axes[1].set_xlabel("mask area [sq deg]"); axes[1].set_ylabel("FoM6")
 axes[1].set_title("6-param FoM vs area (higher=better; physical: area$^{+3}$)")

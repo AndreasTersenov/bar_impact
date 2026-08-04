@@ -113,7 +113,7 @@ ax.plot(Aref, GUIDE_SCALE * ps_anchor * (Aref / 14000.) ** 1.5, color="0.45", ls
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlabel(r"mask area $[\mathrm{deg}^2]$")
-ax.set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},\,S_8,\,w_0)$")
+ax.set_ylabel(r"$\mathrm{FoM}_3\,(\Omega_\mathrm{m},\,\sigma_8,\,w_0)$")
 
 # --- decluttered axes -------------------------------------------------------
 # The data spans only ~1.25 decades (2000-35000), so matplotlib's default log
