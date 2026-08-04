@@ -2,8 +2,8 @@
   "slug": "bnt_bin1_vs_cut_optimal",
   "title": "BNT bin-1 vs non-BNT, optimal binning (rebin 40)",
   "paper_position": 7,
-  "published_utc": "2026-08-03T21:08:35+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:46+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/bnt_ps_bin1_submean_l37/nsigma_vs_lmax_bnt_bin1_allareas_optimal",
   "files": {
     "figure.pdf": {

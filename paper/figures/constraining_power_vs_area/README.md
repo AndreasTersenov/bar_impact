@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats`
 - **generator commit**: `ea7ccfa`
 - **generated**: 2026-08-03T13:22:05+00:00
-- **published**: 2026-08-03T21:10:12+00:00 at repo `9ef3572`
+- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
 - **rows in values.csv**: 18
 
 ## Scales included

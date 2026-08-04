@@ -1,0 +1,39 @@
+{
+  "slug": "contours_vs_area_l1_null_pooled_with_fullsky",
+  "title": "contours vs area l1 null pooled with full sky",
+  "paper_position": null,
+  "published_utc": "2026-08-04T15:53:48+00:00",
+  "published_at_repo_commit": "cade6ad",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled.pdf",
+      "sha256": "4e18c6b7557042a2c824097b009efdbbe4300da338b40f9dc3934a8039743796",
+      "bytes": 370334
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled.png",
+      "sha256": "72bb2511f0d32af3cfe1827769a99cb13733b13c606230191077180354acb0f9",
+      "bytes": 413589
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled_values.csv",
+      "sha256": "f535d2253a36635601afa7916ee99f60d2f73204a5707bfec19eae6bf6094687",
+      "bytes": 2117
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_with_fullsky_pooled_provenance.json",
+      "sha256": "ca71ae72dbb37202c3d5a7c399ccb82226666fe5866ced3c23255c2bf6ba9dff",
+      "bytes": 9923
+    }
+  },
+  "note": "Same as contours_vs_area_l1_null_pooled but with a seventh, full-sky contour (black). Peaks has no counterpart: no full-sky peak-count posterior exists.",
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
+  },
+  "value_rows": 21,
+  "n_caveats": 6
+}

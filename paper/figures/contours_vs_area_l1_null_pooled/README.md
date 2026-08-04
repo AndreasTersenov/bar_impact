@@ -1,9 +1,9 @@
 # contours vs area l1 null pooled
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_null_l37-1020_pooled`
-- **generator commit**: `9ef3572`
-- **generated**: 2026-08-03T21:10:19+00:00
-- **published**: 2026-08-03T21:10:33+00:00 at repo `9ef3572`
+- **generator commit**: `unknown`
+- **generated**: 2026-08-04T15:52:55+00:00
+- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
 - **rows in values.csv**: 18
 
 ## Scales included
@@ -24,6 +24,10 @@ FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
 | 35000 | 9 | 2.519e+06 | 3.14e+06 ± 4.34e+05 |
 
 fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.
+
+## Known gaps
+
+- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

@@ -2,8 +2,8 @@
   "slug": "fom_vs_area_low_guide",
   "title": "FoM3 vs survey area, guide dropped clear of the data",
   "paper_position": 12,
-  "published_utc": "2026-08-03T21:10:14+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:48+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/submean_masked_peaks/fom_vs_area_all_stats_lowanchor",
   "files": {
     "figure.pdf": {

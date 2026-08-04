@@ -1,0 +1,372 @@
+{
+  "figure": "contours_vs_area_l1_biased_l37-1020_with_fullsky_pooled",
+  "generated_utc": "2026-08-04T15:52:47+00:00",
+  "git_commit": "unknown",
+  "statistic": "L1 norm",
+  "role": "biased",
+  "seed_mode": "pooled",
+  "role_meaning": "biased = baryonified data vs nobaryons-trained model (bias, uncorrected)",
+  "areas_drawn": [
+    2000,
+    5000,
+    10000,
+    14000,
+    28000,
+    35000,
+    "fullsky"
+  ],
+  "cut": "FULL map resolution \u2014 no scale cut applied (PS lmax=1020, HOS scales1234)",
+  "scales_included": {
+    "peaks_l1": "wavelet scales1234 \u2014 all four detail scales, coarse/mass-sheet excluded \u2014 submean (footprint-mean-subtracted) maps, new_normalization, noisy sigma_e=0.26"
+  },
+  "truth": {
+    "Om": 0.26,
+    "S8": 0.84,
+    "w0": -1.0
+  },
+  "param_names": [
+    "Omega_m",
+    "S8",
+    "w0"
+  ],
+  "collapse_guard_sigma_S8_max": 0.08,
+  "fom3": {
+    "definition": "FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)",
+    "pooled_vs_per_seed": "fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.",
+    "per_area": {
+      "2000": {
+        "fom3_pooled": 39963.28044741503,
+        "fom3_per_seed_mean": 58025.993905356205,
+        "fom3_per_seed_std": 23755.927264643007,
+        "n_seeds": 6
+      },
+      "5000": {
+        "fom3_pooled": 254786.36752417582,
+        "fom3_per_seed_mean": 276715.59795692726,
+        "fom3_per_seed_std": 28546.759033573224,
+        "n_seeds": 9
+      },
+      "10000": {
+        "fom3_pooled": 489144.96075706923,
+        "fom3_per_seed_mean": 573746.5477272081,
+        "fom3_per_seed_std": 79681.4377119024,
+        "n_seeds": 8
+      },
+      "14000": {
+        "fom3_pooled": 733789.3880046943,
+        "fom3_per_seed_mean": 796101.0709993442,
+        "fom3_per_seed_std": 70962.34151285818,
+        "n_seeds": 5
+      },
+      "28000": {
+        "fom3_pooled": 1897049.3068325776,
+        "fom3_per_seed_mean": 2173645.0788366073,
+        "fom3_per_seed_std": 400843.3852344984,
+        "n_seeds": 7
+      },
+      "35000": {
+        "fom3_pooled": 1916142.5042827404,
+        "fom3_per_seed_mean": 2667701.2994324975,
+        "fom3_per_seed_std": 315263.0356788749,
+        "n_seeds": 9
+      },
+      "fullsky": {
+        "fom3_pooled": 4312182.383577602,
+        "fom3_per_seed_mean": 4312182.383577602,
+        "fom3_per_seed_std": 0.0,
+        "n_seeds": 1
+      }
+    }
+  },
+  "colour_encoding": "sequential single-hue ramp on the statistic's own base hue; light = small area, dark = large. Area is ordered, so a categorical or rainbow palette would misrepresent it.",
+  "series": [
+    {
+      "area": 2000,
+      "n_seeds": 6,
+      "runs": [
+        1,
+        2,
+        4,
+        5,
+        6,
+        8
+      ],
+      "n_samples": 18000,
+      "mean": [
+        0.2572246789932251,
+        0.8180640935897827,
+        -1.1620941162109375
+      ],
+      "std": [
+        0.020676543936133385,
+        0.02623184397816658,
+        0.10581168532371521
+      ],
+      "fom3_pooled": 39963.28044741503,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 58025.993905356205,
+      "fom3_per_seed_std": 23755.927264643007
+    },
+    {
+      "area": 5000,
+      "n_seeds": 9,
+      "runs": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 27000,
+      "mean": [
+        0.25233814120292664,
+        0.8162851333618164,
+        -1.2078291177749634
+      ],
+      "std": [
+        0.015111716464161873,
+        0.01833409070968628,
+        0.08333736658096313
+      ],
+      "fom3_pooled": 254786.36752417582,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 276715.59795692726,
+      "fom3_per_seed_std": 28546.759033573224
+    },
+    {
+      "area": 10000,
+      "n_seeds": 8,
+      "runs": [
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "n_samples": 24000,
+      "mean": [
+        0.24933908879756927,
+        0.8201815485954285,
+        -1.2230415344238281
+      ],
+      "std": [
+        0.012408400885760784,
+        0.01499903667718172,
+        0.07038432359695435
+      ],
+      "fom3_pooled": 489144.96075706923,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 573746.5477272081,
+      "fom3_per_seed_std": 79681.4377119024
+    },
+    {
+      "area": 14000,
+      "n_seeds": 5,
+      "runs": [
+        2,
+        4,
+        6,
+        7,
+        10
+      ],
+      "n_samples": 15000,
+      "mean": [
+        0.2518416941165924,
+        0.8164610862731934,
+        -1.210077166557312
+      ],
+      "std": [
+        0.011296451091766357,
+        0.01291313860565424,
+        0.07175920903682709
+      ],
+      "fom3_pooled": 733789.3880046943,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 796101.0709993442,
+      "fom3_per_seed_std": 70962.34151285818
+    },
+    {
+      "area": 28000,
+      "n_seeds": 7,
+      "runs": [
+        2,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10
+      ],
+      "n_samples": 21000,
+      "mean": [
+        0.2520768344402313,
+        0.8177440762519836,
+        -1.2169471979141235
+      ],
+      "std": [
+        0.00803576223552227,
+        0.009764479473233223,
+        0.05056577920913696
+      ],
+      "fom3_pooled": 1897049.3068325776,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 2173645.0788366073,
+      "fom3_per_seed_std": 400843.3852344984
+    },
+    {
+      "area": 35000,
+      "n_seeds": 9,
+      "runs": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "n_samples": 27000,
+      "mean": [
+        0.2516743838787079,
+        0.818461000919342,
+        -1.2176705598831177
+      ],
+      "std": [
+        0.007898914627730846,
+        0.009528710506856441,
+        0.050386469811201096
+      ],
+      "fom3_pooled": 1916142.5042827404,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 2667701.2994324975,
+      "fom3_per_seed_std": 315263.0356788749
+    },
+    {
+      "area": "fullsky",
+      "n_seeds": 1,
+      "runs": [
+        1
+      ],
+      "n_samples": 3000,
+      "mean": [
+        0.25710082054138184,
+        0.8122660517692566,
+        -1.1899744272232056
+      ],
+      "std": [
+        0.007282324135303497,
+        0.008524513803422451,
+        0.048327088356018066
+      ],
+      "fom3_pooled": 4312182.383577602,
+      "seed_shown": null,
+      "seed_choice": null,
+      "fom3_per_seed_mean": 4312182.383577602,
+      "fom3_per_seed_std": 0.0
+    }
+  ],
+  "runs_dropped": {
+    "2000": [
+      [
+        10,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "5000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "10000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ],
+      [
+        5,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "14000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ],
+      [
+        3,
+        "unreadable (ValueError)"
+      ],
+      [
+        5,
+        "unreadable (ValueError)"
+      ],
+      [
+        8,
+        "unreadable (ValueError)"
+      ],
+      [
+        9,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "28000": [
+      [
+        1,
+        "unreadable (ValueError)"
+      ],
+      [
+        3,
+        "unreadable (ValueError)"
+      ],
+      [
+        8,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "35000": [
+      [
+        10,
+        "unreadable (ValueError)"
+      ]
+    ],
+    "fullsky": []
+  },
+  "versions": {
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "getdist": "1.6.1",
+    "matplotlib": "3.11.1"
+  },
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
+  "contour_style": "scripts/paper_contour_style.py",
+  "palette": "okabe",
+  "palette_note": "Okabe-Ito colourblind-safe palette; does NOT match the figures kept from the submitted version",
+  "axes_fontsize": 14,
+  "lab_fontsize": 16,
+  "legend_fontsize": 14,
+  "alpha_filled_add": 0.99,
+  "caveats": [
+    "FULL-SKY CONTOUR IS UNDER-SEEDED: 1 seed(s) against a median of 8 for the masked areas. Pooling adds training scatter, so this contour is tighter than a like-for-like full-sky measurement would be, for a reason unrelated to survey area. Do not read its size as constraining power. FoM3 scales as area^1.5, which is the check to apply.",
+    "FULL RESOLUTION \u2014 no scale cut. For the power spectrum and, at large areas, the higher-order statistics, this is the regime where the baryon bias is significant; the 'biased' role therefore shows a posterior that is NOT baryon-safe by design.",
+    "Contours pool all readable, non-collapsed seeds for the given role, so their width includes NPE seed-to-seed training scatter, not the posterior width of one seed. n_seeds per area is in the values CSV and varies with disk damage.",
+    "Seeds are NOT matched between roles here (each role pools its own readable set), because these are single-role figures. Use plot_contours_three_stats.py, which pairs runs, for any null-to-biased comparison.",
+    "Higher-order products are the SUBMEAN (footprint-mean-subtracted) ones with the corrected mask treatment. The pre-submean products spuriously tighten the masked posteriors; the glob requires '_submean_' so a missing file surfaces as missing rather than being silently substituted.",
+    "styles/paper_v1.mplstyle reproduces the style of the SUBMITTED version, so this figure sits beside the figures kept verbatim from it."
+  ]
+}

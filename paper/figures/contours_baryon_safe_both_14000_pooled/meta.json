@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_both_14000_pooled",
   "title": "contours baryon safe both 14000 pooled",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:13+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:47+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_both_14000_bsafe_l460_scales234",
   "files": {
     "figure.pdf": {

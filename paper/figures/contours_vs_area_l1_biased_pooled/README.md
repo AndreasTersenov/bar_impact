@@ -2,8 +2,8 @@
 
 - **source**: `outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_pooled`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-03T14:15:54+00:00
-- **published**: 2026-08-03T21:10:33+00:00 at repo `9ef3572`
+- **generated**: 2026-08-04T15:52:54+00:00
+- **published**: 2026-08-04T15:53:47+00:00 at repo `cade6ad`
 - **rows in values.csv**: 18
 
 ## Scales included

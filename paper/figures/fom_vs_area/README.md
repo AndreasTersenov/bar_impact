@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/submean_masked_peaks/fom_vs_area_all_stats`
 - **generator commit**: `9ef3572`
 - **generated**: 2026-08-03T20:53:29+00:00
-- **published**: 2026-08-03T21:10:14+00:00 at repo `9ef3572`
+- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
 - **rows in values.csv**: 18
 
 ## Scales included

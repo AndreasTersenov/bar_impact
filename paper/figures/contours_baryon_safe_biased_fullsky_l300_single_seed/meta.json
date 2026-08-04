@@ -2,8 +2,8 @@
   "slug": "contours_baryon_safe_biased_fullsky_l300_single_seed",
   "title": "contours baryon safe biased fullsky l300 single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:13+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:47+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/contours_three_stats/contours_PS_peaks_L1_biased_fullsky_bsafe_l300_scales234_single_seed",
   "files": {
     "figure.pdf": {

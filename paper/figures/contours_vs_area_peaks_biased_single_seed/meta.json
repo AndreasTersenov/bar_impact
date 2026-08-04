@@ -2,19 +2,19 @@
   "slug": "contours_vs_area_peaks_biased_single_seed",
   "title": "contours vs area peaks biased single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:13+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:48+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.pdf",
-      "sha256": "baff3ef1c3d295fbd8232f8dbb850817c705e6933274828639f12af7939f9e71",
-      "bytes": 191226
+      "sha256": "2c7d020f9b1e03fe482aac52cf7563eb0dd5f735d293a4336fa5975ecb4b185f",
+      "bytes": 324453
     },
     "figure.png": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed.png",
-      "sha256": "19b168c3a93a6dd9df91ff712fe4da6b32a57b57fc0fd6c10eb7e75eb81360c6",
-      "bytes": 390459
+      "sha256": "819f46b84d6ca37baf6017611ca9e26884e7b28d1acdbc736776b544c5e3acc5",
+      "bytes": 382012
     },
     "values.csv": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_peaks_biased_l37-1020_single_seed_provenance.json",
-      "sha256": "080b7f17d644db6904fcfe92aa013741b16dda66d5a142b1fabca7e584c89968",
+      "sha256": "1246e54acf06a3e4736d6341c82b7a14b05f32b039a79f76890103d12b0f2c8f",
       "bytes": 19662
     }
   },

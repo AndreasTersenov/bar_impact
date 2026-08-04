@@ -1,10 +1,10 @@
 # contours vs area ps biased single seed
 
-- **source**: `outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed`
+- **source**: `outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-03T14:15:56+00:00
-- **published**: 2026-08-03T21:10:14+00:00 at repo `9ef3572`
-- **rows in values.csv**: 21
+- **generated**: 2026-08-04T15:52:47+00:00
+- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
+- **rows in values.csv**: 18
 
 ## Scales included
 
@@ -22,7 +22,6 @@ FoM_3 = 1/sqrt(det C_3), C_3 = covariance of (Omega_m, S8, w0)
 | 14000 | 5 | 2.449e+05 | 2.592e+05 ± 3.07e+04 |
 | 28000 | 9 | 3.443e+05 | 4.367e+05 ± 5.23e+04 |
 | 35000 | 3 | 5.067e+05 | 6.141e+05 ± 5.64e+04 |
-| fullsky | 5 | 4.647e+05 | 6.489e+05 ± 1.35e+05 |
 
 fom3_pooled comes from the pooled samples, i.e. the covariance the DRAWN contour represents; pooling across NPE training seeds folds training scatter into the covariance and so LOWERS the FoM. fom3_per_seed_mean is what plot_fom_vs_area.py and plot_scaling_vs_area.py plot. Do not compare a pooled value against a per-seed one across figures.
 

@@ -2,8 +2,8 @@
   "slug": "bias_vs_area_three_stats",
   "title": "bias vs area three stats",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:08:31+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:46+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
   "files": {
     "figure.pdf": {

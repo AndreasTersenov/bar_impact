@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax`
 - **generator commit**: `9ef3572`
 - **generated**: 2026-08-03T20:52:55+00:00
-- **published**: 2026-08-03T21:10:14+00:00 at repo `9ef3572`
+- **published**: 2026-08-04T15:53:48+00:00 at repo `cade6ad`
 - **rows in values.csv**: 108
 
 ## Scales included

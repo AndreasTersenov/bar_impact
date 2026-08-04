@@ -1,0 +1,39 @@
+{
+  "slug": "contours_vs_area_l1_biased_single_seed_with_fullsky",
+  "title": "contours vs area l1 biased single seed with full sky",
+  "paper_position": null,
+  "published_utc": "2026-08-04T15:53:47+00:00",
+  "published_at_repo_commit": "cade6ad",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_with_fullsky_single_seed",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_with_fullsky_single_seed.pdf",
+      "sha256": "b8ef5ed3f122dc1798a3c212d57fb096a6ec0a2ccc71658c7920ef2bb0b2d987",
+      "bytes": 374826
+    },
+    "figure.png": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_with_fullsky_single_seed.png",
+      "sha256": "a2eb4dd6f9ba35429fe85bc4e025a9378fe7167706ac19b7894f1bc728e4902c",
+      "bytes": 412851
+    },
+    "values.csv": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_with_fullsky_single_seed_values.csv",
+      "sha256": "460a1358d0c80cd4f03e6b61ab8d7ebfc508782e3a125aa86e0217e625a4700d",
+      "bytes": 2093
+    },
+    "provenance.json": {
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_with_fullsky_single_seed_provenance.json",
+      "sha256": "40ffdd57a35a8e584478ab32f54468e75cc183a09e3ca939386c64d8b839bc99",
+      "bytes": 19817
+    }
+  },
+  "note": "Same as contours_vs_area_l1_biased_single_seed but with a seventh, full-sky contour (black). Peaks has no counterpart: no full-sky peak-count posterior exists.",
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
+    ]
+  },
+  "value_rows": 21,
+  "n_caveats": 6
+}

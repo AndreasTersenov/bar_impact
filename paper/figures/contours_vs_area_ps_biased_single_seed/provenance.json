@@ -1,6 +1,6 @@
 {
-  "figure": "contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
-  "generated_utc": "2026-08-03T14:15:56+00:00",
+  "figure": "contours_vs_area_ps_biased_l37-1020_single_seed",
+  "generated_utc": "2026-08-04T15:52:47+00:00",
   "git_commit": "unknown",
   "statistic": "Power spectrum",
   "role": "biased",
@@ -12,8 +12,7 @@
     10000,
     14000,
     28000,
-    35000,
-    "fullsky"
+    35000
   ],
   "cut": "FULL map resolution \u2014 no scale cut applied (PS lmax=1020, HOS scales1234)",
   "scales_included": {
@@ -69,12 +68,6 @@
         "fom3_per_seed_mean": 614062.3393180645,
         "fom3_per_seed_std": 56388.84063795773,
         "n_seeds": 3
-      },
-      "fullsky": {
-        "fom3_pooled": 464694.7753805063,
-        "fom3_per_seed_mean": 648949.8861349315,
-        "fom3_per_seed_std": 135037.931897966,
-        "n_seeds": 5
       }
     }
   },
@@ -451,68 +444,6 @@
       },
       "fom3_per_seed_mean": 614062.3393180645,
       "fom3_per_seed_std": 56388.84063795773
-    },
-    {
-      "area": "fullsky",
-      "n_seeds": 5,
-      "runs": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "n_samples": 3000,
-      "mean": [
-        0.24195481836795807,
-        0.8384080529212952,
-        -1.185272455215454
-      ],
-      "std": [
-        0.008233174681663513,
-        0.015724267810583115,
-        0.05980581417679787
-      ],
-      "fom3_pooled": 464694.7753805063,
-      "seed_shown": 2,
-      "seed_choice": {
-        "criterion": "argmin over seeds of [max_p |mu_p - median mu_p| / width_p] + [max_p |ln(sigma_p / median sigma_p)|]",
-        "chosen_run": 2,
-        "per_seed": [
-          {
-            "run": 1,
-            "centre_offset_widths": 0.7608168721199036,
-            "log_width_ratio": 0.10714104771614075,
-            "score": 0.8679579496383667
-          },
-          {
-            "run": 2,
-            "centre_offset_widths": 0.1819220930337906,
-            "log_width_ratio": 0.03358064591884613,
-            "score": 0.21550273895263672
-          },
-          {
-            "run": 3,
-            "centre_offset_widths": 0.396428644657135,
-            "log_width_ratio": 0.21764740347862244,
-            "score": 0.6140760183334351
-          },
-          {
-            "run": 4,
-            "centre_offset_widths": 0.957895040512085,
-            "log_width_ratio": 0.03962556645274162,
-            "score": 0.9975206255912781
-          },
-          {
-            "run": 5,
-            "centre_offset_widths": 0.18301929533481598,
-            "log_width_ratio": 0.04527369886636734,
-            "score": 0.22829300165176392
-          }
-        ]
-      },
-      "fom3_per_seed_mean": 648949.8861349315,
-      "fom3_per_seed_std": 135037.931897966
     }
   ],
   "runs_dropped": {
@@ -544,8 +475,7 @@
         5,
         "unreadable (ValueError)"
       ]
-    ],
-    "fullsky": []
+    ]
   },
   "versions": {
     "numpy": "1.26.4",

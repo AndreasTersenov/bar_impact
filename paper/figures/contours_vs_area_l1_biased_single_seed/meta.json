@@ -2,19 +2,19 @@
   "slug": "contours_vs_area_l1_biased_single_seed",
   "title": "contours vs area l1 biased single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:13+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:47+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.pdf",
-      "sha256": "2cd55a7e8397a24db075f9d8dd636783ceedf737c1ae48a19b31894c76c12604",
-      "bytes": 181697
+      "sha256": "f8ec715d3a4da6c4d2d2137991c9d0accc144ada08029e2225423f20398f84dc",
+      "bytes": 306197
     },
     "figure.png": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed.png",
-      "sha256": "d2b7ce88322d3d309a33b795eaf9c85fcd08f0162a00ee3049b00596f7db1e56",
-      "bytes": 393985
+      "sha256": "16b796502518002fa2375e2e43ba1c4af7a9a9e2b0a2c569eb5308c6abc12407",
+      "bytes": 391738
     },
     "values.csv": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/contours_vs_area/contours_vs_area_l1_biased_l37-1020_single_seed_provenance.json",
-      "sha256": "6cd466104ec03c80066c863a563fad74641ff42a42640017b41794e970f3b7ce",
+      "sha256": "8af56e2497e9d7c52398a95e8a4e67c241f282357397a7c3b51b42d566e794df",
       "bytes": 18574
     }
   },

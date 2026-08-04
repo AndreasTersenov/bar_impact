@@ -1,6 +1,6 @@
 {
-  "figure": "contours_vs_area_ps_null_l37-1020_with_fullsky_pooled",
-  "generated_utc": "2026-08-03T14:15:55+00:00",
+  "figure": "contours_vs_area_ps_null_l37-1020_pooled",
+  "generated_utc": "2026-08-04T15:52:47+00:00",
   "git_commit": "unknown",
   "statistic": "Power spectrum",
   "role": "null",
@@ -12,8 +12,7 @@
     10000,
     14000,
     28000,
-    35000,
-    "fullsky"
+    35000
   ],
   "cut": "FULL map resolution \u2014 no scale cut applied (PS lmax=1020, HOS scales1234)",
   "scales_included": {
@@ -69,12 +68,6 @@
         "fom3_per_seed_mean": 965766.0927565233,
         "fom3_per_seed_std": 155261.77814242922,
         "n_seeds": 4
-      },
-      "fullsky": {
-        "fom3_pooled": 1103885.3001042514,
-        "fom3_per_seed_mean": 1391487.3344787615,
-        "fom3_per_seed_std": 378651.19027291844,
-        "n_seeds": 5
       }
     }
   },
@@ -244,33 +237,6 @@
       "seed_choice": null,
       "fom3_per_seed_mean": 965766.0927565233,
       "fom3_per_seed_std": 155261.77814242922
-    },
-    {
-      "area": "fullsky",
-      "n_seeds": 5,
-      "runs": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "n_samples": 15000,
-      "mean": [
-        0.2582769989967346,
-        0.840505838394165,
-        -1.0219582319259644
-      ],
-      "std": [
-        0.007669361773878336,
-        0.014253435656428337,
-        0.04805878922343254
-      ],
-      "fom3_pooled": 1103885.3001042514,
-      "seed_shown": null,
-      "seed_choice": null,
-      "fom3_per_seed_mean": 1391487.3344787615,
-      "fom3_per_seed_std": 378651.19027291844
     }
   ],
   "runs_dropped": {
@@ -289,8 +255,7 @@
         3,
         "unreadable (ValueError)"
       ]
-    ],
-    "fullsky": []
+    ]
   },
   "versions": {
     "numpy": "1.26.4",

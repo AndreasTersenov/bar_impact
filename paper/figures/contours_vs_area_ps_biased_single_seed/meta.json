@@ -2,29 +2,29 @@
   "slug": "contours_vs_area_ps_biased_single_seed",
   "title": "contours vs area ps biased single seed",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:14+00:00",
-  "published_at_repo_commit": "9ef3572",
-  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed",
+  "published_utc": "2026-08-04T15:53:48+00:00",
+  "published_at_repo_commit": "cade6ad",
+  "source_stem": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed",
   "files": {
     "figure.pdf": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.pdf",
-      "sha256": "5f75ea04e0a5844e0466245a311e043173aa7b9b900c60385483f9418518dd90",
-      "bytes": 249934
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed.pdf",
+      "sha256": "948feb92f0fe6cae97c3c761c5a627b1f37093fd4ae83212cb1158e0ca8ab2cc",
+      "bytes": 383846
     },
     "figure.png": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed.png",
-      "sha256": "6f9599f7e74f17c6b58fd885804ab3ab64a0ba4ae99f9fc6010092333a60ab58",
-      "bytes": 399426
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed.png",
+      "sha256": "c33a92e8d31cdba3a89970b8187486c439c3fb03a0c884844c4c3489588ae958",
+      "bytes": 380238
     },
     "values.csv": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_values.csv",
-      "sha256": "1ca94a13e6ab2129b7b13f41c845d641594113dc59d2ca719477a29692eb935a",
-      "bytes": 2111
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed_values.csv",
+      "sha256": "fc002128e3de9536f78dcb1b9c22be6eb2deb424c523fd8db36c56b3a14cf9d4",
+      "bytes": 1825
     },
     "provenance.json": {
-      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_with_fullsky_single_seed_provenance.json",
-      "sha256": "547102bd5964f107cc00de14c65d991b26d4b6efb5d46cc09d358646790d947c",
-      "bytes": 17032
+      "from": "outputs/plots/contours_vs_area/contours_vs_area_ps_biased_l37-1020_single_seed_provenance.json",
+      "sha256": "cfcb0c6a5d079e4b2633a22e8dffa95f2c0465e506d149730d1812e4e84b7832",
+      "bytes": 15072
     }
   },
   "note": null,
@@ -34,6 +34,6 @@
       "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
     ]
   },
-  "value_rows": 21,
+  "value_rows": 18,
   "n_caveats": 5
 }

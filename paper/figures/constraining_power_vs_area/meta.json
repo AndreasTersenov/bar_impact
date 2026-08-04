@@ -2,8 +2,8 @@
   "slug": "constraining_power_vs_area",
   "title": "constraining power vs area",
   "paper_position": null,
-  "published_utc": "2026-08-03T21:10:12+00:00",
-  "published_at_repo_commit": "9ef3572",
+  "published_utc": "2026-08-04T15:53:47+00:00",
+  "published_at_repo_commit": "cade6ad",
   "source_stem": "outputs/plots/submean_masked_peaks/scaling_vs_area_all_stats",
   "files": {
     "figure.pdf": {
