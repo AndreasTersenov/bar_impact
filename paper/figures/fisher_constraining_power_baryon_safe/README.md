@@ -3,7 +3,7 @@
 - **source**: `outputs/diagnostics/constraining_power/fisher_contours_baryon_safe`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-04T16:23:24+00:00
-- **published**: 2026-08-04T16:27:26+00:00 at repo `d9ca381`
+- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
 - **rows in values.csv**: 4
 
 ## Scales included

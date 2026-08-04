@@ -8,8 +8,8 @@ integrity and source drift with `verify`.
 
 | # | figure | what | generator commit | value rows | warns |
 |---|---|---|---|---|---|
-| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `unknown` | 108 | **1** |
-| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `unknown` | 132 | **1** |
+| 1 | [`ps_bias_vs_lmax`](ps_bias_vs_lmax/) | PS baryon bias vs upper scale cut, 6 footprints | `06e07006` | 108 | - |
+| 2 | [`ps_bias_vs_lmax_with_fullsky`](ps_bias_vs_lmax_with_fullsky/) | PS baryon bias vs cut, 6 footprints plus full sky | `06e07006` | 132 | - |
 | 6.0 | [`bnt_flagship_embedding_matched_c460`](bnt_flagship_embedding_matched_c460/) | FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED) | `unknown` | 2 | **1** |
 | 6.1 | [`bnt_flagship_matched_c460_pooled`](bnt_flagship_matched_c460_pooled/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled) | `unknown` | 2 | **1** |
 | 6.2 | [`bnt_flagship_matched_c460_single_seed`](bnt_flagship_matched_c460_single_seed/) | CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed) | `unknown` | 2 | **1** |
@@ -22,8 +22,8 @@ integrity and source drift with `verify`.
 | 7 | [`bnt_bin1_vs_cut_optimal`](bnt_bin1_vs_cut_optimal/) | BNT bin-1 vs non-BNT, optimal binning (rebin 40) | `701fba8` | 216 | **1** |
 | 8 | [`fisher_constraining_power_baryon_safe`](fisher_constraining_power_baryon_safe/) | Fisher 68% contours, baryon-safe regime (full sky) | `unknown` | 4 | **3** |
 | 9 | [`fisher_constraining_power_full`](fisher_constraining_power_full/) | Fisher 68% contours, full-resolution regime (full sky) | `unknown` | 4 | **3** |
-| 11 | [`fom_vs_area`](fom_vs_area/) | FoM3 vs survey area, single panel (guide pinned to PS) | `unknown` | 18 | **1** |
-| 12 | [`fom_vs_area_low_guide`](fom_vs_area_low_guide/) | FoM3 vs survey area, guide dropped clear of the data | `unknown` | 18 | **1** |
+| 11 | [`fom_vs_area`](fom_vs_area/) | FoM3 vs survey area, single panel (guide pinned to PS) | `06e07006` | 18 | - |
+| 12 | [`fom_vs_area_low_guide`](fom_vs_area_low_guide/) | FoM3 vs survey area, guide dropped clear of the data | `06e07006` | 18 | - |
 | - | [`bias_vs_area_three_stats`](bias_vs_area_three_stats/) | bias vs area three stats | `d9ca381` | 18 | - |
 | - | [`bnt_frac_diff_l1_scale1`](bnt_frac_diff_l1_scale1/) | BNT vs standard basis: fractional baryonic impact (l1_scale1) | `?` | 276 | **2** |
 | - | [`bnt_frac_diff_l1_scale1_14000`](bnt_frac_diff_l1_scale1_14000/) | BNT vs standard basis: fractional baryonic impact (l1_scale1_14000) | `?` | 276 | **2** |
@@ -59,8 +59,8 @@ integrity and source drift with `verify`.
 | - | [`contours_vs_area_ps_biased_single_seed_with_fullsky`](contours_vs_area_ps_biased_single_seed_with_fullsky/) | contours vs area ps biased single seed with full sky | `unknown` | 21 | **1** |
 | - | [`contours_vs_area_ps_null_pooled`](contours_vs_area_ps_null_pooled/) | contours vs area ps null pooled | `unknown` | 18 | **1** |
 | - | [`contours_vs_area_ps_null_pooled_with_fullsky`](contours_vs_area_ps_null_pooled_with_fullsky/) | contours vs area ps null pooled with full sky | `unknown` | 21 | **1** |
-| - | [`hos_bnt_l1_vs_scale_cut`](hos_bnt_l1_vs_scale_cut/) | L1-norm: BNT vs scale cut vs all scales | `a3f63d23f6c425f005185ba5e2ba2fb219773eeb` | 3 | **2** |
-| - | [`hos_bnt_peaks_vs_scale_cut`](hos_bnt_peaks_vs_scale_cut/) | Peak counts: BNT vs scale cut vs all scales (baryonified) | `cd90af18dd6ed3086423e62af72340014bdc6cc3` | 3 | - |
+| - | [`hos_bnt_l1_vs_scale_cut`](hos_bnt_l1_vs_scale_cut/) | hos bnt l1 vs scale cut | `unknown` | 3 | **1** |
+| - | [`hos_bnt_peaks_vs_scale_cut`](hos_bnt_peaks_vs_scale_cut/) | hos bnt peaks vs scale cut | `unknown` | 3 | **1** |
 | - | [`hos_frac_diff_l1`](hos_frac_diff_l1/) | Fractional baryonic impact on the starlet l1-norm (full sky) | `?` | 426 | **2** |
 | - | [`hos_frac_diff_l1_14000`](hos_frac_diff_l1_14000/) | Fractional baryonic impact on the starlet l1-norm (14000 deg2) | `?` | 426 | **2** |
 | - | [`hos_frac_diff_peaks`](hos_frac_diff_peaks/) | Fractional baryonic impact on the starlet peak counts (full sky) | `?` | 353 | **2** |

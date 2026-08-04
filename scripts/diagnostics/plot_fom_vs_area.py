@@ -78,6 +78,11 @@ SERIES = [
     ("L1 norm",        HOS, [avg(hf("", A)) for A in HOS],     "#009E73", "-.", "^"),
 ]
 
+# One set of stroke weights across the line figures. Same values as plot_scaling_vs_area.py
+# and plot_nsigma_vs_area.py so the family reads as one figure set.
+LW, MS, ELW = 2.2, 7.0, 1.6
+CAPSIZE, CAPTHICK = 6.0, 2.0
+
 W = 7.0    # submitted-style canvas; paper_v1 fonts are ~2x the A&A ones
 fig, ax = plt.subplots(figsize=(W, W * 0.95))
 
@@ -87,8 +92,12 @@ for name, A, m, c, ls, mk in SERIES:
     fom = np.array([x[0] for x in m])
     ef = np.array([x[1] for x in m])
     slope = linregress(np.log(A), np.log(fom)).slope
-    ax.errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=4.0, lw=1.3,
-                capsize=2, elinewidth=0.9,
+    # Stroke weights shared with plot_scaling_vs_area.py and plot_nsigma_vs_area.py, which were
+    # thickened first; this figure was left at the old lw 1.3 / ms 4.0 / elinewidth 0.9 /
+    # capsize 2 and read as a different, fainter figure beside them.
+    # Do NOT add markeredgewidth here: it overrides capthick and silently erases every cap.
+    ax.errorbar(A, fom, yerr=ef, color=c, ls=ls, marker=mk, ms=MS, lw=LW,
+                capsize=CAPSIZE, capthick=CAPTHICK, elinewidth=ELW,
                 label=rf"{name} ($\alpha={slope:+.2f}$)")
     if name == "Power spectrum":
         ps_anchor = float(fom[list(A).index(14000.0)])
@@ -106,6 +115,7 @@ for name, A, m, c, ls, mk in SERIES:
 # it is now a reproducible option. The factor is COSMETIC: it shifts the line vertically
 # and changes nothing about the slope, which is the only thing the guide asserts.
 GUIDE_SCALE = float(os.environ.get("GUIDE_SCALE", "1.0"))
+
 Aref = np.array([1.7e3, 4.2e4])
 ax.plot(Aref, GUIDE_SCALE * ps_anchor * (Aref / 14000.) ** 1.5, color="0.45", ls=":",
         lw=1.0, zorder=0, label=r"$A^{+3/2}$ (ideal)")

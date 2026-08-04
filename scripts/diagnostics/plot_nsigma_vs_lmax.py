@@ -49,7 +49,15 @@ AREAS = [2000, 5000, 10000, 14000, 28000, 35000]
 THRESHOLD = 0.3
 ERRBAR = os.environ.get("ERRBAR", "std")
 WANT_FULLSKY = os.environ.get("FULLSKY", "0") == "1"
-WANT_SUBTITLE = os.environ.get("SUBTITLE", "1") != "0"
+# The provenance/settings banner is OFF by default: it is a working note ("6 footprints |
+# monopole-subtracted PS | step-40 | ...") that belongs in the caption, not burned into a
+# paper figure where it cannot be edited. SUBTITLE=1 brings it back for a working copy.
+WANT_SUBTITLE = os.environ.get("SUBTITLE", "0") != "0"
+
+# Stroke weights shared with plot_scaling_vs_area.py / plot_nsigma_vs_area.py.
+# Do NOT add markeredgewidth: it overrides capthick and silently erases every cap.
+LW, MS, ELW = 2.2, 7.0, 1.6
+CAPSIZE, CAPTHICK = 6.0, 2.0
 
 
 def read_agg(path, area_is_str=False):
@@ -111,23 +119,32 @@ if WANT_FULLSKY:
     curves.append(("Full sky", "fullsky", *fs["fullsky"]))
 
 n = len(curves)
-fig, axes = plt.subplots(1, n, figsize=(4.7 * n, 5.8), sharex=not WANT_FULLSKY)
+# CANVAS, not font size. paper_v1.mplstyle sizes (15 pt labels, 14 pt ticks) are correct --
+# fom_vs_area.py uses them on a 7 in canvas and reads well. The problem here was 4.7 in per
+# panel: at 28.2 in wide, those same 15 pt labels are a quarter of the size they appear at
+# in every single-panel figure, and shrink again when the figure is placed in the paper.
+# 2.6 in per panel puts the type back on the same visual footing and lets the thickened
+# strokes read. Do not "fix" this by enlarging fonts: that would desynchronise this figure
+# from the shared style sheet, which is the drift the restyle work exists to remove.
+fig, axes = plt.subplots(1, n, figsize=(3.05 * n, 3.5), sharex=not WANT_FULLSKY)
 axes = np.atleast_1d(axes)
 
 RESULT = {}
 for ax, (label, area, cuts, mean, std, nseed) in zip(axes, curves):
     err = std / np.sqrt(nseed) if ERRBAR == "sem" else std
-    ax.errorbar(cuts, mean, yerr=err, fmt="o", ms=3.2, elinewidth=0.9,
-                capsize=2, color="C0", zorder=3)
-    ax.axhline(THRESHOLD, color="crimson", ls="--", lw=1.0, zorder=2)
-    ax.set_title(rf"Area = {label}" if area != "fullsky" else "Full sky", pad=4)
+    ax.errorbar(cuts, mean, yerr=err, fmt="o", ms=MS, elinewidth=ELW,
+                capsize=CAPSIZE, capthick=CAPTHICK, color="C0", zorder=3)
+    ax.axhline(THRESHOLD, color="crimson", ls="--", lw=LW * 0.8, zorder=2)
+    # Just "2000 deg$^2$" -- the "Area =" prefix is repeated six times to say what the
+    # unit already says, and it costs the width the panels need.
+    ax.set_title(label if area != "fullsky" else "Full sky", pad=4)
     ax.grid(True, alpha=0.25, ls=":")
     ax.set_ylim(0, None)
     RESULT[area] = (cuts, mean, err, nseed)
 
     xi, xg = crossing(cuts, mean)
     if xi == xi:
-        ax.axvline(xi, color="crimson", ls=":", lw=0.8, alpha=0.6, zorder=1)
+        ax.axvline(xi, color="crimson", ls=":", lw=LW * 0.7, alpha=0.6, zorder=1)
 
 axes[0].set_ylabel(r"baryon tension $\,n_\sigma\;(\Omega_\mathrm{m},\sigma_8,w_0)$")
 fig.supxlabel(r"upper scale cut $\,\ell_\mathrm{max}$", y=0.02)
@@ -146,7 +163,10 @@ if WANT_SUBTITLE:
              + rf"/{int(RESULT[AREAS[0]][3][0])} runs{extra}",
              ha="center", va="top", fontsize=11, color="0.4")
 
-fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 0.94 if WANT_SUBTITLE else 1.0))
+# w_pad, not wspace: tight_layout recomputes spacing and would overwrite a wspace set
+# on the gridspec. It cannot go to 0 -- each panel has its OWN y tick labels because the
+# tension range differs per footprint, so the gap has to clear those numbers.
+fig.tight_layout(pad=0.4, w_pad=0.15, rect=(0, 0.03, 1, 0.94 if WANT_SUBTITLE else 1.0))
 
 out = f"{REPO}/outputs/plots/ps_submean_l37/nsigma_vs_lmax"
 if WANT_FULLSKY:

@@ -1,18 +1,14 @@
 # PS baryon bias vs upper scale cut, 6 footprints
 
 - **source**: `outputs/plots/ps_submean_l37/nsigma_vs_lmax`
-- **generator commit**: `unknown`
-- **generated**: 2026-08-04T16:24:03+00:00
-- **published**: 2026-08-04T16:27:26+00:00 at repo `d9ca381`
+- **generator commit**: `06e07006`
+- **generated**: 2026-08-04T16:59:48+00:00
+- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
 - **rows in values.csv**: 108
 
 ## Scales included
 
 - **power_spectrum**: monopole-subtracted MASTER, lmin=37, rebin=10; upper cut varies along the x-axis over the step-40 grid 340..1020
-
-## Known gaps
-
-- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

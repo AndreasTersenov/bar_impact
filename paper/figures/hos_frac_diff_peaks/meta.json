@@ -2,8 +2,8 @@
   "slug": "hos_frac_diff_peaks",
   "title": "Fractional baryonic impact on the starlet peak counts (full sky)",
   "paper_position": null,
-  "published_utc": "2026-08-04T16:27:26+00:00",
-  "published_at_repo_commit": "d9ca381",
+  "published_utc": "2026-08-04T17:00:48+00:00",
+  "published_at_repo_commit": "06e07006",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks",
   "files": {
     "figure.pdf": {

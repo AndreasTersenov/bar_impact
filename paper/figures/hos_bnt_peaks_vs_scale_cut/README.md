@@ -3,7 +3,7 @@
 - **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut`
 - **generator commit**: `unknown`
 - **generated**: 2026-08-04T16:23:45Z
-- **published**: 2026-08-04T16:28:16+00:00 at repo `d9ca381`
+- **published**: 2026-08-04T17:00:48+00:00 at repo `06e07006`
 - **rows in values.csv**: 3
 
 ## Scales included
