@@ -24,5 +24,10 @@ cd /lustre/fsn1/projects/rech/prk/ulx34io/bar_impact || exit 1
 export PYTHONNOUSERSITE=1
 export PYTHONPATH=/lustre/fswork/projects/rech/nzu/ulx34io/cosmostat_src
 export OMP_NUM_THREADS=8
+# GIT_COMMIT must be resolved at SUBMIT time and passed in -- evaluating it here runs on the
+# COMPUTE node, where git is not on PATH, so it silently yields "unknown" and the publish gate
+# rejects the figure as untraceable. Submit with:
+#   sbatch --export=ALL,GIT_COMMIT=$(git rev-parse HEAD) scripts/jz/starlet_scale_ell.slurm
+export GIT_COMMIT="${GIT_COMMIT:-unknown}"
 PY=/lustre/fswork/projects/rech/nzu/ulx34io/envs/jaxili/bin/python
 "$PY" -u scripts/diagnostics/starlet_scale_ell.py --method both --ndelta 8 --nreal 40

@@ -294,6 +294,21 @@ def cmd_publish(args):
                              f"{r.get('fom3_per_seed_std', float('nan')):.3g} |\n")
             if _f.get("pooled_vs_per_seed"):
                 fh.write(f"\n{_f['pooled_vs_per_seed']}\n")
+        # A generic table, rendered from provenance so a figure whose POINT is a set of
+        # measured numbers can put them in front of the reader instead of burying them in a
+        # CSV. Any generator can supply it:
+        #   provenance["readme_table"] = {"title": ..., "columns": [...], "rows": [[...], ...]}
+        _t = prov.get("readme_table")
+        if _t and _t.get("columns") and _t.get("rows"):
+            fh.write(f"\n## {_t.get('title', 'Measured values')}\n\n")
+            if _t.get("intro"):
+                fh.write(_t["intro"].strip() + "\n\n")
+            fh.write("| " + " | ".join(str(c) for c in _t["columns"]) + " |\n")
+            fh.write("|" + "|".join(["---"] * len(_t["columns"])) + "|\n")
+            for row in _t["rows"]:
+                fh.write("| " + " | ".join(str(x) for x in row) + " |\n")
+            if _t.get("footnote"):
+                fh.write("\n" + _t["footnote"].strip() + "\n")
         if prov.get("presentation_todo"):
             fh.write(f"\n## Presentation TODO before use\n\n{prov['presentation_todo']}\n")
         if warns:

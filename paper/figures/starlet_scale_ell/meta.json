@@ -1,0 +1,37 @@
+{
+  "slug": "starlet_scale_ell",
+  "title": "Starlet scale to multipole response",
+  "paper_position": null,
+  "published_utc": "2026-08-05T08:49:21+00:00",
+  "published_at_repo_commit": "cd2a48f3",
+  "source_stem": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell.pdf",
+      "sha256": "5ca1e6b7e54f318e2f0583a7d0ab901e111524cd23dfc6da53c505fc9abe24ad",
+      "bytes": 20464
+    },
+    "figure.png": {
+      "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell.png",
+      "sha256": "63219327863b54f3c99645f2a32dce537ba0bc39224bdf980961bcce7cbb1088",
+      "bytes": 142550
+    },
+    "values.csv": {
+      "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell_values.csv",
+      "sha256": "01784cc10c0601313ee9f6a6a548ba2217562c8e990f47eb9828db406d72212a",
+      "bytes": 240
+    },
+    "provenance.json": {
+      "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell_provenance.json",
+      "sha256": "1ad704fb42f0c3dcaa8d4f49cfdcbdd8af56565459e64e2969a24ea977dd77e2",
+      "bytes": 3927
+    }
+  },
+  "note": "Squared harmonic response W_j(l)^2 of each starlet scale, peak-normalised. Measured deterministically from single-pixel (white) inputs, so it carries no Monte Carlo error; cross-validated against 40 white-noise realisations (1.8% median agreement) and isotropic to 0.03%. Appendix material: it fixes the multipole band of each wavelet scale, which licenses the baryon-safe cut and the power-spectrum floor l >= 37. Method and interpretation: docs/starlet_scale_ell.md.",
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 5,
+  "n_caveats": 4
+}

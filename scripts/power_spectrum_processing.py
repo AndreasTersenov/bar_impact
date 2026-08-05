@@ -41,7 +41,7 @@ def get_power_spectrum(Map, lmax=1024):
 
 
 def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True, 
-                 lmax=1024, verbose=False):
+                 lmax=1024, verbose=False, out_dir=None):
     """Process a single file: extract kappa map, compute power spectrum, save results."""
     
     # Define output filename based on bin number and noise level
@@ -50,7 +50,16 @@ def process_file(file_path, bin_number=2, noise_level=0.26, add_noise=True,
     else:
         suffix = f"_cls_bin{bin_number}_new.npy"
     
-    save_path = file_path.replace(".h5", suffix)
+    if out_dir:
+        # Writing next to the input is impossible when the maps live in the READ-ONLY shared
+        # dataset (/lustre/fsmisc/dataset/CosmoGridV1). Mirror only the realisation directory
+        # into out_dir -- every perm carries the same basename, so the perm name is what makes
+        # the output unique, and dropping it would have 200 realisations overwrite one file.
+        perm = os.path.basename(os.path.dirname(file_path))
+        base = os.path.basename(file_path).replace(".h5", suffix)
+        save_path = os.path.join(out_dir, f"{perm}_{base}")
+    else:
+        save_path = file_path.replace(".h5", suffix)
     
     # Map key based on bin number
     map_key = f"kg/stage3_lensing{bin_number}"
@@ -124,6 +133,10 @@ def main():
     # Output options
     parser.add_argument("--save-combined", action="store_true",
                         help="Save combined Cls to a single file.")
+    parser.add_argument("--out-dir", default=None,
+                        help="write per-realisation outputs here instead of beside the input "
+                             "map. Required when the maps are read-only, e.g. the shared "
+                             "CosmoGridV1 dataset.")
     parser.add_argument("--combined-output", 
                         help="Path for combined output file.")
     
@@ -161,6 +174,9 @@ def main():
             if os.path.exists(os.path.join(base_dir, cosmo, perm, filename))
         ]
     
+    if args.out_dir:
+        os.makedirs(args.out_dir, exist_ok=True)
+
     # Print configuration information
     map_type = "baryonified" if args.baryonified else "nobaryons"
     dataset_type = "fiducial" if args.fiducial else "grid"
@@ -182,7 +198,8 @@ def main():
             noise_level=args.noise_level,
             add_noise=not args.no_noise,
             lmax=args.lmax,
-            verbose=args.verbose
+            verbose=args.verbose,
+            out_dir=args.out_dir
         )
         results = list(tqdm(
             pool.imap(process_func, file_paths),
@@ -198,6 +215,8 @@ def main():
     # Optionally save combined results
     if args.save_combined and successful:
         combined_output = args.combined_output
+        if not combined_output and args.out_dir:
+            base_dir = args.out_dir      # never default the combined file into a read-only tree
         if not combined_output:
             dataset_name = "fiducial" if args.fiducial else "grid"
             map_suffix = "baryonified" if args.baryonified else "nobaryons"
