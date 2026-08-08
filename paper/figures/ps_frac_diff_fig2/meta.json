@@ -2,19 +2,19 @@
   "slug": "ps_frac_diff_fig2",
   "title": "Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:09:05+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "published_utc": "2026-08-05T15:54:00+00:00",
+  "published_at_repo_commit": "3d39df81",
   "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.pdf",
-      "sha256": "e8efc62d7d9222191baf9b352d6f6f33a4a716624e84a4a37cb3469a670112b7",
-      "bytes": 13244
+      "sha256": "444ca614de7fd56b0767a0a6dacfb95f8e60d477206be3bc9cfcef3c724ede4f",
+      "bytes": 13257
     },
     "figure.png": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.png",
-      "sha256": "eea459ad620ab0cebd486894ef77b0ad11157b276fc0265c2d34e5fe2317e31a",
-      "bytes": 106305
+      "sha256": "45535448c4c55d99a8073406fb2a2a74937d996223d6a4d72325c3bb27f256d9",
+      "bytes": 102593
     },
     "values.csv": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_provenance.json",
-      "sha256": "d03b56505958e0dca915ce51bb43b0f38bfb88897e3b2b9a67b2deb159a4ada7",
-      "bytes": 4377
+      "sha256": "d140c47c1950aa1244bd8e807aa39fae1208731eb82c7b39191e9038a5b9fc2e",
+      "bytes": 4410
     }
   },
   "note": null,
@@ -32,7 +32,6 @@
     "passed": true,
     "warnings": [
       "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
       "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
     ]
   },

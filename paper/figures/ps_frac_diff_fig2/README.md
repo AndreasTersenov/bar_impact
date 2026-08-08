@@ -1,15 +1,14 @@
 # Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)
 
 - **source**: `outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey`
-- **generator commit**: `unknown`
-- **generated**: 2026-08-04T16:24:22Z
-- **published**: 2026-08-04T17:09:05+00:00 at repo `a57658d9`
+- **generator commit**: `3d39df81936d88073602be68d6a734b2c4296925`
+- **generated**: 2026-08-05T15:53:09Z
+- **published**: 2026-08-05T15:54:00+00:00 at repo `3d39df81`
 - **rows in values.csv**: 40
 
 ## Known gaps
 
 - _values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to
-- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 - provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') — a figure that does not say which multipoles and wavelet scales went in cannot be interpreted
 
 ## Caveats (from provenance)

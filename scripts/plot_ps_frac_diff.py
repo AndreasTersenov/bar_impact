@@ -381,7 +381,9 @@ def main():
         ax.set_ylabel(YLAB)
         if a.xscale == "log":
             ax.set_xscale("log")
-        ax.legend()
+        # Two columns: half the height keeps the box in the empty top-right strip, clear of the
+        # bin-1 curve and band that a full-height single-column legend used to sit on.
+        ax.legend(ncol=2, loc="upper right", columnspacing=1.0, handlelength=2.2)
         ylimits(ax, curves, bands)
     
     outdir = os.path.join(REPO, a.outdir)

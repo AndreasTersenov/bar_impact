@@ -2,19 +2,19 @@
   "slug": "ps_frac_diff_fig2_14000",
   "title": "Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:09:05+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "published_utc": "2026-08-05T15:54:00+00:00",
+  "published_at_repo_commit": "3d39df81",
   "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.pdf",
-      "sha256": "c63bbf0a71463bc2ddfb0c31739d66eaf4419839604b52a02dba43a2f7ff7ffc",
-      "bytes": 13236
+      "sha256": "1144470b44ad8a8c5c3dbd0d72953cb956bb7593f3734a5eae20b3a6b19c7667",
+      "bytes": 13246
     },
     "figure.png": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.png",
-      "sha256": "942a4db6e4dde1ce138b66b7cdbf76073322859bccfacb104ea1150104fc43ea",
-      "bytes": 110727
+      "sha256": "00f10cc829365f722bb48b5b5ae01aa354bdc4b0fc8199d4f150bd7871770acd",
+      "bytes": 108138
     },
     "values.csv": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_values.csv",
@@ -23,8 +23,8 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_provenance.json",
-      "sha256": "dc77f83a95c045bd10f871927e3ff20355c8263b81aac44997b7ce72bca9da02",
-      "bytes": 4419
+      "sha256": "382f98795f30b17a8ee610e52f07c11ef8bc5a026e2a350090d6c3817c681590",
+      "bytes": 4452
     }
   },
   "note": null,
@@ -32,7 +32,6 @@
     "passed": true,
     "warnings": [
       "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
       "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
     ]
   },
