@@ -1,0 +1,167 @@
+{
+  "figure": "noiseless_bnt_transformed_maps_flatsky",
+  "generator": "scripts/plot_tomographic_bnt_maps.py",
+  "command": "scripts/plot_tomographic_bnt_maps.py --noise-scale 0.6",
+  "git_commit": "3d39df81936d88073602be68d6a734b2c4296925",
+  "generated_utc": "2026-08-08T17:18:32Z",
+  "replaces": "notebooks/tomographic_maps_bnt.ipynb (18% NUL after the RAID0 failure; code cells intact, image outputs destroyed)",
+  "mplstyle": "matplotlib default + healpy gnomview projection; no repo style sheet. These are image panels rather than line plots, so styles/paper_v1.mplstyle (which sets line/tick/font conventions for the contour and curve figures) would change nothing that is visible here.",
+  "conventions": {
+    "scales_included": "NOT APPLICABLE -- this is a map-level figure. No wavelet decomposition, no multipole cut and no scale selection is applied; every panel is the full projected convergence field at the native NSIDE=512 resolution.",
+    "quantity_plotted": "kappa - <kappa> per panel (the per-panel mean is removed; see colour_scale.why_mean_subtracted)",
+    "tomographic_bins": "stage3_lensing1..4, increasing in source redshift"
+  },
+  "input_map": "/lustre/fsmisc/dataset/CosmoGridV1/stage3_forecast/fiducial/cosmo_fiducial/perm_0000/projected_probes_maps_nobaryons512.h5",
+  "simulation": "CosmoGridV1 stage3_forecast, fiducial, perm_0000, nobaryons, NSIDE=512",
+  "cosmology": {
+    "name": "fiducial",
+    "Om": 0.26,
+    "s8": 0.84,
+    "w0": -1.0,
+    "H0": 67.36,
+    "why": "fiducial"
+  },
+  "patch": {
+    "centre_lonlat_deg": [
+      180.0,
+      30.0
+    ],
+    "size_deg": 33.333333333333336,
+    "reso_arcmin_per_pixel": 10.0,
+    "pixels": 200,
+    "projection": "healpy gnomview (gnomonic)"
+  },
+  "patch_selection": "Centres scanned on a 30x30 deg grid, ranked by peak/sigma of the bin-1 fluctuation field. (180,30) scores 59.1 (skew 10.4); the notebook's (90,90) is the north pole and scores 19.4.",
+  "colour_scale": {
+    "quantity": "kappa - <kappa>, per panel",
+    "range_per_row": {
+      "standard_noiseless": 0.017800805268691957,
+      "standard_noisy": 0.02490609287302692,
+      "bnt_noiseless": 0.005478907068954009,
+      "bnt_noisy": 0.03224748332190648
+    },
+    "rule": "+/- 2.0 x (largest bin sigma in that row)",
+    "why_mean_subtracted": "Lensing is cumulative, so each bin has a different mean; on a shared absolute scale bin 1 was squeezed into the dark end and bin 4 clipped past vmax. The mean carries no structural information.",
+    "why_shared_per_row": "Preserves the amplitude ratio between bins, which IS the accumulation (standard sigma grows 3.3x bin1->bin4) and its absence under BNT (0.63x). Per-panel normalisation would divide exactly that out."
+  },
+  "display_smoothing": {
+    "gaussian_sigma_px": 0.0,
+    "applied": false
+  },
+  "noise": {
+    "sigma_e": 0.26,
+    "n_gal_arcmin2_nominal": 6.75,
+    "nside": 512,
+    "seed": 1234,
+    "scale_factor": 0.6,
+    "effective_n_gal_arcmin2": 18.75,
+    "order": "noise added to the STANDARD maps, then BNT applied",
+    "note": "REDUCED by 0.6x for visibility, equivalent to n_gal = 18.8/arcmin^2 rather than 6.75. The ANALYSIS uses the full Euclid-like noise; this affects the figure only and must be stated in the caption."
+  },
+  "bnt_matrix": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      -1.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.4521097,
+      -1.4521097,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.25127807,
+      -1.251278,
+      1.0
+    ]
+  ],
+  "caveats": [
+    "BNT row 0 is the identity on bin 1, so 'BNT bin 1' and standard 'Bin 1' are the SAME field. Not four independent transforms.",
+    "NO display smoothing. Per-pixel SNR is below 1 in every bin of the noisy maps (standard 0.19/0.31/0.50/0.61, BNT 0.19/0.11/0.10/0.07), so surviving structure in the high-z standard bins reads as faint large-scale mottling rather than crisp structure. The standard-vs-BNT SNR ratio at bin 4 is still ~9x.",
+    "The colour range differs between the noiseless and the noisy figure (each row sets its own), so the two are NOT directly comparable in amplitude. They are comparable in texture and in within-row contrast.",
+    "One realisation, one patch. Illustrative, not a statistical statement."
+  ],
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "healpy": "1.18.0",
+    "matplotlib": "3.11.1"
+  },
+  "shows": "BNT basis, noiseless, tomographic bins 1-4",
+  "colour_range": [
+    -0.005478907068954009,
+    0.005478907068954009
+  ],
+  "series": [
+    {
+      "basis": "bnt",
+      "noise": "noiseless",
+      "bin": 1,
+      "n_seeds": 1,
+      "realisation": "perm_0000",
+      "sigma": 0.002699632029978719,
+      "sigma_signal": 0.002699632029978719,
+      "sigma_noise": 0.0,
+      "snr": Infinity,
+      "colour_limit": 0.005478907068954009,
+      "min": -0.0037879640391562134,
+      "max": 0.1670597876267042
+    },
+    {
+      "basis": "bnt",
+      "noise": "noiseless",
+      "bin": 2,
+      "n_seeds": 1,
+      "realisation": "perm_0000",
+      "sigma": 0.0022121336574722223,
+      "sigma_signal": 0.0022121336574722223,
+      "sigma_noise": 0.0,
+      "snr": Infinity,
+      "colour_limit": 0.005478907068954009,
+      "min": -0.004158968248893507,
+      "max": 0.07141427308924031
+    },
+    {
+      "basis": "bnt",
+      "noise": "noiseless",
+      "bin": 3,
+      "n_seeds": 1,
+      "realisation": "perm_0000",
+      "sigma": 0.0027394535344770045,
+      "sigma_signal": 0.0027394535344770045,
+      "sigma_noise": 0.0,
+      "snr": Infinity,
+      "colour_limit": 0.005478907068954009,
+      "min": -0.006506057320445178,
+      "max": 0.055744135446672075
+    },
+    {
+      "basis": "bnt",
+      "noise": "noiseless",
+      "bin": 4,
+      "n_seeds": 1,
+      "realisation": "perm_0000",
+      "sigma": 0.00170776482959054,
+      "sigma_signal": 0.00170776482959054,
+      "sigma_noise": 0.0,
+      "snr": Infinity,
+      "colour_limit": 0.005478907068954009,
+      "min": -0.0044769574276338365,
+      "max": 0.013432706336184019
+    }
+  ],
+  "companion_figures": {
+    "standard_noiseless": "noiseless_tomographic_maps_flatsky",
+    "standard_noisy": "noisy_tomographic_maps_flatsky",
+    "bnt_noisy": "noisy_bnt_transformed_maps_flatsky"
+  }
+}

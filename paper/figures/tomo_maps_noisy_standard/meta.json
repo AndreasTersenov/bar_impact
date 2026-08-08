@@ -1,0 +1,37 @@
+{
+  "slug": "tomo_maps_noisy_standard",
+  "title": "Appendix D - tomographic convergence maps, standard basis, with shape noise",
+  "paper_position": null,
+  "published_utc": "2026-08-08T17:18:32+00:00",
+  "published_at_repo_commit": "3d39df81",
+  "source_stem": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky.pdf",
+      "sha256": "e791cde5fe959372b5360e4f01389c481cd1a893e7f9bf49d19eb17ca410112a",
+      "bytes": 321960
+    },
+    "figure.png": {
+      "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky.png",
+      "sha256": "d50177bd9b93bdf9fe920daa8cb533b70deb816f7745720027b30e2d529ac59b",
+      "bytes": 792625
+    },
+    "values.csv": {
+      "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky_values.csv",
+      "sha256": "89d21a12973a78e0fed225f4e6e7bb002fc9848f5a7904aada9cc3f7d5ef5d7d",
+      "bytes": 780
+    },
+    "provenance.json": {
+      "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky_provenance.json",
+      "sha256": "9a3bddedae716dadf9f76aa9f407a9fdf689195c0e947136b622b5ddaa3713a8",
+      "bytes": 6360
+    }
+  },
+  "note": null,
+  "gate": {
+    "passed": true,
+    "warnings": []
+  },
+  "value_rows": 4,
+  "n_caveats": 4
+}

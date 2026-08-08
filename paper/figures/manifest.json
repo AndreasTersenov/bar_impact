@@ -698,29 +698,29 @@
       "slug": "bias_vs_area_three_stats",
       "title": "bias vs area three stats",
       "paper_position": null,
-      "published_utc": "2026-08-04T17:09:02+00:00",
-      "published_at_repo_commit": "a57658d9",
+      "published_utc": "2026-08-06T09:56:04+00:00",
+      "published_at_repo_commit": "3d39df81",
       "source_stem": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.pdf",
-          "sha256": "427aa28d36afcea70d76a81f2a0b90f9707b50190fe6dcf2144c6b6c8297c212",
-          "bytes": 18968
+          "sha256": "d5ddf2aef720587527af32e3e78fd6e86a7208127186bbba078ea66dce9cac2f",
+          "bytes": 19085
         },
         "figure.png": {
           "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref.png",
-          "sha256": "9dcc5b0520a7a2f91c46903a92867b75eae6ba49b9963ad819bfd0a9fae07d48",
-          "bytes": 176913
+          "sha256": "50753cccb3f9156f78ce80419daf7ff6784abebdcda572e21f3a76ffa9339712",
+          "bytes": 176669
         },
         "values.csv": {
           "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_values.csv",
-          "sha256": "c039401ad983419ad2a440af01b4c6b91b137344d2e2268e7cfa713504972f86",
+          "sha256": "61d115f5775ab4de4c8f147c1ed78e147b8f7be5f4c08c1d6056d93482b3aa2c",
           "bytes": 822
         },
         "provenance.json": {
           "from": "outputs/plots/submean_masked_peaks/nsigma_vs_area_fullres_noref_provenance.json",
-          "sha256": "8b2958b1e4bf452c7a15ebabe8268ab3ea6caca4ddbc56486601e201c845d49c",
-          "bytes": 1389
+          "sha256": "3b2e2160fc8431cde59aa9d6ec79ae90d6968322d0c17149e14ad2ad01758894",
+          "bytes": 1390
         }
       },
       "note": null,
@@ -2428,19 +2428,19 @@
       "slug": "ps_frac_diff_fig2",
       "title": "Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)",
       "paper_position": null,
-      "published_utc": "2026-08-04T17:09:05+00:00",
-      "published_at_repo_commit": "a57658d9",
+      "published_utc": "2026-08-05T15:54:00+00:00",
+      "published_at_repo_commit": "3d39df81",
       "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.pdf",
-          "sha256": "e8efc62d7d9222191baf9b352d6f6f33a4a716624e84a4a37cb3469a670112b7",
-          "bytes": 13244
+          "sha256": "444ca614de7fd56b0767a0a6dacfb95f8e60d477206be3bc9cfcef3c724ede4f",
+          "bytes": 13257
         },
         "figure.png": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.png",
-          "sha256": "eea459ad620ab0cebd486894ef77b0ad11157b276fc0265c2d34e5fe2317e31a",
-          "bytes": 106305
+          "sha256": "45535448c4c55d99a8073406fb2a2a74937d996223d6a4d72325c3bb27f256d9",
+          "bytes": 102593
         },
         "values.csv": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_values.csv",
@@ -2449,8 +2449,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_provenance.json",
-          "sha256": "d03b56505958e0dca915ce51bb43b0f38bfb88897e3b2b9a67b2deb159a4ada7",
-          "bytes": 4377
+          "sha256": "d140c47c1950aa1244bd8e807aa39fae1208731eb82c7b39191e9038a5b9fc2e",
+          "bytes": 4410
         }
       },
       "note": null,
@@ -2458,7 +2458,6 @@
         "passed": true,
         "warnings": [
           "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
           "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
         ]
       },
@@ -2472,19 +2471,19 @@
       "slug": "ps_frac_diff_fig2_14000",
       "title": "Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra",
       "paper_position": null,
-      "published_utc": "2026-08-04T17:09:05+00:00",
-      "published_at_repo_commit": "a57658d9",
+      "published_utc": "2026-08-05T15:54:00+00:00",
+      "published_at_repo_commit": "3d39df81",
       "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.pdf",
-          "sha256": "c63bbf0a71463bc2ddfb0c31739d66eaf4419839604b52a02dba43a2f7ff7ffc",
-          "bytes": 13236
+          "sha256": "1144470b44ad8a8c5c3dbd0d72953cb956bb7593f3734a5eae20b3a6b19c7667",
+          "bytes": 13246
         },
         "figure.png": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.png",
-          "sha256": "942a4db6e4dde1ce138b66b7cdbf76073322859bccfacb104ea1150104fc43ea",
-          "bytes": 110727
+          "sha256": "00f10cc829365f722bb48b5b5ae01aa354bdc4b0fc8199d4f150bd7871770acd",
+          "bytes": 108138
         },
         "values.csv": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_values.csv",
@@ -2493,8 +2492,8 @@
         },
         "provenance.json": {
           "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_provenance.json",
-          "sha256": "dc77f83a95c045bd10f871927e3ff20355c8263b81aac44997b7ce72bca9da02",
-          "bytes": 4419
+          "sha256": "382f98795f30b17a8ee610e52f07c11ef8bc5a026e2a350090d6c3817c681590",
+          "bytes": 4452
         }
       },
       "note": null,
@@ -2502,12 +2501,54 @@
         "passed": true,
         "warnings": [
           "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it",
           "provenance does not state the SCALES included (no 'scales_included', 'conventions', 'cuts', 'ps_edges' or 'lmin') \u2014 a figure that does not say which multipoles and wavelet scales went in cannot be interpreted"
         ]
       },
       "value_rows": 40,
       "n_caveats": 4
+    }
+  },
+  {
+    "slug": "ps_frac_diff_noiseless",
+    "meta": {
+      "slug": "ps_frac_diff_noiseless",
+      "title": "Noiseless fractional baryonic impact on the auto power spectra, standard vs BNT bins",
+      "paper_position": null,
+      "published_utc": "2026-08-05T15:05:02+00:00",
+      "published_at_repo_commit": "3d39df81",
+      "source_stem": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless.pdf",
+          "sha256": "b61d79a6677fc979cc139e61bf6359a10cf882762f715a86ec35486e4312a727",
+          "bytes": 199755
+        },
+        "figure.png": {
+          "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless.png",
+          "sha256": "cadf35168eedf9b12b83b33b8eb64caa77dd8972824c227e51201205c687ef91",
+          "bytes": 149936
+        },
+        "values.csv": {
+          "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless_values.csv",
+          "sha256": "2b80243b9a6950fbc200c8d8d5e8f92de0611c7e54e1a3d5c7a6b4d900def1d1",
+          "bytes": 694
+        },
+        "provenance.json": {
+          "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless_provenance.json",
+          "sha256": "06b5b91bd852234471d972fecca10b52bf55cebad17cf65653d6978f37bbb508",
+          "bytes": 1539
+        }
+      },
+      "note": "Noiseless companion to Fig. 2: <dC_l>/<C_l> for the 4 standard tomographic bins (solid) and the 4 BNT-nulled bins (dotted), 200 fiducial realisations, lmax 1024, no shape noise. Band is the standard error of the PAIRED difference std(C_bar-C_dmo)/sqrt(200)/<C_dmo> -- both sets are the same 200 perms, so treating them as independent would inflate the band ~10x. The baryonified halves were rebuilt post-crash by SLURM job 597132 from the read-only CosmoGridV1 release; the nobaryons halves are the 2025-10 originals. BNT bin 1 == standard bin 1 by construction (first BNT row is identity).",
+      "gate": {
+        "passed": true,
+        "warnings": [
+          "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+          "provenance is missing 'figure'"
+        ]
+      },
+      "value_rows": 8,
+      "n_caveats": 3
     }
   },
   {
@@ -2547,6 +2588,166 @@
         "warnings": []
       },
       "value_rows": 5,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "tomo_maps_noiseless_bnt",
+    "meta": {
+      "slug": "tomo_maps_noiseless_bnt",
+      "title": "Appendix D - tomographic convergence maps, BNT basis, noiseless",
+      "paper_position": null,
+      "published_utc": "2026-08-08T17:18:32+00:00",
+      "published_at_repo_commit": "3d39df81",
+      "source_stem": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky.pdf",
+          "sha256": "3d2f35ebfc8069123f094f08c619c645a8582913d99a80237226429bacab5b68",
+          "bytes": 312158
+        },
+        "figure.png": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky.png",
+          "sha256": "99c5eee17e9be610ee489be43c2ce84d6b0ffd6d63719fc72bc5aac909265944",
+          "bytes": 746877
+        },
+        "values.csv": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky_values.csv",
+          "sha256": "a7e157811077529a4ad3e62565affa2606ea5343c6816bca0e31ca42d776d1cc",
+          "bytes": 666
+        },
+        "provenance.json": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky_provenance.json",
+          "sha256": "9d8a467d4f681cf4c91b8da88c31e361f32bd9cf6f2f5e80c39baf2fe30e1cfb",
+          "bytes": 6268
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 4,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "tomo_maps_noiseless_standard",
+    "meta": {
+      "slug": "tomo_maps_noiseless_standard",
+      "title": "Appendix D - tomographic convergence maps, standard basis, noiseless",
+      "paper_position": null,
+      "published_utc": "2026-08-08T17:18:32+00:00",
+      "published_at_repo_commit": "3d39df81",
+      "source_stem": "outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky.pdf",
+          "sha256": "4c2b8f8eb445edaf928da3d666f21825c6bd494af216038858fa3933283509aa",
+          "bytes": 296737
+        },
+        "figure.png": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky.png",
+          "sha256": "1a80160b4de6e9d3db731b4986ff712e5ee41478db0690e2e264657bd1519f5e",
+          "bytes": 698007
+        },
+        "values.csv": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky_values.csv",
+          "sha256": "468c3a6d76b3aa7e8e1a097cab5f719513b8853e25cea29e55d4a3ca4e79fffb",
+          "bytes": 678
+        },
+        "provenance.json": {
+          "from": "outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky_provenance.json",
+          "sha256": "7e7f61ec66b498a5c6d961da10d98d668e806050ebd293783a179da1f50271c3",
+          "bytes": 6280
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 4,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "tomo_maps_noisy_bnt",
+    "meta": {
+      "slug": "tomo_maps_noisy_bnt",
+      "title": "Appendix D - tomographic convergence maps, BNT basis, with shape noise",
+      "paper_position": null,
+      "published_utc": "2026-08-08T17:18:33+00:00",
+      "published_at_repo_commit": "3d39df81",
+      "source_stem": "outputs/plots/tomographic_bnt_maps/noisy_bnt_transformed_maps_flatsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_bnt_transformed_maps_flatsky.pdf",
+          "sha256": "bdac52875f6de4f4b9c4613b471bfde1a88c084a30c8deb0741543b4142cd4e9",
+          "bytes": 321297
+        },
+        "figure.png": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_bnt_transformed_maps_flatsky.png",
+          "sha256": "86894791dd44ac207f0790c556fec24cd8e062542b24cf05736682e85a7e2257",
+          "bytes": 798714
+        },
+        "values.csv": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_bnt_transformed_maps_flatsky_values.csv",
+          "sha256": "66cfd778c82c704418c9e308d4889bb8e881ab1fafe5b4ec56561358596e12b0",
+          "bytes": 767
+        },
+        "provenance.json": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_bnt_transformed_maps_flatsky_provenance.json",
+          "sha256": "c9ff4b9025dfb4a140daafbebca92153cc446f01000b257ad5f449e1a5988389",
+          "bytes": 6347
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 4,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "tomo_maps_noisy_standard",
+    "meta": {
+      "slug": "tomo_maps_noisy_standard",
+      "title": "Appendix D - tomographic convergence maps, standard basis, with shape noise",
+      "paper_position": null,
+      "published_utc": "2026-08-08T17:18:32+00:00",
+      "published_at_repo_commit": "3d39df81",
+      "source_stem": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky",
+      "files": {
+        "figure.pdf": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky.pdf",
+          "sha256": "e791cde5fe959372b5360e4f01389c481cd1a893e7f9bf49d19eb17ca410112a",
+          "bytes": 321960
+        },
+        "figure.png": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky.png",
+          "sha256": "d50177bd9b93bdf9fe920daa8cb533b70deb816f7745720027b30e2d529ac59b",
+          "bytes": 792625
+        },
+        "values.csv": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky_values.csv",
+          "sha256": "89d21a12973a78e0fed225f4e6e7bb002fc9848f5a7904aada9cc3f7d5ef5d7d",
+          "bytes": 780
+        },
+        "provenance.json": {
+          "from": "outputs/plots/tomographic_bnt_maps/noisy_tomographic_maps_flatsky_provenance.json",
+          "sha256": "9a3bddedae716dadf9f76aa9f407a9fdf689195c0e947136b622b5ddaa3713a8",
+          "bytes": 6360
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 4,
       "n_caveats": 4
     }
   }
