@@ -53,7 +53,9 @@ WIDTH_REL = 0.15        # ... that is ≥15% off the median (ignore tiny wobbles
 
 AREAS = [2000, 5000, 10000, 14000, 28000, 35000]
 HOS_TAG = {2000: 2001, 5000: 5001, 10000: 10001, 14000: 14001, 28000: 28001, 35000: 35001}
-ERRBAR = os.environ.get("ERRBAR", "sem")   # "sem" = std/√n (mean uncertainty) | "std" = per-seed spread
+ERRBAR = os.environ.get("ERRBAR", "std")   # "std" = per-seed spread | "sem" = std/√n (mean uncertainty)
+# Default is "std": the submitted figure and the sibling ps_bias_vs_lmax both draw the
+# seed-to-seed scatter. A "sem" default here once shrank every bar by √n unnoticed.
 
 # Runs manually excluded as unreliable (in addition to the automatic QA gate), keyed by
 # (stat, area). PS-28000 runs 5 & 6 are the two single-sided outliers (1.85 low / 4.64 high)
