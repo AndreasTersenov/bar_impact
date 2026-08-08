@@ -1,0 +1,28 @@
+{
+  "generator": "scripts/plot_ps_frac_diff_noiseless.py",
+  "command": "scripts/plot_ps_frac_diff_noiseless.py",
+  "generated_utc": "2026-08-05T15:05:02.157249+00:00",
+  "git_commit": "3d39df81936d88073602be68d6a734b2c4296925 (generator dirty/untracked at run time)",
+  "mplstyle": "/lustre/fsn1/projects/rech/prk/ulx34io/bar_impact/styles/paper_v1.mplstyle",
+  "versions": {
+    "python": "3.11.5",
+    "numpy": "1.26.4",
+    "matplotlib": "3.11.1"
+  },
+  "caveats": [
+    "noiseless -- no shape noise anywhere; row scatter is sample variance only",
+    "BNT bin 1 is standard bin 1 bit-for-bit (first BNT row is the identity); the two curves overlapping exactly is a consistency check, not a duplicate",
+    "baryonified halves rebuilt post-crash from the read-only CosmoGridV1 release (job 597132); nobaryons halves are the 2025-10 originals"
+  ],
+  "source_dir": "/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecast/fiducial/cosmo_fiducial",
+  "noise": "none -- noiseless spectra",
+  "n_realisations": 200,
+  "band": "standard error on the mean of the PAIRED difference, std(C_bar - C_dmo)/sqrt(N) / <C_dmo>; the two sets share realisations",
+  "scales_included": {
+    "lmin_plotted": 2,
+    "lmax": 1024,
+    "note": "full multipole range, no scale cut; noiseless product is lmax=1024 only -- never mix with the *_lmax2048 variants"
+  },
+  "baryonified_provenance": "SLURM job 597132, scripts/jz/ps_noiseless_baryonified.slurm",
+  "nobaryons_provenance": "originals, 2025-10-07 (standard) / 2025-10-09 (BNT)"
+}

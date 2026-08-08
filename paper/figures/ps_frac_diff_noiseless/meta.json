@@ -1,0 +1,40 @@
+{
+  "slug": "ps_frac_diff_noiseless",
+  "title": "Noiseless fractional baryonic impact on the auto power spectra, standard vs BNT bins",
+  "paper_position": null,
+  "published_utc": "2026-08-05T15:05:02+00:00",
+  "published_at_repo_commit": "3d39df81",
+  "source_stem": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless",
+  "files": {
+    "figure.pdf": {
+      "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless.pdf",
+      "sha256": "b61d79a6677fc979cc139e61bf6359a10cf882762f715a86ec35486e4312a727",
+      "bytes": 199755
+    },
+    "figure.png": {
+      "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless.png",
+      "sha256": "cadf35168eedf9b12b83b33b8eb64caa77dd8972824c227e51201205c687ef91",
+      "bytes": 149936
+    },
+    "values.csv": {
+      "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless_values.csv",
+      "sha256": "2b80243b9a6950fbc200c8d8d5e8f92de0611c7e54e1a3d5c7a6b4d900def1d1",
+      "bytes": 694
+    },
+    "provenance.json": {
+      "from": "outputs/plots/ps_frac_diff_noiseless/ps_frac_diff_noiseless_provenance.json",
+      "sha256": "06b5b91bd852234471d972fecca10b52bf55cebad17cf65653d6978f37bbb508",
+      "bytes": 1539
+    }
+  },
+  "note": "Noiseless companion to Fig. 2: <dC_l>/<C_l> for the 4 standard tomographic bins (solid) and the 4 BNT-nulled bins (dotted), 200 fiducial realisations, lmax 1024, no shape noise. Band is the standard error of the PAIRED difference std(C_bar-C_dmo)/sqrt(200)/<C_dmo> -- both sets are the same 200 perms, so treating them as independent would inflate the band ~10x. The baryonified halves were rebuilt post-crash by SLURM job 597132 from the read-only CosmoGridV1 release; the nobaryons halves are the 2025-10 originals. BNT bin 1 == standard bin 1 by construction (first BNT row is identity).",
+  "gate": {
+    "passed": true,
+    "warnings": [
+      "_values.csv has no seed-count column; n_seeds is the column that reveals a point averaging a different subset than it used to",
+      "provenance is missing 'figure'"
+    ]
+  },
+  "value_rows": 8,
+  "n_caveats": 3
+}
