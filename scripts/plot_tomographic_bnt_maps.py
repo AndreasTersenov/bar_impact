@@ -65,10 +65,25 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.ticker import MaxNLocator  # noqa: E402
 import healpy as hp  # noqa: E402
 from scipy.ndimage import gaussian_filter  # noqa: E402
 
+# SIZE THE FIGURE TO ITS PRINTED SIZE. The paper puts these in a figure* (A&A double column,
+# 180 mm = 7.087 in) at width=0.95\textwidth, so 6.73 in reaches the page. The first version
+# of this script used figsize=(20, 5): LaTeX then scaled it by 0.33, and matplotlib's default
+# 10 pt tick labels printed at ~3.5 pt against A&A's 8 pt floor. Sizing at the printed width
+# means a point is a point -- what the style sheet says is what the reader sees.
+#
+# styles/paper_v1.mplstyle is the paper's own style (font 18 / titles 16 / labels 15 /
+# ticks 14, sans-serif, tab10) and is NOT the A&A house style: the revision has to sit beside
+# figures kept verbatim from the submitted version, so styles/aa.mplstyle is deliberately not
+# used here. Those sizes are calibrated for a ~6.9 in figure, which is what the healthy
+# siblings measure (bias_vs_area_three_stats 6.90 in, starlet_scale_ell 6.67 in).
+FIG_W_IN = 6.73
+
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MPLSTYLE = os.path.join(REPO, "styles", "paper_v1.mplstyle")
 CG = "/lustre/fsmisc/dataset/CosmoGridV1/stage3_forecast"
 
 # Cosmologies this figure may be drawn from. Anything else needs the BNT caveat below checked
@@ -222,28 +237,59 @@ def main():
              ("standard", "noisy"):     "noisy_tomographic_maps_flatsky",
              ("bnt",      "noisy"):     "noisy_bnt_transformed_maps_flatsky"}
     extent = [-deg / 2, deg / 2, -deg / 2, deg / 2]
-    for (basis, noise), stem in NAMES.items():
-        lim = LIM[(basis, noise)]
-        fig, axes = plt.subplots(1, 4, figsize=(20, 5))
-        for i, ax in enumerate(axes):
-            im = ax.imshow(D[(basis, noise)][i], origin="lower", extent=extent,
-                           cmap=a.cmap, vmin=-lim, vmax=lim, interpolation="nearest")
-            ax.set_title(("Bin " if basis == "standard" else "BNT bin ") + str(i + 1),
-                         fontsize=14)
-            ax.set_xlabel("deg")
-            if i == 0:
-                ax.set_ylabel("deg")
-            else:
-                ax.set_yticklabels([])
-        plt.tight_layout()
-        lbl = (r"$\kappa - \langle\kappa\rangle$" if basis == "standard"
-               else r"$\kappa_\mathrm{BNT} - \langle\kappa_\mathrm{BNT}\rangle$")
-        fig.colorbar(im, ax=axes, fraction=0.015, pad=0.04, label=lbl)
-        base = os.path.join(outdir, stem)
-        for ext in ("pdf", "png"):
-            fig.savefig(f"{base}.{ext}", bbox_inches="tight", transparent=True, dpi=200)
-        plt.close(fig)
-        print(f"  wrote {stem}.pdf/.png   (colour range +/-{lim:.4f})")
+    # Four square panels plus the colorbar across FIG_W_IN, so height follows from the
+    # panel width once room is left for the tick labels, xlabel and title.
+    fig_h = FIG_W_IN / 4.0 + 0.72
+
+    # TYPE SIZES ARE SCALED DOWN FROM paper_v1 FOR THIS FIGURE, deliberately. The style's
+    # 18/16/15/14 pt is calibrated for figures whose panels are several inches across
+    # (bias_vs_area_three_stats is 6.90 x 5.65 in for a handful of panels). Four square maps
+    # across a 6.73 in figure* gives ~1.4 in per panel, and at that size the style's type
+    # swamps the data -- rendered once at full paper_v1 sizes, the titles and tick labels took
+    # more area than the maps. The sizes below stay above the A&A floor (tick 8 / label 9 /
+    # annotation 8 pt), so they are legible at print size; they are simply proportionate to a
+    # dense panel row. Family, colour cycle and the vector/font-embedding settings still come
+    # from paper_v1, so the figure remains of a piece with the rest of the paper.
+    DENSE = {"axes.titlesize": 9, "axes.labelsize": 9,
+             "xtick.labelsize": 8, "ytick.labelsize": 8, "font.size": 9,
+             # paper_v1 sets savefig.bbox: tight, which retrims the canvas on save and so
+             # silently overrides figsize -- the figure came out 173.8 mm against the 171 mm
+             # asked for. Exact width is the whole point here, so turn it off and let
+             # constrained_layout do the fitting instead.
+             "savefig.bbox": "standard"}
+    # Plot in units of 1e-3 so the colorbar ticks are short 2-digit numbers instead of
+    # matplotlib's floating "1e-2" offset box, which collides with the top panel.
+    SCALE, SCALE_TEX = 1e3, r"10^{-3}"
+
+    with plt.style.context([MPLSTYLE, DENSE]):
+        for (basis, noise), stem in NAMES.items():
+            lim = LIM[(basis, noise)] * SCALE
+            fig, axes = plt.subplots(1, 4, figsize=(FIG_W_IN, fig_h), sharey=True,
+                                     constrained_layout=True)
+            for i, ax in enumerate(axes):
+                # rasterized: the panel is a 200x200 image, and leaving it vector bloats the
+                # PDF with a quarter-million rectangles. Text, axes and ticks stay vector.
+                im = ax.imshow(D[(basis, noise)][i] * SCALE, origin="lower", extent=extent,
+                               cmap=a.cmap, vmin=-lim, vmax=lim, interpolation="nearest",
+                               rasterized=True)
+                ax.set_title(("Bin " if basis == "standard" else "BNT bin ") + str(i + 1))
+                ax.set_aspect("equal")
+                # 4 ticks/axis: at ~1.4 in per panel the default density collides.
+                ax.xaxis.set_major_locator(MaxNLocator(4))
+                ax.yaxis.set_major_locator(MaxNLocator(4))
+            # One shared pair of axis labels rather than "deg" repeated under all four panels.
+            fig.supxlabel("deg", fontsize=DENSE["axes.labelsize"])
+            fig.supylabel("deg", fontsize=DENSE["axes.labelsize"])
+            sym = (r"\kappa" if basis == "standard" else r"\kappa_\mathrm{BNT}")
+            lbl = rf"$({sym} - \langle {sym} \rangle)\;/\;{SCALE_TEX}$"
+            fig.colorbar(im, ax=axes, fraction=0.030, pad=0.02, label=lbl)
+            base = os.path.join(outdir, stem)
+            # No bbox_inches="tight": it retrims the canvas and would undo the exact printed
+            # width this figure is sized for. constrained_layout already fits the elements.
+            fig.savefig(f"{base}.pdf", transparent=True, dpi=300)
+            fig.savefig(f"{base}.png", transparent=True, dpi=300)
+            plt.close(fig)
+            print(f"  wrote {stem}.pdf/.png   (colour range +/-{lim:.3g}e-3)")
 
     try:
         commit = subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"],
@@ -259,10 +305,27 @@ def main():
                           .strftime("%Y-%m-%dT%H:%M:%SZ"),
         "replaces": "notebooks/tomographic_maps_bnt.ipynb (18% NUL after the RAID0 failure; "
                     "code cells intact, image outputs destroyed)",
-        "mplstyle": "matplotlib default + healpy gnomview projection; no repo style sheet. "
-                    "These are image panels rather than line plots, so styles/paper_v1.mplstyle "
-                    "(which sets line/tick/font conventions for the contour and curve figures) "
-                    "would change nothing that is visible here.",
+        "mplstyle": "styles/paper_v1.mplstyle, with the type sizes scaled down for a dense "
+                    "4-panel row (titles/labels 9 pt, ticks 8 pt) and savefig.bbox forced to "
+                    "'standard'. An earlier version of this file claimed the style sheet "
+                    "'would change nothing visible here' and ran on matplotlib defaults -- "
+                    "that was wrong: it sets every text size in the figure.",
+        "figure_sizing": {
+            "width_mm": 170.9, "width_in": FIG_W_IN,
+            "rule": "A&A figure* is 180 mm; the paper includes these at width=0.95\\textwidth, "
+                    "so 0.95 x 180 = 171 mm reaches the page. Sizing the PDF at that width "
+                    "makes LaTeX scale it 1.00, so 8 pt tick text prints as 8 pt.",
+            "previous_bug": "figsize=(20, 5) -> LaTeX scaled by 0.33 -> default 10 pt tick "
+                            "labels printed at ~3.5 pt, against the A&A 8 pt floor.",
+            "note": "figure-polish's check_figure.py FLAGS 170.9 mm as not matching a nominal "
+                    "A&A column. That is expected: it assumes width=\\textwidth. If the .tex "
+                    "ever switches to width=\\textwidth, set FIG_W_IN = 7.087.",
+            "type_sizes_pt": {"title": 9, "axis_label": 9, "tick_label": 8},
+            "aa_minima_pt": {"tick_labels": 8, "axis_labels": 9, "annotations": 8},
+        },
+        "grayscale_safe": "viridis luminance rises monotonically over 0.084-0.870, so the "
+                          "panels keep their ordering in A&A's grayscale print; no information "
+                          "is carried by hue alone.",
         "conventions": {
             "scales_included": "NOT APPLICABLE -- this is a map-level figure. No wavelet "
                                "decomposition, no multipole cut and no scale selection is "

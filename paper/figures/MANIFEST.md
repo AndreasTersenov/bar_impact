@@ -69,10 +69,10 @@ integrity and source drift with `verify`.
 | - | [`ps_frac_diff_fig2_14000`](ps_frac_diff_fig2_14000/) | Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra | `3d39df81936d88073602be68d6a734b2c4296925` | 40 | **2** |
 | - | [`ps_frac_diff_noiseless`](ps_frac_diff_noiseless/) | Noiseless fractional baryonic impact on the auto power spectra, standard vs BNT bins | `3d39df81936d88073602be68d6a734b2c4296925 (generator dirty/untracked at run time)` | 8 | **2** |
 | - | [`starlet_scale_ell`](starlet_scale_ell/) | Starlet scale to multipole response | `cd2a48f3a585e985dd26573fa65668f219ba4b9e` | 5 | - |
-| - | [`tomo_maps_noiseless_bnt`](tomo_maps_noiseless_bnt/) | Appendix D - tomographic convergence maps, BNT basis, noiseless | `3d39df81936d88073602be68d6a734b2c4296925` | 4 | - |
-| - | [`tomo_maps_noiseless_standard`](tomo_maps_noiseless_standard/) | Appendix D - tomographic convergence maps, standard basis, noiseless | `3d39df81936d88073602be68d6a734b2c4296925` | 4 | - |
-| - | [`tomo_maps_noisy_bnt`](tomo_maps_noisy_bnt/) | Appendix D - tomographic convergence maps, BNT basis, with shape noise | `3d39df81936d88073602be68d6a734b2c4296925` | 4 | - |
-| - | [`tomo_maps_noisy_standard`](tomo_maps_noisy_standard/) | Appendix D - tomographic convergence maps, standard basis, with shape noise | `3d39df81936d88073602be68d6a734b2c4296925` | 4 | - |
+| - | [`tomo_maps_noiseless_bnt`](tomo_maps_noiseless_bnt/) | Appendix D - tomographic convergence maps, BNT basis, noiseless | `41fbac1e5d4b8cc727d2a65c1a8c689d4535e717` | 4 | - |
+| - | [`tomo_maps_noiseless_standard`](tomo_maps_noiseless_standard/) | Appendix D - tomographic convergence maps, standard basis, noiseless | `41fbac1e5d4b8cc727d2a65c1a8c689d4535e717` | 4 | - |
+| - | [`tomo_maps_noisy_bnt`](tomo_maps_noisy_bnt/) | Appendix D - tomographic convergence maps, BNT basis, with shape noise | `41fbac1e5d4b8cc727d2a65c1a8c689d4535e717` | 4 | - |
+| - | [`tomo_maps_noisy_standard`](tomo_maps_noisy_standard/) | Appendix D - tomographic convergence maps, standard basis, with shape noise | `41fbac1e5d4b8cc727d2a65c1a8c689d4535e717` | 4 | - |
 
 Each directory holds `figure.pdf`, `figure.png`, `values.csv`, `provenance.json`,
 `meta.json` and a `README.md`. `meta.json` records the source path and a sha256 of
