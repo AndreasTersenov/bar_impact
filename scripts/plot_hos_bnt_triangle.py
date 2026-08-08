@@ -46,8 +46,10 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
+import glob
 import json
 import os
+import re
 import subprocess
 import shlex
 import sys
@@ -106,6 +108,87 @@ FILES = {
 }
 STAT_TEX = {"peaks": "peaks", "l1": r"$\ell_1$"}
 STAT_BNT_TEX = {"peaks": "BNT peaks", "l1": r"$\ell_1^{BNT}$"}
+
+
+# Higher-order footprint tag = nominal area + 1 (same convention as HOS_TAG in
+# scripts/diagnostics/plot_contours_three_stats.py). The +1 is baked into the filenames
+# rather than added at load time, so passing 14000 here means globbing 14001sqdeg files.
+HOS_TAG = {2000: 2001, 5000: 5001, 10000: 10001, 14000: 14001, 28000: 28001, 35000: 35001}
+
+
+def globs_for(stat, arm_key, area):
+    """Return one or more glob patterns for a (stat, arm, area) triple, in preference order.
+
+    Fullsky arms fall back to the hardcoded single-file FILES entries because those are the
+    exact posteriors the paper's current figure uses; a glob-based fullsky lookup would pool
+    seeds the paper does not.
+
+    Masked arms glob every readable seed in outputs/samples/ with the right stem. The BNT
+    training grids at masked footprints only exist in the NON-submean convention (there is no
+    submean BNT L1/peaks datavector product at 14001), so all three arms are quoted from the
+    non-submean products for internal consistency. The wavelet detail scales are close to
+    monopole-invariant, so the difference against submean is small.
+    """
+    if area == "fullsky":
+        return [FILES[stat][arm_key]]
+
+    tag = HOS_TAG[area]
+    is_bnt = arm_key.startswith("bnt_")
+    role = "baryonified" if arm_key == "bnt_baryonified" or arm_key in ("cut", "all") else "nobaryons"
+    bins = "bntbins1234" if is_bnt else "bins1234"
+    scales = "scales234" if arm_key == "cut" else "scales1234"
+    # peaks prepends bnt_pc_ when BNT is on, pc_ otherwise. L1 has no per-arm prefix.
+    if stat == "peaks":
+        prefix = "bnt_pc_" if is_bnt else "pc_"
+    else:
+        prefix = ""
+    stem = (f"posterior_samples_{prefix}nobaryons_vs_{role}_{bins}_{scales}_noisy_s0.26_"
+            f"masked_{tag}sqdeg_new_normalization_run*_npe.npy")
+    return [stem]
+
+
+def pool_samples(patterns, arm_key):
+    """Load and pool every readable, non-collapsed seed matching one of `patterns`.
+
+    Returns (pooled_array, runs_used, dropped) where dropped is (run_index, reason) pairs.
+    Any single-file (no run globbing) pattern loads as a one-seed pool -- fullsky behaviour.
+
+    The prior-collapse guard (sigma_S8 < 0.08) mirrors every other pooled figure in the paper.
+    Damage guard: disk-corrupt .npy files (zero-fraction > 5%) are dropped rather than blowing
+    up in np.load, so the same RAID0-signature files that killed the PS pool would just be
+    skipped here.
+    """
+    runs, keep, dropped = [], [], []
+    for pat in patterns:
+        for fn in sorted(glob.glob(os.path.join(SAMP, pat))):
+            base = os.path.basename(fn)
+            if base in NON_CONVERGED:
+                dropped.append((base, "NON_CONVERGED"))
+                continue
+            try:
+                raw = np.fromfile(fn, dtype=np.uint8)
+                if raw.size == 0 or (raw == 0).mean() > 0.05:
+                    dropped.append((base, "disk-damaged"))
+                    continue
+                a = np.load(fn)
+            except Exception as e:
+                dropped.append((base, f"{type(e).__name__}"))
+                continue
+            if a.ndim != 2 or a.shape[1] < 3 or not np.isfinite(a[:, :3]).all():
+                dropped.append((base, "shape/finite"))
+                continue
+            s = float(np.sqrt(np.cov(a[:, :3], rowvar=False)[1, 1]))
+            if s >= 0.08:
+                dropped.append((base, f"collapsed sigma_S8={s:.3f}"))
+                continue
+            m = re.search(r"_run(\d+)_", base)
+            runs.append(int(m.group(1)) if m else 1)
+            keep.append(a)
+        if keep:
+            break  # first pattern that yields something wins
+    if not keep:
+        return None, [], dropped
+    return np.concatenate(keep, axis=0), runs, dropped
 
 
 # Unusable runs. The posterior fills the prior in every parameter, so it is not a constraint at
@@ -186,10 +269,38 @@ def main():
                    help="append FoM3 and its ratio to the BNT arm in each legend entry. Contour "
                         "AREA is what the eye compares and it is a poor guide to a 3-parameter "
                         "volume, so the ratio is stated rather than left to be estimated.")
+    p.add_argument("--area", default="fullsky",
+                   help="Footprint. 'fullsky' uses the single-file hardcoded posteriors "
+                        "(paper figure). 2000/5000/10000/14000/28000/35000 glob every readable "
+                        "seed under outputs/samples/ with the matching _masked_XXXXsqdeg_ tag "
+                        "and pool them.")
     p.add_argument("--dark", action="store_true")
     p.add_argument("--outdir", default="outputs/plots/hos_bnt_triangle")
     p.add_argument("--name", default=None)
     a = p.parse_args()
+
+    area = a.area if a.area == "fullsky" else int(a.area)
+    if area != "fullsky" and area not in HOS_TAG:
+        sys.exit(f"[fatal] unknown --area '{a.area}'. Valid: fullsky, {sorted(HOS_TAG)}")
+    # BNT at any MASKED footprint requires two data-vector fixes that are not on disk yet:
+    # (i) --submean (footprint-mean subtraction before the starlet -- the same fix that
+    #     resolved the non-BNT masked-peaks "too-tight contours" pathology in
+    #     docs/HANDOFF_masked_peaks_submean.md), AND
+    # (ii) --mask-correction (noise->mask->BNT with outside=0, so noise does not leak past
+    #      the footprint edge under BNT mixing).
+    # Both are listed as "STALE / GPU_RERUN" for BNT variants in PAPER_FIGURE_MAP.md §194;
+    # the BNT peaks/L1 datavector products at 14001 today are the pre-fix versions. Rendering
+    # this figure at a masked footprint on that data would show inflated FoM / distorted
+    # contours (worst for peaks, milder for L1). Refuse to plot until the corrected
+    # datavectors exist and force an opt-in acknowledgement then, so this does not silently
+    # ship again.
+    if area != "fullsky" and not os.environ.get("PLOT_HOS_BNT_ALLOW_STALE"):
+        sys.exit(
+            f"[refuse] --area {area} requires BNT-submean + mask-correction datavectors that "
+            f"do not yet exist at masked footprint tag {HOS_TAG[area]}sqdeg.\n"
+            f"         See docs/HANDOFF_masked_peaks_submean.md and PAPER_FIGURE_MAP.md #194.\n"
+            f"         To override for a KNOWN-STALE plot, set PLOT_HOS_BNT_ALLOW_STALE=1."
+        )
 
     f = FILES[a.stat]
     bnt_key = f"bnt_{a.bnt_arm}"
@@ -213,13 +324,24 @@ def main():
     if len(colors) != len(series):
         sys.exit(f"[fatal] need {len(series)} colors, got {len(colors)}")
 
-    print(f"=== {a.stat} triangle | BNT arm = {a.bnt_arm} ({bnt_note}) ===")
-    # FoM of every arm first, so the legend can quote the ratio against the BNT arm.
-    foms = {key: fom3(load(os.path.join(SAMP, fn))) for _, fn, key in series}
+    print(f"=== {a.stat} triangle | BNT arm = {a.bnt_arm} ({bnt_note}) | area = {area} ===")
+    # Load each arm first so ratios and legend labels can quote the pooled FoM.
+    loaded = {}
+    for label, _, key in series:
+        pats = globs_for(a.stat, key, area)
+        pooled, runs, dropped = pool_samples(pats, key)
+        if pooled is None:
+            sys.exit(f"[fatal] {key} at area={area}: no readable posterior matched "
+                     + " | ".join(pats))
+        for base, why in dropped:
+            print(f"  [drop] {key}: {base}  ({why})")
+        loaded[key] = dict(samples=pooled, runs=sorted(runs), dropped=dropped, patterns=pats)
+    foms = {key: fom3(loaded[key]["samples"]) for key in loaded}
     bnt_fom = foms[bnt_key]
     mcs, rows = [], []
-    for (label, fname, key), col in zip(series, colors):
-        s = load(os.path.join(SAMP, fname))
+    for (label, _, key), col in zip(series, colors):
+        d = loaded[key]
+        s = d["samples"]
         lab = label
         if a.fom_in_legend:
             lab = (f"{label}  (FoM$_3$={foms[key]:.1e})" if key == bnt_key
@@ -229,11 +351,11 @@ def main():
         # float() every numpy scalar: json cannot serialize np.float32, and the L1 posteriors are
         # stored float32 where the peaks ones are float64 -- so this only bites on some arms, which
         # is exactly the kind of thing that ships a truncated provenance file unnoticed.
-        # n_seeds is 1 and stated rather than omitted: these runs predate the seed-pooling
-        # convention, so each contour's width carries ONE seed's training scatter. The publish
-        # gate warns when this column is absent, and it is right to -- an absent seed count
-        # reads as "pooled" to anyone comparing against the current figures.
-        rows.append(dict(arm=key, label=label, color=col, file=fname, n_seeds=1,
+        rows.append(dict(arm=key, label=label, color=col, area=str(area),
+                         files=" ".join(d["patterns"]),
+                         n_seeds=len(d["runs"]) or 1,
+                         runs=" ".join(map(str, d["runs"])) if d["runs"] else "",
+                         dropped=" ".join(f"{b}({w})" for b, w in d["dropped"]),
                          n_samples=int(s.shape[0]),
                          mean_Om=float(m[0]), mean_S8=float(m[1]), mean_w0=float(m[2]),
                          sigma_Om=float(sd[0]), sigma_S8=float(sd[1]), sigma_w0=float(sd[2]),
@@ -260,7 +382,8 @@ def main():
                         **({"marker_args": mk} if mk else {}))
         outdir = os.path.join(REPO, a.outdir)
         os.makedirs(outdir, exist_ok=True)
-        name = a.name or f"hos_bnt_{a.stat}_{a.bnt_arm}" + ("_dark" if a.dark else "")
+        area_tag = "" if area == "fullsky" else f"_{area}"
+        name = a.name or f"hos_bnt_{a.stat}_{a.bnt_arm}{area_tag}" + ("_dark" if a.dark else "")
         base = os.path.join(outdir, name)
         for ext in ("pdf", "png"):
             plt.savefig(f"{base}.{ext}", bbox_inches="tight", dpi=200,
@@ -291,6 +414,13 @@ def main():
         **PCS.provenance(_palette),
         "colors_source": "paper_contour_style.colors_for" if a.colors is None else "--colors override",
         "statistic": a.stat,
+        "area": str(area),
+        "area_note": ("full sky (single-file per arm, matches the paper's published figure)"
+                      if area == "fullsky"
+                      else f"masked footprint tag {HOS_TAG[area]}sqdeg (nominal {area} deg^2), "
+                           "pooled over every readable, non-collapsed seed per arm"),
+        "n_seeds_per_arm": {r["arm"]: r["n_seeds"] for r in rows},
+        "runs_per_arm": {r["arm"]: r["runs"] for r in rows},
         "bnt_arm": a.bnt_arm,
         "bnt_arm_note": bnt_note,
         "scales_included": {
@@ -313,10 +443,20 @@ def main():
             "scales'. Rerun with --bnt-arm baryonified for the like-for-like comparison."
         ] if a.bnt_arm == "nobaryons" else []) + [
             "OLD CONVENTION: these NPE runs predate the lmin=37 / monopole-subtraction / MASTER "
-            "recovery. Do not overlay on current-convention figures without rerunning.",
+            "recovery. Do not overlay on current-convention figures without rerunning."
+            if area == "fullsky" else
+            "NON-SUBMEAN throughout for internal consistency: the BNT training grid at masked "
+            "footprints only exists in the non-submean convention. Wavelet detail scales are "
+            "close to monopole-invariant on the full sky, so the difference against submean is "
+            "small at masked footprints too, but this is stated so the figure is not overlaid "
+            "against the submean HOS families (e.g. contours_baryon_safe_biased_14000_pooled).",
+        ] + ([
             "Single NPE run per arm (not seed-pooled), so the contour width carries the "
-            "seed-to-seed training scatter of one seed only.",
-        ],
+            "seed-to-seed training scatter of one seed only."
+        ] if all(r["n_seeds"] == 1 for r in rows) else [
+            "Pooled over every readable NPE training seed (per-arm counts in `n_seeds_per_arm`), "
+            "so each contour's width carries the seed-to-seed training scatter of the pool."
+        ]),
         "versions": {"python": sys.version.split()[0], "numpy": np.__version__,
                      "matplotlib": matplotlib.__version__},
         "series": rows,
