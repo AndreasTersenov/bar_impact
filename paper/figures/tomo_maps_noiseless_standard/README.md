@@ -1,9 +1,9 @@
 # Appendix D - tomographic convergence maps, standard basis, noiseless
 
 - **source**: `outputs/plots/tomographic_bnt_maps/noiseless_tomographic_maps_flatsky`
-- **generator commit**: `41fbac1e5d4b8cc727d2a65c1a8c689d4535e717`
-- **generated**: 2026-08-08T17:32:31Z
-- **published**: 2026-08-08T17:32:52+00:00 at repo `41fbac1e`
+- **generator commit**: `909ea676350096ca277cdec5be3565930a97140b`
+- **generated**: 2026-08-08T17:40:55Z
+- **published**: 2026-08-08T17:41:32+00:00 at repo `909ea676`
 - **rows in values.csv**: 4
 
 ## Scales included

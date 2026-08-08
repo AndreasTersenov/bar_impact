@@ -2,8 +2,8 @@
   "figure": "noiseless_tomographic_maps_flatsky",
   "generator": "scripts/plot_tomographic_bnt_maps.py",
   "command": "scripts/plot_tomographic_bnt_maps.py --noise-scale 0.6",
-  "git_commit": "41fbac1e5d4b8cc727d2a65c1a8c689d4535e717",
-  "generated_utc": "2026-08-08T17:32:31Z",
+  "git_commit": "909ea676350096ca277cdec5be3565930a97140b",
+  "generated_utc": "2026-08-08T17:40:55Z",
   "replaces": "notebooks/tomographic_maps_bnt.ipynb (18% NUL after the RAID0 failure; code cells intact, image outputs destroyed)",
   "mplstyle": "styles/paper_v1.mplstyle, with the type sizes scaled down for a dense 4-panel row (titles/labels 9 pt, ticks 8 pt) and savefig.bbox forced to 'standard'. An earlier version of this file claimed the style sheet 'would change nothing visible here' and ran on matplotlib defaults -- that was wrong: it sets every text size in the figure.",
   "figure_sizing": {

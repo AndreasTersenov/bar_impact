@@ -66,6 +66,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.ticker import MaxNLocator  # noqa: E402
+from mpl_toolkits.axes_grid1 import ImageGrid  # noqa: E402
 import healpy as hp  # noqa: E402
 from scipy.ndimage import gaussian_filter  # noqa: E402
 
@@ -237,9 +238,23 @@ def main():
              ("standard", "noisy"):     "noisy_tomographic_maps_flatsky",
              ("bnt",      "noisy"):     "noisy_bnt_transformed_maps_flatsky"}
     extent = [-deg / 2, deg / 2, -deg / 2, deg / 2]
-    # Four square panels plus the colorbar across FIG_W_IN, so height follows from the
-    # panel width once room is left for the tick labels, xlabel and title.
-    fig_h = FIG_W_IN / 4.0 + 0.72
+    # LAYOUT, solved rather than guessed. The panels are square, so the figure height is not
+    # free: it follows from how wide each panel ends up once the margins and the colorbar are
+    # taken out of FIG_W_IN. Getting this wrong is what left a tall colorbar beside short maps
+    # in the first place -- ImageGrid then centres the square panels in whatever vertical slot
+    # it was given, and any excess shows up as a gap above and below them.
+    # M_B has to hold the x tick labels AND the shared "deg" label below them; at 0.175 the
+    # two collided once the solved height came out short.
+    # M_L likewise holds the y tick labels AND the rotated "deg" beside them.
+    M_L, M_R, M_B, M_T = 0.075, 0.115, 0.260, 0.130   # figure fractions
+    AX_PAD, CB_PAD, CB_FRAC = 0.13, 0.13, 0.045       # inches, inches, fraction of a panel
+    rect_w, rect_h = 1.0 - M_L - M_R, 1.0 - M_B - M_T
+    # rect_w * FIG_W = 4*w + 3*AX_PAD + CB_PAD + CB_FRAC*w
+    panel_in = (rect_w * FIG_W_IN - 3 * AX_PAD - CB_PAD) / (4.0 + CB_FRAC)
+    fig_h = panel_in / rect_h        # so the square panel exactly fills the rect's height
+    GRID_RECT = [M_L, M_B, rect_w, rect_h]
+    # M_R is the widest of the four margins on purpose: it carries the colorbar's tick labels
+    # AND its rotated axis label, which sit OUTSIDE the rect. Too small and both are clipped.
 
     # TYPE SIZES ARE SCALED DOWN FROM paper_v1 FOR THIS FIGURE, deliberately. The style's
     # 18/16/15/14 pt is calibrated for figures whose panels are several inches across
@@ -264,25 +279,34 @@ def main():
     with plt.style.context([MPLSTYLE, DENSE]):
         for (basis, noise), stem in NAMES.items():
             lim = LIM[(basis, noise)] * SCALE
-            fig, axes = plt.subplots(1, 4, figsize=(FIG_W_IN, fig_h), sharey=True,
-                                     constrained_layout=True)
-            for i, ax in enumerate(axes):
+            fig = plt.figure(figsize=(FIG_W_IN, fig_h))
+            # ImageGrid rather than subplots + fig.colorbar. With square panels
+            # (aspect='equal') the Axes box is shrunk to fit the image, but fig.colorbar sizes
+            # itself to the axes' ALLOCATED slot, so the bar ended up taller than the maps.
+            # ImageGrid ties the colorbar to the image height by construction. The rect leaves
+            # room for the titles and the shared axis labels, which ImageGrid does not
+            # auto-fit the way constrained_layout would.
+            grid = ImageGrid(fig, GRID_RECT,
+                             nrows_ncols=(1, 4), axes_pad=AX_PAD,
+                             share_all=True, label_mode="L",
+                             cbar_location="right", cbar_mode="single",
+                             cbar_size=f"{CB_FRAC * 100:g}%", cbar_pad=CB_PAD)
+            for i, ax in enumerate(grid):
                 # rasterized: the panel is a 200x200 image, and leaving it vector bloats the
                 # PDF with a quarter-million rectangles. Text, axes and ticks stay vector.
                 im = ax.imshow(D[(basis, noise)][i] * SCALE, origin="lower", extent=extent,
                                cmap=a.cmap, vmin=-lim, vmax=lim, interpolation="nearest",
                                rasterized=True)
                 ax.set_title(("Bin " if basis == "standard" else "BNT bin ") + str(i + 1))
-                ax.set_aspect("equal")
                 # 4 ticks/axis: at ~1.4 in per panel the default density collides.
                 ax.xaxis.set_major_locator(MaxNLocator(4))
                 ax.yaxis.set_major_locator(MaxNLocator(4))
             # One shared pair of axis labels rather than "deg" repeated under all four panels.
-            fig.supxlabel("deg", fontsize=DENSE["axes.labelsize"])
-            fig.supylabel("deg", fontsize=DENSE["axes.labelsize"])
+            fig.supxlabel("deg", fontsize=DENSE["axes.labelsize"], y=0.02)
+            fig.supylabel("deg", fontsize=DENSE["axes.labelsize"], x=0.010)
             sym = (r"\kappa" if basis == "standard" else r"\kappa_\mathrm{BNT}")
             lbl = rf"$({sym} - \langle {sym} \rangle)\;/\;{SCALE_TEX}$"
-            fig.colorbar(im, ax=axes, fraction=0.030, pad=0.02, label=lbl)
+            grid.cbar_axes[0].colorbar(im, label=lbl)
             base = os.path.join(outdir, stem)
             # No bbox_inches="tight": it retrims the canvas and would undo the exact printed
             # width this figure is sized for. constrained_layout already fits the elements.

@@ -2,19 +2,19 @@
   "slug": "tomo_maps_noiseless_bnt",
   "title": "Appendix D - tomographic convergence maps, BNT basis, noiseless",
   "paper_position": null,
-  "published_utc": "2026-08-08T17:32:52+00:00",
-  "published_at_repo_commit": "41fbac1e",
+  "published_utc": "2026-08-08T17:41:32+00:00",
+  "published_at_repo_commit": "909ea676",
   "source_stem": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky.pdf",
-      "sha256": "a56a21ce2abdaa02237815273ede3213f549a099b9b5aac8c3f6f4769495fef3",
-      "bytes": 266636
+      "sha256": "8dcd14187e2e5207ff95b10b8ae4056fddeccf15abe3b7598a5b18c4ff7a4ee1",
+      "bytes": 264610
     },
     "figure.png": {
       "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky.png",
-      "sha256": "601e918745609a64720e3b58fa3b3b5be94c1ba503d61e089fe270f96f218a67",
-      "bytes": 605715
+      "sha256": "f7833aefa3dfe96586b60f0af7fe2a13ba72be2ee3bc0e9b9baa5607f0f8bf35",
+      "bytes": 603772
     },
     "values.csv": {
       "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/tomographic_bnt_maps/noiseless_bnt_transformed_maps_flatsky_provenance.json",
-      "sha256": "a388fbf401e199732fadf5c302bb7399bffea6614de201f2127c60fb9bd36ad5",
+      "sha256": "3f350ed6eb96dabc45e1180cc6e39aeffead03843f520f818ae75561fea56a37",
       "bytes": 7361
     }
   },
