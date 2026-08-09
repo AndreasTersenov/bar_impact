@@ -105,10 +105,13 @@ def main():
     p.add_argument("--fill-alpha", type=float, default=0.28)
     p.add_argument("--edge-alpha", type=float, default=0.50)
     p.add_argument("--edge-lw", type=float, default=0.65)
-    p.add_argument("--curve-lw", type=float, default=2.6,
-                   help="curve weight. The style baseline is 1.2; 1.4 lifts the "
+    p.add_argument("--curve-lw", type=float, default=1.8,
+                   help="curve weight. The style baseline is 1.2; 1.8 lifts the "
                         "curves just clear of their bands without reading as heavy "
-                        "at A&A column width.")
+                        "at A&A column width. (Was 2.6, which read as heavy.)")
+    p.add_argument("--title-fontsize", type=float, default=11.0,
+                   help="panel title size. Left to the style sheet's axes.titlesize (16) "
+                        "the titles dominated the panels at this figure's width.")
     p.add_argument("--ylim", default="curves",
                    help="'curves' (default) fits the CURVES with a margin and lets the tail bands "
                         "clip -- the bands in the near-empty end bins reach +-14, so fitting them "
@@ -186,9 +189,8 @@ def main():
                     label=f"bin {b}" if ax is axes[0] else None)
         ax.axhline(0, color="black", ls="--", lw=1)
         ax.set_xlabel("SNR")
-        ax.set_title(f"Wavelet Scale {s+1}")
-        for sp in ("top", "right"):
-            ax.spines[sp].set_visible(False)
+        ax.set_title(f"Wavelet Scale {s+1}", fontsize=a.title_fontsize)
+        # Closed box: all four spines. The top and right used to be hidden.
     axes[0].set_ylabel(YLAB[a.stat])
     if a.ylim in ("auto", "curves"):
         if a.ylim == "curves":

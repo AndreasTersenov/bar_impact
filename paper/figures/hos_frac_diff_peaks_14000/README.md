@@ -2,8 +2,8 @@
 
 - **source**: `outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000`
 - **generator commit**: `unknown`
-- **generated**: 2026-08-04T16:23:58Z
-- **published**: 2026-08-04T17:09:04+00:00 at repo `a57658d9`
+- **generated**: 2026-08-09T09:39:56Z
+- **published**: 2026-08-09T09:40:24+00:00 at repo `8e20f86e`
 - **rows in values.csv**: 353
 
 ## Scales included

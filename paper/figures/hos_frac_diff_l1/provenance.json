@@ -2,7 +2,7 @@
   "figure": "hos_frac_diff_l1",
   "generator": "scripts/plot_hos_frac_diff.py",
   "command": "scripts/plot_hos_frac_diff.py --stat l1 --name hos_frac_diff_l1",
-  "generated_utc": "2026-08-04T16:23:48Z",
+  "generated_utc": "2026-08-09T09:39:45Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "starlet l1-norm",
   "scales_included": {

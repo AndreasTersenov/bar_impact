@@ -2,19 +2,19 @@
   "slug": "hos_frac_diff_l1_14000",
   "title": "Fractional baryonic impact on the starlet l1-norm (14000 deg2)",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:09:04+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "published_utc": "2026-08-09T09:40:24+00:00",
+  "published_at_repo_commit": "8e20f86e",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.pdf",
-      "sha256": "d53e1ca2d7ffc40752819d132768d4127a8a0dc9047746848446d3ac26c833b4",
-      "bytes": 25598
+      "sha256": "adc8ac0ca88349d3d59699f4aaffa91e9df823f04b61133849bc6a218a4c0028",
+      "bytes": 25706
     },
     "figure.png": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000.png",
-      "sha256": "bd93fcfa1d2bde2c5c73a0529d103b2fc54199f859d785fd483c14c5049fc020",
-      "bytes": 220832
+      "sha256": "d5a3a4aa1450094567a5ebf27cc2176d88fcde60d25aa26d4907fb7850194e25",
+      "bytes": 226212
     },
     "values.csv": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_l1_14000_provenance.json",
-      "sha256": "0ab1626186dc3cedc308f1ad4c771b5e63b8b418d38667c23a4937494b0c2f3d",
+      "sha256": "356d51be4bf70b8170d31ed95bc6ec77f6c6f14d0a2b0b839e67ffef99228917",
       "bytes": 1554
     }
   },
