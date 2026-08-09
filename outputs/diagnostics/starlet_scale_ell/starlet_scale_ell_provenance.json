@@ -1,8 +1,8 @@
 {
   "figure": "starlet_scale_ell",
   "generator": "scripts/diagnostics/starlet_scale_ell.py",
-  "git_commit": "cd2a48f3a585e985dd26573fa65668f219ba4b9e",
-  "generated_utc": "2026-08-05T08:48:35Z",
+  "git_commit": "33088a94f6f1df83725dea98a38283d67b023af1",
+  "generated_utc": "2026-08-09T14:28:06Z",
   "nside": 512,
   "nscale": 5,
   "lmax": 1535,
@@ -11,14 +11,13 @@
   "nreal": 40,
   "estimator": "single-pixel (white) input, W^2 = C_ell[coef]/C_ell[input]; deterministic, no Monte Carlo error",
   "validation": {
-    "max_rel_diff": 0.13496805191233247,
-    "median_rel_diff": 0.018105301208900342,
     "isotropy_max": 0.002361772062097104,
     "isotropy_median": 0.000265596845946089
   },
   "table": [
     {
       "scale": 0,
+      "j": "1",
       "type": "wav0",
       "ell_peak": 767,
       "ell_half_lo": 364,
@@ -26,6 +25,7 @@
     },
     {
       "scale": 1,
+      "j": "2",
       "type": "wav1",
       "ell_peak": 228,
       "ell_half_lo": 142,
@@ -33,6 +33,7 @@
     },
     {
       "scale": 2,
+      "j": "3",
       "type": "wav2",
       "ell_peak": 114,
       "ell_half_lo": 71,
@@ -40,6 +41,7 @@
     },
     {
       "scale": 3,
+      "j": "4",
       "type": "wav3",
       "ell_peak": 57,
       "ell_half_lo": 36,
@@ -47,6 +49,7 @@
     },
     {
       "scale": 4,
+      "j": "coarse",
       "type": "coarse",
       "ell_peak": 0,
       "ell_half_lo": 0,
@@ -55,52 +58,52 @@
   ],
   "readme_table": {
     "title": "Measured multipole coverage per starlet scale",
-    "intro": "nside 512, nscale=5. Half-power = the multipole range over which the response is at least 50% of its peak. Bands OVERLAP; these are where each dominates, not sharp windows.",
+    "intro": "nside 512, nscale=5. Half-power = the multipole range over which the response is at least 50% of its peak. j is the paper's 1-based scale index (j=1 is the finest wavelet); 'array band' is the transform's own 0-based name. Bands OVERLAP; these are where each dominates, not sharp windows.",
     "columns": [
-      "scale",
-      "type",
+      "j",
+      "array band",
       "ell at peak",
       "ell half-power range",
       "role in the analysis"
     ],
     "rows": [
       [
-        0,
+        "1",
         "wav0",
         767,
         "364 - 1535",
-        "dropped by the baryon-safe cut (scales234)"
+        "dropped by the baryon-safe cut (j >= 2)"
       ],
       [
-        1,
+        "2",
         "wav1",
         228,
         "142 - 336",
         "kept"
       ],
       [
-        2,
+        "3",
         "wav2",
         114,
         "71 - 168",
         "kept"
       ],
       [
-        3,
+        "4",
         "wav3",
         57,
         "36 - 84",
         "kept; its half-power edge sets the PS floor l>=37"
       ],
       [
-        4,
+        "coarse",
         "coarse",
         0,
         "0 - 24",
         "excluded throughout; the only band carrying the monopole"
       ]
     ],
-    "footnote": "Wavelet 0 is RESOLUTION-limited: it peaks near the Nyquist multipole 3*nside-1 = 1535, so its band moves with map resolution while the others do not. Angular-scale labels (~10 arcmin for wavelet 0, doubling thereafter) are dyadic smoothing-scale names and are NOT 10800/ell_peak -- a starlet band peaks at roughly half the multipole its label suggests."
+    "footnote": "j=1 (array band wav0) is RESOLUTION-limited: it peaks near the Nyquist multipole 3*nside-1 = 1535, so its band moves with map resolution while the others do not. Angular-scale labels (~10 arcmin for j=1, doubling thereafter) are dyadic smoothing-scale names and are NOT 10800/ell_peak -- a starlet band peaks at roughly half the multipole its label suggests."
   },
   "versions": {
     "numpy": "1.26.4",
@@ -114,17 +117,17 @@
   ],
   "scales_included": {
     "note": "This figure MEASURES the scale-to-multipole mapping; it is not computed on a scale-cut data vector.",
-    "starlet": "nscale=5 -> wavelets 0-3 plus coarse",
+    "starlet": "nscale=5 -> wavelets j=1-4 (array bands wav0-wav3) plus coarse",
     "nside": 512,
     "ell_range_measured": [
       0,
       1535
     ],
-    "analysis_cut_shown": "shading marks the band removed by scales234 (wavelet 0), i.e. ell >= its half-power edge"
+    "analysis_cut_shown": "none. The shaded band that marked the scales234 cut was removed: this figure reports the measured mapping, and which scales a cut discards is stated in the text."
   },
   "caveats": [
     "Measured at nside 512 with nscale=5. Wavelet 0 is RESOLUTION-limited, peaking near the Nyquist multipole 3*nside-1=1535, so its band moves with map resolution; the other bands do not.",
-    "Half-power ranges summarise bands that OVERLAP substantially. 'scales234 covers ell 36-336' is where those bands dominate, not a sharp window.",
+    "Half-power ranges summarise bands that OVERLAP substantially. 'j>=2 covers ell 36-336' is where those bands dominate, not a sharp window.",
     "Measured on the FULL SPHERE. A mask couples multipoles, so the effective coverage of a masked map is broader than the table implies.",
     "theta ~ 10800/ell is a convention and is NOT how the scale labels were assigned: a starlet band peaks at roughly half the multipole its nominal scale size suggests. The measured ell ranges are authoritative."
   ]

@@ -2547,29 +2547,29 @@
       "slug": "starlet_scale_ell",
       "title": "Starlet scale to multipole response",
       "paper_position": null,
-      "published_utc": "2026-08-09T13:28:35+00:00",
-      "published_at_repo_commit": "89409001",
+      "published_utc": "2026-08-09T14:28:35+00:00",
+      "published_at_repo_commit": "33088a94",
       "source_stem": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell",
       "files": {
         "figure.pdf": {
           "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell.pdf",
-          "sha256": "9409dc6ff7db337b3e29cf6c1f6aa53dc4a193a8485c89af104d0d5042309cba",
-          "bytes": 18902
+          "sha256": "208d67b822f3fac54462fdfbf98547b13d73799e23a292b3380f37a1490c86c3",
+          "bytes": 18332
         },
         "figure.png": {
           "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell.png",
-          "sha256": "2b9b5ac5532e885fc3373482776da500a18d299ef1c9e593635bfb546f44b1d7",
-          "bytes": 140707
+          "sha256": "59a4a890cbf40cb06af2e917733f53991b943cdc06ee17715151913bb57010d8",
+          "bytes": 130710
         },
         "values.csv": {
           "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell_values.csv",
-          "sha256": "01784cc10c0601313ee9f6a6a548ba2217562c8e990f47eb9828db406d72212a",
-          "bytes": 240
+          "sha256": "bcd3f26b4822703683ee83a414ccb86d3eee7a484c963e4e0917b24bf48ff3e3",
+          "bytes": 257
         },
         "provenance.json": {
           "from": "outputs/diagnostics/starlet_scale_ell/starlet_scale_ell_provenance.json",
-          "sha256": "1ad704fb42f0c3dcaa8d4f49cfdcbdd8af56565459e64e2969a24ea977dd77e2",
-          "bytes": 3927
+          "sha256": "5bbe6984097fb47543f54db4b5c7f5c9c8be256b90da9017405fc557f9dc07f2",
+          "bytes": 4156
         }
       },
       "note": null,

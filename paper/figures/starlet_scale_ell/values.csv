@@ -1,6 +1,6 @@
-scale,type,ell_peak,ell_half_lo,ell_half_hi,n_seeds,ensemble
-0,wav0,767,364,1535,8,delta positions
-1,wav1,228,142,336,8,delta positions
-2,wav2,114,71,168,8,delta positions
-3,wav3,57,36,84,8,delta positions
-4,coarse,0,0,24,8,delta positions
+j,scale,type,ell_peak,ell_half_lo,ell_half_hi,n_seeds,ensemble
+1,0,wav0,767,364,1535,8,delta positions
+2,1,wav1,228,142,336,8,delta positions
+3,2,wav2,114,71,168,8,delta positions
+4,3,wav3,57,36,84,8,delta positions
+coarse,4,coarse,0,0,24,8,delta positions
