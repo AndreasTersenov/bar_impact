@@ -1,11 +1,9 @@
 # Starlet scale to multipole response
 
-Squared harmonic response W_j(l)^2 of each starlet scale, peak-normalised. Measured deterministically from single-pixel (white) inputs, so it carries no Monte Carlo error; cross-validated against 40 white-noise realisations (1.8% median agreement) and isotropic to 0.03%. Appendix material: it fixes the multipole band of each wavelet scale, which licenses the baryon-safe cut and the power-spectrum floor l >= 37. Method and interpretation: docs/starlet_scale_ell.md.
-
 - **source**: `outputs/diagnostics/starlet_scale_ell/starlet_scale_ell`
 - **generator commit**: `cd2a48f3a585e985dd26573fa65668f219ba4b9e`
 - **generated**: 2026-08-05T08:48:35Z
-- **published**: 2026-08-05T08:49:21+00:00 at repo `cd2a48f3`
+- **published**: 2026-08-09T13:28:35+00:00 at repo `89409001`
 - **rows in values.csv**: 5
 
 ## Scales included

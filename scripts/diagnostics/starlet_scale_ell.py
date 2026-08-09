@@ -143,9 +143,15 @@ def make_figure(W2, tbl, a):
     plt.style.use(os.path.join(REPO, "styles", "paper_v1.mplstyle"))
     fig, ax = plt.subplots(figsize=(a.width, a.width * a.aspect))
 
-    scale = min(1.0, a.width / 11.0)          # 1.0 at double column, ~0.64 at one column
-    leg_fs = max(9.0, 13.0 * scale)
-    ann_fs = max(9.0, 12.0 * scale)
+    # TYPE FOLLOWS THE CANVAS WIDTH, keyed so that the default reproduces paper_v1's own
+    # sizes exactly (labels 15, ticks 14, legend 13 at W=7.0). Previously only the legend and
+    # the annotation scaled while the axis labels and ticks were inherited fixed, so a
+    # narrowed render kept full-size axis type and overflowed. Now every text element moves
+    # together and --width alone is enough to retarget the figure.
+    scale = a.width / 7.0                     # 1.0 at the repo's one-column canvas
+    lab_fs = 15.0 * scale
+    tick_fs = 14.0 * scale
+    leg_fs = 13.0 * scale
     ncol = a.legend_ncol or (5 if a.width >= 11.0 else 3)
     rows = int(np.ceil(5 / ncol))
     # Headroom for however many legend rows there are, so it never sits on a curve.
@@ -155,15 +161,16 @@ def make_figure(W2, tbl, a):
         ax.semilogx(ell_axis()[1:], W2[j][1:], color=COLORS[j], lw=2.4 * max(0.75, scale),
                     label=LABELS[j])
 
-    w0 = next(r for r in tbl if r["type"] == "wav0")
-    ax.axvspan(w0["ell_half_lo"], LMAX, color="0.85", alpha=0.55, zorder=0)
-    ax.text(np.sqrt(w0["ell_half_lo"] * LMAX), 0.42,
-            "dropped by the\nbaryon-safe cut", ha="center", va="center",
-            fontsize=ann_fs, color="0.35")
+    # The shaded band over wav0's range and its "dropped by the baryon-safe cut" annotation
+    # were removed: this figure's job is to report the measured scale-to-multipole mapping,
+    # and which scales a given analysis discards is an assertion about the cut, made in the
+    # text and in the scale-cut figures. Carrying it here also dated the figure to one
+    # particular cut (scales234). The measurement itself is unchanged.
 
     ax.set_xlim(2, LMAX)
-    ax.set_xlabel(r"multipole $\ell$")
-    ax.set_ylabel(r"normalised response $W_j(\ell)^2/\max$")
+    ax.set_xlabel(r"multipole $\ell$", fontsize=lab_fs)
+    ax.set_ylabel(r"normalised response $W_j(\ell)^2/\max$", fontsize=lab_fs)
+    ax.tick_params(labelsize=tick_fs)
     ax.legend(frameon=False, ncol=ncol, loc="upper center", fontsize=leg_fs,
               columnspacing=1.1, handlelength=1.5, borderaxespad=0.2)
     ax.grid(alpha=0.25, ls=":")
@@ -171,7 +178,8 @@ def make_figure(W2, tbl, a):
         secax = ax.secondary_xaxis("top",
                                    functions=(lambda l: 10800.0 / np.clip(l, 1e-6, None),
                                               lambda t: 10800.0 / np.clip(t, 1e-6, None)))
-        secax.set_xlabel(r"angular scale $10800/\ell$ [arcmin]")
+        secax.set_xlabel(r"angular scale $10800/\ell$ [arcmin]", fontsize=lab_fs)
+        secax.tick_params(labelsize=tick_fs)
     fig.tight_layout()
     stem = os.path.join(OUT, "starlet_scale_ell" + (f"_{a.tag}" if a.tag else ""))
     for ext in ("png", "pdf"):
