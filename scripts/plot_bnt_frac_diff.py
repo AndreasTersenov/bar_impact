@@ -117,6 +117,13 @@ def main():
                         "figure's text print ~0.6x the sibling's.")
     p.add_argument("--fig-height", type=float, default=3.2,
                    help="canvas height in inches.")
+    p.add_argument("--title-fontsize", type=float, default=11.0,
+                   help="panel title size, quoted at --fig-width=12 and scaled with the "
+                        "width. paper_v1's own value is 16, which crowds four panels. "
+                        "Matches plot_hos_frac_diff.py.")
+    p.add_argument("--tick-fontsize", type=float, default=11.0,
+                   help="tick-label size, quoted at --fig-width=12 and scaled with the "
+                        "width. paper_v1's own value is 14.")
     p.add_argument("--outdir", default="outputs/plots/bnt_frac_diff")
     p.add_argument("--name", default=None)
     a = p.parse_args()
@@ -185,8 +192,18 @@ def main():
     scaled = {key: plt.rcParams[key] * k for key in
               ("font.size", "axes.labelsize", "axes.titlesize",
                "xtick.labelsize", "ytick.labelsize", "legend.fontsize")}
+    # Panel titles and tick numbers are set explicitly rather than inherited. paper_v1 gives
+    # them 16 and 14 pt, sized for figures with one or two large panels; across four panels
+    # they crowd the data. Both options are quoted in REF_WIDTH points -- i.e. what they
+    # PRINT as -- and scaled by k here, so the numbers stay comparable with the
+    # plot_hos_frac_diff.py family whatever fig_width is set to. The axis labels and the
+    # legend deliberately keep their paper_v1 sizes.
+    scaled["axes.titlesize"] = a.title_fontsize * k
+    scaled["xtick.labelsize"] = a.tick_fontsize * k
+    scaled["ytick.labelsize"] = a.tick_fontsize * k
     print(f"  canvas {a.fig_width} x {a.fig_height} in; type scaled x{k:.2f} "
-          f"so it prints as at {REF_WIDTH} in")
+          f"so it prints as at {REF_WIDTH} in "
+          f"(titles {a.title_fontsize:g} pt, ticks {a.tick_fontsize:g} pt at that width)")
 
     with plt.rc_context(scaled):
         fig, axes = plt.subplots(1, 4, figsize=(a.fig_width, a.fig_height), sharey=True)
