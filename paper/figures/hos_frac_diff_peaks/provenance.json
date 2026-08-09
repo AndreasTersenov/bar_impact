@@ -2,7 +2,7 @@
   "figure": "hos_frac_diff_peaks",
   "generator": "scripts/plot_hos_frac_diff.py",
   "command": "scripts/plot_hos_frac_diff.py --stat peaks --name hos_frac_diff_peaks",
-  "generated_utc": "2026-08-09T09:39:49Z",
+  "generated_utc": "2026-08-09T09:50:15Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "starlet peak counts",
   "scales_included": {

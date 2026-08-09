@@ -58,7 +58,7 @@ LMIN, LMAX, NBAND = 30, 1024, 10
 SCALE_ARCMIN = ["10'", "20'", "40'", "80'", "coarse"]
 YLAB = {"ps": r"$\langle \Delta C_\ell \rangle / \langle C_\ell \rangle$",
         "l1": r"$\langle \Delta \ell_1 \rangle / \langle \ell_1 \rangle$",
-        "peaks": r"$\langle \Delta N_{\rm peaks} \rangle / \langle N_{\rm peaks} \rangle$"}
+        "peaks": r"$\langle \Delta \mathrm{PC} \rangle / \langle \mathrm{PC} \rangle$"}
 
 
 def ps_edges():

@@ -72,7 +72,7 @@ FID = ("/lustre/fsn1/projects/rech/prk/ulx34io/cosmogrid_products/stage3_forecas
 SKY_DEG2 = 41253.0
 STEM = {"l1": "all_l1_norms", "peaks": "all_peak_counts"}
 YLAB = {"l1": r"$\langle \Delta \ell_1 \rangle / \langle \ell_1 \rangle$",
-        "peaks": r"$\langle \Delta N_{\rm peaks} \rangle / \langle N_{\rm peaks} \rangle$"}
+        "peaks": r"$\langle \Delta \mathrm{PC} \rangle / \langle \mathrm{PC} \rangle$"}
 # The first four starlet bands are ~[10', 20', 40', 80']; the fifth is the coarse scale.
 SCALE_ARCMIN = ["10'", "20'", "40'", "80'", "coarse"]
 

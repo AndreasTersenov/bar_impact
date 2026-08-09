@@ -2,19 +2,19 @@
   "slug": "hos_frac_diff_peaks_14000",
   "title": "Fractional baryonic impact on the starlet peak counts (14000 deg2)",
   "paper_position": null,
-  "published_utc": "2026-08-09T09:40:24+00:00",
-  "published_at_repo_commit": "8e20f86e",
+  "published_utc": "2026-08-09T09:50:56+00:00",
+  "published_at_repo_commit": "4286092a",
   "source_stem": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.pdf",
-      "sha256": "04afbc8dbbaf42ca20f587dfe1bf496a20694630dc98a30ff01d297554146e6f",
-      "bytes": 24649
+      "sha256": "2f2942f13b95d3d8eb2e310967fc96e5369b8ec7c302359ab97f2d03cae2474e",
+      "bytes": 20864
     },
     "figure.png": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000.png",
-      "sha256": "221d84abb6b2d9e9a9176fb24b7d643c8b96f901022b33bb4cc9c96f46f8bdc4",
-      "bytes": 247943
+      "sha256": "b2d199de0c328fd63a312607a4b28b9faa9dae9e861b869e5875f64a9330ac24",
+      "bytes": 243624
     },
     "values.csv": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/hos_frac_diff/hos_frac_diff_peaks_14000_provenance.json",
-      "sha256": "2a3d5f95ff077032b7adf673e3c1b75146d2828718ef45fd7d194e295e857a65",
+      "sha256": "839422ae08f248e1c5852185916ff0f5294d11923dabf5da565dcc772db16373",
       "bytes": 1559
     }
   },
