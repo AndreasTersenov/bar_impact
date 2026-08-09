@@ -111,11 +111,11 @@ def main():
                    help="curve weight. The style baseline is 1.2; 1.4 lifts the "
                         "curves just clear of their bands without reading as heavy "
                         "at A&A column width.")
-    p.add_argument("--fig-width", type=float, default=12.0,
+    p.add_argument("--fig-width", type=float, default=16.0,
                    help="canvas width in inches. Matches plot_hos_frac_diff.py so the two "
                         "families print at the same text size; was 20, which made this "
                         "figure's text print ~0.6x the sibling's.")
-    p.add_argument("--fig-height", type=float, default=3.4,
+    p.add_argument("--fig-height", type=float, default=3.2,
                    help="canvas height in inches.")
     p.add_argument("--outdir", default="outputs/plots/bnt_frac_diff")
     p.add_argument("--name", default=None)
@@ -166,46 +166,59 @@ def main():
                                  n_realizations=int(bar.shape[0]), n_seeds=1))
         panels.append(per)
 
-    # CANVAS WIDTH, and why it is 12 rather than 20. Every text size here comes from
-    # styles/paper_v1.mplstyle in POINTS, so how large the text finally prints depends on how
-    # far LaTeX scales the figure -- i.e. on the canvas width. The sibling family
-    # (plot_hos_frac_diff.py) uses figsize=(12, 3) and publishes at 11.67 in; this one used
-    # (20, 4) and published at 19.69 in. Placed at the same width in the paper, that made this
-    # figure's labels, ticks and legend print at 11.67/19.69 = 0.59x the sibling's -- which is
-    # exactly the "much smaller" mismatch, not a font setting anywhere.
+    # CANVAS WIDTH vs TEXT SIZE -- these look coupled but need not be.
     #
-    # Matching the sibling's width makes both families print identical text. The height stays
-    # proportionally larger than the sibling's because there are four panels here, not three.
-    fig, axes = plt.subplots(1, 4, figsize=(a.fig_width, a.fig_height), sharey=True)
-    for b, ax, per in zip((1, 2, 3, 4), axes, panels):
-        for lab, col, ls, curve, band in per:
-            ax.fill_between(x, curve - band, curve + band, color=col, alpha=a.fill_alpha, lw=0)
-            for edge in (curve - band, curve + band):
-                ax.plot(x, edge, color=col, lw=a.edge_lw, alpha=a.edge_alpha, zorder=3)
-            ax.plot(x, curve, color=col, ls=ls, lw=a.curve_lw, zorder=5,
-                    label=lab if b == 1 else None)
-        ax.axhline(0, color="black", ls="--", lw=1)
-        ax.set_xlabel(xlab)
-        ax.set_title(f"Bin {b}")
-        for sp in ("top", "right"):
-            ax.spines[sp].set_visible(False)
-    axes[0].set_ylabel(YLAB[a.stat])
-    if a.ylim in ("auto", "curves"):
-        if a.ylim == "curves":
-            lo = np.nanmin([np.nanmin(c) for per in panels for *_, c, _ in per])
-            hi = np.nanmax([np.nanmax(c) for per in panels for *_, c, _ in per])
-            r = hi - lo
-            axes[0].set_ylim(lo - a.ypad_lo * r, hi + a.ypad_hi * r)
-        else:
-            lo = np.nanmin([np.nanmin(c - bd) for per in panels for *_, c, bd in per])
-            hi = np.nanmax([np.nanmax(c + bd) for per in panels for *_, c, bd in per])
-            axes[0].set_ylim(lo - 0.08 * (hi - lo), hi + 0.08 * (hi - lo))
-    elif a.ylim != "none":
-        axes[0].set_ylim(*[float(v) for v in a.ylim.split(",")])
-    h, l = axes[0].get_legend_handles_labels()
-    fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, 0.93), ncol=4,
-               frameon=False)
-    fig.tight_layout()
+    # Every text size comes from styles/paper_v1.mplstyle in POINTS, so what reaches the page
+    # depends on how far LaTeX scales the canvas. The sibling family (plot_hos_frac_diff.py)
+    # is figsize=(12, 3), published 11.67 in. This one was (20, 4), published 19.69 in, so at
+    # the same width in the paper its text printed at 11.67/19.69 = 0.59x the sibling's.
+    #
+    # Simply shrinking the canvas to 12 fixed the text but squared up the panels: four panels
+    # across 12 in is 3.0 in each against the 5.0 in they had at 20. The fix is to scale the
+    # TYPE with the width instead, so the two are decoupled: at REF_WIDTH the sizes are
+    # paper_v1's own, and any wider canvas gets them enlarged by exactly the factor LaTeX will
+    # shrink them by. The printed size is then invariant to fig_width, and the width is free
+    # to be chosen for the panel shape alone. 16 in is the middle ground -- 4.0 in panels,
+    # close to the original proportions -- with text printing as if it were a 12 in figure.
+    REF_WIDTH = 12.0
+    k = a.fig_width / REF_WIDTH
+    scaled = {key: plt.rcParams[key] * k for key in
+              ("font.size", "axes.labelsize", "axes.titlesize",
+               "xtick.labelsize", "ytick.labelsize", "legend.fontsize")}
+    print(f"  canvas {a.fig_width} x {a.fig_height} in; type scaled x{k:.2f} "
+          f"so it prints as at {REF_WIDTH} in")
+
+    with plt.rc_context(scaled):
+        fig, axes = plt.subplots(1, 4, figsize=(a.fig_width, a.fig_height), sharey=True)
+        for b, ax, per in zip((1, 2, 3, 4), axes, panels):
+            for lab, col, ls, curve, band in per:
+                ax.fill_between(x, curve - band, curve + band, color=col, alpha=a.fill_alpha, lw=0)
+                for edge in (curve - band, curve + band):
+                    ax.plot(x, edge, color=col, lw=a.edge_lw, alpha=a.edge_alpha, zorder=3)
+                ax.plot(x, curve, color=col, ls=ls, lw=a.curve_lw, zorder=5,
+                        label=lab if b == 1 else None)
+            ax.axhline(0, color="black", ls="--", lw=1)
+            ax.set_xlabel(xlab)
+            ax.set_title(f"Bin {b}")
+            for sp in ("top", "right"):
+                ax.spines[sp].set_visible(False)
+        axes[0].set_ylabel(YLAB[a.stat])
+        if a.ylim in ("auto", "curves"):
+            if a.ylim == "curves":
+                lo = np.nanmin([np.nanmin(c) for per in panels for *_, c, _ in per])
+                hi = np.nanmax([np.nanmax(c) for per in panels for *_, c, _ in per])
+                r = hi - lo
+                axes[0].set_ylim(lo - a.ypad_lo * r, hi + a.ypad_hi * r)
+            else:
+                lo = np.nanmin([np.nanmin(c - bd) for per in panels for *_, c, bd in per])
+                hi = np.nanmax([np.nanmax(c + bd) for per in panels for *_, c, bd in per])
+                axes[0].set_ylim(lo - 0.08 * (hi - lo), hi + 0.08 * (hi - lo))
+        elif a.ylim != "none":
+            axes[0].set_ylim(*[float(v) for v in a.ylim.split(",")])
+        h, l = axes[0].get_legend_handles_labels()
+        fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, 0.93), ncol=4,
+                   frameon=False)
+        fig.tight_layout()
 
     outdir = os.path.join(REPO, a.outdir); os.makedirs(outdir, exist_ok=True)
     name = a.name or (f"bnt_frac_diff_{a.stat}"

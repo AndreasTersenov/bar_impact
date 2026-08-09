@@ -2,7 +2,7 @@
   "figure": "bnt_frac_diff_peaks_scale1_14000",
   "generator": "scripts/plot_bnt_frac_diff.py",
   "command": "scripts/plot_bnt_frac_diff.py --stat peaks --scale 1 --area 14000 --name bnt_frac_diff_peaks_scale1_14000",
-  "generated_utc": "2026-08-09T09:58:32Z",
+  "generated_utc": "2026-08-09T10:03:34Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "peaks",
   "scales_included": "wavelet scale 1 (~10')",

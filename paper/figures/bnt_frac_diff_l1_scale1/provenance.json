@@ -2,7 +2,7 @@
   "figure": "bnt_frac_diff_l1_scale1",
   "generator": "scripts/plot_bnt_frac_diff.py",
   "command": "scripts/plot_bnt_frac_diff.py --stat l1 --scale 1 --name bnt_frac_diff_l1_scale1",
-  "generated_utc": "2026-08-09T09:58:26Z",
+  "generated_utc": "2026-08-09T10:03:27Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "l1",
   "scales_included": "wavelet scale 1 (~10')",
