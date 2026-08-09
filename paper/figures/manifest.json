@@ -90,132 +90,6 @@
     }
   },
   {
-    "slug": "bnt_flagship_embedding_matched_c460",
-    "meta": {
-      "slug": "bnt_flagship_embedding_matched_c460",
-      "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
-      "paper_position": 6.0,
-      "published_utc": "2026-08-04T17:09:02+00:00",
-      "published_at_repo_commit": "a57658d9",
-      "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
-      "files": {
-        "figure.pdf": {
-          "from": "plots/bnt_vs_nonbnt_embedding_14000.pdf",
-          "sha256": "d5559bed66633ec8537845bb3b1045816721ff35b62e504774504d76c032794c",
-          "bytes": 132936
-        },
-        "figure.png": {
-          "from": "plots/bnt_vs_nonbnt_embedding_14000.png",
-          "sha256": "255ba068686a1c061b608b640d202aaa702b163b31714fcfbf75ab7d26ce329b",
-          "bytes": 83606
-        },
-        "values.csv": {
-          "from": "plots/bnt_vs_nonbnt_embedding_14000_values.csv",
-          "sha256": "d155ff528038e2dbc80704277bb267c1cd9ece128359ca8efd0320ede6086819",
-          "bytes": 500
-        },
-        "provenance.json": {
-          "from": "plots/bnt_vs_nonbnt_embedding_14000_provenance.json",
-          "sha256": "35ea46393174e627446f2f915e414e0078bd81fd462808e50cbb6a83c100887e",
-          "bytes": 3552
-        }
-      },
-      "note": "THE PAPER FIGURE for the BNT constraining-power result. Both arms at the SAME scale cut (lmax=460, rebin=20), both fed the FULL data vector (92 features BNT, 50 non-BNT) noise-whitened by the analytic covariance, with a 16-dimensional embedding network inside the normalizing flow trained jointly under the NPE loss. No separate compression stage. The only difference between the two contours is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024, non-BNT cuts every bin. BNT/non-BNT FoM3 = 1.41x; per parameter sigma(Om) 1.15x, sigma(S8) 1.24x, sigma(w0) 1.04x, so the gain is concentrated where lensing constrains and is negligible in w0. Both posteriors pass TARP (max|ecp-alpha| 0.05, 0.05) and SBC (rank-std 0.29-0.30 against the ideal 0.289). INDEPENDENT CORROBORATION: the MOPED analysis of the same configuration gives 1.47x (see bnt_flagship_matched_c460_pooled). MOPED assumes Gaussianity and needs the analytic covariance and local Jacobian; the embedding needs none of them, so the two share essentially no failure modes and agree to 4 percent. Read as constraining power at fixed cut, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax than non-BNT cut-all. Bias at this cut: non-BNT safe at 0.17 sigma, BNT marginally at the 0.3 threshold and tolerated on its error bar.",
-      "gate": {
-        "passed": true,
-        "warnings": [
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-        ]
-      },
-      "value_rows": 2,
-      "n_caveats": 4
-    }
-  },
-  {
-    "slug": "bnt_flagship_matched_c460_pooled",
-    "meta": {
-      "slug": "bnt_flagship_matched_c460_pooled",
-      "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
-      "paper_position": 6.1,
-      "published_utc": "2026-08-04T17:09:02+00:00",
-      "published_at_repo_commit": "a57658d9",
-      "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
-      "files": {
-        "figure.pdf": {
-          "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
-          "sha256": "2a26180244d1215cda28b8b4cc088697ae99fc0719a06228f89c2e09e9793270",
-          "bytes": 128882
-        },
-        "figure.png": {
-          "from": "plots/bnt_flagship_matched_c460_14000_pooled.png",
-          "sha256": "87cd83775f2266861aefbf02fdbd1c1a8a04f5ced2c2d9fb7ec2d8512bdb59bd",
-          "bytes": 81545
-        },
-        "values.csv": {
-          "from": "plots/bnt_flagship_matched_c460_14000_pooled_values.csv",
-          "sha256": "37c9966ea41608eda3d707f2340e0119331841310d44f3effbc4529117b5b4ab",
-          "bytes": 501
-        },
-        "provenance.json": {
-          "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
-          "sha256": "1fe4ba400574734de9189cbefb70239dbe8714bda4c245832a25aebc713a2df7",
-          "bytes": 3607
-        }
-      },
-      "note": "MOPED cross-check of the embedding-network flagship (position 6). Same cut, same rebinning, same 5-seed protocol, but the flow is fed 6 score/MOPED summaries instead of the whitened data vector. Gives 1.47x against the embedding's 1.41x. The two methods share no assumptions - MOPED requires Gaussianity, the analytic covariance and the local Jacobian; the embedding requires none - so their agreement to 4 percent is a genuine corroboration rather than a repeat. Both recover the physical Omega_m-S8 degeneracy (r = -0.909/-0.931 here, -0.919/-0.938 for the embedding). The embedding contours are tighter in both arms; that extra tightness sits 1.25-1.36x above the Gaussian Fisher bound and is accompanied by a w0 offset that scales with it, but it is COMMON MODE across the two arms (w0 offset -0.0435 BNT vs -0.0436 non-BNT) and cancels in the ratio. Bias caveat as in the flagship: BNT sits marginally at the 0.3 sigma threshold at this cut, tolerated on its error bar; its own adopted cut is 420.",
-      "gate": {
-        "passed": true,
-        "warnings": [
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-        ]
-      },
-      "value_rows": 2,
-      "n_caveats": 4
-    }
-  },
-  {
-    "slug": "bnt_flagship_matched_c460_single_seed",
-    "meta": {
-      "slug": "bnt_flagship_matched_c460_single_seed",
-      "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
-      "paper_position": 6.2,
-      "published_utc": "2026-08-04T17:09:03+00:00",
-      "published_at_repo_commit": "a57658d9",
-      "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
-      "files": {
-        "figure.pdf": {
-          "from": "plots/bnt_flagship_matched_c460_14000_single_seed.pdf",
-          "sha256": "0d0991b19ce9a4e84719a6bad94dd53f2cfbc4a249dbc049f012efce698cf382",
-          "bytes": 133359
-        },
-        "figure.png": {
-          "from": "plots/bnt_flagship_matched_c460_14000_single_seed.png",
-          "sha256": "f2f2669b38d9a916f73ff820c63a3b8acd087e68edb88142228518345fe05d0b",
-          "bytes": 84783
-        },
-        "values.csv": {
-          "from": "plots/bnt_flagship_matched_c460_14000_single_seed_values.csv",
-          "sha256": "49eac9a16693379d9af964d53e0e541b9c18600474e2bb6749181b5bc197f8aa",
-          "bytes": 487
-        },
-        "provenance.json": {
-          "from": "plots/bnt_flagship_matched_c460_14000_single_seed_provenance.json",
-          "sha256": "ac8c5a3774c73dac3bc1ab2efd079a30017b3d85627d90d87d728407cdd7e416",
-          "bytes": 5975
-        }
-      },
-      "note": "Single-seed companion to the MOPED cross-check at position 6.1; see the embedding flagship at position 6 for the paper result. Each arm shows its most representative NDE seed (scripts/tension/seeds.py, median-referenced on centre and width; both select run 41). Ratio 1.507x against the pooled 1.467x - the difference is seed selection, not physics, since the two arms draw representatives independently. Quote pooled numbers.",
-      "gate": {
-        "passed": true,
-        "warnings": [
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-        ]
-      },
-      "value_rows": 2,
-      "n_caveats": 4
-    }
-  },
-  {
     "slug": "bnt_lossless_identity_nocut",
     "meta": {
       "slug": "bnt_lossless_identity_nocut",
@@ -730,6 +604,126 @@
       },
       "value_rows": 18,
       "n_caveats": 2
+    }
+  },
+  {
+    "slug": "bnt_flagship_embedding_matched_c460",
+    "meta": {
+      "slug": "bnt_flagship_embedding_matched_c460",
+      "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
+      "paper_position": null,
+      "published_utc": "2026-08-09T11:54:39+00:00",
+      "published_at_repo_commit": "0f6a8077",
+      "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/bnt_vs_nonbnt_embedding_14000.pdf",
+          "sha256": "f22060ad0b54dd035852bf5b82c6ca7e40d8a39705eda1019d679feae0a143b2",
+          "bytes": 132781
+        },
+        "figure.png": {
+          "from": "plots/bnt_vs_nonbnt_embedding_14000.png",
+          "sha256": "f1e65adfe979ef8c482d24a3958e989119e5d7b80d6abc191bd1aebd2ec11829",
+          "bytes": 89156
+        },
+        "values.csv": {
+          "from": "plots/bnt_vs_nonbnt_embedding_14000_values.csv",
+          "sha256": "928f4473812c91fea2ee1cb4505d0304e4974be512037783c27e63c3532294aa",
+          "bytes": 534
+        },
+        "provenance.json": {
+          "from": "plots/bnt_vs_nonbnt_embedding_14000_provenance.json",
+          "sha256": "9aca3347c78b4312a4e5d77b3b522cdcbe8a79242482f72e1e57453dfd5fa617",
+          "bytes": 3655
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 2,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "bnt_flagship_matched_c460_pooled",
+    "meta": {
+      "slug": "bnt_flagship_matched_c460_pooled",
+      "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
+      "paper_position": null,
+      "published_utc": "2026-08-09T11:54:39+00:00",
+      "published_at_repo_commit": "0f6a8077",
+      "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
+          "sha256": "c7b780dc3bb95c9ce6d61ce65dfcfa23ee78f12ebd8ddfa1f7701443589cc28a",
+          "bytes": 128723
+        },
+        "figure.png": {
+          "from": "plots/bnt_flagship_matched_c460_14000_pooled.png",
+          "sha256": "29c3d472a47817b591edd7244384d45e6b3ca05690d315dc3a29c36ae34f94ff",
+          "bytes": 87089
+        },
+        "values.csv": {
+          "from": "plots/bnt_flagship_matched_c460_14000_pooled_values.csv",
+          "sha256": "94e2fc33907d2cbf8f65ed79f47258e6b26ac4cfb8fc08b8442047c0b8042a90",
+          "bytes": 535
+        },
+        "provenance.json": {
+          "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
+          "sha256": "3f0227f716444c523f6926c96507faa12dcb462c26b8d83bebee3095306163bf",
+          "bytes": 3710
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 2,
+      "n_caveats": 4
+    }
+  },
+  {
+    "slug": "bnt_flagship_matched_c460_single_seed",
+    "meta": {
+      "slug": "bnt_flagship_matched_c460_single_seed",
+      "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
+      "paper_position": null,
+      "published_utc": "2026-08-09T11:54:39+00:00",
+      "published_at_repo_commit": "0f6a8077",
+      "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
+      "files": {
+        "figure.pdf": {
+          "from": "plots/bnt_flagship_matched_c460_14000_single_seed.pdf",
+          "sha256": "88ab0f28edd473cdf85a2dfce7522ca47390b271b01b8a403bb7f38cb319e920",
+          "bytes": 133189
+        },
+        "figure.png": {
+          "from": "plots/bnt_flagship_matched_c460_14000_single_seed.png",
+          "sha256": "7947a524c7d1ef42f584f667b50dba63464c2cdcb46811ac65bcb6150786af85",
+          "bytes": 90340
+        },
+        "values.csv": {
+          "from": "plots/bnt_flagship_matched_c460_14000_single_seed_values.csv",
+          "sha256": "1e2e00c620908ed22754e4355e4418192caecb643877e0ec62eeb1a6b701e908",
+          "bytes": 521
+        },
+        "provenance.json": {
+          "from": "plots/bnt_flagship_matched_c460_14000_single_seed_provenance.json",
+          "sha256": "7271d14bb051aeb13d310079abfd9c02e2904e57367cfb744d78be8f0a14b58e",
+          "bytes": 6078
+        }
+      },
+      "note": null,
+      "gate": {
+        "passed": true,
+        "warnings": []
+      },
+      "value_rows": 2,
+      "n_caveats": 4
     }
   },
   {
@@ -2172,37 +2166,35 @@
       "slug": "hos_bnt_l1_vs_scale_cut",
       "title": "hos bnt l1 vs scale cut",
       "paper_position": null,
-      "published_utc": "2026-08-04T17:09:04+00:00",
-      "published_at_repo_commit": "a57658d9",
+      "published_utc": "2026-08-09T11:54:39+00:00",
+      "published_at_repo_commit": "0f6a8077",
       "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut.pdf",
-          "sha256": "02ef3b8cff8ba41a80867974f26ee1785853bd165f81173116c6b0a74d583d73",
-          "bytes": 137143
+          "sha256": "1678a745319e7e13a3f2b0b727e31582c44328410bd8a9f6a9d5e97957ff53ef",
+          "bytes": 136820
         },
         "figure.png": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut.png",
-          "sha256": "e09f0b2543441cf0bd76c744086b3df3cd48448177b0102fd55a5620fcc3ab9c",
-          "bytes": 212647
+          "sha256": "6bf50f4e0b416d6a6fc332ecbc1dde8efd05d99bf5c570953694adc047be690b",
+          "bytes": 214023
         },
         "values.csv": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut_values.csv",
-          "sha256": "4bb30a0b4eba2a70a3fd235a401a33ddebfc9f3dea668d363bdca2b2cd1f9e40",
-          "bytes": 960
+          "sha256": "1d197807c350545ce52c2e62eb36b32f823beead0ab2f2f2f2eaf6fe9d713e99",
+          "bytes": 1021
         },
         "provenance.json": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut_provenance.json",
-          "sha256": "70e39363db801f0daef22f251859caed98832ef7625db22108c7ef5182df413c",
-          "bytes": 3516
+          "sha256": "26dd8078e63f9bb6a2fc93ac5c8632d21fde242609ac1dd7105b835a75f4fb74",
+          "bytes": 4566
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": [
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-        ]
+        "warnings": []
       },
       "value_rows": 3,
       "n_caveats": 3
@@ -2214,37 +2206,35 @@
       "slug": "hos_bnt_peaks_vs_scale_cut",
       "title": "hos bnt peaks vs scale cut",
       "paper_position": null,
-      "published_utc": "2026-08-04T17:09:04+00:00",
-      "published_at_repo_commit": "a57658d9",
+      "published_utc": "2026-08-09T11:54:38+00:00",
+      "published_at_repo_commit": "0f6a8077",
       "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut",
       "files": {
         "figure.pdf": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.pdf",
-          "sha256": "565a629fb23ebb761411f5ea7d86e8a69fcef13b946ccd8ff3d9b1c2247a063f",
-          "bytes": 131674
+          "sha256": "321f925f1624178ae5370378d6d60297e0bdcc91b9644020a83b8be700e67518",
+          "bytes": 131503
         },
         "figure.png": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.png",
-          "sha256": "e8fc90e6074bd72c2a1f7b535de29f501d41509af03dd6a9d60107dd31bae6d4",
-          "bytes": 215808
+          "sha256": "46d8a23a5135db584827b26e64f83431e2402c1b1f6bfe98f97219b02251d53a",
+          "bytes": 216735
         },
         "values.csv": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_values.csv",
-          "sha256": "cdc400cb9fc1ed1f8a070eda9f19f9a135a60947ffb5743ef86b34e5abb64e86",
-          "bytes": 968
+          "sha256": "7054d0ea4be599d78ce2d43fc5e47e24e9420284a04c5aad35da2f974ec327b2",
+          "bytes": 1031
         },
         "provenance.json": {
           "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_provenance.json",
-          "sha256": "4f84aab547cb09e692adb0629a6b047c5e242be24db9eeacc9f0a0df3f3f1ed2",
-          "bytes": 3533
+          "sha256": "df5cdb22b41141460bcd4ba58524bd4e118a4ec0768d164f539c7547cc077b94",
+          "bytes": 4585
         }
       },
       "note": null,
       "gate": {
         "passed": true,
-        "warnings": [
-          "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-        ]
+        "warnings": []
       },
       "value_rows": 3,
       "n_caveats": 3

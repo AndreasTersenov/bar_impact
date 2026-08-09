@@ -1,38 +1,36 @@
 {
   "slug": "bnt_flagship_matched_c460_pooled",
   "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, pooled)",
-  "paper_position": 6.1,
-  "published_utc": "2026-08-04T17:09:02+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "paper_position": null,
+  "published_utc": "2026-08-09T11:54:39+00:00",
+  "published_at_repo_commit": "0f6a8077",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_pooled",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled.pdf",
-      "sha256": "2a26180244d1215cda28b8b4cc088697ae99fc0719a06228f89c2e09e9793270",
-      "bytes": 128882
+      "sha256": "c7b780dc3bb95c9ce6d61ce65dfcfa23ee78f12ebd8ddfa1f7701443589cc28a",
+      "bytes": 128723
     },
     "figure.png": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled.png",
-      "sha256": "87cd83775f2266861aefbf02fdbd1c1a8a04f5ced2c2d9fb7ec2d8512bdb59bd",
-      "bytes": 81545
+      "sha256": "29c3d472a47817b591edd7244384d45e6b3ca05690d315dc3a29c36ae34f94ff",
+      "bytes": 87089
     },
     "values.csv": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled_values.csv",
-      "sha256": "37c9966ea41608eda3d707f2340e0119331841310d44f3effbc4529117b5b4ab",
-      "bytes": 501
+      "sha256": "94e2fc33907d2cbf8f65ed79f47258e6b26ac4cfb8fc08b8442047c0b8042a90",
+      "bytes": 535
     },
     "provenance.json": {
       "from": "plots/bnt_flagship_matched_c460_14000_pooled_provenance.json",
-      "sha256": "1fe4ba400574734de9189cbefb70239dbe8714bda4c245832a25aebc713a2df7",
-      "bytes": 3607
+      "sha256": "3f0227f716444c523f6926c96507faa12dcb462c26b8d83bebee3095306163bf",
+      "bytes": 3710
     }
   },
-  "note": "MOPED cross-check of the embedding-network flagship (position 6). Same cut, same rebinning, same 5-seed protocol, but the flow is fed 6 score/MOPED summaries instead of the whitened data vector. Gives 1.47x against the embedding's 1.41x. The two methods share no assumptions - MOPED requires Gaussianity, the analytic covariance and the local Jacobian; the embedding requires none - so their agreement to 4 percent is a genuine corroboration rather than a repeat. Both recover the physical Omega_m-S8 degeneracy (r = -0.909/-0.931 here, -0.919/-0.938 for the embedding). The embedding contours are tighter in both arms; that extra tightness sits 1.25-1.36x above the Gaussian Fisher bound and is accompanied by a w0 offset that scales with it, but it is COMMON MODE across the two arms (w0 offset -0.0435 BNT vs -0.0436 non-BNT) and cancels in the ratio. Bias caveat as in the flagship: BNT sits marginally at the 0.3 sigma threshold at this cut, tolerated on its error bar; its own adopted cut is 420.",
+  "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-    ]
+    "warnings": []
   },
   "value_rows": 2,
   "n_caveats": 4

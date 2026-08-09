@@ -2,37 +2,35 @@
   "slug": "hos_bnt_peaks_vs_scale_cut",
   "title": "hos bnt peaks vs scale cut",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:09:04+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "published_utc": "2026-08-09T11:54:38+00:00",
+  "published_at_repo_commit": "0f6a8077",
   "source_stem": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.pdf",
-      "sha256": "565a629fb23ebb761411f5ea7d86e8a69fcef13b946ccd8ff3d9b1c2247a063f",
-      "bytes": 131674
+      "sha256": "321f925f1624178ae5370378d6d60297e0bdcc91b9644020a83b8be700e67518",
+      "bytes": 131503
     },
     "figure.png": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut.png",
-      "sha256": "e8fc90e6074bd72c2a1f7b535de29f501d41509af03dd6a9d60107dd31bae6d4",
-      "bytes": 215808
+      "sha256": "46d8a23a5135db584827b26e64f83431e2402c1b1f6bfe98f97219b02251d53a",
+      "bytes": 216735
     },
     "values.csv": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_values.csv",
-      "sha256": "cdc400cb9fc1ed1f8a070eda9f19f9a135a60947ffb5743ef86b34e5abb64e86",
-      "bytes": 968
+      "sha256": "7054d0ea4be599d78ce2d43fc5e47e24e9420284a04c5aad35da2f974ec327b2",
+      "bytes": 1031
     },
     "provenance.json": {
       "from": "outputs/plots/hos_bnt_triangle/hos_bnt_peaks_vs_scale_cut_provenance.json",
-      "sha256": "4f84aab547cb09e692adb0629a6b047c5e242be24db9eeacc9f0a0df3f3f1ed2",
-      "bytes": 3533
+      "sha256": "df5cdb22b41141460bcd4ba58524bd4e118a4ec0768d164f539c7547cc077b94",
+      "bytes": 4585
     }
   },
   "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-    ]
+    "warnings": []
   },
   "value_rows": 3,
   "n_caveats": 3

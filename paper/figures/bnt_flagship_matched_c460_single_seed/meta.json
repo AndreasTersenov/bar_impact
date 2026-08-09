@@ -1,38 +1,36 @@
 {
   "slug": "bnt_flagship_matched_c460_single_seed",
   "title": "CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)",
-  "paper_position": 6.2,
-  "published_utc": "2026-08-04T17:09:03+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "paper_position": null,
+  "published_utc": "2026-08-09T11:54:39+00:00",
+  "published_at_repo_commit": "0f6a8077",
   "source_stem": "plots/bnt_flagship_matched_c460_14000_single_seed",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed.pdf",
-      "sha256": "0d0991b19ce9a4e84719a6bad94dd53f2cfbc4a249dbc049f012efce698cf382",
-      "bytes": 133359
+      "sha256": "88ab0f28edd473cdf85a2dfce7522ca47390b271b01b8a403bb7f38cb319e920",
+      "bytes": 133189
     },
     "figure.png": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed.png",
-      "sha256": "f2f2669b38d9a916f73ff820c63a3b8acd087e68edb88142228518345fe05d0b",
-      "bytes": 84783
+      "sha256": "7947a524c7d1ef42f584f667b50dba63464c2cdcb46811ac65bcb6150786af85",
+      "bytes": 90340
     },
     "values.csv": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed_values.csv",
-      "sha256": "49eac9a16693379d9af964d53e0e541b9c18600474e2bb6749181b5bc197f8aa",
-      "bytes": 487
+      "sha256": "1e2e00c620908ed22754e4355e4418192caecb643877e0ec62eeb1a6b701e908",
+      "bytes": 521
     },
     "provenance.json": {
       "from": "plots/bnt_flagship_matched_c460_14000_single_seed_provenance.json",
-      "sha256": "ac8c5a3774c73dac3bc1ab2efd079a30017b3d85627d90d87d728407cdd7e416",
-      "bytes": 5975
+      "sha256": "7271d14bb051aeb13d310079abfd9c02e2904e57367cfb744d78be8f0a14b58e",
+      "bytes": 6078
     }
   },
-  "note": "Single-seed companion to the MOPED cross-check at position 6.1; see the embedding flagship at position 6 for the paper result. Each arm shows its most representative NDE seed (scripts/tension/seeds.py, median-referenced on centre and width; both select run 41). Ratio 1.507x against the pooled 1.467x - the difference is seed selection, not physics, since the two arms draw representatives independently. Quote pooled numbers.",
+  "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-    ]
+    "warnings": []
   },
   "value_rows": 2,
   "n_caveats": 4

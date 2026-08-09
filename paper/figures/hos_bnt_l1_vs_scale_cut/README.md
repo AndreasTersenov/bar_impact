@@ -1,20 +1,16 @@
 # hos bnt l1 vs scale cut
 
 - **source**: `outputs/plots/hos_bnt_triangle/hos_bnt_l1_vs_scale_cut`
-- **generator commit**: `unknown`
-- **generated**: 2026-08-04T16:23:39Z
-- **published**: 2026-08-04T17:09:04+00:00 at repo `a57658d9`
+- **generator commit**: `0f6a8077b2629e19a35f19eecf82638ebc3999b3`
+- **generated**: 2026-08-09T11:37:36Z
+- **published**: 2026-08-09T11:54:39+00:00 at repo `0f6a8077`
 - **rows in values.csv**: 3
 
 ## Scales included
 
 - **all**: scales1234 = internal 0,1,2,3 = all four wavelet scales
-- **cut**: scales234 = internal 1,2,3 = three scales, finest dropped; legend [20',40',80']
+- **cut**: scales234 = internal 1,2,3 = three scales, finest dropped; legend $j \geq 2$
 - **bnt**: bntbins1234 scales1234
-
-## Known gaps
-
-- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

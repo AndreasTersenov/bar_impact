@@ -78,8 +78,13 @@ PAR_LABELS = [r"$\Omega_\mathrm{m}$", r"$\sigma_8$", r"$w_0$", r"$H_0$", r"$n_s$
 SUB = [0, 1, 2]
 TRUTH = np.array([0.26, 0.84, -1.0, 67.36, 0.9649, 0.0493])
 
-# The finest wavelet scale is dropped by the cut; "coarse" was never used, so three scales.
-CUT_SCALES = r"[20',40',80']"
+# The cut drops the finest wavelet scale, so what remains is scales j >= 2. Named by INDEX
+# rather than by the arcmin list it used to carry ("[20',40',80']"): the arcmin figures are
+# nominal band labels, and the measured half-power ranges in
+# paper/figures/starlet_scale_ell/values.csv show a starlet band peaks near half the multipole
+# its nominal scale size implies -- so the list read as a precision the labels do not have,
+# and it also had to be hand-edited whenever the scale set changed.
+CUT_SCALES = r"$j \geq 2$"
 
 # stat -> (file stem for each arm). All are `new_normalization`, noisy s=0.26, bins1234.
 FILES = {
@@ -107,7 +112,10 @@ FILES = {
     },
 }
 STAT_TEX = {"peaks": "peaks", "l1": r"$\ell_1$"}
-STAT_BNT_TEX = {"peaks": "BNT peaks", "l1": r"$\ell_1^{BNT}$"}
+# "BNT <stat>", not a superscript. The l1 arm used to be labelled $\ell_1^{BNT}$, which reads
+# as a different QUANTITY rather than the same statistic measured in a different basis, and it
+# did not match the peaks arm's plain "BNT peaks". Both now use the same prefix form.
+STAT_BNT_TEX = {"peaks": "BNT peaks", "l1": r"BNT $\ell_1$"}
 
 
 # Higher-order footprint tag = nominal area + 1 (same convention as HOS_TAG in
@@ -306,7 +314,11 @@ def main():
     bnt_key = f"bnt_{a.bnt_arm}"
     bnt_note = ("NO baryons injected -- not like-for-like with the other two"
                 if a.bnt_arm == "nobaryons" else "baryonified, like-for-like with the other two")
-    bnt_label = STAT_BNT_TEX[a.stat] + ("" if a.bnt_arm == "baryonified" else ", no baryons")
+    # The BNT arm is uncut (scales1234), so it says so, matching the "all scales" wording of
+    # the standard uncut arm. Previously it carried no scale qualifier at all, which left the
+    # reader to guess whether it was cut like the middle series or uncut like the last one.
+    bnt_label = (STAT_BNT_TEX[a.stat] + ", all scales"
+                 + ("" if a.bnt_arm == "baryonified" else ", no baryons"))
 
     series = [
         (bnt_label, f[bnt_key], bnt_key),
@@ -429,9 +441,17 @@ def main():
                    f"{a.cut_scales}",
             "bnt": "bntbins1234 scales1234",
         },
-        "legend_correction": "Original legend listed four entries [20',40',80',coarse] for the "
-                             "three-scale cut vector. The coarse scale was not used; the label now "
-                             "lists three.",
+        "legend_correction": "Two rounds. (1) The original legend listed four entries "
+                             "[20',40',80',coarse] for a three-scale cut vector; the coarse "
+                             "scale was never used, so it was reduced to three. (2) The arcmin "
+                             "list is now dropped entirely in favour of naming the scale set by "
+                             "INDEX -- 'scales j >= 2' -- because the arcmin figures are nominal "
+                             "band labels and the measured half-power ranges "
+                             "(paper/figures/starlet_scale_ell) do not line up with them. The "
+                             "BNT arm also gained an explicit ', all scales' (it is uncut, and "
+                             "carried no scale qualifier), and the l1 BNT label changed from the "
+                             "superscript $\\ell_1^{BNT}$ to 'BNT $\\ell_1$', matching the peaks "
+                             "arm and reading as a basis rather than a different quantity.",
         "truth": {PAR_LABELS[i]: float(TRUTH[i]) for i in SUB},
         "fom_definition": "FoM_3 = 1/sqrt(det Cov(Omega_m, S8, w0))",
         "caveats": [

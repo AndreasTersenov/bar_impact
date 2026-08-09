@@ -1,20 +1,14 @@
 # CROSS-CHECK: BNT vs non-BNT at matched lmax=460 (MOPED, single seed)
 
-Single-seed companion to the MOPED cross-check at position 6.1; see the embedding flagship at position 6 for the paper result. Each arm shows its most representative NDE seed (scripts/tension/seeds.py, median-referenced on centre and width; both select run 41). Ratio 1.507x against the pooled 1.467x - the difference is seed selection, not physics, since the two arms draw representatives independently. Quote pooled numbers.
-
 - **source**: `plots/bnt_flagship_matched_c460_14000_single_seed`
-- **generator commit**: `unknown`
-- **generated**: 2026-08-04T16:21:03Z
-- **published**: 2026-08-04T17:09:03+00:00 at repo `a57658d9`
+- **generator commit**: `0f6a8077b2629e19a35f19eecf82638ebc3999b3`
+- **generated**: 2026-08-09T11:54:10Z
+- **published**: 2026-08-09T11:54:39+00:00 at repo `0f6a8077`
 - **rows in values.csv**: 2
 
 ## Scales included
 
 - **scales_included**: both arms at ell_max=460 (matched); BNT cuts bin-1 only, bins 2-4 to 1024
-
-## Known gaps
-
-- provenance git_commit is unknown — the figure cannot be traced to the code that made it
 
 ## Caveats (from provenance)
 

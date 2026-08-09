@@ -96,7 +96,12 @@ def main():
 
     series = []
     for spec in a.series:
-        label, rest = spec.split("=", 1)
+        # rsplit, not split: the LABEL may legitimately contain an "=" -- the paper's legends
+        # carry things like "standard basis, global $\ell_{\rm max}=460$". Splitting on the
+        # FIRST "=" cut the label there and left "460$=<dir>" as the path, failing on a
+        # confusing FileNotFoundError. The directory never contains "=", so the LAST one is
+        # unambiguously the label/path separator.
+        label, rest = spec.rsplit("=", 1)
         d, tag = rest.rsplit(":", 1)
         per, runs, sk = load_null(d, tag)
         sig_avg, R_avg, fom_avg = stats(per)      # seed-averaged: scatter-free constraining power

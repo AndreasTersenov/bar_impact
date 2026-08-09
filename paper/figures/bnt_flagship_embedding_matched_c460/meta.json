@@ -1,38 +1,36 @@
 {
   "slug": "bnt_flagship_embedding_matched_c460",
   "title": "FLAGSHIP: BNT vs non-BNT at matched lmax=460 (embedding network, no MOPED)",
-  "paper_position": 6.0,
-  "published_utc": "2026-08-04T17:09:02+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "paper_position": null,
+  "published_utc": "2026-08-09T11:54:39+00:00",
+  "published_at_repo_commit": "0f6a8077",
   "source_stem": "plots/bnt_vs_nonbnt_embedding_14000",
   "files": {
     "figure.pdf": {
       "from": "plots/bnt_vs_nonbnt_embedding_14000.pdf",
-      "sha256": "d5559bed66633ec8537845bb3b1045816721ff35b62e504774504d76c032794c",
-      "bytes": 132936
+      "sha256": "f22060ad0b54dd035852bf5b82c6ca7e40d8a39705eda1019d679feae0a143b2",
+      "bytes": 132781
     },
     "figure.png": {
       "from": "plots/bnt_vs_nonbnt_embedding_14000.png",
-      "sha256": "255ba068686a1c061b608b640d202aaa702b163b31714fcfbf75ab7d26ce329b",
-      "bytes": 83606
+      "sha256": "f1e65adfe979ef8c482d24a3958e989119e5d7b80d6abc191bd1aebd2ec11829",
+      "bytes": 89156
     },
     "values.csv": {
       "from": "plots/bnt_vs_nonbnt_embedding_14000_values.csv",
-      "sha256": "d155ff528038e2dbc80704277bb267c1cd9ece128359ca8efd0320ede6086819",
-      "bytes": 500
+      "sha256": "928f4473812c91fea2ee1cb4505d0304e4974be512037783c27e63c3532294aa",
+      "bytes": 534
     },
     "provenance.json": {
       "from": "plots/bnt_vs_nonbnt_embedding_14000_provenance.json",
-      "sha256": "35ea46393174e627446f2f915e414e0078bd81fd462808e50cbb6a83c100887e",
-      "bytes": 3552
+      "sha256": "9aca3347c78b4312a4e5d77b3b522cdcbe8a79242482f72e1e57453dfd5fa617",
+      "bytes": 3655
     }
   },
-  "note": "THE PAPER FIGURE for the BNT constraining-power result. Both arms at the SAME scale cut (lmax=460, rebin=20), both fed the FULL data vector (92 features BNT, 50 non-BNT) noise-whitened by the analytic covariance, with a 16-dimensional embedding network inside the normalizing flow trained jointly under the NPE loss. No separate compression stage. The only difference between the two contours is the BNT basis: BNT cuts bin-1 only and keeps bins 2-4 to lmax=1024, non-BNT cuts every bin. BNT/non-BNT FoM3 = 1.41x; per parameter sigma(Om) 1.15x, sigma(S8) 1.24x, sigma(w0) 1.04x, so the gain is concentrated where lensing constrains and is negligible in w0. Both posteriors pass TARP (max|ecp-alpha| 0.05, 0.05) and SBC (rank-std 0.29-0.30 against the ideal 0.289). INDEPENDENT CORROBORATION: the MOPED analysis of the same configuration gives 1.47x (see bnt_flagship_matched_c460_pooled). MOPED assumes Gaussianity and needs the analytic covariance and local Jacobian; the embedding needs none of them, so the two share essentially no failure modes and agree to 4 percent. Read as constraining power at fixed cut, NOT baryon mitigation: BNT bin-1 crosses 0.3 sigma at a LOWER lmax than non-BNT cut-all. Bias at this cut: non-BNT safe at 0.17 sigma, BNT marginally at the 0.3 threshold and tolerated on its error bar.",
+  "note": null,
   "gate": {
     "passed": true,
-    "warnings": [
-      "provenance git_commit is unknown \u2014 the figure cannot be traced to the code that made it"
-    ]
+    "warnings": []
   },
   "value_rows": 2,
   "n_caveats": 4
