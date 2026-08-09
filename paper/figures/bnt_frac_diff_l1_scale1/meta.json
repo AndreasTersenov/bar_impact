@@ -2,19 +2,19 @@
   "slug": "bnt_frac_diff_l1_scale1",
   "title": "BNT vs standard basis: fractional baryonic impact (l1_scale1)",
   "paper_position": null,
-  "published_utc": "2026-08-04T17:09:03+00:00",
-  "published_at_repo_commit": "a57658d9",
+  "published_utc": "2026-08-09T09:58:51+00:00",
+  "published_at_repo_commit": "a988cec8",
   "source_stem": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1.pdf",
-      "sha256": "34ad42765ce0be07d32ecdede6ab96269b7fe18f3eeab3e566dd3d98a3e0c9f9",
-      "bytes": 21131
+      "sha256": "2748abf7f48d7528fca0df3cef0c0414f026391ebc7d8f36db1f0bb8b1732b83",
+      "bytes": 20704
     },
     "figure.png": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1.png",
-      "sha256": "8b2c168bf01414605d8ac7dd7be0e8ee7ef2927ed97ca2acf4c7f99269f9a463",
-      "bytes": 219521
+      "sha256": "c050d99ed2067c19c75dd6222532e577ea3de63023db74e27c57035e70486b97",
+      "bytes": 144148
     },
     "values.csv": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_values.csv",
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/bnt_frac_diff/bnt_frac_diff_l1_scale1_provenance.json",
-      "sha256": "a85506b66db6f777ed4fbd116bb1bd8614d4a8c7b3db08f860bdb921db6868b5",
+      "sha256": "0e0d9be304927034e4a97f16ed46635a81ca31468d46f24734a767051ea544b6",
       "bytes": 1437
     }
   },

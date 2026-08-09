@@ -2,7 +2,7 @@
   "figure": "bnt_frac_diff_ps_14000",
   "generator": "scripts/plot_bnt_frac_diff.py",
   "command": "scripts/plot_bnt_frac_diff.py --stat ps --area 14000 --ylim=-0.036,0.020 --name bnt_frac_diff_ps_14000",
-  "generated_utc": "2026-08-04T16:21:22Z",
+  "generated_utc": "2026-08-09T09:58:39Z",
   "mplstyle": "styles/paper_v1.mplstyle (matches the submitted version)",
   "statistic": "ps",
   "scales_included": "PS: 10 logarithmic bands, lmin=30, lmax=1024",

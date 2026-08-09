@@ -111,6 +111,12 @@ def main():
                    help="curve weight. The style baseline is 1.2; 1.4 lifts the "
                         "curves just clear of their bands without reading as heavy "
                         "at A&A column width.")
+    p.add_argument("--fig-width", type=float, default=12.0,
+                   help="canvas width in inches. Matches plot_hos_frac_diff.py so the two "
+                        "families print at the same text size; was 20, which made this "
+                        "figure's text print ~0.6x the sibling's.")
+    p.add_argument("--fig-height", type=float, default=3.4,
+                   help="canvas height in inches.")
     p.add_argument("--outdir", default="outputs/plots/bnt_frac_diff")
     p.add_argument("--name", default=None)
     a = p.parse_args()
@@ -160,7 +166,17 @@ def main():
                                  n_realizations=int(bar.shape[0]), n_seeds=1))
         panels.append(per)
 
-    fig, axes = plt.subplots(1, 4, figsize=(20, 4), sharey=True)
+    # CANVAS WIDTH, and why it is 12 rather than 20. Every text size here comes from
+    # styles/paper_v1.mplstyle in POINTS, so how large the text finally prints depends on how
+    # far LaTeX scales the figure -- i.e. on the canvas width. The sibling family
+    # (plot_hos_frac_diff.py) uses figsize=(12, 3) and publishes at 11.67 in; this one used
+    # (20, 4) and published at 19.69 in. Placed at the same width in the paper, that made this
+    # figure's labels, ticks and legend print at 11.67/19.69 = 0.59x the sibling's -- which is
+    # exactly the "much smaller" mismatch, not a font setting anywhere.
+    #
+    # Matching the sibling's width makes both families print identical text. The height stays
+    # proportionally larger than the sibling's because there are four panels here, not three.
+    fig, axes = plt.subplots(1, 4, figsize=(a.fig_width, a.fig_height), sharey=True)
     for b, ax, per in zip((1, 2, 3, 4), axes, panels):
         for lab, col, ls, curve, band in per:
             ax.fill_between(x, curve - band, curve + band, color=col, alpha=a.fill_alpha, lw=0)
