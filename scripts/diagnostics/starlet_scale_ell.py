@@ -63,7 +63,11 @@ LMAX = 1535                       # 3*nside - 1, the map's Nyquist multipole
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(REPO, "outputs", "diagnostics", "starlet_scale_ell")
 
-LABELS = [f"wavelet {j}" for j in range(NSCALE - 1)] + ["coarse"]
+# The paper indexes starlet scales 1-based -- j=1 is the FINEST wavelet, and the baryon-safe
+# cut is written "j >= 2" (file tag scales234) -- while the transform's own arrays are 0-based.
+# Keep the 0-based index internally, since it addresses the arrays, and show j = index + 1
+# everywhere a reader meets it: the legend, values.csv and the published table.
+LABELS = [rf"$j={j + 1}$" for j in range(NSCALE - 1)] + ["coarse"]
 # Okabe-Ito, matching scripts/paper_contour_style.py so the appendix figure sits with the rest.
 COLORS = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00"]
 
@@ -125,7 +129,8 @@ def ranges(W2n):
         pk = int(np.argmax(w))
         above = np.where(w >= 0.5)[0]
         lo, hi = (int(above.min()), int(above.max())) if len(above) else (0, 0)
-        out.append(dict(scale=j, type=("coarse" if j == NSCALE - 1 else f"wav{j}"),
+        out.append(dict(scale=j, j=("coarse" if j == NSCALE - 1 else str(j + 1)),
+                        type=("coarse" if j == NSCALE - 1 else f"wav{j}"),
                         ell_peak=pk, ell_half_lo=lo, ell_half_hi=hi))
     return out
 
@@ -192,6 +197,106 @@ def ell_axis():
     return np.arange(LMAX + 1)
 
 
+def write_sidecars(stem, tbl, validation, a, method, ndelta, nreal):
+    """Write _provenance.json and _values.csv next to the figure.
+
+    Split out of main() because --replot rebuilt the FIGURE while leaving these two files
+    describing the previous render: after the shaded-band removal the provenance still
+    advertised shading, and figure_inches still held the old canvas. A published figure
+    whose sidecars describe a different figure is worse than no sidecar. Both are pure
+    functions of the cached measurement, so regenerating them costs no transforms.
+    """
+    # GIT_COMMIT is exported by the SLURM wrapper: compute nodes do not reliably have git on
+    # PATH, and a silent "unknown" here is exactly what the publish gate flags.
+    commit = os.environ.get("GIT_COMMIT", "")
+    if not commit:
+        try:
+            commit = subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"],
+                                             text=True).strip()
+        except Exception:
+            commit = "unknown"
+    json.dump(dict(figure=os.path.basename(stem),
+                   generator="scripts/diagnostics/starlet_scale_ell.py",
+                   git_commit=commit,
+                   generated_utc=datetime.datetime.now(datetime.timezone.utc)
+                                 .strftime("%Y-%m-%dT%H:%M:%SZ"),
+                   nside=NSIDE, nscale=NSCALE, lmax=LMAX, method=method,
+                   ndelta=ndelta, nreal=nreal,
+                   estimator=("single-pixel (white) input, W^2 = C_ell[coef]/C_ell[input]; "
+                              "deterministic, no Monte Carlo error"
+                              if method != "noise" else
+                              "Monte Carlo over white-noise maps"),
+                   validation=validation, table=tbl,
+                   # Rendered into the published README by scripts/paper/figures.py. The
+                   # measured bands ARE the result of this figure, so they belong where a
+                   # reader will see them, not only in the CSV.
+                   readme_table=dict(
+                       title="Measured multipole coverage per starlet scale",
+                       intro=f"nside {NSIDE}, nscale={NSCALE}. Half-power = the multipole "
+                             f"range over which the response is at least 50% of its peak. "
+                             f"j is the paper's 1-based scale index (j=1 is the finest "
+                             f"wavelet); 'array band' is the transform's own 0-based name. "
+                             f"Bands OVERLAP; these are where each dominates, not sharp "
+                             f"windows.",
+                       columns=["j", "array band", "ell at peak",
+                                "ell half-power range", "role in the analysis"],
+                       rows=[[r["j"], r["type"], r["ell_peak"],
+                              f"{r['ell_half_lo']} - {r['ell_half_hi']}", role]
+                             for r, role in zip(tbl, [
+                                 "dropped by the baryon-safe cut (j >= 2)",
+                                 "kept", "kept",
+                                 "kept; its half-power edge sets the PS floor l>=37",
+                                 "excluded throughout; the only band carrying the monopole"])],
+                       footnote="j=1 (array band wav0) is RESOLUTION-limited: it peaks near "
+                                "the Nyquist multipole 3*nside-1 = 1535, so its band moves with "
+                                "map resolution while the others do not. Angular-scale labels "
+                                "(~10 arcmin for j=1, doubling thereafter) are dyadic "
+                                "smoothing-scale names and are NOT 10800/ell_peak -- a starlet "
+                                "band peaks at roughly half the multipole its label suggests.",
+                   ),
+                   versions={m: _ver(m) for m in ("numpy", "healpy", "matplotlib")},
+                   mplstyle="styles/paper_v1.mplstyle",
+                   figure_inches=[a.width, round(a.width * a.aspect, 3)],
+                   scales_included={
+                       "note": "This figure MEASURES the scale-to-multipole mapping; it is not "
+                               "computed on a scale-cut data vector.",
+                       "starlet": f"nscale={NSCALE} -> wavelets j=1-{NSCALE-1} "
+                                  f"(array bands wav0-wav{NSCALE-2}) plus coarse",
+                       "nside": NSIDE,
+                       "ell_range_measured": [0, LMAX],
+                       "analysis_cut_shown": "none. The shaded band that marked the "
+                                             "scales234 cut was removed: this figure reports "
+                                             "the measured mapping, and which scales a cut "
+                                             "discards is stated in the text.",
+                   },
+                   caveats=[
+                       "Measured at nside 512 with nscale=5. Wavelet 0 is RESOLUTION-limited, "
+                       "peaking near the Nyquist multipole 3*nside-1=1535, so its band moves "
+                       "with map resolution; the other bands do not.",
+                       "Half-power ranges summarise bands that OVERLAP substantially. "
+                       "'j>=2 covers ell 36-336' is where those bands dominate, not a "
+                       "sharp window.",
+                       "Measured on the FULL SPHERE. A mask couples multipoles, so the "
+                       "effective coverage of a masked map is broader than the table implies.",
+                       "theta ~ 10800/ell is a convention and is NOT how the scale labels were "
+                       "assigned: a starlet band peaks at roughly half the multipole its "
+                       "nominal scale size suggests. The measured ell ranges are authoritative.",
+                   ]),
+              open(stem + "_provenance.json", "w"), indent=2)
+    with open(stem + "_values.csv", "w") as fh:
+        # n_seeds is how many independent measurements were averaged. For the delta method that
+        # is the number of PIXEL POSITIONS, not training seeds -- they average out pixelisation
+        # anisotropy, not noise, since the measurement is deterministic. Recorded because the
+        # publish gate is right that a values file should say what its ensemble was.
+        fh.write("j,scale,type,ell_peak,ell_half_lo,ell_half_hi,n_seeds,ensemble\n")
+        n = ndelta if method != "noise" else nreal
+        kind = "delta positions" if method != "noise" else "white-noise realisations"
+        for r in tbl:
+            fh.write(f"{r['j']},{r['scale']},{r['type']},{r['ell_peak']},"
+                     f"{r['ell_half_lo']},{r['ell_half_hi']},{n},{kind}\n")
+    print(f"\nwrote {stem}.png/.pdf + _provenance.json + _values.csv")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--method", choices=("delta", "noise", "both"), default="delta")
@@ -224,9 +329,27 @@ def main():
         z = np.load(a.replot, allow_pickle=True)
         W2, raw = z["W2"], z["raw"]
         spread = z["delta_spread"] if "delta_spread" in z else None
-        validation, tbl = {}, ranges(W2)
-        print(f"[replot] figure only, from {a.replot}")
+        # The npz records how the measurement was made; the CLI defaults do NOT apply to a
+        # replot and would silently write the wrong method/ensemble into the provenance.
+        method = str(z["method"]) if "method" in z else a.method
+        ndelta = int(z["ndelta"]) if "ndelta" in z else a.ndelta
+        nreal = int(z["nreal"]) if "nreal" in z else a.nreal
+        if "validation" in z:
+            validation = json.loads(str(z["validation"]))
+        else:
+            # npz files written before validation was stored: the isotropy check is a pure
+            # function of the saved spread, so recover what is recoverable and leave the
+            # delta-vs-noise cross-check out rather than inventing it.
+            validation = {}
+            if spread is not None and spread.shape == W2.shape:
+                m = W2 > 0.05
+                validation = dict(isotropy_max=float(spread[m].max()),
+                                  isotropy_median=float(np.median(spread[m])))
+        tbl = ranges(W2)
+        stem = os.path.join(OUT, "starlet_scale_ell" + (f"_{a.tag}" if a.tag else ""))
+        print(f"[replot] figure + sidecars, from {a.replot}")
         make_figure(W2, tbl, a)
+        write_sidecars(stem, tbl, validation, a, method, ndelta, nreal)
         return
 
     W2d = spread = W2_noise = None
@@ -258,103 +381,22 @@ def main():
               f"max {spread[m].max():.3%}, median {np.median(spread[m]):.3%}")
 
     tbl = ranges(W2)
-    print(f"\n{'scale':>6} {'type':>7} {'ell_peak':>9} {'half_lo':>9} {'half_hi':>9}")
+    print(f"\n{'j':>6} {'type':>7} {'ell_peak':>9} {'half_lo':>9} {'half_hi':>9}")
     for r in tbl:
-        print(f"{r['scale']:>6} {r['type']:>7} {r['ell_peak']:>9} "
+        print(f"{r['j']:>6} {r['type']:>7} {r['ell_peak']:>9} "
               f"{r['ell_half_lo']:>9} {r['ell_half_hi']:>9}")
 
     ell = np.arange(LMAX + 1)
     stem = os.path.join(OUT, "starlet_scale_ell" + (f"_{a.tag}" if a.tag else ""))
     np.savez(stem + "_data.npz", ell=ell, W2=W2, raw=raw,
              delta_spread=(spread if spread is not None else np.zeros(1)),
-             method=a.method, ndelta=a.ndelta, nreal=a.nreal, table=json.dumps(tbl))
+             method=a.method, ndelta=a.ndelta, nreal=a.nreal, table=json.dumps(tbl),
+             validation=json.dumps(validation))
+    print(f"wrote {stem}_data.npz")
 
     make_figure(W2, tbl, a)
 
-    # GIT_COMMIT is exported by the SLURM wrapper: compute nodes do not reliably have git on
-    # PATH, and a silent "unknown" here is exactly what the publish gate flags.
-    commit = os.environ.get("GIT_COMMIT", "")
-    if not commit:
-        try:
-            commit = subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"],
-                                             text=True).strip()
-        except Exception:
-            commit = "unknown"
-    json.dump(dict(figure=os.path.basename(stem),
-                   generator="scripts/diagnostics/starlet_scale_ell.py",
-                   git_commit=commit,
-                   generated_utc=datetime.datetime.now(datetime.timezone.utc)
-                                 .strftime("%Y-%m-%dT%H:%M:%SZ"),
-                   nside=NSIDE, nscale=NSCALE, lmax=LMAX, method=a.method,
-                   ndelta=a.ndelta, nreal=a.nreal,
-                   estimator=("single-pixel (white) input, W^2 = C_ell[coef]/C_ell[input]; "
-                              "deterministic, no Monte Carlo error"
-                              if a.method != "noise" else
-                              "Monte Carlo over white-noise maps"),
-                   validation=validation, table=tbl,
-                   # Rendered into the published README by scripts/paper/figures.py. The
-                   # measured bands ARE the result of this figure, so they belong where a
-                   # reader will see them, not only in the CSV.
-                   readme_table=dict(
-                       title="Measured multipole coverage per starlet scale",
-                       intro=f"nside {NSIDE}, nscale={NSCALE}. Half-power = the multipole "
-                             f"range over which the response is at least 50% of its peak. "
-                             f"Bands OVERLAP; these are where each dominates, not sharp "
-                             f"windows.",
-                       columns=["scale", "type", "ell at peak", "ell half-power range",
-                                "role in the analysis"],
-                       rows=[[r["scale"], r["type"], r["ell_peak"],
-                              f"{r['ell_half_lo']} - {r['ell_half_hi']}", role]
-                             for r, role in zip(tbl, [
-                                 "dropped by the baryon-safe cut (scales234)",
-                                 "kept", "kept",
-                                 "kept; its half-power edge sets the PS floor l>=37",
-                                 "excluded throughout; the only band carrying the monopole"])],
-                       footnote="Wavelet 0 is RESOLUTION-limited: it peaks near the Nyquist "
-                                "multipole 3*nside-1 = 1535, so its band moves with map "
-                                "resolution while the others do not. Angular-scale labels "
-                                "(~10 arcmin for wavelet 0, doubling thereafter) are dyadic "
-                                "smoothing-scale names and are NOT 10800/ell_peak -- a starlet "
-                                "band peaks at roughly half the multipole its label suggests.",
-                   ),
-                   versions={m: _ver(m) for m in ("numpy", "healpy", "matplotlib")},
-                   mplstyle="styles/paper_v1.mplstyle",
-                   figure_inches=[a.width, round(a.width * a.aspect, 3)],
-                   scales_included={
-                       "note": "This figure MEASURES the scale-to-multipole mapping; it is not "
-                               "computed on a scale-cut data vector.",
-                       "starlet": f"nscale={NSCALE} -> wavelets 0-{NSCALE-2} plus coarse",
-                       "nside": NSIDE,
-                       "ell_range_measured": [0, LMAX],
-                       "analysis_cut_shown": "shading marks the band removed by scales234 "
-                                             "(wavelet 0), i.e. ell >= its half-power edge",
-                   },
-                   caveats=[
-                       "Measured at nside 512 with nscale=5. Wavelet 0 is RESOLUTION-limited, "
-                       "peaking near the Nyquist multipole 3*nside-1=1535, so its band moves "
-                       "with map resolution; the other bands do not.",
-                       "Half-power ranges summarise bands that OVERLAP substantially. "
-                       "'scales234 covers ell 36-336' is where those bands dominate, not a "
-                       "sharp window.",
-                       "Measured on the FULL SPHERE. A mask couples multipoles, so the "
-                       "effective coverage of a masked map is broader than the table implies.",
-                       "theta ~ 10800/ell is a convention and is NOT how the scale labels were "
-                       "assigned: a starlet band peaks at roughly half the multipole its "
-                       "nominal scale size suggests. The measured ell ranges are authoritative.",
-                   ]),
-              open(stem + "_provenance.json", "w"), indent=2)
-    with open(stem + "_values.csv", "w") as fh:
-        # n_seeds is how many independent measurements were averaged. For the delta method that
-        # is the number of PIXEL POSITIONS, not training seeds -- they average out pixelisation
-        # anisotropy, not noise, since the measurement is deterministic. Recorded because the
-        # publish gate is right that a values file should say what its ensemble was.
-        fh.write("scale,type,ell_peak,ell_half_lo,ell_half_hi,n_seeds,ensemble\n")
-        n = a.ndelta if a.method != "noise" else a.nreal
-        kind = "delta positions" if a.method != "noise" else "white-noise realisations"
-        for r in tbl:
-            fh.write(f"{r['scale']},{r['type']},{r['ell_peak']},"
-                     f"{r['ell_half_lo']},{r['ell_half_hi']},{n},{kind}\n")
-    print(f"\nwrote {stem}.png/.pdf + _data.npz + _provenance.json + _values.csv")
+    write_sidecars(stem, tbl, validation, a, a.method, a.ndelta, a.nreal)
 
 
 if __name__ == "__main__":
