@@ -327,8 +327,7 @@ def main():
             ax.set_xlabel(r"$\ell$")
             if a.xscale == "log":
                 ax.set_xscale("log")
-            for sp in ("top", "right"):
-                ax.spines[sp].set_visible(False)
+            # Closed box: all four spines (the top and right used to be hidden).
         axes[0].set_ylabel(YLAB)
         ylimits(axes[0], curves, bands)
     
@@ -351,8 +350,7 @@ def main():
         ax.set_xlim(x.min() * 0.9, x.max() * 1.35)
         if a.xscale == "log":
             ax.set_xscale("log")
-        for sp in ("top", "right"):
-            ax.spines[sp].set_visible(False)
+        # Closed box: all four spines (the top and right used to be hidden).
         ax.legend(frameon=False, loc="lower left")
     
     else:

@@ -2,13 +2,13 @@
   "slug": "ps_frac_diff_fig2_14000",
   "title": "Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra",
   "paper_position": null,
-  "published_utc": "2026-08-05T15:54:00+00:00",
-  "published_at_repo_commit": "3d39df81",
+  "published_utc": "2026-08-09T10:15:23+00:00",
+  "published_at_repo_commit": "42ab8c6e",
   "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000.pdf",
-      "sha256": "1144470b44ad8a8c5c3dbd0d72953cb956bb7593f3734a5eae20b3a6b19c7667",
+      "sha256": "a69fc85714121024a97e33a0c7698f2bc117cd83c90468617905332b497a5212",
       "bytes": 13246
     },
     "figure.png": {
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_14000_provenance.json",
-      "sha256": "382f98795f30b17a8ee610e52f07c11ef8bc5a026e2a350090d6c3817c681590",
+      "sha256": "e356908c642eb11d9f405ba6bdef5819482b985a1bd9303f23bd0209df51f426",
       "bytes": 4452
     }
   },

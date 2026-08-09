@@ -2,13 +2,13 @@
   "slug": "ps_frac_diff_fig2",
   "title": "Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)",
   "paper_position": null,
-  "published_utc": "2026-08-05T15:54:00+00:00",
-  "published_at_repo_commit": "3d39df81",
+  "published_utc": "2026-08-09T10:15:23+00:00",
+  "published_at_repo_commit": "42ab8c6e",
   "source_stem": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey",
   "files": {
     "figure.pdf": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey.pdf",
-      "sha256": "444ca614de7fd56b0767a0a6dacfb95f8e60d477206be3bc9cfcef3c724ede4f",
+      "sha256": "6c54292491c98d0c87b1fd46b0853181f8a9c05f7d21452d13f9fbcd6b8ccac1",
       "bytes": 13257
     },
     "figure.png": {
@@ -23,7 +23,7 @@
     },
     "provenance.json": {
       "from": "outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey_provenance.json",
-      "sha256": "d140c47c1950aa1244bd8e807aa39fae1208731eb82c7b39191e9038a5b9fc2e",
+      "sha256": "8c5cc3d4d6726776a607beea94bca98a17c468e0244bfbcbd5bdeb93b20034d8",
       "bytes": 4410
     }
   },

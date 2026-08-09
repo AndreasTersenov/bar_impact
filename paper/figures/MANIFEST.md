@@ -65,8 +65,8 @@ integrity and source drift with `verify`.
 | - | [`hos_frac_diff_l1_14000`](hos_frac_diff_l1_14000/) | Fractional baryonic impact on the starlet l1-norm (14000 deg2) | `?` | 426 | **2** |
 | - | [`hos_frac_diff_peaks`](hos_frac_diff_peaks/) | Fractional baryonic impact on the starlet peak counts (full sky) | `?` | 353 | **2** |
 | - | [`hos_frac_diff_peaks_14000`](hos_frac_diff_peaks_14000/) | Fractional baryonic impact on the starlet peak counts (14000 deg2) | `?` | 353 | **2** |
-| - | [`ps_frac_diff_fig2`](ps_frac_diff_fig2/) | Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band) | `3d39df81936d88073602be68d6a734b2c4296925` | 40 | **2** |
-| - | [`ps_frac_diff_fig2_14000`](ps_frac_diff_fig2_14000/) | Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra | `3d39df81936d88073602be68d6a734b2c4296925` | 40 | **2** |
+| - | [`ps_frac_diff_fig2`](ps_frac_diff_fig2/) | Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band) | `42ab8c6e75fec4b9ca65913ea5bf460e6652ba15` | 40 | **2** |
+| - | [`ps_frac_diff_fig2_14000`](ps_frac_diff_fig2_14000/) | Fig. 2 (14000 deg2 variant) - fractional baryonic impact on the auto power spectra | `42ab8c6e75fec4b9ca65913ea5bf460e6652ba15` | 40 | **2** |
 | - | [`ps_frac_diff_noiseless`](ps_frac_diff_noiseless/) | Noiseless fractional baryonic impact on the auto power spectra, standard vs BNT bins | `3d39df81936d88073602be68d6a734b2c4296925 (generator dirty/untracked at run time)` | 8 | **2** |
 | - | [`starlet_scale_ell`](starlet_scale_ell/) | Starlet scale to multipole response | `cd2a48f3a585e985dd26573fa65668f219ba4b9e` | 5 | - |
 | - | [`tomo_maps_noiseless_bnt`](tomo_maps_noiseless_bnt/) | Appendix D - tomographic convergence maps, BNT basis, noiseless | `909ea676350096ca277cdec5be3565930a97140b` | 4 | - |

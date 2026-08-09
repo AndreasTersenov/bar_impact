@@ -1,9 +1,9 @@
 # Fig. 2 - fractional baryonic impact on the auto power spectra (matched noise, survey band)
 
 - **source**: `outputs/plots/ps_frac_diff/ps_frac_diff_matched_survey`
-- **generator commit**: `3d39df81936d88073602be68d6a734b2c4296925`
-- **generated**: 2026-08-05T15:53:09Z
-- **published**: 2026-08-05T15:54:00+00:00 at repo `3d39df81`
+- **generator commit**: `42ab8c6e75fec4b9ca65913ea5bf460e6652ba15`
+- **generated**: 2026-08-09T10:14:28Z
+- **published**: 2026-08-09T10:15:23+00:00 at repo `42ab8c6e`
 - **rows in values.csv**: 40
 
 ## Known gaps

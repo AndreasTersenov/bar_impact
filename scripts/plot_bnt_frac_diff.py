@@ -217,8 +217,7 @@ def main():
             ax.axhline(0, color="black", ls="--", lw=1)
             ax.set_xlabel(xlab)
             ax.set_title(f"Bin {b}")
-            for sp in ("top", "right"):
-                ax.spines[sp].set_visible(False)
+            # Closed box: all four spines (the top and right used to be hidden).
         axes[0].set_ylabel(YLAB[a.stat])
         if a.ylim in ("auto", "curves"):
             if a.ylim == "curves":
